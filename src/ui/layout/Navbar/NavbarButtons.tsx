@@ -7,11 +7,11 @@ import {
 } from "@heroicons/react/16/solid";
 
 const buttons = [
-  { title: "Home", icon: HomeIcon },
-  { title: "Track", icon: PresentationChartLineIcon },
-  { title: "Toolkit", icon: WrenchIcon },
-  { title: "Needs", icon: EllipsisHorizontalCircleIcon },
-  { title: "Insights", icon: ChartBarIcon },
+  { title: "Home", icon: HomeIcon, destination: "/" },
+  { title: "Track", icon: PresentationChartLineIcon, destination: "/track" },
+  { title: "Toolkit", icon: WrenchIcon, destination: "/toolkit" },
+  { title: "Needs", icon: EllipsisHorizontalCircleIcon, destination: "/needs" },
+  { title: "Insights", icon: ChartBarIcon, destination: "/insights" },
 ];
 
 export default function NavbarButtons() {
