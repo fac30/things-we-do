@@ -1,10 +1,11 @@
 import {
   HomeIcon,
   PresentationChartLineIcon,
-  WrenchIcon,
   EllipsisHorizontalCircleIcon,
   ChartBarIcon,
-} from "@heroicons/react/16/solid";
+} from "@heroicons/react/24/outline";
+
+import { WrenchIcon } from "@heroicons/react/16/solid";
 
 const buttons = [
   { title: "Home", icon: HomeIcon, destination: "/" },
@@ -18,12 +19,7 @@ export default function NavbarButtons() {
   return (
     <div className="grid grid-cols-5 items-center h-full w-11/12 m-auto">
       {buttons.map((button, index) => (
-        <div
-          key={index}
-          className={`flex flex-col items-center ${
-            index === 2 ? "col-span-1" : "" // Center the middle button
-          }`}
-        >
+        <div key={index} className={`flex flex-col items-center`}>
           <p className="text-white">{button.title}</p>
           <button.icon className="h-6 w-6 text-white" />
         </div>
