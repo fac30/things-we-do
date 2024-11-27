@@ -6,3 +6,7 @@
 body {
   background: #1b192e;
 }
+header {
+  background: inherit;
+  border-bottom: 2px solid #6b7280; /* Subtle border */
+}

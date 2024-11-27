@@ -1,6 +1,8 @@
 import '../styles/globals.css';
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
+import Header from '@/ui/layout/Header';
+import CategoryBar from '@/ui/CategoryBar/CategoryBar';
 
 const APP_NAME = 'Things We Do';
 const APP_DEFAULT_TITLE = 'Things We Do';
@@ -50,7 +52,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" dir="ltr">
       <head />
-      <body>{children}</body>
+      <body>
+        <Header />
+        <CategoryBar />
+        {children}
+      </body>
     </html>
   );
 }
