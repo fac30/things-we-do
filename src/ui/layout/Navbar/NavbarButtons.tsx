@@ -5,7 +5,7 @@ import {
   ChartBarIcon,
 } from "@heroicons/react/24/outline";
 
-import { WrenchIcon } from "@heroicons/react/16/solid";
+import { WrenchIcon } from "@heroicons/react/24/solid";
 
 const buttons = [
   { title: "Home", icon: HomeIcon, destination: "/" },
