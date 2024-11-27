@@ -14,7 +14,9 @@
     "@serwist/next": "^9.0.10",
     "next": "15.0.3",
     "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106"
+    "react-dom": "19.0.0-rc-66855b96-20241106",
+    "rxdb": "^15.39.0",
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.0",
