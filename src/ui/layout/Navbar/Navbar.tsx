@@ -1,10 +1,9 @@
-import NavbarButtons from "./NavbarButtons";
+import NavbarLinks from "./NavbarLinks";
 
 export default function Navbar() {
   return (
-    <>
-      <NavbarButtons />
-      <h3>asdfasdfasd</h3>;
-    </>
+    <nav className="fixed bottom-0 bg-twd-navbar-background h-20 w-screen">
+      <NavbarLinks />
+    </nav>
   );
 }
