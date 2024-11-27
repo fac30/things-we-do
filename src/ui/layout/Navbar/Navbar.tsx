@@ -4,7 +4,6 @@ export default function Navbar() {
   return (
     <nav className="fixed bottom-0 bg-twd-navbar-background h-20 w-screen">
       <NavbarButtons />
-      <h3>asdfasdfasd</h3>;
     </nav>
   );
 }
