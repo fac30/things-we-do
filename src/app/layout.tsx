@@ -1,11 +1,12 @@
-import '../styles/globals.css';
-import type { Metadata, Viewport } from 'next';
-import type { ReactNode } from 'react';
+import "../styles/globals.css";
+import type { Metadata, Viewport } from "next";
+import type { ReactNode } from "react";
+import Navbar from "@/ui/layout/Navbar/Navbar";
 
-const APP_NAME = 'Things We Do';
-const APP_DEFAULT_TITLE = 'Things We Do';
-const APP_TITLE_TEMPLATE = '%s - PWA App';
-const APP_DESCRIPTION = 'Best PWA app in the world!';
+const APP_NAME = "Things We Do";
+const APP_DEFAULT_TITLE = "Things We Do";
+const APP_TITLE_TEMPLATE = "%s - PWA App";
+const APP_DESCRIPTION = "Best PWA app in the world!";
 
 export const metadata: Metadata = {
   applicationName: APP_NAME,
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   description: APP_DESCRIPTION,
   appleWebApp: {
     capable: true,
-    statusBarStyle: 'default',
+    statusBarStyle: "default",
     title: APP_DEFAULT_TITLE,
     // startUpImage: [],
   },
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
     telephone: false,
   },
   openGraph: {
-    type: 'website',
+    type: "website",
     siteName: APP_NAME,
     title: {
       default: APP_DEFAULT_TITLE,
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
     description: APP_DESCRIPTION,
   },
   twitter: {
-    card: 'summary',
+    card: "summary",
     title: {
       default: APP_DEFAULT_TITLE,
       template: APP_TITLE_TEMPLATE,
@@ -43,14 +44,17 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#FFFFFF',
+  themeColor: "#FFFFFF",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" dir="ltr">
       <head />
-      <body>{children}</body>
+      <body>
+        <main>{children}</main>
+        <Navbar />
+      </body>
     </html>
   );
 }
