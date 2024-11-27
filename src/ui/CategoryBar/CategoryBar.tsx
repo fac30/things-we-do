@@ -1,11 +1,12 @@
-'use client'
-import React, { useState } from "react";
-import CategoryButton from "./CategoryButtons";
+'use client';
+import { useState } from 'react';
+import Button from '../shared/Button';
 
 const categoryBarClass = `
-  flex items-center gap-4 px-4 py-2 
-  overflow-x-auto bg-[#1b192e] border-b 
-  border-gray-700 sm:gap-6 sm:px-6`;
+  whitespace-nowrap flex items-center gap-4 px-4 py-2 
+  overflow-x-auto bg-twd-background border-b 
+  border-gray-700 sm:gap-6 sm:px-6  focus:ring-2 focus:ring-twd-secondary-purple
+`;
 
 const CategoryBar: React.FC = () => {
   const categories = [
@@ -18,23 +19,41 @@ const CategoryBar: React.FC = () => {
     'Category 7',
   ];
 
-  const [activeCategory, setActiveCategory] = useState<string>('All');
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const handleCategoryClick = (category: string) => {
-    setActiveCategory(category);
-    console.log(`Category selected: ${category}`);
+    // Toggle category selection
+    if (category === 'All') {
+      setSelectedCategories(['All']); // Reset to "All"
+    } else {
+      setSelectedCategories(
+        (prev) =>
+          prev.includes(category)
+            ? prev.filter((c) => c !== category) // Remove if already selected
+            : [...prev.filter((c) => c !== 'All'), category] // Add new category, deselect "All"
+      );
+    }
   };
 
   return (
     <div className={categoryBarClass}>
-      {categories.map((category) => (
-        <CategoryButton
-          key={category}
-          label={category}
-          isActive={activeCategory === category}
-          onClick={() => handleCategoryClick(category)}
-        />
-      ))}
+      {categories.map((category) => {
+        const isActive = selectedCategories.includes(category);
+
+        return (
+          <Button
+            key={category}
+            label={category}
+            className={`${
+              isActive
+                ? 'bg-twd-secondary-purple text-white'
+                : 'bg-twd-background text-white'
+            } hover:bg-twd-secondary-purple`}
+            onClick={() => handleCategoryClick(category)}
+            ariaPressed={isActive}
+          />
+        );
+      })}
     </div>
   );
 };

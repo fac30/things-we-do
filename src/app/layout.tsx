@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import Header from '@/ui/layout/Header';
 import CategoryBar from '@/ui/CategoryBar/CategoryBar';
+import Button from '@/ui/shared/Button';
 
 const APP_NAME = 'Things We Do';
 const APP_DEFAULT_TITLE = 'Things We Do';
@@ -55,6 +56,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <Header />
         <CategoryBar />
+        <Button label="+Add item" className = "bg-twd-secondary-purple text-white"/>
         {children}
       </body>
     </html>
