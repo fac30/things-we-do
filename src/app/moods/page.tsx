@@ -4,7 +4,18 @@ import { createContext, useState } from 'react'
 import { Cube } from './components/Cube'
 import { SliderBox } from './components/SliderBox'
 
-export const NeurochemContext = createContext(null)
+type NeurochemState = {
+  dopamine: number;
+  serotonin: number;
+  adrenaline: number;
+}
+
+type NeurochemContextType = {
+  neuroState: NeurochemState;
+  setNeuroState: React.Dispatch<React.SetStateAction<NeurochemState>>;
+}
+
+export const NeurochemContext = createContext<NeurochemContextType | null>(null)
 
 export default function MoodsPage() {
   const [neuroState, setNeuroState] = useState({
