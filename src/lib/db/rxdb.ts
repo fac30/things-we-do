@@ -5,50 +5,52 @@ import { createRxDatabase } from "rxdb";
 
 addRxPlugin(RxDBDevModePlugin);
 
-const db = await createRxDatabase({
-  name: "database",
-  storage: getRxStorageDexie()
-});
+export default async function initDb() {
+  const db = await createRxDatabase({
+    name: "database",
+    storage: getRxStorageDexie(),
+  });
 
-const moodSchema = {
-  version: 0,
-  primaryKey: "id",
-  type: "object",
-  properties: {
-    id: {
-      type: "string",
-      maxLength: 100
+  const moodSchema = {
+    version: 0,
+    primaryKey: "id",
+    type: "object",
+    properties: {
+      id: {
+        type: "string",
+        maxLength: 100,
+      },
+      neurotransmitters: {
+        type: "object",
+        seratonin: { type: "number" },
+        dopamine: { type: "number" },
+        adrenaline: { type: "number" },
+      },
+      moodName: { type: "string" },
+      timestamp: {
+        type: "string",
+        format: "date-time",
+      },
     },
+    required: ["id", "neurotransmitters", "moodName", "timestamp"],
+  };
+
+  await db.addCollections({
+    moods: {
+      schema: moodSchema,
+    },
+  });
+
+  const testMood = await db.moods.insert({
+    id: "1",
     neurotransmitters: {
-      type: "object",
-      seratonin: { type: "number"},
-      dopamine: { type: "number" },
-      adrenaline: { type: "number" }
+      seratonin: 10,
+      dopamine: 10,
+      adrenaline: 10,
     },
-    moodName: { type: "string" },
-    timestamp: {
-      type: "string",
-      format: "date-time"
-    }
-  },
-  required: ["id", "neurotransmitters", "moodName", "timestamp"]
+    moodName: "",
+    timestamp: new Date().toISOString(),
+  });
+
+  console.log("Database seeded with data: ", testMood);
 }
-
-await db.addCollections({
-  moods: {
-    schema: moodSchema
-  }
-});
-
-export const testMood = await db.moods.insert({
-  id: "1",
-  neurotransmitters: {
-    seratonin: 10,
-    dopamine: 10,
-    adrenaline: 10
-  },
-  moodName: "",
-  timestamp: new Date().toISOString()
-});
-
-console.log(testMood);
