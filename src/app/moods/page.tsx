@@ -4,13 +4,13 @@ import { createContext, useState } from 'react'
 import { Cube } from './components/Cube'
 import { SliderBox } from './components/SliderBox'
 
-type NeurochemState = {
+interface NeurochemState {
   dopamine: number;
   serotonin: number;
   adrenaline: number;
 }
 
-type NeurochemContextType = {
+interface NeurochemContextType {
   neuroState: NeurochemState;
   setNeuroState: React.Dispatch<React.SetStateAction<NeurochemState>>;
 }
