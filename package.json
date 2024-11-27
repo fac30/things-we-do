@@ -7,13 +7,16 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky"
+    "prepare": "husky",
+    "db:test": "node src/lib/db/rxdb.js"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "next": "15.0.3",
     "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106"
+    "react-dom": "19.0.0-rc-66855b96-20241106",
+    "rxdb": "^15.39.0",
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.0",
