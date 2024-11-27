@@ -3,7 +3,7 @@
 import { useContext } from 'react'
 import { NeurochemContext } from '../page'
 
-type SliderProps = {
+interface SliderProps {
   chem: 'dopamine' | 'serotonin' | 'adrenaline'
 }
 
