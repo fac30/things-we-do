@@ -1,0 +1,37 @@
+name: Enforce PR Review Workflow
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  enforce-reviews:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR Creator and Approvals
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const prCreator = context.payload.pull_request.user.login;
+
+            const reviews = await github.pulls.listReviews({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            });
+
+            const reviewers = reviews.data.map(review => review.user.login);
+
+            const requiredReviewers = ["maxitect", "jackcasstlesjones"];
+
+            if (prCreator === "jackcasstlesjones" && !reviewers.includes("maxitect")) {
+              core.setFailed("PR created by jackcasstlesjones must be reviewed by maxitect.");
+            }
+            
+            if (prCreator === "maxitect" && !reviewers.includes("jackcasstlesjones")) {
+              core.setFailed("PR created by maxitect must be reviewed by jackcasstlesjones.");
+            }
+
+            if (!requiredReviewers.some(reviewer => reviewers.includes(reviewer))) {
+              core.setFailed("PR must be approved by maxitect or jackcasstlesjones.");
+            }

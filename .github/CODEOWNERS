@@ -1,0 +1,6 @@
+# Codeowners for all files
+* @maxitect @jackcasstlesjones
+
+# If `maxitect` or `jackcasstlesjones` is not a codeowner, fallback to them for approval
+# (This ensures their review is required for non-codeowner contributions)
+*.fallback @maxitect @jackcasstlesjones
