@@ -27,6 +27,14 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/sw.ts", "src/lib/db/rxdb.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/app/sw.ts",
+    "src/lib/db/rxdbInit.ts",
+    "src/lib/db/rxdbSeed.ts"
+  ],
   "exclude": ["node_modules", "public/sw.js"]
 }
