@@ -1,11 +1,15 @@
+import AddIcon from "./AddToolIcon";
+import AddLink from "./AddToolLink";
+import AddName from "./AddToolName";
+import AddTags from "./AddToolTags";
+
 export default function Inputs() {
   return (
     <div className="flex flex-col gap-2 justify-center">
-      <pre className="text-white">Name</pre>
-      <pre className="text-white">Tags</pre>
-      <pre className="text-white">Image</pre>
-      <pre className="text-white">Link</pre>
-      <pre className="text-white">Helpfulness</pre>
+      <AddName />
+      <AddTags />
+      <AddIcon />
+      <AddLink />
     </div>
   );
 }
