@@ -18,6 +18,9 @@
 - [ ] Bug Fix
 - [ ] Optimization
 - [ ] Documentation Update
+- [ ] Styling
+- [ ] Build
+- [ ] Chore
 
 ## Description
 
