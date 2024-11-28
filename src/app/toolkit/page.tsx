@@ -1,3 +1,5 @@
+"use Client";
+
 import NavigationLink from "@/ui/shared/NavLink";
 
 export default function Page() {

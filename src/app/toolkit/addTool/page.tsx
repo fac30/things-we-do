@@ -1,7 +1,13 @@
+"use client";
+
+import Header from "./components/AddToolHeader";
+import Inputs from "./components/AddToolInputs";
+
 export default function Page() {
   return (
-    <>
-      <h2 className="text-white">new tool, who dis</h2>
-    </>
+    <div className="px-1 py-1">
+      <Header />
+      <Inputs />
+    </div>
   );
 }

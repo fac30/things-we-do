@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import clsx from "clsx";
 
 interface NavLinkProps {
-  title: string;
+  title?: string;
   Icon?: React.ComponentType<{ className?: string }>; // Typing for Heroicons or similar
   destination: string;
 }
