@@ -33,9 +33,9 @@ export function Slider({ chem, label }: SliderProps) {
         max="10"
         value={neuroState[chem]}
         onChange={(e) => handleChange(parseInt(e.target.value))}
-        className="w-9/12 m-auto range-slider"
+        className="w-11/12 m-auto range-slider"
       />
-      <div className="flex justify-between mt-6 w-10/12 m-auto">
+      <div className="flex justify-between mt-6 w-full m-auto">
         <p className="text-xs">Not at all</p>
         <p className="text-xs">Very</p>
       </div>
