@@ -20,7 +20,7 @@ const Header = () => {
           Things We Do
         </h1>
         <Button
-          label="?" // The button text
+          label="?"
           className={buttonHeaderClass}
           ariaPressed={false}
           onClick={() => console.log("Help button clicked!")}
@@ -28,12 +28,12 @@ const Header = () => {
       </div>
 
       {/* Right side: Image */}
-      <div className="relative w-10 h-10 sm:w-12 sm:h-12"> {/* Explicit dimensions */}
+      <div className="relative w-10 h-10 sm:w-12 sm:h-12">
         <ImageComponent
           src="/icons/dummy_img.png"
           alt="Logo"
           sizes="(max-width: 768px) 100vw, 50vw"
-          rounded={false} // Set to true for rounded images
+          rounded={false}
         />
       </div>
     </header>

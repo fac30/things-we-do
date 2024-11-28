@@ -1,8 +1,8 @@
 interface ButtonProps {
-    label: string; // The text displayed on the button
-    onClick?: () => void; // Optional: Click handler
-    className?: string; // Optional: Additional Tailwind or custom classes
-    ariaPressed?: boolean; // Optional: For accessibility
+    label: string;
+    onClick?: () => void;
+    className?: string;
+    ariaPressed?: boolean;
   }
   
   const Button: React.FC<ButtonProps> = ({ label, onClick, className = '', ariaPressed }) => {

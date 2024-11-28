@@ -18,9 +18,9 @@ function ImageComponent({
       <Image
         src={src}
         alt={alt}
-        fill // Makes the image responsive
+        fill
         sizes={sizes}
-        style={{ objectFit: 'cover' }} // Ensures proper scaling
+        style={{ objectFit: 'cover' }}
         className={`${rounded ? 'rounded-full' : ''}`}
       />
     </div>

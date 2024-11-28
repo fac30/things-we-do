@@ -8,7 +8,7 @@ const categoryBarClass = `
   border-gray-700 sm:gap-6 sm:px-6  focus:ring-2 focus:ring-twd-secondary-purple
 `;
 
-const CategoryBar: React.FC = () => {
+const CategoryBar = () => {
   const categories = [
     'All',
     'Replace',
@@ -22,15 +22,14 @@ const CategoryBar: React.FC = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const handleCategoryClick = (category: string) => {
-    // Toggle category selection
     if (category === 'All') {
-      setSelectedCategories(['All']); // Reset to "All"
+      setSelectedCategories(['All']);
     } else {
       setSelectedCategories(
         (prev) =>
           prev.includes(category)
-            ? prev.filter((c) => c !== category) // Remove if already selected
-            : [...prev.filter((c) => c !== 'All'), category] // Add new category, deselect "All"
+            ? prev.filter((c) => c !== category)
+            : [...prev.filter((c) => c !== 'All'), category]
       );
     }
   };
