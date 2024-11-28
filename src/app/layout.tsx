@@ -5,7 +5,7 @@ import Navbar from '@/ui/layout/Navbar/Navbar';
 
 const APP_NAME = 'Things We Do';
 const APP_DEFAULT_TITLE = 'Things We Do';
-const APP_TITLE_TEMPLATE = '%s - PWA App';
+const APP_TITLE_TEMPLATE = '%s - Thing We Do';
 const APP_DESCRIPTION = 'Best PWA app in the world!';
 
 export const metadata: Metadata = {

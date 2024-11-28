@@ -1,6 +1,5 @@
 'use client'
-import { useState } from "react";
-import QuestionMarkButton from "./QuestionButton";
+import QuestionMarkButton from "../../../ui/shared/QuestionButton";
 
 export default function SearchBar() {
 
@@ -9,7 +8,7 @@ export default function SearchBar() {
         {/* Left Section: Text and Question Mark Button */}
         <div className="flex items-center space-x-2">
             {/* Text */}
-            <p className="text-sm font-thin text-white">
+            <p className="text-md font-thin text-white">
             What have you found that <span className="font-bold">helps?</span>
             </p>
 

@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 import Header from '../../ui/layout/ToolkitHeader';
 import CategoryBar from '../../ui/CategoryBar/CategoryBar';
-import SearchBar from '../../ui/shared/SearchBar';
+import SearchBar from './components/SearchBar';
+import CheckBox from './components/CheckBox';
 
 export default function ToolkitLayout({ children }: { children: ReactNode }) {
   return (
@@ -9,10 +10,7 @@ export default function ToolkitLayout({ children }: { children: ReactNode }) {
       <Header />
       <CategoryBar />
       <SearchBar />
-      <div>
-        {/* Add other components here */}
-        <p>Additional content can be added below the search bar.</p>
-      </div>
+      <CheckBox />
     </div>
   );
 }
