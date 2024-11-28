@@ -6,6 +6,7 @@
 body {
   background: #1b192e;
   color: white;
+  overflow-x: hidden;
 }
 header {
   background: inherit;
