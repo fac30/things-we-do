@@ -11,7 +11,7 @@
      - 📗 Update any related documentation and include any relevant screenshots.
 -->
 
-## What type of PR is this? (check all applicable)
+# What type of PR is this? (check all applicable)
 
 - [ ] Refactor
 - [ ] Feature
@@ -30,7 +30,7 @@ _Please replace this line with a description of the changes you have made._
 
 _Please replace this line with any relevant images for UI changes._
 
-### UI accessibility checklist
+## UI accessibility checklist
 
 _If your PR includes UI changes, please utilize this checklist:_
 
@@ -46,6 +46,11 @@ _Please aim to keep the code coverage percentage at 80% and above._
 - [ ] No, and this is why: _please replace this line with details on why tests
       have not been included_
 - [ ] I need help with writing tests
+
+## Delete branch after merge?
+
+- [ ] Yes
+- [ ] No
 
 ## What gif best describes this PR or how it makes you feel?
 
