@@ -1,24 +1,9 @@
 "use client";
 
-import { createContext, useState } from "react";
+import { useState } from "react";
 import { Cube } from "./components/Cube";
 import { SliderBox } from "./components/SliderBox";
-import { Datum } from "plotly.js";
-
-interface NeurochemState {
-  dopamine: Datum;
-  serotonin: Datum;
-  adrenaline: Datum;
-}
-
-interface NeurochemContextType {
-  neuroState: NeurochemState;
-  setNeuroState: React.Dispatch<React.SetStateAction<NeurochemState>>;
-}
-
-export const NeurochemContext = createContext<NeurochemContextType | null>(
-  null
-);
+import { NeurochemContext, NeurochemState } from "@/context/NeurochemContext";
 
 export default function MoodsPage() {
   const [neuroState, setNeuroState] = useState<NeurochemState>({
