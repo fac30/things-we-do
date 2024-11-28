@@ -1,38 +1,53 @@
-import { createContext, useContext, useState } from "react";
+import { useRouter } from "next/navigation";
+import AddIcon from "./AddToolIcon";
+import AddLink from "./AddToolLink";
+import AddName from "./AddToolName";
+import AddTags from "./AddToolTags";
+import { ToolkitFormProvider, useToolkitForm } from "@/context/ToolkitFormContext";
+import rxdbInit from "@/lib/db/rxdbInit";
+import Button from "@/ui/shared/Button";
 
-interface ToolkitFormState {
-  name: string;
-  categories: string[];
-  imageUrl: string;
-  link: string;
-}
+function SubmitButton() {
+  const router = useRouter();
+  const { formState } = useToolkitForm();
 
-interface ToolkitFormContextType {
-  formState: ToolkitFormState;
-  setFormState: React.Dispatch<React.SetStateAction<ToolkitFormState>>;
-}
+  const handleSubmit = async () => {
+    const db = await rxdbInit();
+    
+    await db.toolkit.insert({
+      id: crypto.randomUUID(),
+      name: formState.name,
+      categories: formState.categories,
+      checked: false,
+      link: formState.link,
+      imageUrl: formState.imageUrl,
+      timestamp: new Date().toISOString()
+    });
 
-const ToolkitFormContext = createContext<ToolkitFormContextType | null>(null);
+    console.log(`Created ${formState.name} in the database`);
 
-export function ToolkitFormProvider({ children }: { children: React.ReactNode }) {
-  const [formState, setFormState] = useState<ToolkitFormState>({
-    name: "",
-    categories: [],
-    imageUrl: "",
-    link: "",
-  });
+    router.push("/toolkit");
+  };
 
   return (
-    <ToolkitFormContext.Provider value={{ formState, setFormState }}>
-      {children}
-    </ToolkitFormContext.Provider>
+    <Button
+      label="Add Tool"
+      onClick={handleSubmit}
+      className="w-full mt-4 bg-twd-primary-purple hover:bg-twd-secondary-purple"
+    />
   );
 }
 
-export function useToolkitForm() {
-  const context = useContext(ToolkitFormContext);
-  if (!context) {
-    throw new Error("useToolkitForm must be used within a ToolkitFormProvider");
-  }
-  return context;
+export default function Inputs() {
+  return (
+    <ToolkitFormProvider>
+      <div className="space-y-4 p-4">
+        <AddName />
+        <AddTags />
+        <AddIcon />
+        <AddLink />
+        <SubmitButton />
+      </div>
+    </ToolkitFormProvider>
+  );
 }
