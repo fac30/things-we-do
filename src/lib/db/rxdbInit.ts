@@ -8,7 +8,10 @@ addRxPlugin(RxDBDevModePlugin);
 let dbInstance: RxDatabase | null = null;
 
 export default async function rxdbInit() {
-  if (dbInstance) return dbInstance;
+  if (dbInstance) {
+    console.log("Database already initialized");
+    return dbInstance;
+  }
 
   const db = await createRxDatabase({
     name: "database",
