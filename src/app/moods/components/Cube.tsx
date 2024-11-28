@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext } from "react";
-import { NeurochemContext } from "../page";
+import { NeurochemContext } from "@/context/NeurochemContext";
 
 export function Cube() {
   const context = useContext(NeurochemContext);
