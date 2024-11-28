@@ -5,7 +5,7 @@ import AddTags from "./AddToolTags";
 
 export default function Inputs() {
   return (
-    <div className="flex flex-col gap-2 justify-center">
+    <div>
       <AddName />
       <AddTags />
       <AddIcon />
