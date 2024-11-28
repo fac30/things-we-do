@@ -24,6 +24,19 @@ export function Slider({ chem, label }: SliderProps) {
     }));
   };
 
+  const renderText =
+    label === "Step 2. How much effort does it take?" ? (
+      <>
+        <p className="text-xs">None</p>
+        <p className="text-xs">A lot</p>
+      </>
+    ) : (
+      <>
+        <p className="text-xs">Not at all</p>
+        <p className="text-xs">Very</p>
+      </>
+    );
+
   return (
     <div className="flex flex-col mb-5">
       <label className="text-white mb-6 text-md">{label}</label>
@@ -36,8 +49,7 @@ export function Slider({ chem, label }: SliderProps) {
         className="w-11/12 m-auto range-slider"
       />
       <div className="flex justify-between mt-6 w-full m-auto">
-        <p className="text-xs">Not at all</p>
-        <p className="text-xs">Very</p>
+        {renderText}
       </div>
     </div>
   );
