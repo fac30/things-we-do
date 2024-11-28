@@ -1,7 +1,8 @@
-export default function Page() {
+export default function ToolkitPage() {
   return (
-    <>
-      <h1 className="text-white">This is the toolkit page</h1>
-    </>
+    <div>
+      <h1 className="text-white">Welcome to the Toolkit Page</h1>
+      <p className="text-white">This is where your main Toolkit content will go.</p>
+    </div>
   );
 }

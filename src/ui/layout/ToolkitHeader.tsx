@@ -1,15 +1,10 @@
 'use client'
 import ImageComponent from "../shared/Image";
-import Button from "../shared/Button";
+import QuestionMarkButton from "../shared/QuestionButton";
 
 const headerClasses = `
   flex items-center justify-between 
   px-4 py-6 shadow-md sm:px-6 sm:py-3`;
-
-const buttonHeaderClass = `
-  ml-2 flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 
-  text-white rounded-full bg-twd-background hover:bg-twd-secondary-purple 
-  focus:outline-none focus:ring-2 focus:ring-twd-secondary-purple`;
 
 const Header = () => {
   return (
@@ -17,14 +12,11 @@ const Header = () => {
       {/* Left side: App Name and Question Mark */}
       <div className="flex items-center">
         <h1 className="text-lg font-bold text-white sm:text-xl">
-          Things We Do
+          My Toolkit
         </h1>
-        <Button
-          label="?"
-          className={buttonHeaderClass}
-          ariaPressed={false}
-          onClick={() => console.log("Help button clicked!")}
-        />
+        <QuestionMarkButton 
+          popupText="This is the Toolkit page where you can add and search tools which help you in your daily life." 
+          direction="bottom" />
       </div>
 
       {/* Right side: Image */}
