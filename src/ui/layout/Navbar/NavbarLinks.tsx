@@ -8,7 +8,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { WrenchIcon } from "@heroicons/react/24/solid";
 
-import NavigationLink from "./NavigationLink";
+import NavigationLink from "../../shared/NavLink";
 
 const links = [
   { title: "Home", icon: HomeIcon, destination: "/" },

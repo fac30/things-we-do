@@ -4,17 +4,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 
-interface NavbarButtonProps {
+interface NavLinkProps {
   title: string;
-  Icon: React.ComponentType<{ className?: string }>; // Typing for Heroicons or similar
+  Icon?: React.ComponentType<{ className?: string }>; // Typing for Heroicons or similar
   destination: string;
 }
 
-export default function NavigationLink({
+export default function NavLink({
   title,
   Icon,
   destination,
-}: NavbarButtonProps) {
+}: NavLinkProps) {
   const pathname = usePathname();
   const isActive = pathname === destination;
 
@@ -26,7 +26,7 @@ export default function NavigationLink({
       })}
     >
       <p className="text-white">{title}</p>
-      <Icon className="h-6 w-6 text-white" />
+      {Icon && <Icon className="h-6 w-6 text-white" />}
     </Link>
   );
 }
