@@ -3,7 +3,6 @@
 import { useContext } from "react";
 import { NeurochemContext } from "../page";
 import PlotlyChart from "@/ui/shared/PlotlyChart";
-import { Datum } from "plotly.js";
 
 export function Cube() {
   const context = useContext(NeurochemContext);
@@ -14,13 +13,13 @@ export function Cube() {
 
   const { neuroState } = context;
 
-  const renderValue = (value: Datum): string | number =>
+  /*  const renderValue = (value: Datum): string | number =>
     value !== null && value instanceof Date
       ? value.toISOString()
-      : value ?? "N/A";
+      : value ?? "N/A"; */
 
   return (
-    <>
+    <div className="flex justify-center">
       <PlotlyChart
         data={[
           {
@@ -41,38 +40,52 @@ export function Cube() {
           },
         ]}
         layout={{
+          paper_bgcolor: "#1B192E",
+          hidesources: true,
           width: 600,
           height: 400,
-          title: { text: "Your mood" },
           scene: {
+            aspectmode: "cube",
+            dragmode: false,
             xaxis: {
-              range: [0, 10], // Lock x-axis range
-              showticklabels: false, // Hide numbers
-              title: "", // Remove axis title
-              zeroline: true, // Show center zero line
-              gridcolor: "lightgray", // Set gridline color
-              nticks: 2, // Two ticks to create one half-line
+              range: [0, 10],
+              showticklabels: false,
+              title: "",
+              zeroline: true,
+              gridcolor: "lightgray",
+              nticks: 2,
+              backgroundcolor: "#FFD93D",
+              showbackground: true,
             },
             yaxis: {
-              range: [0, 10], // Lock y-axis range
-              showticklabels: false, // Hide numbers
-              title: "", // Remove axis title
-              zeroline: true, // Show center zero line
-              gridcolor: "lightgray", // Set gridline color
-              nticks: 2, // Two ticks to create one half-line
+              range: [0, 10],
+              showticklabels: false,
+              title: "",
+              zeroline: true,
+              gridcolor: "lightgray",
+              nticks: 2,
+              backgroundcolor: "#FF6B6B",
+              showbackground: true,
             },
             zaxis: {
-              range: [0, 10], // Lock z-axis range
-              showticklabels: false, // Hide numbers
-              title: "", // Remove axis title
-              zeroline: true, // Show center zero line
-              gridcolor: "lightgray", // Set gridline color
-              nticks: 2, // Two ticks to create one half-line
+              range: [0, 10],
+              showticklabels: false,
+              title: "",
+              zeroline: true,
+              gridcolor: "lightgray",
+              nticks: 2,
+              backgroundcolor: "#6BCB77",
+              showbackground: true,
             },
           },
         }}
+        config={{
+          modeBarButtons: false,
+          displaylogo: false,
+          staticPlot: true,
+        }}
       />
-      <div className="p-4 border rounded">
+      {/* <div className="p-4 border rounded">
         <h3 className="text-white">Coordinates:</h3>
         <p className="text-white">
           x (dopamine): {renderValue(neuroState.dopamine)}
@@ -83,7 +96,7 @@ export function Cube() {
         <p className="text-white">
           z (adrenaline): {renderValue(neuroState.adrenaline)}
         </p>
-      </div>
-    </>
+      </div> */}
+    </div>
   );
 }
