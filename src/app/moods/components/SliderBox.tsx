@@ -1,13 +1,13 @@
-'use client'
+"use client";
 
-import { Slider } from './Slider'
+import { Slider } from "./Slider";
 
 export function SliderBox() {
   return (
     <div className="flex flex-col gap-4">
-      <Slider chem="dopamine" />
-      <Slider chem="serotonin" />
-      <Slider chem="adrenaline" />
+      <Slider chem="dopamine" label="Step 1. How urgent does it feel?" />
+      <Slider chem="serotonin" label="Step 2. How much effort does it take?" />
+      <Slider chem="adrenaline" label="Step 3. Does it feel worth doing?" />
     </div>
-  )
-} 
+  );
+}
