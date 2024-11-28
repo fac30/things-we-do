@@ -25,9 +25,9 @@ export function Slider({ chem, label }: SliderProps) {
   };
 
   const normaliseValue = (value: unknown): number => {
-    if (value instanceof Date) return value.getTime(); // Convert Date to timestamp
-    if (typeof value === "number") return value; // Use number as-is
-    return 1; // Fallback default
+    if (value instanceof Date) return value.getTime();
+    if (typeof value === "number") return value;
+    return 1;
   };
 
   const renderText =
