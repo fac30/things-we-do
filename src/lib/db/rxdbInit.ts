@@ -1,11 +1,11 @@
 import { addRxPlugin } from "rxdb";
 import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
-import { createRxDatabase } from "rxdb";
+import { createRxDatabase, RxDatabase } from "rxdb";
 
 addRxPlugin(RxDBDevModePlugin);
 
-let dbInstance: any = null;
+let dbInstance: RxDatabase | null = null;
 
 export default async function rxdbInit() {
   if (dbInstance) {
