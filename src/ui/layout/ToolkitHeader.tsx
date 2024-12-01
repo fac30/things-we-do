@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import ImageComponent from "../shared/Image";
 import QuestionMarkButton from "../shared/QuestionButton";
 
@@ -11,12 +11,11 @@ const Header = () => {
     <header className={headerClasses}>
       {/* Left side: App Name and Question Mark */}
       <div className="flex items-center">
-        <h1 className="text-lg font-bold text-white sm:text-xl">
-          My Toolkit
-        </h1>
-        <QuestionMarkButton 
-          popupText="This is the Toolkit page where you can add and search tools which help you in your daily life." 
-          direction="bottom" />
+        <h1 className="text-lg font-bold text-white sm:text-xl">My Toolkit</h1>
+        <QuestionMarkButton
+          popupText="This is the Toolkit page where you can add and search tools which help you in your daily life."
+          direction="bottom"
+        />
       </div>
 
       {/* Right side: Image */}

@@ -1,16 +1,16 @@
-'use client'
+"use client";
 import { useState, useEffect, useRef } from "react";
 
 interface QuestionMarkButtonProps {
-    popupText: string;
-    direction?: "top" | "right" | "bottom" | "left";
-  }
-  export default function QuestionMarkButton({
-    popupText,
-    direction = "top",
-  }: QuestionMarkButtonProps) {
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
-    const popupRef = useRef<HTMLDivElement>(null);
+  popupText: string;
+  direction?: "top" | "right" | "bottom" | "left";
+}
+export default function QuestionMarkButton({
+  popupText,
+  direction = "top",
+}: QuestionMarkButtonProps) {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const popupRef = useRef<HTMLDivElement>(null);
 
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
@@ -23,7 +23,10 @@ interface QuestionMarkButtonProps {
   // Close the popup when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
+      if (
+        popupRef.current &&
+        !popupRef.current.contains(event.target as Node)
+      ) {
         closePopup();
       }
     };
