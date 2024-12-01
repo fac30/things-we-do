@@ -1,22 +1,22 @@
-"use client";
+"use client"
 
-import { useEffect } from "react";
-import rxdbInit from "@/lib/db/rxdbInit";
+import { useEffect } from "react"
+import rxdbInit from "@/lib/db/rxdbInit"
 
 export default function Home() {
   useEffect(() => {
     const init = async () => {
       try {
-        await rxdbInit();
+        await rxdbInit()
       } catch (error) {
-        console.error("Database initialization error:", error);
+        console.error("Database initialization error:", error)
       }
-    };
-    init();
-  }, []);
+    }
+    init()
+  }, [])
   return (
     <>
       <h1 className="text-red-500">Things We Do Home</h1>
     </>
-  );
+  )
 }

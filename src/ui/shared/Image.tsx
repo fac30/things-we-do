@@ -1,17 +1,17 @@
-import Image from 'next/image';
+import Image from "next/image"
 
 function ImageComponent({
   src,
   alt,
   rounded = false,
   sizes,
-  className = '',
+  className = "",
 }: {
-  src: string;
-  alt: string;
-  rounded?: boolean;
-  sizes?: string;
-  className?: string;
+  src: string
+  alt: string
+  rounded?: boolean
+  sizes?: string
+  className?: string
 }) {
   return (
     <div className={`relative ${className}`}>
@@ -20,11 +20,11 @@ function ImageComponent({
         alt={alt}
         fill
         sizes={sizes}
-        style={{ objectFit: 'cover' }}
-        className={`${rounded ? 'rounded-full' : ''}`}
+        style={{ objectFit: "cover" }}
+        className={`${rounded ? "rounded-full" : ""}`}
       />
     </div>
-  );
+  )
 }
 
-export default ImageComponent;
+export default ImageComponent

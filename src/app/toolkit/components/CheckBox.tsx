@@ -1,17 +1,17 @@
-'use client'
-import { useState, useEffect } from "react";
+"use client"
+import { useState, useEffect } from "react"
 
 interface CheckBoxComponentData {
-  id: number;
-  checked?: boolean;
-  name: string;
-  link?: string;
-  icon: string;
-  category: string[];
+  id: number
+  checked?: boolean
+  name: string
+  link?: string
+  icon: string
+  category: string[]
 }
 
 export default function CheckBox() {
-  const [data, setData] = useState<CheckBoxComponentData[]>([]);
+  const [data, setData] = useState<CheckBoxComponentData[]>([])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,15 +51,15 @@ export default function CheckBox() {
           icon: "🎤",
           category: ["Category 7"],
         },
-      ];
-      setData(dummyData);
-    };
-    fetchData();
-  }, []);
+      ]
+      setData(dummyData)
+    }
+    fetchData()
+  }, [])
 
   const handleToggle = (id: number) => {
-    setData((prevData) => prevData.filter((item) => item.id !== id));
-  };
+    setData((prevData) => prevData.filter((item) => item.id !== id))
+  }
 
   return (
     <div className="flex flex-col space-y-4">
@@ -72,7 +72,7 @@ export default function CheckBox() {
           <div className="flex items-center space-x-3 w-full">
             <input
               type="checkbox"
-              onChange={() => handleToggle(item.id)} 
+              onChange={() => handleToggle(item.id)}
               className="h-5 w-5 border-white bg-twd-background text-twd-background rounded focus:ring focus:ring-blue-300"
             />
             <p className="text-lg text-white">{item.name}</p>
@@ -93,5 +93,5 @@ export default function CheckBox() {
         </div>
       ))}
     </div>
-  );
+  )
 }
