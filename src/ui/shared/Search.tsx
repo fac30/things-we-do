@@ -1,8 +1,8 @@
-"use client"
-import { useState } from "react"
+"use client";
+import { useState } from "react";
 
 export default function Search() {
-  const [query, setQuery] = useState("")
+  const [query, setQuery] = useState("");
 
   return (
     <div className="flex items-center space-x-2 rounded-full bg-gray-200 px-4 py-2">
@@ -30,5 +30,5 @@ export default function Search() {
         </svg>
       </button>
     </div>
-  )
+  );
 }

@@ -1,10 +1,10 @@
-"use client"
-import ImageComponent from "../shared/Image"
-import QuestionMarkButton from "../shared/QuestionButton"
+"use client";
+import ImageComponent from "../shared/Image";
+import QuestionMarkButton from "../shared/QuestionButton";
 
 const headerClasses = `
   flex items-center justify-between 
-  px-4 py-6 shadow-md sm:px-6 sm:py-3`
+  px-4 py-6 shadow-md sm:px-6 sm:py-3`;
 
 const Header = () => {
   return (
@@ -28,7 +28,7 @@ const Header = () => {
         />
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

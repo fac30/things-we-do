@@ -1,4 +1,4 @@
-import Image from "next/image"
+import Image from "next/image";
 
 function ImageComponent({
   src,
@@ -7,11 +7,11 @@ function ImageComponent({
   sizes,
   className = "",
 }: {
-  src: string
-  alt: string
-  rounded?: boolean
-  sizes?: string
-  className?: string
+  src: string;
+  alt: string;
+  rounded?: boolean;
+  sizes?: string;
+  className?: string;
 }) {
   return (
     <div className={`relative ${className}`}>
@@ -24,7 +24,7 @@ function ImageComponent({
         className={`${rounded ? "rounded-full" : ""}`}
       />
     </div>
-  )
+  );
 }
 
-export default ImageComponent
+export default ImageComponent;

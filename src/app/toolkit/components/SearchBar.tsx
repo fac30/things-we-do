@@ -1,5 +1,5 @@
-"use client"
-import QuestionMarkButton from "../../../ui/shared/QuestionButton"
+"use client";
+import QuestionMarkButton from "../../../ui/shared/QuestionButton";
 
 export default function SearchBar() {
   return (
@@ -40,5 +40,5 @@ export default function SearchBar() {
         </button>
       </div>
     </div>
-  )
+  );
 }

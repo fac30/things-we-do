@@ -1,24 +1,24 @@
-"use client"
-import { useState, useEffect, useRef } from "react"
+"use client";
+import { useState, useEffect, useRef } from "react";
 
 interface QuestionMarkButtonProps {
-  popupText: string
-  direction?: "top" | "right" | "bottom" | "left"
+  popupText: string;
+  direction?: "top" | "right" | "bottom" | "left";
 }
 export default function QuestionMarkButton({
   popupText,
   direction = "top",
 }: QuestionMarkButtonProps) {
-  const [isPopupOpen, setIsPopupOpen] = useState(false)
-  const popupRef = useRef<HTMLDivElement>(null)
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const popupRef = useRef<HTMLDivElement>(null);
 
   const togglePopup = () => {
-    setIsPopupOpen(!isPopupOpen)
-  }
+    setIsPopupOpen(!isPopupOpen);
+  };
 
   const closePopup = () => {
-    setIsPopupOpen(false)
-  }
+    setIsPopupOpen(false);
+  };
 
   // Close the popup when clicking outside
   useEffect(() => {
@@ -27,25 +27,25 @@ export default function QuestionMarkButton({
         popupRef.current &&
         !popupRef.current.contains(event.target as Node)
       ) {
-        closePopup()
+        closePopup();
       }
-    }
+    };
 
     if (isPopupOpen) {
-      document.addEventListener("mousedown", handleClickOutside)
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [isPopupOpen])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isPopupOpen]);
 
   const positionClasses = {
     top: "bottom-full mb-2 left-1/2 transform -translate-x-1/2", // Popup above button
     right: "left-full ml-2 top-1/2 transform -translate-y-1/2", // Popup to the right of button
     bottom: "top-full mt-2 left-1/2 transform -translate-x-1/2", // Popup below button
     left: "right-full mr-2 top-1/2 transform -translate-y-1/2", // Popup to the left of button
-  }
+  };
 
   return (
     <div className="relative">
@@ -72,5 +72,5 @@ export default function QuestionMarkButton({
         </div>
       )}
     </div>
-  )
+  );
 }

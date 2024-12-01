@@ -1,8 +1,8 @@
 interface ButtonProps {
-  label: string
-  onClick?: () => void
-  className?: string
-  ariaPressed?: boolean
+  label: string;
+  onClick?: () => void;
+  className?: string;
+  ariaPressed?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -19,7 +19,7 @@ const Button: React.FC<ButtonProps> = ({
     >
       {label}
     </button>
-  )
-}
+  );
+};
 
-export default Button
+export default Button;

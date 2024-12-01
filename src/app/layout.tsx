@@ -1,12 +1,12 @@
-import "../styles/globals.css"
-import type { Metadata, Viewport } from "next"
-import type { ReactNode } from "react"
-import Navbar from "@/ui/layout/Navbar/Navbar"
+import "../styles/globals.css";
+import type { Metadata, Viewport } from "next";
+import type { ReactNode } from "react";
+import Navbar from "@/ui/layout/Navbar/Navbar";
 
-const APP_NAME = "Things We Do"
-const APP_DEFAULT_TITLE = "Things We Do"
-const APP_TITLE_TEMPLATE = "%s - Thing We Do"
-const APP_DESCRIPTION = "Best PWA app in the world!"
+const APP_NAME = "Things We Do";
+const APP_DEFAULT_TITLE = "Things We Do";
+const APP_TITLE_TEMPLATE = "%s - Thing We Do";
+const APP_DESCRIPTION = "Best PWA app in the world!";
 
 export const metadata: Metadata = {
   applicationName: APP_NAME,
@@ -41,11 +41,11 @@ export const metadata: Metadata = {
     },
     description: APP_DESCRIPTION,
   },
-}
+};
 
 export const viewport: Viewport = {
   themeColor: "#FFFFFF",
-}
+};
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -56,5 +56,5 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Navbar />
       </body>
     </html>
-  )
+  );
 }

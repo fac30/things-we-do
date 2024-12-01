@@ -1,12 +1,12 @@
-"use client"
-import { useState } from "react"
-import Button from "../shared/Button"
+"use client";
+import { useState } from "react";
+import Button from "../shared/Button";
 
 const categoryBarClass = `
   whitespace-nowrap flex items-center gap-4 px-4 py-2 
   overflow-x-auto bg-twd-background border-b 
   border-gray-700 sm:gap-6 sm:px-6  focus:ring-2 focus:ring-twd-secondary-purple
-`
+`;
 
 const CategoryBar = () => {
   const categories = [
@@ -18,26 +18,26 @@ const CategoryBar = () => {
     "Category 5",
     "Category 6",
     "Category 7",
-  ]
+  ];
 
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const handleCategoryClick = (category: string) => {
     if (category === "All") {
-      setSelectedCategories(["All"])
+      setSelectedCategories(["All"]);
     } else {
       setSelectedCategories((prev) =>
         prev.includes(category)
           ? prev.filter((c) => c !== category)
           : [...prev.filter((c) => c !== "All"), category]
-      )
+      );
     }
-  }
+  };
 
   return (
     <div className={categoryBarClass}>
       {categories.map((category) => {
-        const isActive = selectedCategories.includes(category)
+        const isActive = selectedCategories.includes(category);
 
         return (
           <Button
@@ -51,10 +51,10 @@ const CategoryBar = () => {
             onClick={() => handleCategoryClick(category)}
             ariaPressed={isActive}
           />
-        )
+        );
       })}
     </div>
-  )
-}
+  );
+};
 
-export default CategoryBar
+export default CategoryBar;
