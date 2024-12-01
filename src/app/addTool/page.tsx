@@ -3,9 +3,9 @@
 import Header from "./components/AddToolHeader";
 import Inputs from "./components/AddToolInputs";
 
-export default function Page() {
+export default function AddToolPage() {
   return (
-    <div className="px-1 py-1">
+    <div className="px-4 py-6">
       <Header />
       <Inputs />
     </div>
