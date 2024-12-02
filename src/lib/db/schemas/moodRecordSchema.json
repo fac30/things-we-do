@@ -1,0 +1,25 @@
+{
+  "version": 0,
+  "primaryKey": "id",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "maxLength": 100
+    },
+    "neurotransmitters": {
+      "type": "object",
+      "properties": {
+        "seratonin": { "type": "number" },
+        "dopamine": { "type": "number" },
+        "adrenaline": { "type": "number" }
+      }
+    },
+    "moodName": { "type": "string" },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": ["id", "neurotransmitters", "moodName", "timestamp"]
+}
