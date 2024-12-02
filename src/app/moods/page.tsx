@@ -6,8 +6,10 @@ import { SliderBox } from "./components/SliderBox";
 import { NeurochemContext, NeurochemState } from "@/context/NeurochemContext";
 import Button from "@/ui/shared/Button";
 import { addToDb } from "@/models/addToDb";
+import { useRouter } from "next/navigation"; // Import useRouter from next/navigation
 
 export default function MoodsPage() {
+  const router = useRouter(); // Initialize useRouter hook
   const [neuroState, setNeuroState] = useState<NeurochemState>({
     dopamine: 5,
     serotonin: 5,
@@ -28,6 +30,8 @@ export default function MoodsPage() {
     };
 
     addToDb("mood_records", submitObj);
+
+    router.push("/toolkit"); // Navigate to the toolkit page
   };
 
   return (
