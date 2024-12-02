@@ -3,6 +3,7 @@ import { createContext, useContext, useState } from "react";
 interface ToolkitFormState {
   name: string;
   categories: string[];
+  description: string;
   imageUrl: string;
   infoUrl: string;
 }
@@ -18,6 +19,7 @@ export function ToolkitFormProvider({ children }: { children: React.ReactNode })
   const [formState, setFormState] = useState<ToolkitFormState>({
     name: "",
     categories: [],
+    description: "",
     imageUrl: "",
     infoUrl: "",
   });

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import AddDescription from "./AddToolDescription";
 import AddImageUrl from "./AddToolImageUrl";
 import AddInfoUrl from "./AddToolInfoUrl";
 import AddName from "./AddToolName";
@@ -27,6 +28,7 @@ function SubmitButton() {
         id: crypto.randomUUID(),
         name: formState.name,
         categories: formState.categories,
+        description: formState.description,
         checked: false,
         infoUrl: formState.infoUrl,
         imageUrl: formState.imageUrl,
@@ -56,6 +58,7 @@ export default function Inputs() {
       <div className="space-y-4 p-4">
         <AddName />
         <AddTags />
+        <AddDescription />
         <AddImageUrl />
         <AddInfoUrl />
         <SubmitButton />
