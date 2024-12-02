@@ -44,7 +44,7 @@ export function Slider({ chem, label }: SliderProps) {
     );
 
   return (
-    <div className="flex flex-col mb-5">
+    <div className="flex flex-col mb-2">
       <label className="text-white text-md mb-3">{label}</label>
       <input
         type="range"
