@@ -1,7 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import MoodsPage from "@/app/moods/page";
-// import { useContext } from "react";
-// import { NeurochemContext } from "@/context/NeurochemContext";
 
 // Mock the child components
 jest.mock("@/app/moods/components/Cube", () => ({
