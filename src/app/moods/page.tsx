@@ -15,8 +15,19 @@ export default function MoodsPage() {
   });
 
   const submitMood = () => {
-    addToDb("mood_records", neuroState);
-    console.log(neuroState);
+    const { dopamine, serotonin, adrenaline } = neuroState;
+
+    const submitObj = {
+      neurotransmitters: {
+        dopamine: dopamine,
+        serotonin: serotonin,
+        adrenaline: adrenaline,
+      },
+      moodName: "new-mood",
+      timestamp: new Date().toISOString(),
+    };
+
+    addToDb("mood_records", submitObj);
   };
 
   return (

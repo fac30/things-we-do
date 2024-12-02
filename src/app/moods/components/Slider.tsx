@@ -18,7 +18,6 @@ export function Slider({ chem, label }: SliderProps) {
   const { neuroState, setNeuroState } = context;
 
   const handleChange = (value: number) => {
-    console.log(neuroState);
     setNeuroState((prev) => ({
       ...prev,
       [chem]: value,
