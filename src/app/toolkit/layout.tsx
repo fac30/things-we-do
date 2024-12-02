@@ -1,7 +1,8 @@
 'use client'
+import { ReactNode } from 'react';
 import Header from '../../ui/layout/ToolkitHeader';
 
-export default function Page({children} : {children: React.ReactNode}) {
+export default function Page({ children }: { children: ReactNode }) {
   return (
     <div>
      <div>

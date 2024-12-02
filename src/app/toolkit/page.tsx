@@ -1,12 +1,11 @@
 
-import { ReactNode } from 'react';
 import CategoryBar from '../../ui/CategoryBar/CategoryBar';
 import SearchBar from './components/SearchBar';
 import CheckBox from './components/CheckBox';
 import FloatingButton from './components/floatingButton';
 
 
-export default function ToolkitLayout({ children }: { children: ReactNode }) {
+export default function ToolkitPage() {
   return (
     <div className="relative h-full">
       {/* Shared Header and CategoryBar */}  
@@ -17,9 +16,6 @@ export default function ToolkitLayout({ children }: { children: ReactNode }) {
         <SearchBar />
         <CheckBox />
       </div>
-
-      {/* Page-specific content */}
-      <div className="flex-1 overflow-auto">{children}</div>
 
       {/* Floating Button */}
       <FloatingButton />
