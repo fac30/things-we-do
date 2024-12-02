@@ -5,7 +5,7 @@ import { Cube } from "./components/Cube";
 import { SliderBox } from "./components/SliderBox";
 import { NeurochemContext, NeurochemState } from "@/context/NeurochemContext";
 import Button from "@/ui/shared/Button";
-import { addMoodRecord } from "@/models/moodRecordModel";
+import { addToDb } from "@/models/addToDb";
 
 export default function MoodsPage() {
   const [neuroState, setNeuroState] = useState<NeurochemState>({
@@ -15,7 +15,7 @@ export default function MoodsPage() {
   });
 
   const submitMood = () => {
-    addMoodRecord(neuroState);
+    addToDb("mood_records", neuroState);
     console.log(neuroState);
   };
 
