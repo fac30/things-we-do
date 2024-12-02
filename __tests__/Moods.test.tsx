@@ -24,35 +24,6 @@ describe("MoodsPage", () => {
     expect(screen.getByTestId("mock-slider-box")).toBeInTheDocument();
   });
 
-  //   it("initializes neuroState with correct default values", () => {
-  //     render(<MoodsPage />);
-
-  //     // We can test the context value by creating a test component that consumes it
-  //     const TestComponent = () => {
-  //       const context = useContext(NeurochemContext);
-  //       if (!context) return null;
-
-  //       return (
-  //         <div>
-  //           <span data-testid="dopamine">{context.neuroState.dopamine}</span>
-  //           <span data-testid="serotonin">{context.neuroState.serotonin}</span>
-  //           <span data-testid="adrenaline">{context.neuroState.adrenaline}</span>
-  //         </div>
-  //       );
-  //     };
-
-  //     render(
-  //       <MoodsPage>
-  //         <TestComponent />
-  //       </MoodsPage>
-  //     );
-
-  //     expect(screen.getByTestId("dopamine")).toHaveTextContent("5");
-  //     expect(screen.getByTestId("serotonin")).toHaveTextContent("5");
-  //     expect(screen.getByTestId("adrenaline")).toHaveTextContent("5");
-  //   }
-  // );
-
   it("has correct layout structure", () => {
     const { container } = render(<MoodsPage />);
 
