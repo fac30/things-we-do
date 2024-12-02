@@ -45,7 +45,7 @@ export function Slider({ chem, label }: SliderProps) {
 
   return (
     <div className="flex flex-col mb-5">
-      <label className="text-white mb-6 text-md">{label}</label>
+      <label className="text-white text-md mb-3">{label}</label>
       <input
         type="range"
         min="1"
@@ -54,7 +54,7 @@ export function Slider({ chem, label }: SliderProps) {
         onChange={(e) => handleChange(parseInt(e.target.value))}
         className="w-11/12 m-auto range-slider"
       />
-      <div className="flex justify-between mt-6 w-full m-auto">
+      <div className="flex justify-between mt-3 w-full m-auto">
         {renderText}
       </div>
     </div>
