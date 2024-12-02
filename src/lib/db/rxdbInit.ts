@@ -80,7 +80,8 @@ export default async function rxdbInit() {
         },
       },
       checked: { type: "boolean" },
-      link: { type: "string" },
+      description: { type: "string" },
+      infoURL: { type: "string" },
       imageUrl: { type: "string" },
       timestamp: {
         type: "string",
