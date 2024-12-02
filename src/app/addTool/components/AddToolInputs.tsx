@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
 import AddIcon from "./AddToolIcon";
-import AddLink from "./AddToolLink";
+import AddInfoURL from "./AddToolInfoURL";
 import AddName from "./AddToolName";
 import AddTags from "./AddToolTags";
 import { ToolkitFormProvider, useToolkitForm } from "@/context/ToolkitFormContext";
@@ -19,7 +19,7 @@ function SubmitButton() {
       name: formState.name,
       categories: formState.categories,
       checked: false,
-      link: formState.link,
+      infoUrl: formState.infoUrl,
       imageUrl: formState.imageUrl,
       timestamp: new Date().toISOString()
     });
@@ -45,7 +45,7 @@ export default function Inputs() {
         <AddName />
         <AddTags />
         <AddIcon />
-        <AddLink />
+        <AddInfoURL />
         <SubmitButton />
       </div>
     </ToolkitFormProvider>

@@ -81,7 +81,7 @@ export default async function rxdbInit() {
       },
       checked: { type: "boolean" },
       description: { type: "string" },
-      infoURL: { type: "string" },
+      infoUrl: { type: "string" },
       imageUrl: { type: "string" },
       timestamp: {
         type: "string",
@@ -93,7 +93,7 @@ export default async function rxdbInit() {
       "name",
       "categories",
       "checked",
-      "link",
+      "infoUrl",
       "imageUrl",
       "timestamp",
     ],
