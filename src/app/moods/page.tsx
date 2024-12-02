@@ -5,6 +5,7 @@ import { Cube } from "./components/Cube";
 import { SliderBox } from "./components/SliderBox";
 import { NeurochemContext, NeurochemState } from "@/context/NeurochemContext";
 import Button from "@/ui/shared/Button";
+import { addMoodRecord } from "@/models/moodRecordModel";
 
 export default function MoodsPage() {
   const [neuroState, setNeuroState] = useState<NeurochemState>({
@@ -12,6 +13,11 @@ export default function MoodsPage() {
     serotonin: 5,
     adrenaline: 5,
   });
+
+  const submitMood = () => {
+    addMoodRecord(neuroState);
+    console.log(neuroState);
+  };
 
   return (
     <NeurochemContext.Provider value={{ neuroState, setNeuroState }}>
@@ -26,6 +32,7 @@ export default function MoodsPage() {
           <Button
             label="Continue to Toolkit"
             className="bg-twd-primary-purple"
+            onClick={submitMood}
           />
         </div>
       </div>
