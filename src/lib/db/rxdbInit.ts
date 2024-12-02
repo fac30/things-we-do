@@ -12,7 +12,7 @@ let dbInstance: RxDatabase | null = null;
 
 export default async function rxdbInit() {
   if (dbInstance) {
-    console.log("Database already initialized");
+    console.log("Still Tracking Database");
     return dbInstance;
   }
 
@@ -32,5 +32,7 @@ export default async function rxdbInit() {
   console.log(
     "*************************************************** Database initialized ***************************************************"
   );
-  return db;
+  return dbInstance;
 }
+
+

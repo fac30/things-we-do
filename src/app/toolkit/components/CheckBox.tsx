@@ -5,7 +5,7 @@ interface CheckBoxComponentData {
   id: number;
   checked?: boolean;
   name: string;
-  link?: string;
+  infoUrl?: string;
   icon: string;
   category: string[];
 }
@@ -19,35 +19,35 @@ export default function CheckBox() {
         {
           id: 1,
           name: "Listen to my favourite music",
-          link: "https://example.com/music",
+          infoUrl: "https://example.com/music",
           icon: "🎵",
           category: ["Category 2", "Category 3"],
         },
         {
           id: 2,
           name: "Watch TV",
-          link: "https://example.com/tv",
+          infoUrl: "https://example.com/tv",
           icon: "📺",
           category: ["Category 4"],
         },
         {
           id: 3,
           name: "Call a friend",
-          link: "https://example.com/call",
+          infoUrl: "https://example.com/call",
           icon: "📞",
           category: ["Category 1", "Category 5", "Category 6"],
         },
         {
           id: 4,
           name: "Drink water",
-          link: "https://example.com/water",
+          infoUrl: "https://example.com/water",
           icon: "💧",
           category: ["Category 2"],
         },
         {
           id: 5,
           name: "Sing a song",
-          link: "https://example.com/song",
+          infoUrl: "https://example.com/song",
           icon: "🎤",
           category: ["Category 7"],
         },
@@ -82,7 +82,7 @@ export default function CheckBox() {
           <div className="flex items-center justify-between mt-2 pl-8 w-full">
             <span className="text-2xl">{item.icon}</span>
             <a
-              href={item.link}
+              href={item.infoUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="text-twd-text-link hover:underline"

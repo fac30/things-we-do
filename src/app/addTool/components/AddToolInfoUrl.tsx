@@ -1,6 +1,6 @@
 import { useToolkitForm } from "@/context/ToolkitFormContext";
 
-export default function AddLink() {
+export default function AddInfoURL() {
   const { formState, setFormState } = useToolkitForm();
 
   return (
@@ -8,10 +8,10 @@ export default function AddLink() {
       <p className="text-white">Link</p>
       <input 
         type="url"
-        value={formState.link}
+        value={formState.infoUrl}
         onChange={(e) => setFormState(prev => ({
           ...prev,
-          link: e.target.value
+          infoUrl: e.target.value
         }))}
         className="w-full p-2 rounded bg-twd-background text-white border border-gray-700"
       />
