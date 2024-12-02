@@ -29,6 +29,8 @@ export default async function rxdbInit() {
 
   dbInstance = db;
 
-  console.log("Database initialized");
+  console.log(
+    "*************************************************** Database initialized ***************************************************"
+  );
   return db;
 }
