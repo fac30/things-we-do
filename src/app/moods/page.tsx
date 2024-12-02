@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { Cube } from "./components/Cube";
 import { SliderBox } from "./components/SliderBox";
-import { NeurochemContext } from "@/context/NeurochemContext";
+import { NeurochemContext, NeurochemState } from "@/context/NeurochemContext";
 
 export default function MoodsPage() {
-  const [neuroState, setNeuroState] = useState({
+  const [neuroState, setNeuroState] = useState<NeurochemState>({
     dopamine: 5,
     serotonin: 5,
     adrenaline: 5,

@@ -24,6 +24,12 @@ export function Slider({ chem, label }: SliderProps) {
     }));
   };
 
+  const normaliseValue = (value: unknown): number => {
+    if (value instanceof Date) return value.getTime();
+    if (typeof value === "number") return value;
+    return 1;
+  };
+
   const renderText =
     label === "Step 2. How much effort does it take?" ? (
       <>
@@ -44,7 +50,7 @@ export function Slider({ chem, label }: SliderProps) {
         type="range"
         min="1"
         max="10"
-        value={neuroState[chem]}
+        value={normaliseValue(neuroState[chem])}
         onChange={(e) => handleChange(parseInt(e.target.value))}
         className="w-11/12 m-auto range-slider"
       />

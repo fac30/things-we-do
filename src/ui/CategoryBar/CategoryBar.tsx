@@ -1,6 +1,6 @@
-'use client';
-import { useState } from 'react';
-import Button from '../shared/Button';
+"use client";
+import { useState } from "react";
+import Button from "../shared/Button";
 
 const categoryBarClass = `
   whitespace-nowrap flex items-center gap-4 px-4 py-2 
@@ -10,27 +10,26 @@ const categoryBarClass = `
 
 const CategoryBar = () => {
   const categories = [
-    'All',
-    'Category 1',
-    'Category 2',
-    'Category 3',
-    'Category 4',
-    'Category 5',
-    'Category 6',
-    'Category 7',
+    "All",
+    "Category 1",
+    "Category 2",
+    "Category 3",
+    "Category 4",
+    "Category 5",
+    "Category 6",
+    "Category 7",
   ];
 
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const handleCategoryClick = (category: string) => {
-    if (category === 'All') {
-      setSelectedCategories(['All']);
+    if (category === "All") {
+      setSelectedCategories(["All"]);
     } else {
-      setSelectedCategories(
-        (prev) =>
-          prev.includes(category)
-            ? prev.filter((c) => c !== category)
-            : [...prev.filter((c) => c !== 'All'), category]
+      setSelectedCategories((prev) =>
+        prev.includes(category)
+          ? prev.filter((c) => c !== category)
+          : [...prev.filter((c) => c !== "All"), category]
       );
     }
   };
@@ -46,8 +45,8 @@ const CategoryBar = () => {
             label={category}
             className={`${
               isActive
-                ? 'bg-twd-secondary-purple text-white'
-                : 'bg-twd-background text-white'
+                ? "bg-twd-secondary-purple text-white"
+                : "bg-twd-background text-white"
             } hover:bg-twd-secondary-purple`}
             onClick={() => handleCategoryClick(category)}
             ariaPressed={isActive}

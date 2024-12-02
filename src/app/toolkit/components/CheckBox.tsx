@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useState, useEffect } from "react";
 
 interface CheckBoxComponentData {
@@ -72,7 +72,7 @@ export default function CheckBox() {
           <div className="flex items-center space-x-3 w-full">
             <input
               type="checkbox"
-              onChange={() => handleToggle(item.id)} 
+              onChange={() => handleToggle(item.id)}
               className="h-5 w-5 border-white bg-twd-background text-twd-background rounded focus:ring focus:ring-blue-300"
             />
             <p className="text-lg text-white">{item.name}</p>

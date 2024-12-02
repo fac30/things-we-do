@@ -1,12 +1,13 @@
 import { createContext } from "react";
+import { Datum } from "plotly.js";
 
-interface NeurochemState {
-  dopamine: number;
-  serotonin: number;
-  adrenaline: number;
+export interface NeurochemState {
+  dopamine: Datum;
+  serotonin: Datum;
+  adrenaline: Datum;
 }
 
-interface NeurochemContextType {
+export interface NeurochemContextType {
   neuroState: NeurochemState;
   setNeuroState: React.Dispatch<React.SetStateAction<NeurochemState>>;
 }
