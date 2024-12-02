@@ -1,6 +1,8 @@
+"use client";
+
 import { useRouter } from "next/navigation";
-import AddIcon from "./AddToolIcon";
-import AddLink from "./AddToolLink";
+import AddImageUrl from "./AddToolImageUrl";
+import AddInfoUrl from "./AddToolInfoUrl";
 import AddName from "./AddToolName";
 import AddTags from "./AddToolTags";
 import { ToolkitFormProvider, useToolkitForm } from "@/context/ToolkitFormContext";
@@ -12,25 +14,35 @@ function SubmitButton() {
   const { formState } = useToolkitForm();
 
   const handleSubmit = async () => {
-    const db = await rxdbInit();
-    
-    await db.toolkit.insert({
-      id: crypto.randomUUID(),
-      name: formState.name,
-      categories: formState.categories,
-      checked: false,
-      link: formState.link,
-      imageUrl: formState.imageUrl,
-      timestamp: new Date().toISOString()
-    });
+    try {
+      console.log(`Submitting form with state: ${JSON.stringify(formState)}`);
 
-    console.log(`Created ${formState.name} in the database`);
+      console.log(`Calling rxdbInit`);
 
-    router.push("/toolkit");
+      const db = await rxdbInit();
+      
+      console.log(`Inserting into database`);
+      
+      await db.toolkit_items.insert({
+        id: crypto.randomUUID(),
+        name: formState.name,
+        categories: formState.categories,
+        checked: false,
+        infoUrl: formState.infoUrl,
+        imageUrl: formState.imageUrl,
+        timestamp: new Date().toISOString()
+      });
+
+      console.log(`Created ${formState.name} in the database`);
+
+      router.push("/toolkit");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   return (
-    <Button
+    <Button 
       label="Add Tool"
       onClick={handleSubmit}
       className="w-full mt-4 bg-twd-primary-purple hover:bg-twd-secondary-purple"
@@ -44,8 +56,8 @@ export default function Inputs() {
       <div className="space-y-4 p-4">
         <AddName />
         <AddTags />
-        <AddIcon />
-        <AddLink />
+        <AddImageUrl />
+        <AddInfoUrl />
         <SubmitButton />
       </div>
     </ToolkitFormProvider>

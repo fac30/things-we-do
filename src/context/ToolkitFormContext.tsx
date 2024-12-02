@@ -4,7 +4,7 @@ interface ToolkitFormState {
   name: string;
   categories: string[];
   imageUrl: string;
-  link: string;
+  infoUrl: string;
 }
 
 interface ToolkitFormContextType {
@@ -19,7 +19,7 @@ export function ToolkitFormProvider({ children }: { children: React.ReactNode })
     name: "",
     categories: [],
     imageUrl: "",
-    link: "",
+    infoUrl: "",
   });
 
   return (

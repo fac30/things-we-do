@@ -16,7 +16,8 @@
       }
     },
     "checked": { "type": "boolean" },
-    "link": { "type": "string" },
+    "description": { "type": "string" },
+    "infoUrl": { "type": "string" },
     "imageUrl": { "type": "string" },
     "timestamp": {
       "type": "string",
@@ -28,8 +29,6 @@
     "name",
     "categories",
     "checked",
-    "link",
-    "imageUrl",
     "timestamp"
   ]
 }
