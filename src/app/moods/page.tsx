@@ -16,7 +16,7 @@ export default function MoodsPage() {
     adrenaline: 5,
   });
 
-  const submitMood = () => {
+  const submitMood = (path: string) => {
     const { dopamine, serotonin, adrenaline } = neuroState;
 
     const submitObj = {
@@ -31,7 +31,7 @@ export default function MoodsPage() {
 
     addToDb("mood_records", submitObj);
 
-    router.push("/toolkit"); // Navigate to the toolkit page
+    router.push(`/${path}`); // Navigate to the toolkit page
   };
 
   return (
@@ -43,11 +43,12 @@ export default function MoodsPage() {
           <Button
             label="Save and Exit"
             className="border-white border-2 border-solid"
+            onClick={() => submitMood("")}
           />
           <Button
             label="Continue to Toolkit"
             className="bg-twd-primary-purple"
-            onClick={submitMood}
+            onClick={() => submitMood("toolkit")}
           />
         </div>
       </div>
