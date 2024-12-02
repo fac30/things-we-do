@@ -10,6 +10,14 @@ jest.mock("@/app/moods/components/SliderBox", () => ({
   SliderBox: () => <div data-testid="mock-slider-box">SliderBox Component</div>,
 }));
 
+jest.mock("next/navigation", () => ({
+  useRouter: jest.fn(() => ({
+    push: jest.fn(),
+    back: jest.fn(),
+    forward: jest.fn(),
+  })),
+}));
+
 describe("MoodsPage", () => {
   it("renders without crashing", () => {
     render(<MoodsPage />);
