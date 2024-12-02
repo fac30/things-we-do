@@ -3,6 +3,18 @@
 import { useContext } from "react";
 import { NeurochemContext } from "@/context/NeurochemContext";
 import PlotlyChart from "@/ui/shared/PlotlyChart";
+import { PlotData } from "plotly.js";
+
+interface ExtendedMesh3d extends PlotData {
+  alphahull?: number;
+  flatshading?: boolean;
+  color?: string;
+  lighting?: {
+    diffuse?: number;
+    specular?: number;
+    roughness?: number;
+  };
+}
 
 export function Cube() {
   const context = useContext(NeurochemContext);
@@ -13,10 +25,136 @@ export function Cube() {
 
   const { neuroState } = context;
 
-  /*  const renderValue = (value: Datum): string | number =>
-    value !== null && value instanceof Date
-      ? value.toISOString()
-      : value ?? "N/A"; */
+  const cubeMeshes: Partial<ExtendedMesh3d>[] = [
+    {
+      // Bottom-front-left
+      type: "mesh3d",
+      x: [0, 5, 5, 0, 0, 5, 5, 0],
+      y: [0, 0, 5, 5, 0, 0, 5, 5],
+      z: [0, 0, 0, 0, 5, 5, 5, 5],
+      alphahull: 1,
+      flatshading: true,
+      opacity: 0.5,
+      color: "#4488EE",
+      lighting: {
+        diffuse: 0.1,
+        specular: 2.0,
+        roughness: 0.5,
+      },
+    },
+    {
+      // Bottom-front-right
+      type: "mesh3d",
+      x: [5, 10, 10, 5, 5, 10, 10, 5],
+      y: [0, 0, 5, 5, 0, 0, 5, 5],
+      z: [0, 0, 0, 0, 5, 5, 5, 5],
+      alphahull: 1,
+      flatshading: true,
+      opacity: 0.5,
+      color: "#99CC11",
+      lighting: {
+        diffuse: 0.1,
+        specular: 2.0,
+        roughness: 0.5,
+      },
+    },
+    {
+      // Bottom-back-left
+      type: "mesh3d",
+      x: [0, 5, 5, 0, 0, 5, 5, 0],
+      y: [5, 5, 10, 10, 5, 5, 10, 10],
+      z: [0, 0, 0, 0, 5, 5, 5, 5],
+      alphahull: 1,
+      flatshading: true,
+      opacity: 0.5,
+      color: "#4488EE",
+      lighting: {
+        diffuse: 0.1,
+        specular: 2.0,
+        roughness: 0.5,
+      },
+    },
+    {
+      // Bottom-back-right
+      type: "mesh3d",
+      x: [5, 10, 10, 5, 5, 10, 10, 5],
+      y: [5, 5, 10, 10, 5, 5, 10, 10],
+      z: [0, 0, 0, 0, 5, 5, 5, 5],
+      alphahull: 1,
+      flatshading: true,
+      opacity: 0.5,
+      color: "#99CC11",
+      lighting: {
+        diffuse: 0.1,
+        specular: 2.0,
+        roughness: 0.5,
+      },
+    },
+    {
+      // Top-front-left
+      type: "mesh3d",
+      x: [0, 5, 5, 0, 0, 5, 5, 0],
+      y: [0, 0, 5, 5, 0, 0, 5, 5],
+      z: [5, 5, 5, 5, 10, 10, 10, 10],
+      alphahull: 1,
+      flatshading: true,
+      opacity: 0.5,
+      color: "#CC1111",
+      lighting: {
+        diffuse: 0.1,
+        specular: 2.0,
+        roughness: 0.5,
+      },
+    },
+    {
+      // Top-front-right
+      type: "mesh3d",
+      x: [5, 10, 10, 5, 5, 10, 10, 5],
+      y: [0, 0, 5, 5, 0, 0, 5, 5],
+      z: [5, 5, 5, 5, 10, 10, 10, 10],
+      alphahull: 1,
+      flatshading: true,
+      opacity: 0.5,
+      color: "#FFAA22",
+      lighting: {
+        diffuse: 0.1,
+        specular: 2.0,
+        roughness: 0.5,
+      },
+    },
+    {
+      // Top-back-left
+      type: "mesh3d",
+      x: [0, 5, 5, 0, 0, 5, 5, 0],
+      y: [5, 5, 10, 10, 5, 5, 10, 10],
+      z: [5, 5, 5, 5, 10, 10, 10, 10],
+      alphahull: 1,
+      flatshading: true,
+      opacity: 0.5,
+      color: "#CC1111",
+      lighting: {
+        diffuse: 0.1,
+        specular: 2.0,
+        roughness: 0.5,
+      },
+    },
+    {
+      // Top-back-right
+      type: "mesh3d",
+      x: [5, 10, 10, 5, 5, 10, 10, 5],
+      y: [5, 5, 10, 10, 5, 5, 10, 10],
+      z: [5, 5, 5, 5, 10, 10, 10, 10],
+      alphahull: 1,
+      flatshading: true,
+      opacity: 0.5,
+      color: "#FFAA22",
+      lighting: {
+        diffuse: 0.1,
+        specular: 2.0,
+        roughness: 0.5,
+      },
+    },
+  ];
 
   return (
     <div className="flex justify-center">
@@ -29,7 +167,7 @@ export function Cube() {
             type: "scatter3d",
             mode: "markers",
             marker: {
-              size: 5,
+              size: 12,
               color: "#893FFC",
               symbol: "circle",
               line: {
@@ -38,44 +176,44 @@ export function Cube() {
               },
             },
           },
+          ...cubeMeshes,
         ]}
         layout={{
           paper_bgcolor: "#1B192E",
           hidesources: true,
-          width: 600,
-          height: 400,
+          width: 200,
+          height: 200,
+          margin: {
+            l: 0,
+            r: 0,
+            t: 20,
+            b: 0,
+            pad: 0,
+          },
           scene: {
             aspectmode: "cube",
             dragmode: false,
+            camera: {
+              eye: {
+                x: 0,
+                y: -1.7,
+                z: 0,
+              },
+            },
             xaxis: {
               range: [0, 10],
               showticklabels: false,
-              title: "",
-              zeroline: true,
-              gridcolor: "lightgray",
               nticks: 2,
-              backgroundcolor: "#FFD93D",
-              showbackground: true,
             },
             yaxis: {
               range: [0, 10],
               showticklabels: false,
-              title: "",
-              zeroline: true,
-              gridcolor: "lightgray",
               nticks: 2,
-              backgroundcolor: "#FF6B6B",
-              showbackground: true,
             },
             zaxis: {
               range: [0, 10],
               showticklabels: false,
-              title: "",
-              zeroline: true,
-              gridcolor: "lightgray",
               nticks: 2,
-              backgroundcolor: "#6BCB77",
-              showbackground: true,
             },
           },
         }}
@@ -85,18 +223,6 @@ export function Cube() {
           staticPlot: true,
         }}
       />
-      {/* <div className="p-4 border rounded">
-        <h3 className="text-white">Coordinates:</h3>
-        <p className="text-white">
-          x (dopamine): {renderValue(neuroState.dopamine)}
-        </p>
-        <p className="text-white">
-          y (serotonin): {renderValue(neuroState.serotonin)}
-        </p>
-        <p className="text-white">
-          z (adrenaline): {renderValue(neuroState.adrenaline)}
-        </p>
-      </div> */}
     </div>
   );
 }
