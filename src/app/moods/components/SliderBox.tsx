@@ -5,7 +5,7 @@ import { Slider } from "./Slider";
 export function SliderBox() {
   return (
     <div className="flex flex-col gap-4 w-10/12 m-auto">
-      <h2 className="text-xl text-center mb-6 font-semiboldbold">
+      <h2 className="text-xl text-center mb-4 font-semiboldbold">
         How does this task feel right now?
       </h2>
       <Slider chem="dopamine" label="Step 1. How urgent does it feel?" />
