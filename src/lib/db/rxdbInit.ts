@@ -2,6 +2,9 @@ import { addRxPlugin } from "rxdb";
 import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
 import { createRxDatabase, RxDatabase } from "rxdb";
+import toolkitItemSchema from "./schemas/toolkitItemSchema.json";
+import moodRecordSchema from "./schemas/moodRecordSchema.json";
+import categorySchema from "./schemas/categorySchema.json";
 
 addRxPlugin(RxDBDevModePlugin);
 
@@ -18,90 +21,10 @@ export default async function rxdbInit() {
     storage: getRxStorageDexie(),
   });
 
-  const categorySchema = {
-    version: 0,
-    primaryKey: "id",
-    type: "object",
-    properties: {
-      id: {
-        type: "string",
-        maxLength: 100,
-      },
-      name: { type: "string" },
-      timestamp: {
-        type: "string",
-        format: "date-time",
-      },
-    },
-    required: ["id", "name", "timestamp"],
-  };
-
-  const moodSchema = {
-    version: 0,
-    primaryKey: "id",
-    type: "object",
-    properties: {
-      id: {
-        type: "string",
-        maxLength: 100,
-      },
-      neurotransmitters: {
-        type: "object",
-        properties: {
-          seratonin: { type: "number" },
-          dopamine: { type: "number" },
-          adrenaline: { type: "number" },
-        },
-      },
-      moodName: { type: "string" },
-      timestamp: {
-        type: "string",
-        format: "date-time",
-      },
-    },
-    required: ["id", "neurotransmitters", "moodName", "timestamp"],
-  };
-
-  const toolkitSchema = {
-    version: 0,
-    primaryKey: "id",
-    type: "object",
-    properties: {
-      id: {
-        type: "string",
-        maxLength: 100,
-      },
-      name: { type: "string" },
-      categories: {
-        type: "array",
-        items: {
-          type: "string",
-          ref: "categories",
-        },
-      },
-      checked: { type: "boolean" },
-      link: { type: "string" },
-      imageUrl: { type: "string" },
-      timestamp: {
-        type: "string",
-        format: "date-time",
-      },
-    },
-    required: [
-      "id",
-      "name",
-      "categories",
-      "checked",
-      "link",
-      "imageUrl",
-      "timestamp",
-    ],
-  };
-
   await db.addCollections({
     categories: { schema: categorySchema },
-    moods: { schema: moodSchema },
-    toolkit: { schema: toolkitSchema },
+    mood_records: { schema: moodRecordSchema },
+    toolkit_items: { schema: toolkitItemSchema },
   });
 
   dbInstance = db;
