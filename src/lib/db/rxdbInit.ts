@@ -9,7 +9,7 @@ let dbInstance: RxDatabase | null = null;
 
 export default async function rxdbInit() {
   if (dbInstance) {
-    console.log("Database already initialized");
+    console.log("Still Tracking Database");
     return dbInstance;
   }
 
@@ -93,8 +93,6 @@ export default async function rxdbInit() {
       "name",
       "categories",
       "checked",
-      "infoUrl",
-      "imageUrl",
       "timestamp",
     ],
   };
@@ -108,5 +106,7 @@ export default async function rxdbInit() {
   dbInstance = db;
 
   console.log("Database initialized");
-  return db;
+  return dbInstance;
 }
+
+

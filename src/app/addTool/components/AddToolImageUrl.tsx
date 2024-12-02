@@ -1,7 +1,7 @@
 import { useToolkitForm } from "@/context/ToolkitFormContext";
 import * as Icons from "@heroicons/react/24/outline";
 
-export default function AddIcon() {
+export default function AddImageUrl() {
   const { setFormState } = useToolkitForm();
   
   const iconList = Object.entries(Icons).map(([name]) => name);
