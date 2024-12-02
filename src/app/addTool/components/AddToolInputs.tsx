@@ -23,7 +23,7 @@ function SubmitButton() {
       
       console.log(`Inserting into database`);
       
-      await db.toolkit.insert({
+      await db.toolkit_items.insert({
         id: crypto.randomUUID(),
         name: formState.name,
         categories: formState.categories,
