@@ -33,7 +33,8 @@ export default async function rxdbInit() {
     "*************************************************** Database initialized ***************************************************"
   );
 
-  console.log("Seeding Database");
+  console.log("Checking if database needs seeding...");
+      
   const toolkitSeed = await db.toolkit_items.bulkInsert([
   {
     id: crypto.randomUUID(),
@@ -88,12 +89,10 @@ export default async function rxdbInit() {
     infoUrl: "https://example.com/call",
     imageUrl: "https://daily.jstor.org/wp-content/uploads/2023/01/good_times_with_bad_music_1050x700.jpg",
     timestamp: new Date().toISOString()
-  }
-]);
-  console.log("Seeding Finished");
-  console.log(toolkitSeed);
+    }
+  ]);
+    console.log("Seeding Finished:", toolkitSeed);
 
-  return dbInstance;
+return dbInstance;
 }
-
 

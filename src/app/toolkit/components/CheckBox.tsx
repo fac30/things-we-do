@@ -94,24 +94,37 @@ export default function CheckBox() {
   // }, []); // Removed `data` from dependency array; added eslint-disable-next-line.
 
   
+  const isEmpty = [data.length === 0];
 
   useEffect(() => {
-    console.log('usereffect');
+    console.log('useeffect');
     const fetchData = async () => {
       try {
+        console.log("Initializing database...");
         const db = await rxdbInit();
-        const itemsCollection = await db.toolkit_items;
-        console.log(itemsCollection);
+        console.log("Database initialized:", db);
+        console.log("Collections available:", db.collections);
+
+        const itemsCollection = db.toolkit_items;
+        if (!itemsCollection) {
+          throw new Error("toolkit_items collection is not available in the database.");
+        }
+        console.log("toolkit_items collection:", itemsCollection);
+
         const items = await itemsCollection.find().exec();
-        setData(items);
-        console.log(items);
+        console.log("Number of items in collection:", items.length);
+        console.log("Items in collection:", items.map(doc => doc.toJSON()));
+        console.log("Fetched items:", items);
+
+        // Convert RxDocuments to JSON before setting the state
+        setData(items.map((doc) => doc.toJSON())); 
 
       } catch (error) {
         console.error("Error fetching tasks from database:", error);
       }
     };
     fetchData();
-  }, [data.length === 0]);
+  }, [isEmpty]);
 
   // Toggle checkbox state
   const handleToggle = (id: string) => {
