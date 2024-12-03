@@ -32,6 +32,67 @@ export default async function rxdbInit() {
   console.log(
     "*************************************************** Database initialized ***************************************************"
   );
+
+  console.log("Seeding Database");
+  const toolkitSeed = await db.toolkit_items.bulkInsert([
+  {
+    id: crypto.randomUUID(),
+    name: "Listen to my favourite music",
+    category: ["Replace", "Barrier"],
+    checked: false,
+    infoUrl: "https://google.com/music",
+    imageUrl: "https://daily.jstor.org/wp-content/uploads/2023/01/good_times_with_bad_music_1050x700.jpg",
+    timestamp: new Date().toISOString()
+  },
+  {
+    id: crypto.randomUUID(),
+    name: "Watch TV",
+    category: ["Distract"],
+    checked: false,
+    infoUrl: "https://google.com/tv",
+    imageUrl: "https://daily.jstor.org/wp-content/uploads/2023/01/good_times_with_bad_music_1050x700.jpg",
+    timestamp: new Date().toISOString()
+  },
+  {
+    id: crypto.randomUUID(),
+    name: "Call a friend",
+    category: ["Distract", "Change status"],
+    checked: false,
+    infoUrl: "https://example.com/call",
+    imageUrl: "https://daily.jstor.org/wp-content/uploads/2023/01/good_times_with_bad_music_1050x700.jpg",
+    timestamp: new Date().toISOString()
+  },
+  {
+    id: crypto.randomUUID(),
+    name: "See a friend",
+    category: ["Distract", "Change status"],
+    checked: false,
+    infoUrl: "https://example.com/call",
+    imageUrl: "https://daily.jstor.org/wp-content/uploads/2023/01/good_times_with_bad_music_1050x700.jpg",
+    timestamp: new Date().toISOString()
+  },
+  {
+    id: crypto.randomUUID(),
+    name: "Write a book",
+    category: ["Distract", "Change status"],
+    checked: false,
+    infoUrl: "https://example.com/call",
+    imageUrl: "https://daily.jstor.org/wp-content/uploads/2023/01/good_times_with_bad_music_1050x700.jpg",
+    timestamp: new Date().toISOString()
+  },
+  {
+    id: crypto.randomUUID(),
+    name: "Sing a song",
+    category: ["Distract", "Change status"],
+    checked: false,
+    infoUrl: "https://example.com/call",
+    imageUrl: "https://daily.jstor.org/wp-content/uploads/2023/01/good_times_with_bad_music_1050x700.jpg",
+    timestamp: new Date().toISOString()
+  }
+]);
+  console.log("Seeding Finished");
+  console.log(toolkitSeed);
+
   return dbInstance;
 }
 
