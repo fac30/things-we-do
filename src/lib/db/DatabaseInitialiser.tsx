@@ -8,9 +8,11 @@ export default function DatabaseInitializer() {
     const init = async () => {
       try {
         await rxdbInit();
-        console.log("Database initialized successfully!");
       } catch (error) {
-        console.error("Database initialization error:", error);
+        console.error(
+          "Database initialization error in DatabaseInitialiser:",
+          error
+        );
       }
     };
 
