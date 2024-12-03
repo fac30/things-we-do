@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import Button from "../shared/Button";
+import Button from "../../../ui/shared/Button";
 
 const categoryBarClass = `
   whitespace-nowrap flex items-center gap-4 px-4 py-2 
@@ -11,10 +11,10 @@ const categoryBarClass = `
 const CategoryBar = () => {
   const categories = [
     "All",
-    "Category 1",
-    "Category 2",
-    "Category 3",
-    "Category 4",
+    "Replace",
+    "Distract",
+    "Barrier",
+    "Change state",
     "Category 5",
     "Category 6",
     "Category 7",
