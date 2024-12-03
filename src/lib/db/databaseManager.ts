@@ -30,10 +30,10 @@ class DatabaseManager {
     return this.dbInstance;
   }
 
-  async getFromDb() {
+  async getFromDb(collection: string) {
     const db = await this.initializeDatabase();
     if (db) {
-      const myCollection = await db.mood_records.find().exec();
+      const myCollection = await db[collection].find().exec();
       console.log(myCollection);
       return myCollection;
     } else {

@@ -5,13 +5,14 @@ import AddDescription from "./AddToolDescription";
 import AddImageUrl from "./AddToolImageUrl";
 import AddInfoUrl from "./AddToolInfoUrl";
 import AddName from "./AddToolName";
-import AddTags from "./AddToolTags";
+// import AddTags from "./AddToolTags";
 import {
   ToolkitFormProvider,
   useToolkitForm,
 } from "@/context/ToolkitFormContext";
-import rxdbInit from "@/lib/db/rxdbInit";
+
 import Button from "@/ui/shared/Button";
+import DatabaseManager from "@/lib/db/databaseManager";
 
 function SubmitButton() {
   const router = useRouter();
@@ -21,13 +22,9 @@ function SubmitButton() {
     try {
       console.log(`Submitting form with state: ${JSON.stringify(formState)}`);
 
-      console.log(`Calling rxdbInit`);
-
-      const db = await rxdbInit();
-
       console.log(`Inserting into database`);
 
-      await db.toolkit_items.insert({
+      DatabaseManager.addToDb("toolkit_items", {
         id: crypto.randomUUID(),
         name: formState.name,
         categories: formState.categories,
@@ -60,7 +57,7 @@ export default function Inputs() {
     <ToolkitFormProvider>
       <div className="space-y-4 p-4">
         <AddName />
-        <AddTags />
+        {/* <AddTags /> */}
         <AddDescription />
         <AddImageUrl />
         <AddInfoUrl />
