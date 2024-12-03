@@ -14,7 +14,7 @@ function ImageComponent({
   className?: string;
 }) {
   return (
-    <div className={`relative ${className}`}>
+    <div className={`${className}`}>
       <Image
         src={src}
         alt={alt}
