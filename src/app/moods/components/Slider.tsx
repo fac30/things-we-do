@@ -45,16 +45,19 @@ export function Slider({ chem, label }: SliderProps) {
 
   return (
     <div className="flex flex-col mb-2">
-      <label className="text-white text-md mb-3">{label}</label>
+      <label htmlFor={chem} className="text-white text-md mb-4">
+        {label}
+      </label>
       <input
+        id={chem}
         type="range"
         min="1"
         max="10"
         value={normaliseValue(neuroState[chem])}
         onChange={(e) => handleChange(parseInt(e.target.value))}
-        className="w-11/12 m-auto range-slider"
+        className="w-full m-auto range-slider"
       />
-      <div className="flex justify-between mt-3 w-full m-auto">
+      <div className="flex justify-between mt-4 w-full m-auto">
         {renderText}
       </div>
     </div>
