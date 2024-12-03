@@ -1,6 +1,6 @@
 "use client";
 
-import DatabaseManager from "../../../lib/db/DatabaseManager";
+import DatabaseManager from "@/lib/db/DatabaseManager";
 import { useEffect, useState } from "react";
 
 interface Insight {
