@@ -12,7 +12,7 @@ import {
 } from "@/context/ToolkitFormContext";
 
 import Button from "@/ui/shared/Button";
-import DatabaseManager from "@/lib/db/databaseManager";
+import DatabaseManager from "@/lib/db/DatabaseManager";
 
 function SubmitButton() {
   const router = useRouter();

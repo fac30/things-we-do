@@ -5,7 +5,7 @@ import { Cube } from "./components/Cube";
 import { SliderBox } from "./components/SliderBox";
 import { NeurochemContext, NeurochemState } from "@/context/NeurochemContext";
 import Button from "@/ui/shared/Button";
-import DatabaseManager from "../../lib/db/rxdbInit";
+// import databaseManager from "@/lib/db/DatabaseManager";
 import { useRouter } from "next/navigation";
 
 export default function MoodsPage() {
