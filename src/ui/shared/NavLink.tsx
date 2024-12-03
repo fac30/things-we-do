@@ -10,11 +10,7 @@ interface NavLinkProps {
   destination: string;
 }
 
-export default function NavLink({
-  title,
-  Icon,
-  destination,
-}: NavLinkProps) {
+export default function NavLink({ title, Icon, destination }: NavLinkProps) {
   const pathname = usePathname();
   const isActive = pathname === destination;
 
@@ -25,8 +21,8 @@ export default function NavLink({
         "bg-purple-900": isActive,
       })}
     >
-      <p className="text-white">{title}</p>
       {Icon && <Icon className="h-6 w-6 text-white" />}
+      <p className="text-xs mt-1">{title}</p>
     </Link>
   );
 }
