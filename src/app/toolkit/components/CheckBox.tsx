@@ -30,93 +30,19 @@ interface CheckBoxComponentData {
 
 export default function CheckBox() {
   const [data, setData] = useState<CheckBoxComponentData[]>([]);
-
-  // Fetch dummy data
-  // useEffect(() => {
-  //   console.log("useEffect triggered");
-  //   const fetchData = async () => {
-  //     console.log("Fetching data...");
-  //     const dummyData: CheckBoxComponentData[] = [
-  //       {
-  //         id: 1,
-  //         name: "Listen to my favourite music",
-  //         category: ["Replace", "Barrier"],
-  //         checked: false,
-  //         infoUrl: "https://google.com/music",
-  //         imageUrl: "https://daily.jstor.org/wp-content/uploads/2023/01/good_times_with_bad_music_1050x700.jpg",
-  //       },
-  //       {
-  //         id: 2,
-  //         name: "Watch TV",
-  //         category: ["Distract"],
-  //         checked: false,
-  //         infoUrl: "https://google.com/tv",
-  //         imageUrl: "https://daily.jstor.org/wp-content/uploads/2023/01/good_times_with_bad_music_1050x700.jpg",
-  //       },
-  //       {
-  //         id: 3,
-  //         name: "Call a friend",
-  //         category: ["Distract", "Change status"],
-  //         checked: false,
-  //         infoUrl: "https://example.com/call",
-  //         imageUrl: "https://daily.jstor.org/wp-content/uploads/2023/01/good_times_with_bad_music_1050x700.jpg",
-  //       },
-  //       {
-  //         id: 4,
-  //         name: "See a friend",
-  //         category: ["Distract", "Change status"],
-  //         checked: false,
-  //         infoUrl: "https://example.com/call",
-  //         imageUrl: "https://daily.jstor.org/wp-content/uploads/2023/01/good_times_with_bad_music_1050x700.jpg",
-  //       },
-  //       {
-  //         id: 6,
-  //         name: "Write a book",
-  //         category: ["Distract", "Change status"],
-  //         checked: false,
-  //         infoUrl: "https://example.com/call",
-  //         imageUrl: "https://daily.jstor.org/wp-content/uploads/2023/01/good_times_with_bad_music_1050x700.jpg",
-  //       },
-  //       {
-  //         id: 7,
-  //         name: "Sing a song",
-  //         category: ["Distract", "Change status"],
-  //         checked: false,
-  //         infoUrl: "https://example.com/call",
-  //         imageUrl: "https://daily.jstor.org/wp-content/uploads/2023/01/good_times_with_bad_music_1050x700.jpg",
-  //       },
-  //     ];
-  //     setData(dummyData);
-  //   };
-  //   fetchData();
-  //   console.log(data);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []); // Removed `data` from dependency array; added eslint-disable-next-line.
-
-  
-  const isEmpty = [data.length === 0];
+  //const isEmpty = [data.length === 0];
 
   useEffect(() => {
     console.log('useeffect');
     const fetchData = async () => {
       try {
-        console.log("Initializing database...");
+
         const db = await rxdbInit();
-        console.log("Database initialized:", db);
-        console.log("Collections available:", db.collections);
 
         const itemsCollection = db.toolkit_items;
-        if (!itemsCollection) {
-          throw new Error("toolkit_items collection is not available in the database.");
-        }
-        console.log("toolkit_items collection:", itemsCollection);
 
         const items = await itemsCollection.find().exec();
-        console.log("Number of items in collection:", items.length);
-        console.log("Items in collection:", items.map(doc => doc.toJSON()));
-        console.log("Fetched items:", items);
 
-        // Convert RxDocuments to JSON before setting the state
         setData(items.map((doc) => doc.toJSON())); 
 
       } catch (error) {
@@ -124,7 +50,7 @@ export default function CheckBox() {
       }
     };
     fetchData();
-  }, [isEmpty]);
+  }, []);
 
   // Toggle checkbox state
   const handleToggle = (id: string) => {
