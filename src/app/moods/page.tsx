@@ -7,6 +7,8 @@ import { NeurochemContext, NeurochemState } from "@/context/NeurochemContext";
 import Button from "@/ui/shared/Button";
 import { addToDb } from "@/models/addToDb";
 import { useRouter } from "next/navigation";
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 export default function MoodsPage() {
   const router = useRouter();
@@ -37,6 +39,9 @@ export default function MoodsPage() {
   return (
     <NeurochemContext.Provider value={{ neuroState, setNeuroState }}>
       <div className="flex flex-col gap-4">
+        <Link href={`/moods/learn-more`}>
+          <InformationCircleIcon className="h-8 w-8 absolute top-5 right-5 z-50" />
+        </Link>
         <Cube />
         <SliderBox />
         <div className="flex justify-between w-10/12 m-auto">
