@@ -1,6 +1,6 @@
 "use client";
 
-import DatabaseManager from "../../../lib/db/rxdbInit";
+import DatabaseManager from "@/lib/db/databaseManager";
 import { useEffect, useState } from "react";
 
 interface Insight {
@@ -19,10 +19,8 @@ export default function InsightsDisplay() {
   const [insights, setInsights] = useState<Insight[] | null>(null);
 
   const getInsights = async () => {
-    const myInsights = await DatabaseManager.getFromDb();
-    const secondInsights = await DatabaseManager.getFromDb();
+    const myInsights = await DatabaseManager.getFromDb("mood_records");
     console.log(myInsights);
-    console.log(secondInsights);
     setInsights(myInsights);
   };
 
