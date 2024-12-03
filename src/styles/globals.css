@@ -21,13 +21,13 @@ header {
   }
 
   .range-slider::-webkit-slider-thumb {
-    @apply h-10 w-10 bg-purple-500 rounded-full shadow-lg border-solid border-2 border-white; /* Purple thumb */
+    @apply h-8 w-8 bg-purple-500 rounded-full shadow-lg border-solid border-2 border-white; /* Purple thumb */
     -webkit-appearance: none; /* Remove default appearance */
     appearance: none;
   }
 
   .range-slider::-moz-range-thumb {
-    @apply h-10 w-10 bg-purple-500 rounded-full shadow-lg; /* Purple thumb for Firefox */
+    @apply h-8 w-8 bg-purple-500 rounded-full shadow-lg; /* Purple thumb for Firefox */
   }
 
   .range-slider:focus::-webkit-slider-runnable-track {
