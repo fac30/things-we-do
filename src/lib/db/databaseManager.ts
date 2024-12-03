@@ -12,7 +12,7 @@ addRxPlugin(RxDBDevModePlugin);
 class DatabaseManager {
   dbInstance: RxDatabase | null = null;
 
-  async initializeDatabase() {
+  async initialiseDatabase() {
     if (!this.dbInstance) {
       this.dbInstance = await createRxDatabase({
         name: "database",
@@ -25,29 +25,29 @@ class DatabaseManager {
         toolkit_items: { schema: toolkitItemSchema },
       });
 
-      console.log("Database initialized");
+      console.log("Database initialised");
     }
     return this.dbInstance;
   }
 
   async getFromDb(collection: string) {
-    const db = await this.initializeDatabase();
+    const db = await this.initialiseDatabase();
     if (db) {
       const myCollection = await db[collection].find().exec();
       console.log(myCollection);
       return myCollection;
     } else {
-      console.log("Database initialization failed");
+      console.log("Database initialisation failed");
       return null;
     }
   }
 
   async addToDb(collectionName: string, document: object) {
     try {
-      const db = await this.initializeDatabase();
+      const db = await this.initialiseDatabase();
 
       if (!db) {
-        console.error("Database initialization failed");
+        console.error("Database initialisation failed");
         return;
       }
 
@@ -76,4 +76,5 @@ class DatabaseManager {
   }
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default new DatabaseManager();
