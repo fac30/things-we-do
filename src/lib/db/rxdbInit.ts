@@ -8,7 +8,7 @@ import categorySchema from "./schemas/categorySchema.json";
 
 addRxPlugin(RxDBDevModePlugin);
 
-let dbInstance: RxDatabase | null = null;
+export let dbInstance: RxDatabase | null = null;
 
 export default async function rxdbInit() {
   if (dbInstance) {
