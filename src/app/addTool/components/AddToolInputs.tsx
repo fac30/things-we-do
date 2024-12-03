@@ -6,7 +6,10 @@ import AddImageUrl from "./AddToolImageUrl";
 import AddInfoUrl from "./AddToolInfoUrl";
 import AddName from "./AddToolName";
 import AddTags from "./AddToolTags";
-import { ToolkitFormProvider, useToolkitForm } from "@/context/ToolkitFormContext";
+import {
+  ToolkitFormProvider,
+  useToolkitForm,
+} from "@/context/ToolkitFormContext";
 import rxdbInit from "@/lib/db/rxdbInit";
 import Button from "@/ui/shared/Button";
 
@@ -21,9 +24,9 @@ function SubmitButton() {
       console.log(`Calling rxdbInit`);
 
       const db = await rxdbInit();
-      
+
       console.log(`Inserting into database`);
-      
+
       await db.toolkit_items.insert({
         id: crypto.randomUUID(),
         name: formState.name,
@@ -32,7 +35,7 @@ function SubmitButton() {
         checked: false,
         infoUrl: formState.infoUrl,
         imageUrl: formState.imageUrl,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
 
       console.log(`Created ${formState.name} in the database`);
@@ -44,7 +47,7 @@ function SubmitButton() {
   };
 
   return (
-    <Button 
+    <Button
       label="Add Tool"
       onClick={handleSubmit}
       className="w-full mt-4 bg-twd-primary-purple hover:bg-twd-secondary-purple"

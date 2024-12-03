@@ -1,14 +1,16 @@
 "use client";
 
-import { getFromDb } from "@/models/getFromDb";
+import DatabaseManager from "../../../lib/db/rxdbInit";
 import { useEffect, useState } from "react";
 
 export default function InsightsDisplay() {
   const [insights, setInsights] = useState([]);
 
   const getInsights = async () => {
-    const myInsights = await getFromDb();
+    const myInsights = await DatabaseManager.getFromDb();
+    const secondInsights = await DatabaseManager.getFromDb();
     console.log(myInsights);
+    console.log(secondInsights);
     setInsights(myInsights);
   };
 
@@ -27,7 +29,7 @@ export default function InsightsDisplay() {
           </div>
         ))
       ) : (
-        <h1>No insights available</h1> // Fallback message when no insights are available
+        <h1>No insights available</h1>
       )}
     </>
   );

@@ -5,7 +5,7 @@ import { Cube } from "./components/Cube";
 import { SliderBox } from "./components/SliderBox";
 import { NeurochemContext, NeurochemState } from "@/context/NeurochemContext";
 import Button from "@/ui/shared/Button";
-import { addToDb } from "@/models/addToDb";
+import DatabaseManager from "../../lib/db/rxdbInit";
 import { useRouter } from "next/navigation";
 
 export default function MoodsPage() {
@@ -29,7 +29,7 @@ export default function MoodsPage() {
       timestamp: new Date().toISOString(),
     };
 
-    addToDb("mood_records", submitObj);
+    DatabaseManager.addToDb("mood_records", submitObj);
 
     router.push(`/${path}`);
   };

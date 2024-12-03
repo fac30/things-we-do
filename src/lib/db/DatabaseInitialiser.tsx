@@ -1,23 +1,22 @@
-"use client";
+// "use client";
 
-import { useEffect } from "react";
-import rxdbInit from "./rxdbInit";
+// import { useEffect } from "react";
+// import DatabaseManager from "../db/rxdbInit";
+// export default function DatabaseInitializer() {
+//   useEffect(() => {
+//     const init = async () => {
+//       try {
+//         await DatabaseManager.initializeDatabase();
+//       } catch (error) {
+//         console.error(
+//           "Database initialization error in DatabaseInitialiser:",
+//           error
+//         );
+//       }
+//     };
 
-export default function DatabaseInitializer() {
-  useEffect(() => {
-    const init = async () => {
-      try {
-        await rxdbInit();
-      } catch (error) {
-        console.error(
-          "Database initialization error in DatabaseInitialiser:",
-          error
-        );
-      }
-    };
+//     init();
+//   }, []);
 
-    init();
-  }, []);
-
-  return null;
-}
+//   return null;
+// }

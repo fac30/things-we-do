@@ -2,7 +2,7 @@ import "../styles/globals.css";
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import Navbar from "@/ui/layout/Navbar/Navbar";
-import DatabaseInitializer from "@/lib/db/DatabaseInitialiser";
+// import DatabaseInitializer from "@/lib/db/DatabaseInitialiser";
 
 const APP_NAME = "Things We Do";
 const APP_DEFAULT_TITLE = "Things We Do";
@@ -53,7 +53,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" dir="ltr">
       <head />
       <body>
-        <DatabaseInitializer />
+        {/* <DatabaseInitializer /> */}
         <main className="pb-24">{children}</main>
         <Navbar />
       </body>
