@@ -13,7 +13,7 @@ import { validateUrl } from "@/lib/utils/validateUrl";
 
 function SubmitButton() {
   const router = useRouter();
-  const { formState, setFormState } = useToolkitForm();
+  const { formState, /* setFormState */ } = useToolkitForm();
 
   const handleSubmit = async () => {
     try {
