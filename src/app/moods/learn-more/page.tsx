@@ -14,7 +14,7 @@ export default function LearnMorePageMoods() {
         <Image
           src={cubeImage}
           width={250}
-          height={250}x
+          height={250}
           alt="Picture of the author"
         />
       </div>
