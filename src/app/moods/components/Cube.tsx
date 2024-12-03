@@ -288,7 +288,7 @@ export function Cube() {
   return (
     <div className="flex flex-col items-center justify-center w-full">
       <div className="relative flex justify-center w-full">
-        {/* Left side labels - positioned absolutely */}
+        {/* Left side labels */}
         <div className="absolute left-0 top-1/2 transform -translate-y-1/2 flex flex-col justify-between h-[200px]">
           <span className="rotate-[-90deg] origin-center whitespace-nowrap text-white text-sm">
             Urgent
@@ -298,7 +298,7 @@ export function Cube() {
           </span>
         </div>
 
-        {/* Plotly Chart - centered */}
+        {/* Plotly Chart */}
         <div className="flex justify-center h-[250px] w-[250px]">
           <PlotlyChart
             data={[
@@ -370,7 +370,7 @@ export function Cube() {
         </div>
       </div>
 
-      {/* Bottom labels - centered with chart */}
+      {/* Bottom labels */}
       <div className="flex justify-between w-[250px] mt-4">
         <span className="text-white text-sm">Not important</span>
         <span className="text-white text-sm">Important</span>
