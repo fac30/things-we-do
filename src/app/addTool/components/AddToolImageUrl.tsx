@@ -1,22 +1,40 @@
 import { useToolkitForm } from "@/context/ToolkitFormContext";
-import * as Icons from "@heroicons/react/24/outline";
+// import * as Icons from "@heroicons/react/24/outline";
 
 export default function AddImageUrl() {
-  const { setFormState } = useToolkitForm();
-  
-  const iconList = Object.entries(Icons).map(([name]) => name);
+  const { formState, setFormState } = useToolkitForm();
 
-  const selectIcon = (iconName: string) => {
-    setFormState(prev => ({
+  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormState(prev => ({ 
       ...prev,
-      imageUrl: iconName
+      infoUrl: e.target.value
     }));
   };
+  
+  // const iconList = Object.entries(Icons).map(([name]) => name);
+
+  // const selectIcon = (iconName: string) => {
+  //   setFormState(prev => ({
+  //     ...prev,
+  //     imageUrl: iconName
+  //   }));
+  // };
 
   return (
     <div>
-      <p className="text-white">Icon</p>
-      <div className="grid grid-cols-4 gap-2 max-h-40 overflow-y-auto">
+      <label htmlFor="imageUrl"
+        className="text-white"
+      >Image URL</label>
+
+      <input
+        type="url"
+        id="imageUrl"
+        value={formState.imageUrl}
+        onChange={handleUrlChange}
+        className="w-full p-2 rounded bg-twd-background text-white border border-gray-700"
+      />
+      
+      {/* <div className="grid grid-cols-4 gap-2 max-h-40 overflow-y-auto">
         {iconList.map(iconName => {
           const IconComponent = Icons[iconName as keyof typeof Icons];
           return (
@@ -29,7 +47,7 @@ export default function AddImageUrl() {
             </button>
           );
         })}
-      </div>
+      </div> */}
     </div>
   );
 }
