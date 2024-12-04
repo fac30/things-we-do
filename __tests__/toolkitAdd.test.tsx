@@ -23,7 +23,9 @@ jest.mock("@/lib/db/DatabaseManager", () => ({
   __esModule: true,
   default: {
     addToDb: jest.fn(),
+    getFromDb: jest.fn(),
     initialiseDatabase: jest.fn(),
+    addCategory: jest.fn()
   }
 }));
 
@@ -53,21 +55,23 @@ describe("AddToolInputs Component", () => {
     expect(screen.getByRole("button", { name: "Add Tool" })).toBeInTheDocument();
   });
 
-  /* TODO */describe("AddToolTags Component", () => {
+  describe("AddToolTags Component", () => {
     it("renders existing categories", async () => {
-      // Test category rendering
-    });
+      (DatabaseManager.getFromDb as jest.Mock).mockResolvedValue([
+        { name: "Category 1" },
+        { name: "Category 2" }
+      ]);
   
-    it("allows category selection", () => {
-      // Test category selection
-    });
+      render(
+        <ToolkitFormProvider>
+          <AddToolPage />
+        </ToolkitFormProvider>
+      );
   
-    it("shows error when submitting without categories", () => {
-      // Test validation
-    });
-  
-    it("allows adding new category", async () => {
-      // Test new category UI
+      await waitFor(() => {
+        expect(screen.getByText("Category 1")).toBeInTheDocument();
+        expect(screen.getByText("Category 2")).toBeInTheDocument();
+      });
     });
   });
   
@@ -104,6 +108,10 @@ describe("AddToolInputs Component", () => {
   });
 
   it("validates URLs correctly", async () => {
+    (DatabaseManager.getFromDb as jest.Mock).mockResolvedValue([
+      { name: "Category 1" }
+    ]);
+    
     (validateUrl as jest.Mock).mockImplementationOnce(() => ({
       isValid: false,
       error: "Invalid URL"
@@ -114,6 +122,11 @@ describe("AddToolInputs Component", () => {
         <AddToolPage />
       </ToolkitFormProvider>
     );
+
+    await waitFor(() => {
+      expect(screen.getByText("Category 1")).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByText("Category 1"));
 
     const infoUrlInput = screen.getByRole("textbox", { name: "Link" });
     fireEvent.change(infoUrlInput, { target: { value: "invalid-url" } });
@@ -127,11 +140,20 @@ describe("AddToolInputs Component", () => {
   });
 
   it("inserts data into the database", async () => {
+    (DatabaseManager.getFromDb as jest.Mock).mockResolvedValue([
+      { name: "Category 1" }
+    ]);
+
     render(
       <ToolkitFormProvider>
         <AddToolPage />
       </ToolkitFormProvider>
     );
+
+    await waitFor(() => {
+      expect(screen.getByText("Category 1")).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByText("Category 1"));
 
     const inputs = screen.getAllByRole("textbox");
     const nameInput = inputs[0] as HTMLInputElement;
