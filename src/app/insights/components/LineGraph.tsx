@@ -1,29 +1,10 @@
 import PlotlyChart from "@/ui/shared/PlotlyChart";
+import { useState, useEffect } from "react";
 import { start } from "repl";
 
 export default function LineGraph({ dataArray }) {
-  if (!dataArray || dataArray.length === 0) {
-    return <div>No data available for the graph.</div>;
-  }
-
-  const sortedData = [...dataArray].sort(
-    (a, b) => new Date(a._data.timestamp) - new Date(b._data.timestamp)
-  );
-
-  const xAxis = sortedData.map((entry) =>
-    new Date(entry._data.timestamp).toISOString()
-  );
-  const dopamineValues = sortedData.map(
-    (entry) => entry._data.neurotransmitters.dopamine
-  );
-
-  const serotoninValues = sortedData.map(
-    (entry) => entry._data.neurotransmitters.serotonin
-  );
-
-  const adrenalineValues = sortedData.map(
-    (entry) => entry._data.neurotransmitters.adrenaline
-  );
+  const [startOfRange, setStartOfRange] = useState<Date>();
+  const [endOfRange, setEndOfRange] = useState<Date>();
 
   const now = new Date();
 
@@ -71,10 +52,33 @@ export default function LineGraph({ dataArray }) {
     },
   };
 
-  let startOfRange = dateParams.day.start;
-  let endOfRange = dateParams.day.end;
+  useEffect(() => {
+    setStartOfRange(dateParams.day.start);
+    setEndOfRange(now);
+  }, []);
 
-  endOfRange = now;
+  if (!dataArray || dataArray.length === 0) {
+    return <div>No data available for the graph.</div>;
+  }
+
+  const sortedData = [...dataArray].sort(
+    (a, b) => new Date(a._data.timestamp) - new Date(b._data.timestamp)
+  );
+
+  const xAxis = sortedData.map((entry) =>
+    new Date(entry._data.timestamp).toISOString()
+  );
+  const dopamineValues = sortedData.map(
+    (entry) => entry._data.neurotransmitters.dopamine
+  );
+
+  const serotoninValues = sortedData.map(
+    (entry) => entry._data.neurotransmitters.serotonin
+  );
+
+  const adrenalineValues = sortedData.map(
+    (entry) => entry._data.neurotransmitters.adrenaline
+  );
 
   return (
     <div className="w-11/12 m-auto flex justify-center text-center mb-10 mt-10">
