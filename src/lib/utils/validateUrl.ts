@@ -1,8 +1,8 @@
-export function validateUrl(input: string): { isValid: boolean; url?: string; error?: string } {
+export function validateUrl(input: string, label: string = 'URL'): { isValid: boolean; url?: string; error?: string } {
   if (!input) {
     return {
       isValid: false,
-      error: 'Please enter a URL'
+      error: `Please enter a ${label}`
     };
   }
 
@@ -11,28 +11,23 @@ export function validateUrl(input: string): { isValid: boolean; url?: string; er
       ? input
       : `https://${input}`;
 
-    console.log(`urlProtocol: ${urlProtocol}`);
-
     const url = new window.URL(urlProtocol);
 
     if (!['http:', 'https:'].includes(url.protocol)) {
       return {
         isValid: false,
-        error: 'Only HTTP and HTTPS protocols are allowed'
+        error: `Only HTTP and HTTPS protocols are allowed for ${label}`
       };
     }
 
-    console.log(`URL is valid: ${url.toString()}`);
     return {
       isValid: true,
       url: url.toString()
     };
   } catch (error) {
-    console.error(`Error validating URL: ${error}`);
-
     return {
       isValid: false,
-      error: `Invalid URL format: ${error}`
+      error: `Invalid ${label} format: ${error}`
     };
   }
 }

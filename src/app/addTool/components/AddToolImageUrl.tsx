@@ -7,7 +7,7 @@ export default function AddImageUrl() {
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormState(prev => ({ 
       ...prev,
-      infoUrl: e.target.value
+      imageUrl: e.target.value
     }));
   };
 

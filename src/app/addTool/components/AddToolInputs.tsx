@@ -13,13 +13,37 @@ import {
 
 import Button from "@/ui/shared/Button";
 import DatabaseManager from "@/lib/db/DatabaseManager";
+import { validateUrl } from "@/lib/utils/validateUrl";
 
 function SubmitButton() {
   const router = useRouter();
   const { formState, /* setFormState */ } = useToolkitForm();
 
   const handleSubmit = async () => {
-    console.log(`Submitting form with state: ${JSON.stringify(formState)}`);
+    console.log(`Validating form with state: ${JSON.stringify(formState)}`);
+    
+    // Validate Info URL if provided
+    if (formState.infoUrl) {
+      const infoUrlValidation = validateUrl(formState.infoUrl, 'Info URL');
+      if (!infoUrlValidation.isValid) {
+        console.error(`Info URL validation failed: ${infoUrlValidation.error}`);
+        alert(infoUrlValidation.error);
+        return;
+      }
+      console.log(`Info URL validated successfully: ${infoUrlValidation.url}`);
+    }
+
+    // Validate Image URL if provided
+    if (formState.imageUrl) {
+      const imageUrlValidation = validateUrl(formState.imageUrl, 'Image URL');
+      if (!imageUrlValidation.isValid) {
+        console.error(`Image URL validation failed: ${imageUrlValidation.error}`);
+        alert(imageUrlValidation.error);
+        return;
+      }
+      console.log(`Image URL validated successfully: ${imageUrlValidation.url}`);
+    }
+
     try {
       console.log(`Inserting into database`);
 
@@ -35,11 +59,18 @@ function SubmitButton() {
       });
 
       console.log(`Created ${formState.name} in the database`);
-
-      router.push("/toolkit");
+      
+      // Show success message and wait for user acknowledgment
+      const userAcknowledged = window.confirm(
+        `Successfully added ${formState.name} to your toolkit!\n\nClick OK to return to the toolkit.`
+      );
+      
+      if (userAcknowledged) {
+        router.push("/toolkit");
       }
-    catch (error) {
+    } catch (error) {
       console.error("Error submitting form:", error);
+      alert(`Failed to save tool: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 
