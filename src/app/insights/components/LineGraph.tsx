@@ -11,9 +11,8 @@ export default function LineGraph({ dataArray }) {
   const [useNow, setUseNow] = useState(true);
 
   const handleUseNowClick = () => {
-    setUseNow(!useNow);
+    setUseNow((prevUseNow) => !prevUseNow);
   };
-
   const now = new Date();
 
   const dateParams = {
@@ -61,10 +60,10 @@ export default function LineGraph({ dataArray }) {
   };
 
   useEffect(() => {
-    setSelectedButton("day");
-    setStartOfRange(dateParams.day.start);
-    setEndOfRange(dateParams.day.end);
-  }, []);
+    const { start, end } = dateParams[selectedButton];
+    setStartOfRange(start);
+    setEndOfRange(useNow ? now : end);
+  }, [useNow, selectedButton]);
 
   if (!dataArray || dataArray.length === 0) {
     return <div>No data available for the graph.</div>;
@@ -93,8 +92,6 @@ export default function LineGraph({ dataArray }) {
 
   const handleDateChange = (dateChoice) => {
     setSelectedButton(dateChoice);
-    setStartOfRange(dateParams[dateChoice].start);
-    useNow ? setEndOfRange(now) : setEndOfRange(dateParams[dateChoice].end);
   };
 
   return (
