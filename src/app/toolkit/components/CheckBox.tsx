@@ -30,7 +30,7 @@ interface CheckBoxComponentData {
 
 export default function CheckBox() {
   const [data, setData] = useState<CheckBoxComponentData[]>([]);
-  //const isEmpty = [data.length === 0];
+  const isEmpty = data.length === 0;
 
   useEffect(() => {
     console.log('useeffect');
@@ -42,6 +42,7 @@ export default function CheckBox() {
         const itemsCollection = db.toolkit_items;
 
         const items = await itemsCollection.find().exec();
+        console.log(items);
 
         setData(items.map((doc) => doc.toJSON())); 
 
@@ -50,7 +51,7 @@ export default function CheckBox() {
       }
     };
     fetchData();
-  }, []);
+  }, [isEmpty]);
 
   // Toggle checkbox state
   const handleToggle = (id: string) => {
