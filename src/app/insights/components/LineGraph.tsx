@@ -8,6 +8,11 @@ export default function LineGraph({ dataArray }) {
   const [startOfRange, setStartOfRange] = useState<Date>();
   const [endOfRange, setEndOfRange] = useState<Date>();
   const [selectedButton, setSelectedButton] = useState();
+  const [useNow, setUseNow] = useState(true);
+
+  const handleUseNowClick = () => {
+    setUseNow(!useNow);
+  };
 
   const now = new Date();
 
@@ -89,7 +94,7 @@ export default function LineGraph({ dataArray }) {
   const handleDateChange = (dateChoice) => {
     setSelectedButton(dateChoice);
     setStartOfRange(dateParams[dateChoice].start);
-    setEndOfRange(dateParams[dateChoice].end);
+    useNow ? setEndOfRange(now) : setEndOfRange(dateParams[dateChoice].end);
   };
 
   return (
@@ -103,12 +108,17 @@ export default function LineGraph({ dataArray }) {
               label={dateOption}
               onClick={() => handleDateChange(dateOption)}
               className={clsx(
-                " font-normal", // base classes
+                "font-normal", // base classes
                 isActive && "bg-twd-primary-purple text-white" // add active class when selected
               )}
             />
           );
         })}
+        <Button
+          label="Use Now"
+          className={clsx(useNow && "bg-white text-black")}
+          onClick={handleUseNowClick}
+        />
       </div>
       <div className="w-11/12 m-auto flex justify-center text-center mb-10 mt-10">
         <PlotlyChart
