@@ -5,7 +5,7 @@ import AddDescription from "./AddToolDescription";
 import AddImageUrl from "./AddToolImageUrl";
 import AddInfoUrl from "./AddToolInfoUrl";
 import AddName from "./AddToolName";
-// import AddTags from "./AddToolTags";
+import AddTags from "./AddToolTags";
 import {
   ToolkitFormProvider,
   useToolkitForm,
@@ -19,9 +19,8 @@ function SubmitButton() {
   const { formState, /* setFormState */ } = useToolkitForm();
 
   const handleSubmit = async () => {
+    console.log(`Submitting form with state: ${JSON.stringify(formState)}`);
     try {
-      console.log(`Submitting form with state: ${JSON.stringify(formState)}`);
-
       console.log(`Inserting into database`);
 
       DatabaseManager.addToDb("toolkit_items", {
@@ -35,11 +34,11 @@ function SubmitButton() {
         timestamp: new Date().toISOString(),
       });
 
-        console.log(`Created ${formState.name} in the database`);
+      console.log(`Created ${formState.name} in the database`);
 
-        router.push("/toolkit");
+      router.push("/toolkit");
       }
-    } catch (error) {
+    catch (error) {
       console.error("Error submitting form:", error);
     }
   };
@@ -58,7 +57,7 @@ export default function Inputs() {
     <ToolkitFormProvider>
       <div className="space-y-4 p-4">
         <AddName />
-        {/* <AddTags /> */}
+        <AddTags />
         <AddDescription />
         <AddImageUrl />
         <AddInfoUrl />
