@@ -364,7 +364,8 @@ export function Cube() {
             }}
             config={{
               displayModeBar: false,
-              staticPlot: true,
+              // staticPlot: true
+              // modeBarButtonsToRemove: ["zoom3d", "pan3d", "orbitRotation", "tableRotation", "handleDrag3d", "resetCameraDefault3d", "resetCameraLastSave3d", "hoverClosest3d"]
             }}
           />
         </div>
