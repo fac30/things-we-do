@@ -37,7 +37,7 @@ export default function LineGraph({ dataArray }) {
         0,
         0,
         0
-      ), // 6 AM today
+      ),
       end: new Date(
         now.getFullYear(),
         now.getMonth(),
@@ -46,27 +46,28 @@ export default function LineGraph({ dataArray }) {
         0,
         0,
         0
-      ), // Midnight tonight
+      ),
     },
+    // Monday to Sunday
     week: {
       start: new Date(
         now.getFullYear(),
         now.getMonth(),
         now.getDate() - now.getDay() + 1
-      ), // Monday of this week
+      ),
       end: new Date(
         now.getFullYear(),
         now.getMonth(),
         now.getDate() - now.getDay() + 7
-      ), // Sunday of this week
+      ),
     },
     month: {
-      start: new Date(now.getFullYear(), now.getMonth(), 1), // First day of this month
-      end: new Date(now.getFullYear(), now.getMonth() + 1, 0), // Last day of this month
+      start: new Date(now.getFullYear(), now.getMonth(), 1),
+      end: new Date(now.getFullYear(), now.getMonth() + 1, 0),
     },
     year: {
-      start: new Date(now.getFullYear(), 0, 1), // First day of this year
-      end: new Date(now.getFullYear(), 11, 31), // Last day of this year
+      start: new Date(now.getFullYear(), 0, 1),
+      end: new Date(now.getFullYear(), 11, 31),
     },
   };
 
@@ -114,7 +115,7 @@ export default function LineGraph({ dataArray }) {
             l: 10,
             r: 10,
             t: 5,
-            // b: 100,
+
             pad: 50,
           },
           paper_bgcolor: "#262538",
