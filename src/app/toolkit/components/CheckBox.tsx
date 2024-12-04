@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import rxdbInit from '@/lib/db/rxdbInit';
 import { 
   DndContext, 
   closestCenter, 
