@@ -28,7 +28,6 @@ interface ExtendedMesh3d extends PlotData {
   };
 }
 
-// Add type for the text labels
 interface TextLabel extends Partial<PlotData> {
   type: "scatter3d";
   x: number[];
@@ -55,7 +54,7 @@ export function Cube() {
     <div className="flex flex-col items-center justify-center w-full">
       <div className="relative flex justify-center w-full">
         {/* Left side labels */}
-        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 flex flex-col justify-between h-[200px]">
+        <div className="absolute left-1/2 top-1/2 transform -translate-x-48 -translate-y-1/2 flex flex-col justify-between h-[200px]">
           <span className="rotate-[-90deg] origin-center whitespace-nowrap text-white text-sm">
             Urgent
           </span>
