@@ -73,7 +73,7 @@ export default function LineGraph({ dataArray }) {
           yaxis: {
             title: "Dopamine Levels",
             range: [0, 10], // Adjust as needed
-            showgrid: true,
+            showgrid: false,
           },
           hidesources: true,
         }}
