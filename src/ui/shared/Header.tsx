@@ -23,7 +23,7 @@ export function Header({ title, description, Icon }: HeaderProps) {
       {/* Right side: Image */}
       <div className="relative w-10 h-10 sm:w-12 sm:h-12">
         <ImageComponent
-          src="/icons/dummy_img.png"
+          src=""
           alt="Logo"
           sizes="(max-width: 768px) 100vw, 50vw"
           rounded={false}
