@@ -94,7 +94,7 @@ export default function LineGraph({ dataArray }) {
 
   return (
     <>
-      <div className="flex text-center w-11/12 m-auto justify-between mt-10">
+      <div className="flex text-center w-full m-auto justify-between bg-twd-navbar-background py-2 px-4">
         {dateOptions.map((dateOption, index) => {
           const isActive = selectedButton === dateOption;
           return (
@@ -103,7 +103,7 @@ export default function LineGraph({ dataArray }) {
               label={dateOption}
               onClick={() => handleDateChange(dateOption)}
               className={clsx(
-                "border-white border-2 border-solid font-light", // base classes
+                " font-normal", // base classes
                 isActive && "bg-twd-primary-purple text-white" // add active class when selected
               )}
             />
