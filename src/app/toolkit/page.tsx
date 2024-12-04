@@ -1,7 +1,7 @@
-import CategoryBar from "./components/CategoryBar";
-import SearchBar from "./components/SearchBar";
-import CheckBox from "./components/CheckBox";
-import FloatingButton from "./components/floatingButton";
+import CategoryBar from "@/app/toolkit/components/CategoryBar";
+import SearchBar from "@/app/toolkit/components/SearchBar";
+import CheckBox from "@/app/toolkit/components/CheckBox";
+import FloatingButton from "@/app/toolkit/components/floatingButton";
 
 export default function ToolkitPage() {
   return (

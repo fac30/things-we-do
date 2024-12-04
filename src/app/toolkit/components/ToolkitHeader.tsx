@@ -1,5 +1,5 @@
 "use client";
-import ImageComponent from "../../../ui/shared/Image";
+import ImageComponent from "@/ui/shared/Image";
 import { WrenchIcon } from "@heroicons/react/24/solid";
 
 const headerClasses = `
