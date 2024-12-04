@@ -36,6 +36,7 @@ export default function CheckBox() {
     const fetchData = async () => {
       try {
         const items = await DatabaseManager.getFromDb("toolkit_items");
+        
         if (items) {
           setData(items.map((doc) => doc.toJSON()));
         } else {

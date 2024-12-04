@@ -66,6 +66,7 @@ class DatabaseManager {
       });
 
       console.log("Database initialised");
+      await this.insertToDb(); // Automatically seed data
     }
     return this.dbInstance;
   }
@@ -99,26 +100,21 @@ class DatabaseManager {
   async addToDb(collectionName: string, document: object) {
     try {
       const db = await this.initialiseDatabase();
-
       if (!db) {
         console.error("Database initialisation failed");
         return;
       }
-
       const collection = db[collectionName];
       if (!collection) {
         console.error(`Collection '${collectionName}' not found`);
         return;
       }
-
       const documentWithDefaults = {
         ...document,
         id: uuidv4(),
         createdAt: new Date().toISOString(),
       };
-
       const newDocument = await collection.insert(documentWithDefaults);
-
       console.log(
         `Document inserted into '${collectionName}' collection: `,
         newDocument
@@ -132,31 +128,23 @@ class DatabaseManager {
   async insertToDb() {
     try {
       const db = await this.initialiseDatabase();
-
       if (!db) {
         console.error("Database initialisation failed");
         return;
       }
-
       const toolkitCollection = db.toolkit_items;
-
       if (!toolkitCollection) {
         console.error("Toolkit items collection does not exist");
         return;
       }
-
       console.log("Checking if toolkit_items collection is already seeded...");
-
       const existingDocuments = await toolkitCollection.find().exec();
-
       if (existingDocuments.length > 0) {
             console.log("Toolkit items collection is already seeded. Skipping seeding process.");
             return;
         }
-
       console.log("Seeding toolkit_items collection with initial data...");
       const insertedDocs = await toolkitCollection.bulkInsert(toolkitSeedData);
-
       console.log("Seed data successfully inserted:", insertedDocs);
     } catch (error) {
         console.error("Error seeding the database:", error);
