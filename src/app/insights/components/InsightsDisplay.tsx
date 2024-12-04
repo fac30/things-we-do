@@ -2,6 +2,7 @@
 
 import DatabaseManager from "@/lib/db/DatabaseManager";
 import { useEffect, useState } from "react";
+import LineGraph from "./LineGraph";
 
 interface Insight {
   neurotransmitters: {
@@ -30,6 +31,7 @@ export default function InsightsDisplay() {
 
   return (
     <>
+      <LineGraph />
       {insights ? (
         insights.map((insight, index) => (
           <div key={index} className="mb-5">
