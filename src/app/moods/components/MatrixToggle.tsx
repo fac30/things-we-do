@@ -14,7 +14,7 @@ export default function MatrixToggle({
 
   return (
     <label
-      htmlFor="language"
+      htmlFor="matrix"
       className="flex justify-center items-center cursor-pointer"
     >
       <span
@@ -25,9 +25,10 @@ export default function MatrixToggle({
         Mood
       </span>
       <input
-        id="language"
+        id="matrix"
         type="checkbox"
         checked={isPriorityMatrix}
+        value={isPriorityMatrix ? "priority" : "mood"}
         onChange={handleMatrixToggle}
         className="sr-only peer"
       />
