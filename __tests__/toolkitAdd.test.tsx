@@ -52,6 +52,24 @@ describe("AddToolInputs Component", () => {
     expect(screen.getByText("Link")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Add Tool" })).toBeInTheDocument();
   });
+
+  /* TODO */describe("AddToolTags Component", () => {
+    it("renders existing categories", async () => {
+      // Test category rendering
+    });
+  
+    it("allows category selection", () => {
+      // Test category selection
+    });
+  
+    it("shows error when submitting without categories", () => {
+      // Test validation
+    });
+  
+    it("allows adding new category", async () => {
+      // Test new category UI
+    });
+  });
   
   it("initializes form state correctly", () => {
     render(
