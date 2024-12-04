@@ -35,7 +35,7 @@ const CategoryBar = () => {
   };
 
   return (
-    <div className={categoryBarClass}>
+    <div className={categoryBarClass} data-testid="category-bar">
       {categories.map((category) => {
         const isActive = selectedCategories.includes(category);
 

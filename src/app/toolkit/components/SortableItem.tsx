@@ -19,12 +19,12 @@ interface SortableItemProps {
 }
 
 const isValidUrl = (url: string | undefined): boolean => {
-  if (!url) return false; // Explicitly return false if URL is undefined or empty
+  if (!url) return false;
   try {
-    new URL(url); // Valid URL creation
-    return true;  // Explicitly return true for valid URLs
+    new URL(url);
+    return true;
   } catch {
-    return false; // Explicitly return false for invalid URLs
+    return false;
   }
 };
 

@@ -33,13 +33,11 @@ export default function CheckBox() {
   const isEmpty = data.length === 0;
 
   useEffect(() => {
-    console.log('Fetching toolkit items...');
     const fetchData = async () => {
       try {
         const items = await DatabaseManager.getFromDb("toolkit_items");
         if (items) {
-          console.log("Fetched toolkit items:", items);
-          setData(items.map((doc) => doc.toJSON())); // Convert RxDocument to plain JSON
+          setData(items.map((doc) => doc.toJSON()));
         } else {
           console.log("No items found in toolkit_items collection.");
         }
@@ -66,7 +64,6 @@ export default function CheckBox() {
 
   // Handle drag-and-drop reorder
   const handleDragEnd = (event: DragEndEvent) => {
-    // Updated type for `event`.
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
@@ -83,6 +80,7 @@ export default function CheckBox() {
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
+      data-testid="dnd-context"
     >
       <SortableContext
         items={data.map((item) => item.id)}
