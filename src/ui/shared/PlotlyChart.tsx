@@ -22,8 +22,8 @@ export default function PlotlyChart({ data, layout, config }: PlotlyChartProps) 
         data={data} 
         layout={layout} 
         config={config}
-        useResizeHandler={true}
-        style={{ width: "100%", height: "100%" }}
+        // useResizeHandler={true}
+        // style={{ width: "100%", height: "100%" }}
       />
     </div>
   );
