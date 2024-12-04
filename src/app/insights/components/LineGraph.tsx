@@ -1,4 +1,5 @@
 import PlotlyChart from "@/ui/shared/PlotlyChart";
+import { start } from "repl";
 
 export default function LineGraph({ dataArray }) {
   if (!dataArray || dataArray.length === 0) {
@@ -26,29 +27,53 @@ export default function LineGraph({ dataArray }) {
 
   const now = new Date();
 
-  const startOfDay = new Date(now.setHours(6, 0, 0, 0));
+  const dateParams = {
+    day: {
+      start: new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        6,
+        0,
+        0,
+        0
+      ), // 6 AM today
+      end: new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        24,
+        0,
+        0,
+        0
+      ), // Midnight tonight
+    },
+    week: {
+      start: new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() - now.getDay() + 1
+      ), // Monday of this week
+      end: new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() - now.getDay() + 7
+      ), // Sunday of this week
+    },
+    month: {
+      start: new Date(now.getFullYear(), now.getMonth(), 1), // First day of this month
+      end: new Date(now.getFullYear(), now.getMonth() + 1, 0), // Last day of this month
+    },
+    year: {
+      start: new Date(now.getFullYear(), 0, 1), // First day of this year
+      end: new Date(now.getFullYear(), 11, 31), // Last day of this year
+    },
+  };
 
-  const endOfDay = new Date(now.setHours(24, 0, 0, 0));
+  let startOfRange = dateParams.day.start;
+  let endOfRange = dateParams.day.end;
 
-  // (Monday)
-  const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay() + 1));
-
-  // (Sunday)
-  const endOfWeek = new Date(now.setDate(now.getDate() - now.getDay() + 7));
-
-  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-
-  const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-
-  const startOfYear = new Date(now.setMonth(0, 1));
-
-  const endOfYear = new Date(now.setMonth(11, 31));
-
-  const showMonthSoFar = false;
-
-  const startOfRange = startOfMonth;
-
-  const endOfRange = showMonthSoFar ? now : endOfMonth;
+  endOfRange = now;
 
   return (
     <div className="w-11/12 m-auto flex justify-center text-center mb-10 mt-10">
