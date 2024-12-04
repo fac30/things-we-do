@@ -1,0 +1,106 @@
+[
+  {
+    "type": "scatter3d",
+    "x": [0],
+    "y": [0],
+    "z": [1],
+    "text": ["Distress"],
+    "mode": "text",
+    "textposition": "middle right",
+    "textfont": {
+      "size": 15,
+      "color": "white"
+    }
+  },
+  {
+    "type": "scatter3d",
+    "x": [11],
+    "y": [0],
+    "z": [1],
+    "text": ["Relief"],
+    "mode": "text",
+    "textposition": "middle left",
+    "textfont": {
+      "size": 15,
+      "color": "white"
+    }
+  },
+  {
+    "type": "scatter3d",
+    "x": [2.75],
+    "y": [5.5],
+    "z": [2.75],
+    "text": ["Guilt"],
+    "mode": "text",
+    "textposition": "middle center",
+    "textfont": {
+      "size": 15,
+      "color": "white"
+    }
+  },
+  {
+    "type": "scatter3d",
+    "x": [7.75],
+    "y": [5.5],
+    "z": [2.75],
+    "text": ["Content"],
+    "mode": "text",
+    "textposition": "middle center",
+    "textfont": {
+      "size": 15,
+      "color": "white"
+    }
+  },
+  {
+    "type": "scatter3d",
+    "x": [0],
+    "y": [0],
+    "z": [10],
+    "text": ["Fight/flight"],
+    "mode": "text",
+    "textposition": "middle right",
+    "textfont": {
+      "size": 15,
+      "color": "white"
+    }
+  },
+  {
+    "type": "scatter3d",
+    "x": [11],
+    "y": [0],
+    "z": [10],
+    "text": ["Interest"],
+    "mode": "text",
+    "textposition": "middle left",
+    "textfont": {
+      "size": 15,
+      "color": "white"
+    }
+  },
+  {
+    "type": "scatter3d",
+    "x": [2.75],
+    "y": [5.5],
+    "z": [7.75],
+    "text": ["Freeze"],
+    "mode": "text",
+    "textposition": "middle center",
+    "textfont": {
+      "size": 15,
+      "color": "white"
+    }
+  },
+  {
+    "type": "scatter3d",
+    "x": [7.75],
+    "y": [5.5],
+    "z": [7.75],
+    "text": ["Joy"],
+    "mode": "text",
+    "textposition": "middle center",
+    "textfont": {
+      "size": 15,
+      "color": "white"
+    }
+  }
+]
