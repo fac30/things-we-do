@@ -1,36 +1,41 @@
-// !! PLEASE LEAVE ALL COMMENTS IN THIS FILE; THEY ARE USED FOR CATEGORY/TAG FUNCTIONALITY BUT MUST BE COMMENTED OUT TO ALLOW BUILDING ON THIS BRANCH
-
-// import { useEffect, useState } from "react";
-// import { useToolkitForm } from "@/context/ToolkitFormContext";
-// import Button from "@/ui/shared/Button";
-// import DatabaseManager from "@/lib/db/DatabaseManager";
+import { useEffect, useState } from "react";
+import { useToolkitForm } from "@/context/ToolkitFormContext";
+import Button from "@/ui/shared/Button";
+import DatabaseManager from "@/lib/db/DatabaseManager";
 
 export default function AddTags() {
-  // const { formState, setFormState } = useToolkitForm();
-  // const [categories, setCategories] = useState<string[]>([]);
+  //==> State
+  //===> Imported
+  const { formState, setFormState } = useToolkitForm();
 
-  /* useEffect(() => {
+  //===> Declared
+  const [categories, setCategories] = useState<string[]>([]);
+  const [newCategory, setNewCategory] = useState<string>("");
+  const [isAddingNew, setIsAddingNew] = useState(false);
+
+  //==> Fetch Data
+  useEffect(() => {
     const fetchCategories = async () => {
       const allCategories = await DatabaseManager.getFromDb("categories");
       setCategories(allCategories.map((cat: any) => cat.name));
     };
     fetchCategories();
-  }, []); */
+  }, []);
 
-  /* const toggleCategory = (category: string) => {
-    setFormState((prev) => ({
-      ...prev,
-      categories: prev.categories.includes(category)
-        ? prev.categories.filter((c) => c !== category)
-        : [...prev.categories, category],
-    }));
-  }; */
+  //==> Handle Interactions
+  const handleAddNewCategory = async () => {
+    if (newCategory.trim()) {
+      await DatabaseManager.addCategory(newCategory.trim());
+      setCategories(prev => [...prev, newCategory.trim()]);
+      setNewCategory("");
+      setIsAddingNew(false);
+    }
+  };
 
   return (
     <div>
       <p className="text-white">Tags</p>
       <div className="flex flex-wrap gap-2">
-        <p>TODO: Add Categories</p>
         {/* {categories.map((category) => (
           <Button
             key={category}
