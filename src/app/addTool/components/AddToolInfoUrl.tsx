@@ -1,6 +1,6 @@
 import { useToolkitForm } from "@/context/ToolkitFormContext";
 
-export default function AddInfoURL() {
+export default function AddInfoUrl() {
   const { formState, setFormState } = useToolkitForm();
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
