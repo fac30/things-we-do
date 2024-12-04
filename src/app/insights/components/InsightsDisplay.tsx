@@ -32,7 +32,7 @@ export default function InsightsDisplay() {
   return (
     <>
       <LineGraph dataArray={insights} />
-      {insights ? (
+      {/* {insights ? (
         insights.map((insight, index) => (
           <div key={index} className="mb-5">
             <p>dopamine: {insight.neurotransmitters.dopamine}</p>
@@ -42,7 +42,7 @@ export default function InsightsDisplay() {
         ))
       ) : (
         <p>No insights available</p>
-      )}
+      )} */}
     </>
   );
 }

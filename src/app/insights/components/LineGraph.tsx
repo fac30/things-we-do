@@ -35,7 +35,8 @@ export default function LineGraph({ dataArray }) {
             type: "scatter",
             mode: "lines+markers",
             marker: { color: "green" },
-            line: { shape: "spline" }, // Smooth curve
+            line: { shape: "linear" }, // Smooth curve
+            name: "Urgent",
           },
           {
             x: xAxis, // Time data
@@ -43,7 +44,8 @@ export default function LineGraph({ dataArray }) {
             type: "scatter",
             mode: "lines+markers",
             marker: { color: "blue" },
-            line: { shape: "spline" }, // Smooth curve
+            line: { shape: "linear" }, // Smooth curve
+            name: "Effortful",
           },
           {
             x: xAxis, // Time data
@@ -51,30 +53,53 @@ export default function LineGraph({ dataArray }) {
             type: "scatter",
             mode: "lines+markers",
             marker: { color: "red" },
-            line: { shape: "spline" }, // Smooth curve
+            line: { shape: "linear" }, // Smooth curve
+            name: "Worthwile",
           },
         ]}
         layout={{
           width: 350,
-          height: 200,
+          height: 350,
           margin: {
-            l: 15,
+            l: 10,
             r: 10,
             t: 5,
-            b: 20,
-            pad: 0,
+            b: 10,
+            pad: 50,
           },
           paper_bgcolor: "#262538",
           plot_bgcolor: "#262538",
           xaxis: {
-            title: "Time (24-hour format)",
+            title: "",
             tickformat: "%H:%M:%S", // Display time as HH:MM:SS
             showgrid: false,
+            titlefont: {
+              color: "white", // Change x-axis label text color
+            },
+            showticklabels: false,
+            tickfont: {
+              color: "white", // Change x-axis tick text color
+            },
           },
           yaxis: {
-            title: "Dopamine Levels",
+            title: "",
             range: [0, 10], // Adjust as needed
             showgrid: false,
+            titlefont: {
+              color: "white", // Change x-axis label text color
+            },
+            // showticklabels: false,
+            tickfont: {
+              color: "white", // Change x-axis tick text color
+            },
+          },
+          legend: {
+            font: {
+              color: "white", // Change general legend text color
+            },
+            // traceorder: "normal",
+            // itemsizing: "constant",
+            // itemclick: "toggleothers",
           },
           hidesources: true,
         }}
