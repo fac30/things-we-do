@@ -112,7 +112,7 @@ export default function LineGraph({ dataArray }) {
           );
         })}
         <Button
-          label="Use Now"
+          label="To Date"
           className={clsx(useNow && "bg-white text-black")}
           onClick={handleUseNowClick}
         />
