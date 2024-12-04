@@ -5,51 +5,52 @@ export default function LineGraph({ dataArray }) {
   if (!dataArray || dataArray.length === 0) {
     return <div>No data available for the graph.</div>; // Render a message if no data
   }
-  const data = [
-    {
-      timestamp: "2024-12-04T10:50:02.043Z",
-      neurotransmitters: {
-        adrenaline: 6,
-        dopamine: 5,
-        serotonin: 4,
-      },
-    },
-    {
-      timestamp: "2024-12-04T12:30:45.123Z",
-      neurotransmitters: {
-        adrenaline: 7,
-        dopamine: 8,
-        serotonin: 6,
-      },
-    },
-    {
-      timestamp: "2024-12-04T14:15:10.567Z",
-      neurotransmitters: {
-        adrenaline: 5,
-        dopamine: 6,
-        serotonin: 5,
-      },
-    },
-  ];
+  // Sort the data array by timestamp
+  const sortedData = [...dataArray].sort(
+    (a, b) => new Date(a._data.timestamp) - new Date(b._data.timestamp)
+  );
 
   // Process data for Plotly
-  const xAxis = dataArray.map((entry) =>
+  const xAxis = sortedData.map((entry) =>
     new Date(entry._data.timestamp).toISOString()
   ); // Convert timestamp to ISO string
-  const yAxis = dataArray.map(
+  const dopamineValues = sortedData.map(
     (entry) => entry._data.neurotransmitters.dopamine
   ); // Extract dopamine values
 
+  const serotoninValues = sortedData.map(
+    (entry) => entry._data.neurotransmitters.serotonin
+  ); // Extract serotonin values
+
+  const adrenalineValues = sortedData.map(
+    (entry) => entry._data.neurotransmitters.adrenaline
+  ); // Extract serotonin values
   return (
     <div className="w-11/12 m-auto flex justify-center text-center mb-10 mt-10">
       <PlotlyChart
         data={[
           {
             x: xAxis, // Time data
-            y: yAxis, // Dopamine values
+            y: dopamineValues, // Dopamine values
+            type: "scatter",
+            mode: "lines+markers",
+            marker: { color: "green" },
+            line: { shape: "spline" }, // Smooth curve
+          },
+          {
+            x: xAxis, // Time data
+            y: serotoninValues, // Dopamine values
             type: "scatter",
             mode: "lines+markers",
             marker: { color: "blue" },
+            line: { shape: "spline" }, // Smooth curve
+          },
+          {
+            x: xAxis, // Time data
+            y: adrenalineValues, // Dopamine values
+            type: "scatter",
+            mode: "lines+markers",
+            marker: { color: "red" },
             line: { shape: "spline" }, // Smooth curve
           },
         ]}
