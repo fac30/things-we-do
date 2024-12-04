@@ -74,8 +74,6 @@ export function Cube() {
     ];
   }, [isPriorityMatrix, hasRendered]);
 
-  console.log("Updated Labels", labels);
-
   return (
     <>
       <MatrixToggle
