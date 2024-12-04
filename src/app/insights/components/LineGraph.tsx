@@ -2,10 +2,12 @@ import PlotlyChart from "@/ui/shared/PlotlyChart";
 import { useState, useEffect } from "react";
 // import { start } from "repl";
 import Button from "@/ui/shared/Button";
+import clsx from "clsx"; // Make sure to import clsx
 
 export default function LineGraph({ dataArray }) {
   const [startOfRange, setStartOfRange] = useState<Date>();
   const [endOfRange, setEndOfRange] = useState<Date>();
+  const [selectedButton, setSelectedButton] = useState();
 
   const now = new Date();
 
@@ -54,8 +56,9 @@ export default function LineGraph({ dataArray }) {
   };
 
   useEffect(() => {
+    setSelectedButton("day");
     setStartOfRange(dateParams.day.start);
-    setEndOfRange(now);
+    setEndOfRange(dateParams.day.end);
   }, []);
 
   if (!dataArray || dataArray.length === 0) {
@@ -84,24 +87,26 @@ export default function LineGraph({ dataArray }) {
   const dateOptions = ["day", "week", "month", "year"];
 
   const handleDateChange = (dateChoice) => {
+    setSelectedButton(dateChoice);
     setStartOfRange(dateParams[dateChoice].start);
     setEndOfRange(dateParams[dateChoice].end);
   };
 
   return (
     <>
-      <div className="">
-        {dateOptions.map((date, index) => {
+      <div className="flex text-center w-11/12 m-auto justify-between mt-10">
+        {dateOptions.map((dateOption, index) => {
+          const isActive = selectedButton === dateOption;
           return (
-            <>
-              <div>
-                <Button
-                  key={index}
-                  label={date}
-                  onClick={() => handleDateChange(date)}
-                />
-              </div>
-            </>
+            <Button
+              key={index}
+              label={dateOption}
+              onClick={() => handleDateChange(dateOption)}
+              className={clsx(
+                "border-white border-2 border-solid font-light", // base classes
+                isActive && "bg-twd-primary-purple text-white" // add active class when selected
+              )}
+            />
           );
         })}
       </div>
