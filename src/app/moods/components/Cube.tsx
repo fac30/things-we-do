@@ -4,6 +4,17 @@ import { useContext } from "react";
 import { NeurochemContext } from "@/context/NeurochemContext";
 import PlotlyChart from "@/ui/shared/PlotlyChart";
 import { PlotData } from "plotly.js";
+import quadrants from "./data/quadrants.json";
+
+// Cube quadrants order (in quadrants.json):
+// Bottom-front-left
+// Bottom-front-right
+// Bottom-back-left
+// Bottom-back-right
+// Top-front-left
+// Top-front-right
+// Top-back-left
+// Top-back-right
 
 interface ExtendedMesh3d extends PlotData {
   alphahull?: number;
@@ -38,137 +49,6 @@ export function Cube() {
   }
 
   const { neuroState } = context;
-
-  const cubeMeshes: Partial<ExtendedMesh3d>[] = [
-    {
-      // Bottom-front-left
-      type: "mesh3d",
-      x: [0, 5.5, 5.5, 0, 0, 5.5, 5.5, 0],
-      y: [0, 0, 5.5, 5.5, 0, 0, 5.5, 5.5],
-      z: [0, 0, 0, 0, 5.5, 5.5, 5.5, 5.5],
-      alphahull: 1,
-      flatshading: true,
-      opacity: 0.3,
-      color: "#4488EE",
-      lighting: {
-        diffuse: 0.1,
-        specular: 2.0,
-        roughness: 0.5,
-      },
-    },
-    {
-      // Bottom-front-right
-      type: "mesh3d",
-      x: [5.5, 11, 11, 5.5, 5.5, 11, 11, 5.5],
-      y: [0, 0, 5.5, 5.5, 0, 0, 5.5, 5.5],
-      z: [0, 0, 0, 0, 5.5, 5.5, 5.5, 5.5],
-      alphahull: 1,
-      flatshading: true,
-      opacity: 0.3,
-      color: "#99CC11",
-      lighting: {
-        diffuse: 0.1,
-        specular: 2.0,
-        roughness: 0.5,
-      },
-    },
-    {
-      // Bottom-back-left
-      type: "mesh3d",
-      x: [0, 5.5, 5.5, 0, 0, 5.5, 5.5, 0],
-      y: [5.5, 5.5, 11, 11, 5.5, 5.5, 11, 11],
-      z: [0, 0, 0, 0, 5.5, 5.5, 5.5, 5.5],
-      alphahull: 1,
-      flatshading: true,
-      opacity: 0.3,
-      color: "#4488EE",
-      lighting: {
-        diffuse: 0.1,
-        specular: 2.0,
-        roughness: 0.5,
-      },
-    },
-    {
-      // Bottom-back-right
-      type: "mesh3d",
-      x: [5.5, 11, 11, 5.5, 5.5, 11, 11, 5.5],
-      y: [5.5, 5.5, 11, 11, 5.5, 5.5, 11, 11],
-      z: [0, 0, 0, 0, 5.5, 5.5, 5.5, 5.5],
-      alphahull: 1,
-      flatshading: true,
-      opacity: 0.3,
-      color: "#99CC11",
-      lighting: {
-        diffuse: 0.1,
-        specular: 2.0,
-        roughness: 0.5,
-      },
-    },
-    {
-      // Top-front-left
-      type: "mesh3d",
-      x: [0, 5.5, 5.5, 0, 0, 5.5, 5.5, 0],
-      y: [0, 0, 5.5, 5.5, 0, 0, 5.5, 5.5],
-      z: [5.5, 5.5, 5.5, 5.5, 11, 11, 11, 11],
-      alphahull: 1,
-      flatshading: true,
-      opacity: 0.3,
-      color: "#CC1111",
-      lighting: {
-        diffuse: 0.1,
-        specular: 2.0,
-        roughness: 0.5,
-      },
-    },
-    {
-      // Top-front-right
-      type: "mesh3d",
-      x: [5.5, 11, 11, 5.5, 5.5, 11, 11, 5.5],
-      y: [0, 0, 5.5, 5.5, 0, 0, 5.5, 5.5],
-      z: [5.5, 5.5, 5.5, 5.5, 11, 11, 11, 11],
-      alphahull: 1,
-      flatshading: true,
-      opacity: 0.3,
-      color: "#FFAA22",
-      lighting: {
-        diffuse: 0.1,
-        specular: 2.0,
-        roughness: 0.5,
-      },
-    },
-    {
-      // Top-back-left
-      type: "mesh3d",
-      x: [0, 5.5, 5.5, 0, 0, 5.5, 5.5, 0],
-      y: [5.5, 5.5, 11, 11, 5.5, 5.5, 11, 11],
-      z: [5.5, 5.5, 5.5, 5.5, 11, 11, 11, 11],
-      alphahull: 1,
-      flatshading: true,
-      opacity: 0.3,
-      color: "#CC1111",
-      lighting: {
-        diffuse: 0.1,
-        specular: 2.0,
-        roughness: 0.5,
-      },
-    },
-    {
-      // Top-back-right
-      type: "mesh3d",
-      x: [5.5, 11, 11, 5.5, 5.5, 11, 11, 5.5],
-      y: [5.5, 5.5, 11, 11, 5.5, 5.5, 11, 11],
-      z: [5.5, 5.5, 5.5, 5.5, 11, 11, 11, 11],
-      alphahull: 1,
-      flatshading: true,
-      opacity: 0.3,
-      color: "#FFAA22",
-      lighting: {
-        diffuse: 0.1,
-        specular: 2.0,
-        roughness: 0.5,
-      },
-    },
-  ];
 
   const cubeLabels: TextLabel[] = [
     {
@@ -320,7 +200,7 @@ export function Cube() {
                 },
               },
               ...cubeLabels,
-              ...cubeMeshes,
+              ...(quadrants as Partial<ExtendedMesh3d>[]),
             ]}
             layout={{
               paper_bgcolor: "#1B192E",
