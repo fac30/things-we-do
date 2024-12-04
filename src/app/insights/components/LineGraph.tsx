@@ -7,7 +7,7 @@ import clsx from "clsx"; // Make sure to import clsx
 export default function LineGraph({ dataArray }) {
   const [startOfRange, setStartOfRange] = useState<Date>();
   const [endOfRange, setEndOfRange] = useState<Date>();
-  const [selectedButton, setSelectedButton] = useState();
+  const [selectedButton, setSelectedButton] = useState("day");
   const [useNow, setUseNow] = useState(true);
 
   const handleUseNowClick = () => {
