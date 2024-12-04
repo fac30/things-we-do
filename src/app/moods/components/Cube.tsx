@@ -362,10 +362,7 @@ export function Cube() {
                 },
               },
             }}
-            config={{
-              displayModeBar: false,
-              staticPlot: true,
-            }}
+            config={{ displayModeBar: false }}
           />
         </div>
       </div>
