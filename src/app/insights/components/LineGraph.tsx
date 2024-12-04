@@ -1,59 +1,84 @@
 import PlotlyChart from "@/ui/shared/PlotlyChart";
 
 export default function LineGraph({ dataArray }) {
-  // Example data array
   if (!dataArray || dataArray.length === 0) {
-    return <div>No data available for the graph.</div>; // Render a message if no data
+    return <div>No data available for the graph.</div>;
   }
-  // Sort the data array by timestamp
+
   const sortedData = [...dataArray].sort(
     (a, b) => new Date(a._data.timestamp) - new Date(b._data.timestamp)
   );
 
-  // Process data for Plotly
   const xAxis = sortedData.map((entry) =>
     new Date(entry._data.timestamp).toISOString()
-  ); // Convert timestamp to ISO string
+  );
   const dopamineValues = sortedData.map(
     (entry) => entry._data.neurotransmitters.dopamine
-  ); // Extract dopamine values
+  );
 
   const serotoninValues = sortedData.map(
     (entry) => entry._data.neurotransmitters.serotonin
-  ); // Extract serotonin values
+  );
 
   const adrenalineValues = sortedData.map(
     (entry) => entry._data.neurotransmitters.adrenaline
-  ); // Extract serotonin values
+  );
+
+  const now = new Date();
+
+  const startOfDay = new Date(now.setHours(6, 0, 0, 0));
+
+  const endOfDay = new Date(now.setHours(24, 0, 0, 0));
+
+  // (Monday)
+  const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay() + 1));
+
+  // (Sunday)
+  const endOfWeek = new Date(now.setDate(now.getDate() - now.getDay() + 7));
+
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+  const startOfYear = new Date(now.setMonth(0, 1));
+
+  const endOfYear = new Date(now.setMonth(11, 31));
+
+  const showMonthSoFar = false;
+
+  const startOfRange = startOfMonth;
+
+  const endOfRange = showMonthSoFar ? now : endOfMonth;
+
   return (
     <div className="w-11/12 m-auto flex justify-center text-center mb-10 mt-10">
       <PlotlyChart
         data={[
           {
-            x: xAxis, // Time data
-            y: dopamineValues, // Dopamine values
+            x: xAxis,
+            y: dopamineValues,
             type: "scatter",
             mode: "lines+markers",
             marker: { color: "green" },
-            line: { shape: "linear" }, // Smooth curve
+            line: { shape: "linear" },
             name: "Urgent",
           },
           {
-            x: xAxis, // Time data
-            y: serotoninValues, // Dopamine values
+            x: xAxis,
+            y: serotoninValues,
             type: "scatter",
             mode: "lines+markers",
             marker: { color: "blue" },
-            line: { shape: "linear" }, // Smooth curve
+            line: { shape: "linear" },
             name: "Effortful",
           },
           {
-            x: xAxis, // Time data
-            y: adrenalineValues, // Dopamine values
+            x: xAxis,
+            y: adrenalineValues,
             type: "scatter",
             mode: "lines+markers",
             marker: { color: "red" },
-            line: { shape: "linear" }, // Smooth curve
+            line: { shape: "linear" },
             name: "Worthwile",
           },
         ]}
@@ -64,42 +89,40 @@ export default function LineGraph({ dataArray }) {
             l: 10,
             r: 10,
             t: 5,
-            b: 10,
+            // b: 100,
             pad: 50,
           },
           paper_bgcolor: "#262538",
           plot_bgcolor: "#262538",
           xaxis: {
             title: "",
-            tickformat: "%H:%M:%S", // Display time as HH:MM:SS
+            tickformat: "%H:%M:%S",
             showgrid: false,
             titlefont: {
-              color: "white", // Change x-axis label text color
+              color: "white",
             },
-            showticklabels: false,
+            showticklabels: true,
             tickfont: {
-              color: "white", // Change x-axis tick text color
+              color: "white",
             },
+            range: [startOfRange.toISOString(), endOfRange.toISOString()],
           },
           yaxis: {
             title: "",
-            range: [0, 10], // Adjust as needed
+            range: [0, 10],
             showgrid: false,
             titlefont: {
-              color: "white", // Change x-axis label text color
+              color: "white",
             },
-            // showticklabels: false,
+
             tickfont: {
-              color: "white", // Change x-axis tick text color
+              color: "white",
             },
           },
           legend: {
             font: {
-              color: "white", // Change general legend text color
+              color: "white",
             },
-            // traceorder: "normal",
-            // itemsizing: "constant",
-            // itemclick: "toggleothers",
           },
           hidesources: true,
         }}
