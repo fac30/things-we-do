@@ -15,7 +15,7 @@ const headerClasses = `
         </div>
   
 
-        <div className="relative w-16 h-16 sm:w-12 sm:h-12">
+        <div className="w-16 h-16 sm:w-12 sm:h-12">
           <ImageComponent
             src="/icons/image_toolkit.png"
             alt="Logo"

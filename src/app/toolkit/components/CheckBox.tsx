@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import DatabaseManager from "@/lib/db/DatabaseManager";
 import { 
   DndContext, 
   closestCenter, 
@@ -32,27 +33,24 @@ export default function CheckBox() {
   const isEmpty = data.length === 0;
 
   useEffect(() => {
-    console.log('useeffect');
+    console.log('Fetching toolkit items...');
     const fetchData = async () => {
       try {
-
-        const db = await rxdbInit();
-
-        const itemsCollection = db.toolkit_items;
-
-        const items = await itemsCollection.find().exec();
-        console.log(items);
-
-        setData(items.map((doc) => doc.toJSON())); 
-
+        const items = await DatabaseManager.getFromDb("toolkit_items");
+        if (items) {
+          console.log("Fetched toolkit items:", items);
+          setData(items.map((doc) => doc.toJSON())); // Convert RxDocument to plain JSON
+        } else {
+          console.log("No items found in toolkit_items collection.");
+        }
       } catch (error) {
-        console.error("Error fetching tasks from database:", error);
+        console.error("Error fetching toolkit items from database:", error);
       }
     };
     fetchData();
   }, [isEmpty]);
 
-  // Toggle checkbox state
+  // have to be fixed - Toggle checkbox state
   const handleToggle = (id: string) => {
     setData((prevData) =>
       prevData.map((item) =>
@@ -61,7 +59,7 @@ export default function CheckBox() {
     );
   };
 
-  // Delete an item
+  // have to be fixed - Delete an item
   const handleDelete = (id: string) => {
     setData((prevData) => prevData.filter((item) => item.id !== id));
   };

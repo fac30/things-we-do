@@ -18,6 +18,16 @@ interface SortableItemProps {
   handleDelete: (id: string) => void;
 }
 
+const isValidUrl = (url: string | undefined): boolean => {
+  if (!url) return false; // Explicitly return false if URL is undefined or empty
+  try {
+    new URL(url); // Valid URL creation
+    return true;  // Explicitly return true for valid URLs
+  } catch {
+    return false; // Explicitly return false for invalid URLs
+  }
+};
+
 export default function SortableItem({
   item,
   handleToggle,
@@ -49,10 +59,7 @@ export default function SortableItem({
         <input
           type="checkbox"
           checked={item.checked}
-          onChange={() => {
-            console.log("Checkbox clicked for ID:", item.id);
-            handleToggle(item.id);
-          }}
+          onChange={() => handleToggle(item.id)}
           className="h-5 w-5 border-white bg-twd-background text-twd-background rounded focus:ring focus:ring-blue-300"
         />
         <p
@@ -67,11 +74,15 @@ export default function SortableItem({
       {/* Second Row: Image, Link, and Delete Button */}
       <div className="flex items-center justify-between mt-2 pl-8 w-full">
         {/* Display the image */}
-        <img
+        {isValidUrl(item.imageUrl) ? (
+          <img
             src={item.imageUrl}
             alt={item.name}
             className="h-10 w-10 object-cover"
-        />
+          />
+        ) : (
+          <span className="text-gray-400">No Image</span>
+        )}
         <a
           href={item.infoUrl}
           target="_blank"

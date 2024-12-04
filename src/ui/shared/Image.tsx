@@ -14,7 +14,17 @@ function ImageComponent({
   className?: string;
 }) {
   return (
-    <div className={`${className}`}>
+    // <div className={`${className}`}>
+    <div
+      className={`relative ${className} ${
+        rounded ? "rounded-full overflow-hidden" : ""
+      }`}
+      style={{
+        position: "relative", // Ensure valid position
+        width: "100%", // Ensure the parent container has width
+        height: "100%", // Ensure the parent container has height
+      }}
+    >
       <Image
         src={src}
         alt={alt}

@@ -8,7 +8,7 @@ export default function AddDescription() {
       <p className="text-white">Description</p>
       <input
         type="text"
-        value={formState.name}
+        value={formState.description}
         onChange={(e) =>
           setFormState((prev) => ({
             ...prev,
