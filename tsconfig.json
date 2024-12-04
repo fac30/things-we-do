@@ -34,7 +34,8 @@
     ".next/types/**/*.ts",
     "src/app/sw.ts",
     "src/lib/db/rxdbInit.ts",
-    "src/lib/db/rxdbSeed.ts"
-, "jest.setup.ts", "__tests__/addTool"  ],
+    "src/lib/db/rxdbSeed.ts",
+    "jest.setup.ts"
+  ],
   "exclude": ["node_modules", "public/sw.js"]
 }
