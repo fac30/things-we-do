@@ -74,6 +74,20 @@ class DatabaseManager {
       console.error("Error adding document to database:", error);
     }
   }
+
+  async addCategory(name: string) {
+    try {
+      const doc = {
+        name: name,
+        timestamp: new Date().toISOString()
+      };
+
+      return await this.addToDb("categories", doc);
+    } catch (error) {
+      console.error("Error adding category to database:", error);
+      throw error;
+    }
+  }
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
