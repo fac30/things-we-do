@@ -1,30 +1,73 @@
 import PlotlyChart from "@/ui/shared/PlotlyChart";
 
 export default function LineGraph() {
+  // Example data array
+  const data = [
+    {
+      timestamp: "2024-12-04T10:50:02.043Z",
+      neurotransmitters: {
+        adrenaline: 6,
+        dopamine: 5,
+        serotonin: 4,
+      },
+    },
+    {
+      timestamp: "2024-12-04T12:30:45.123Z",
+      neurotransmitters: {
+        adrenaline: 7,
+        dopamine: 8,
+        serotonin: 6,
+      },
+    },
+    {
+      timestamp: "2024-12-04T14:15:10.567Z",
+      neurotransmitters: {
+        adrenaline: 5,
+        dopamine: 6,
+        serotonin: 5,
+      },
+    },
+  ];
+
+  // Process data for Plotly
+  const xAxis = data.map((entry) => new Date(entry.timestamp).toISOString()); // Convert timestamp to ISO string
+  const yAxis = data.map((entry) => entry.neurotransmitters.dopamine); // Extract dopamine values
+
   return (
-    <div className=" w-11/12 m-auto flex justify-center text-center mb-10 mt-10">
+    <div className="w-11/12 m-auto flex justify-center text-center mb-10 mt-10">
       <PlotlyChart
         data={[
           {
-            x: [1, 2, 3],
-            y: [2, 6, 3],
+            x: xAxis, // Time data
+            y: yAxis, // Dopamine values
             type: "scatter",
             mode: "lines+markers",
             marker: { color: "blue" },
+            line: { shape: "spline" }, // Smooth curve
           },
         ]}
         layout={{
           width: 350,
           height: 200,
           margin: {
-            l: 0,
-            r: 0,
+            l: 15,
+            r: 10,
             t: 5,
-            b: 0,
+            b: 20,
             pad: 0,
           },
           paper_bgcolor: "#262538",
           plot_bgcolor: "#262538",
+          xaxis: {
+            title: "Time (24-hour format)",
+            tickformat: "%H:%M:%S", // Display time as HH:MM:SS
+            showgrid: false,
+          },
+          yaxis: {
+            title: "Dopamine Levels",
+            range: [0, 10], // Adjust as needed
+            showgrid: true,
+          },
           hidesources: true,
         }}
         config={{ displayModeBar: false }}
