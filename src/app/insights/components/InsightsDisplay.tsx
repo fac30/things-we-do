@@ -31,7 +31,7 @@ export default function InsightsDisplay() {
 
   return (
     <>
-      <LineGraph />
+      <LineGraph dataArray={insights} />
       {insights ? (
         insights.map((insight, index) => (
           <div key={index} className="mb-5">

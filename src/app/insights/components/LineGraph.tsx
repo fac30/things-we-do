@@ -1,7 +1,10 @@
 import PlotlyChart from "@/ui/shared/PlotlyChart";
 
-export default function LineGraph() {
+export default function LineGraph({ dataArray }) {
   // Example data array
+  if (!dataArray || dataArray.length === 0) {
+    return <div>No data available for the graph.</div>; // Render a message if no data
+  }
   const data = [
     {
       timestamp: "2024-12-04T10:50:02.043Z",
@@ -30,8 +33,12 @@ export default function LineGraph() {
   ];
 
   // Process data for Plotly
-  const xAxis = data.map((entry) => new Date(entry.timestamp).toISOString()); // Convert timestamp to ISO string
-  const yAxis = data.map((entry) => entry.neurotransmitters.dopamine); // Extract dopamine values
+  const xAxis = dataArray.map((entry) =>
+    new Date(entry._data.timestamp).toISOString()
+  ); // Convert timestamp to ISO string
+  const yAxis = dataArray.map(
+    (entry) => entry._data.neurotransmitters.dopamine
+  ); // Extract dopamine values
 
   return (
     <div className="w-11/12 m-auto flex justify-center text-center mb-10 mt-10">
