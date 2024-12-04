@@ -10,7 +10,6 @@ import {
   ToolkitFormProvider,
   useToolkitForm,
 } from "@/context/ToolkitFormContext";
-
 import Button from "@/ui/shared/Button";
 import DatabaseManager from "@/lib/db/DatabaseManager";
 import { validateUrl } from "@/lib/utils/validateUrl";
@@ -22,7 +21,11 @@ function SubmitButton() {
   const handleSubmit = async () => {
     console.log(`Validating form with state: ${JSON.stringify(formState)}`);
     
-    // Validate Info URL if provided
+    if (formState.categories.length === 0) {
+      alert("Please select at least one category");
+      return;
+    }
+
     if (formState.infoUrl) {
       const infoUrlValidation = validateUrl(formState.infoUrl, 'Info URL');
       if (!infoUrlValidation.isValid) {
@@ -33,7 +36,6 @@ function SubmitButton() {
       console.log(`Info URL validated successfully: ${infoUrlValidation.url}`);
     }
 
-    // Validate Image URL if provided
     if (formState.imageUrl) {
       const imageUrlValidation = validateUrl(formState.imageUrl, 'Image URL');
       if (!imageUrlValidation.isValid) {
