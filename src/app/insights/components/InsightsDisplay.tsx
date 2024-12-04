@@ -33,13 +33,13 @@ export default function InsightsDisplay() {
       {insights ? (
         insights.map((insight, index) => (
           <div key={index} className="mb-5">
-            <h1>dopamine: {insight.neurotransmitters.dopamine}</h1>
-            <h1>serotonin: {insight.neurotransmitters.serotonin}</h1>
-            <h1>adrenaline: {insight.neurotransmitters.adrenaline}</h1>
+            <p>dopamine: {insight.neurotransmitters.dopamine}</p>
+            <p>serotonin: {insight.neurotransmitters.serotonin}</p>
+            <p>adrenaline: {insight.neurotransmitters.adrenaline}</p>
           </div>
         ))
       ) : (
-        <h1>No insights available</h1>
+        <p>No insights available</p>
       )}
     </>
   );
