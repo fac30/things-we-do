@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link"; // Import Next.js Link component
-import Button from "../../../ui/shared/Button";
+import Button from "@/ui/shared/Button";
 
 export default function FloatingButton() {
   return (

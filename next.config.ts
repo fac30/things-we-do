@@ -14,6 +14,7 @@ export default async (phase: any) => {
     const withSerwist = serwist({
       swSrc: "src/app/sw.ts",
       swDest: "public/sw.js",
+      maximumFileSizeToCacheInBytes: 5000000,
     });
     return withSerwist(baseConfig);
   }
