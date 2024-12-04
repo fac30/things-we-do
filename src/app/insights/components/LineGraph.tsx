@@ -1,6 +1,7 @@
 import PlotlyChart from "@/ui/shared/PlotlyChart";
 import { useState, useEffect } from "react";
-import { start } from "repl";
+// import { start } from "repl";
+import Button from "@/ui/shared/Button";
 
 export default function LineGraph({ dataArray }) {
   const [startOfRange, setStartOfRange] = useState<Date>();
@@ -80,84 +81,108 @@ export default function LineGraph({ dataArray }) {
     (entry) => entry._data.neurotransmitters.adrenaline
   );
 
+  const dateOptions = ["day", "week", "month", "year"];
+
+  const handleDateChange = (dateChoice) => {
+    setStartOfRange(dateParams[dateChoice].start);
+    setEndOfRange(dateParams[dateChoice].end);
+  };
+
   return (
-    <div className="w-11/12 m-auto flex justify-center text-center mb-10 mt-10">
-      <PlotlyChart
-        data={[
-          {
-            x: xAxis,
-            y: dopamineValues,
-            type: "scatter",
-            mode: "lines+markers",
-            marker: { color: "green" },
-            line: { shape: "linear" },
-            name: "Urgent",
-          },
-          {
-            x: xAxis,
-            y: serotoninValues,
-            type: "scatter",
-            mode: "lines+markers",
-            marker: { color: "blue" },
-            line: { shape: "linear" },
-            name: "Effortful",
-          },
-          {
-            x: xAxis,
-            y: adrenalineValues,
-            type: "scatter",
-            mode: "lines+markers",
-            marker: { color: "red" },
-            line: { shape: "linear" },
-            name: "Worthwile",
-          },
-        ]}
-        layout={{
-          width: 350,
-          height: 350,
-          margin: {
-            l: 10,
-            r: 10,
-            t: 5,
+    <>
+      <div className="">
+        {dateOptions.map((date, index) => {
+          return (
+            <>
+              <div>
+                <Button
+                  key={index}
+                  label={date}
+                  onClick={() => handleDateChange(date)}
+                />
+              </div>
+            </>
+          );
+        })}
+      </div>
+      <div className="w-11/12 m-auto flex justify-center text-center mb-10 mt-10">
+        <PlotlyChart
+          data={[
+            {
+              x: xAxis,
+              y: dopamineValues,
+              type: "scatter",
+              mode: "lines+markers",
+              marker: { color: "green" },
+              line: { shape: "linear" },
+              name: "Urgent",
+            },
+            {
+              x: xAxis,
+              y: serotoninValues,
+              type: "scatter",
+              mode: "lines+markers",
+              marker: { color: "blue" },
+              line: { shape: "linear" },
+              name: "Effortful",
+            },
+            {
+              x: xAxis,
+              y: adrenalineValues,
+              type: "scatter",
+              mode: "lines+markers",
+              marker: { color: "red" },
+              line: { shape: "linear" },
+              name: "Worthwile",
+            },
+          ]}
+          layout={{
+            width: 350,
+            height: 350,
+            margin: {
+              l: 10,
+              r: 10,
+              t: 5,
 
-            pad: 50,
-          },
-          paper_bgcolor: "#262538",
-          plot_bgcolor: "#262538",
-          xaxis: {
-            title: "",
-            tickformat: "%H:%M:%S",
-            showgrid: false,
-            titlefont: {
-              color: "white",
+              pad: 50,
             },
-            showticklabels: true,
-            tickfont: {
-              color: "white",
+            paper_bgcolor: "#262538",
+            plot_bgcolor: "#262538",
+            xaxis: {
+              title: "",
+              tickformat: "%H:%M:%S",
+              showgrid: false,
+              titlefont: {
+                color: "white",
+              },
+              showticklabels: true,
+              tickfont: {
+                color: "white",
+              },
+              range: [startOfRange.toISOString(), endOfRange.toISOString()],
             },
-            range: [startOfRange.toISOString(), endOfRange.toISOString()],
-          },
-          yaxis: {
-            title: "",
-            range: [0, 10],
-            showgrid: false,
-            titlefont: {
-              color: "white",
-            },
+            yaxis: {
+              title: "",
+              range: [0, 10],
+              showgrid: false,
+              titlefont: {
+                color: "white",
+              },
 
-            tickfont: {
-              color: "white",
+              tickfont: {
+                color: "white",
+              },
             },
-          },
-          legend: {
-            font: {
-              color: "white",
+            legend: {
+              font: {
+                color: "white",
+              },
             },
-          },
-          hidesources: true,
-        }}
-        config={{ displayModeBar: false }}
-      />
-    </div>
+            hidesources: true,
+          }}
+          config={{ displayModeBar: false }}
+        />
+      </div>
+    </>
   );
 }
