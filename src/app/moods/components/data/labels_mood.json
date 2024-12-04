@@ -40,7 +40,7 @@
   },
   {
     "type": "scatter3d",
-    "x": [7.75],
+    "x": [8.25],
     "y": [5.5],
     "z": [2.75],
     "text": ["Content"],
@@ -56,7 +56,7 @@
     "x": [0],
     "y": [0],
     "z": [10],
-    "text": ["Fight/flight"],
+    "text": ["Fight/flight", "Delegate it"],
     "mode": "text",
     "textposition": "middle right",
     "textfont": {
@@ -81,7 +81,7 @@
     "type": "scatter3d",
     "x": [2.75],
     "y": [5.5],
-    "z": [7.75],
+    "z": [8.25],
     "text": ["Freeze"],
     "mode": "text",
     "textposition": "middle center",
@@ -92,9 +92,9 @@
   },
   {
     "type": "scatter3d",
-    "x": [7.75],
+    "x": [8.25],
     "y": [5.5],
-    "z": [7.75],
+    "z": [8.25],
     "text": ["Joy"],
     "mode": "text",
     "textposition": "middle center",
