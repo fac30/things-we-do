@@ -55,7 +55,7 @@ class DatabaseManager {
     if (!this.dbInstance) {
       this.dbInstance = await createRxDatabase({
         name: "database",
-        ignoreDuplicate: true,
+        //ignoreDuplicate: true,
         storage: getRxStorageDexie(),
       });
 
@@ -147,17 +147,17 @@ class DatabaseManager {
 
       console.log("Checking if toolkit_items collection is already seeded...");
 
-        const existingDocuments = await toolkitCollection.find().exec();
+      const existingDocuments = await toolkitCollection.find().exec();
 
-        if (existingDocuments.length > 0) {
+      if (existingDocuments.length > 0) {
             console.log("Toolkit items collection is already seeded. Skipping seeding process.");
             return;
         }
 
-        console.log("Seeding toolkit_items collection with initial data...");
-        const insertedDocs = await toolkitCollection.bulkInsert(toolkitSeedData);
+      console.log("Seeding toolkit_items collection with initial data...");
+      const insertedDocs = await toolkitCollection.bulkInsert(toolkitSeedData);
 
-        console.log("Seed data successfully inserted:", insertedDocs);
+      console.log("Seed data successfully inserted:", insertedDocs);
     } catch (error) {
         console.error("Error seeding the database:", error);
     }
