@@ -1,14 +1,12 @@
-
-import CategoryBar from '../../ui/CategoryBar/CategoryBar';
-import SearchBar from './components/SearchBar';
-import CheckBox from './components/CheckBox';
-import FloatingButton from './components/floatingButton';
-
+import CategoryBar from "@/app/toolkit/components/CategoryBar";
+import SearchBar from "@/app/toolkit/components/SearchBar";
+import CheckBox from "@/app/toolkit/components/CheckBox";
+import FloatingButton from "@/app/toolkit/components/floatingButton";
 
 export default function ToolkitPage() {
   return (
     <div className="relative h-full">
-      {/* Shared Header and CategoryBar */}  
+      {/* Shared Header and CategoryBar */}
       <CategoryBar />
 
       {/* Shared SearchBar and CheckBox */}
@@ -22,4 +20,3 @@ export default function ToolkitPage() {
     </div>
   );
 }
-
