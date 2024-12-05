@@ -1,8 +1,8 @@
 import PlotlyChart from "@/ui/shared/PlotlyChart";
 import { useState, useEffect } from "react";
-// import { start } from "repl";
+
 import Button from "@/ui/shared/Button";
-import clsx from "clsx"; // Make sure to import clsx
+import clsx from "clsx";
 
 export default function LineGraph({ dataArray }) {
   const [startOfRange, setStartOfRange] = useState<Date>();
@@ -36,7 +36,8 @@ export default function LineGraph({ dataArray }) {
         0
       ),
     },
-    // Monday to Sunday
+
+    // This is from Monday to Sunday
     week: {
       start: new Date(
         now.getFullYear(),
@@ -105,8 +106,8 @@ export default function LineGraph({ dataArray }) {
               label={dateOption}
               onClick={() => handleDateChange(dateOption)}
               className={clsx(
-                "font-normal", // base classes
-                isActive && "bg-twd-primary-purple text-white" // add active class when selected
+                "font-normal",
+                isActive && "bg-twd-primary-purple text-white"
               )}
             />
           );
