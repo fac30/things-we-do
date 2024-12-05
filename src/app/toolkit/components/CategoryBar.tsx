@@ -1,6 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "@/ui/shared/Button";
+import DatabaseManager from "@/lib/db/DatabaseManager";
+
+interface Category {
+  id: string;
+  name: string;
+  timestamp: string;
+}
 
 const categoryBarClass = `
   whitespace-nowrap flex items-center gap-4 px-4 py-2 
@@ -9,16 +16,19 @@ const categoryBarClass = `
 `;
 
 const CategoryBar = () => {
-  const categories = [
-    "All",
-    "Replace",
-    "Distract",
-    "Barrier",
-    "Change state",
-    "Category 5",
-    "Category 6",
-    "Category 7",
-  ];
+  const [categories, setCategories] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const allCategories = await DatabaseManager.getFromDb("categories");
+      if (allCategories) {
+        setCategories(allCategories.map((cat: Category) => cat.name));
+      } else {
+        setCategories([]);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 

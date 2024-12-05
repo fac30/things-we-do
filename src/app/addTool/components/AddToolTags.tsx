@@ -10,14 +10,12 @@ interface Category {
 }
 
 export default function AddTags() {
-  //==> State
   const { formState, setFormState } = useToolkitForm();
 
   const [categories, setCategories] = useState<string[]>([]);
   const [newCategory, setNewCategory] = useState<string>("");
   const [isAddingNew, setIsAddingNew] = useState(false);
 
-  //==> Hooks & Callbacks
   useEffect(() => {
     const fetchCategories = async () => {
       const allCategories = await DatabaseManager.getFromDb("categories");
@@ -49,7 +47,6 @@ export default function AddTags() {
     }));
   };
 
-  //==> Render
   return (
     <div>
       <p className="text-white">Tags</p>
