@@ -9,10 +9,10 @@ interface SortableItemProps {
     name: string;
     category: string[];
     checked: boolean;
-    description?: string,
-    infoUrl: string,
-    imageUrl: string,
-    timestamp?: string,
+    description?: string;
+    infoUrl: string;
+    imageUrl: string;
+    timestamp?: string;
   };
   handleToggle: (id: string) => void;
   handleDelete: (id: string) => void;
@@ -33,13 +33,8 @@ export default function SortableItem({
   handleToggle,
   handleDelete,
 }: SortableItemProps) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({ id: item.id });
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: item.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -87,7 +82,7 @@ export default function SortableItem({
           href={item.infoUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-twd-text-link hover:underline"
+          className="text-twd-text-link"
         >
           Go to resource
         </a>

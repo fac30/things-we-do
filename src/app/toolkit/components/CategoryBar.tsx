@@ -47,7 +47,7 @@ const CategoryBar = () => {
               isActive
                 ? "bg-twd-secondary-purple text-white"
                 : "bg-twd-background text-white"
-            } hover:bg-twd-secondary-purple`}
+            } `}
             onClick={() => handleCategoryClick(category)}
             ariaPressed={isActive}
           />
