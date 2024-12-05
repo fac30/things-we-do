@@ -22,8 +22,14 @@ export default function InsightsDisplay() {
 
   const getInsights = async () => {
     const myInsights = await DatabaseManager.getFromDb("mood_records");
+
+    if (!myInsights) {
+      console.log("No insights found.");
+      setInsights([]);
+      return;
+    }
     const goodInsights = retrieveDataObject(myInsights);
-    console.log(goodInsights);
+
     setInsights(goodInsights);
   };
 
