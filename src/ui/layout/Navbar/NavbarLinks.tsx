@@ -13,7 +13,12 @@ import NavLink from "../../shared/NavLink";
 const links = [
   { title: "Home", icon: HomeIcon, destination: "/" },
   { title: "Moods", icon: PresentationChartLineIcon, destination: "/moods" },
-  { title: "Toolkit", icon: WrenchIcon, destination: "/toolkit" },
+  {
+    title: "Toolkit",
+    icon: WrenchIcon,
+    destination: "/toolkit",
+    isToolkit: true,
+  },
   { title: "Needs", icon: EllipsisHorizontalCircleIcon, destination: "/needs" },
   { title: "Insights", icon: ChartBarIcon, destination: "/insights" },
 ];
@@ -27,6 +32,7 @@ export default function NavbarLinks() {
           title={link.title}
           Icon={link.icon}
           destination={link.destination}
+          isToolkit={link.isToolkit}
         />
       ))}
     </div>
