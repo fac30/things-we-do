@@ -39,6 +39,7 @@ export default function CheckBox() {
         
         if (items) {
           setData(items.map((doc) => doc.toJSON()));
+          console.log("Collection content:", data);
         } else {
           console.log("No items found in toolkit_items collection.");
         }
@@ -49,7 +50,7 @@ export default function CheckBox() {
     fetchData();
   }, [isEmpty]);
 
-  // have to be fixed - Toggle checkbox state
+
   const handleToggle = (id: string) => {
     setData((prevData) =>
       prevData.map((item) =>
@@ -58,9 +59,23 @@ export default function CheckBox() {
     );
   };
 
-  // have to be fixed - Delete an item
-  const handleDelete = (id: string) => {
-    setData((prevData) => prevData.filter((item) => item.id !== id));
+
+  const handleDelete = async (id: string) => {
+    console.log(`handleDelete called with ID: ${id}`);
+  
+    try {
+      console.log(`Attempting to delete from database: ${id}`);
+      await DatabaseManager.deleteFromDb("toolkit_items", id);
+      console.log(`Successfully deleted from database: ${id}`);
+  
+      setData((prevData) => {
+        const updatedData = prevData.filter((item) => item.id !== id);
+        console.log("Updated state after deletion:", updatedData);
+        return updatedData;
+      });
+    } catch (error) {
+      console.error("Error in handleDelete:", error);
+    }
   };
 
   // Handle drag-and-drop reorder

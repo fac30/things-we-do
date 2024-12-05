@@ -1,7 +1,7 @@
 "use client";
+import Button from "@/ui/shared/Button";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import Button from "@/ui/shared/Button";
 
 interface SortableItemProps {
   item: {
@@ -59,7 +59,7 @@ export default function SortableItem({
         <input
           type="checkbox"
           checked={item.checked}
-          onChange={() => handleToggle(item.id)}
+          onClick={() => handleToggle(item.id)}
           className="h-5 w-5 border-white bg-twd-background text-twd-background rounded focus:ring focus:ring-blue-300"
         />
         <p
@@ -91,7 +91,7 @@ export default function SortableItem({
         >
           Go to resource
         </a>
-        <Button label="Delete" onClick={() => handleDelete(item.id)} />
+        <Button label="Delete" onClick={() => handleDelete(item.id)}/>
       </div>
     </div>
   );

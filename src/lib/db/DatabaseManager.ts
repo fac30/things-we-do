@@ -55,7 +55,7 @@ class DatabaseManager {
     if (!this.dbInstance) {
       this.dbInstance = await createRxDatabase({
         name: "database",
-        //ignoreDuplicate: true,
+        ignoreDuplicate: true,
         storage: getRxStorageDexie(),
       });
 
@@ -83,13 +83,13 @@ class DatabaseManager {
         console.error("Toolkit items collection does not exist");
         return;
       }
-      console.log("Checking if toolkit_items collection is already seeded...");
+      //console.log("Checking if toolkit_items collection is already seeded...");
       const existingDocuments = await toolkitCollection.find().exec();
       if (existingDocuments.length > 0) {
-            console.log("Toolkit items collection is already seeded. Skipping seeding process.");
+            //console.log("Toolkit items collection is already seeded. Skipping seeding process.");
             return;
         }
-      console.log("Seeding toolkit_items collection with initial data...");
+      //console.log("Seeding toolkit_items collection with initial data...");
       const insertedDocs = await toolkitCollection.bulkInsert(toolkitSeedData);
       console.log("Seed data successfully inserted:", insertedDocs);
     } catch (error) {
@@ -99,14 +99,6 @@ class DatabaseManager {
 
   async getFromDb(collection: string) {
     const db = await this.initialiseDatabase();
-    // if (db) {
-    //   const myCollection = await db[collection].find().exec();
-    //   console.log(myCollection);
-    //   return myCollection;
-    // } else {
-    //   console.log("failed: get data from this collection");
-    //   return null;
-    // }
     if (db) {
       const collectionExists = db[collection];
       if (!collectionExists) {
@@ -161,6 +153,31 @@ class DatabaseManager {
       return await this.addToDb("categories", doc);
     } catch (error) {
       console.error("Error adding category to database:", error);
+      throw error;
+    }
+  }
+
+  
+  async deleteFromDb(collectionName: string, docId: string): Promise<void> {
+    try {
+      const db = await this.initialiseDatabase();
+      console.log("Database instance initialized:", db);
+      const collection = db[collectionName];
+      if (!collection) {
+        throw new Error(`Collection '${collectionName}' does not exist`);
+      }
+      console.log(`Attempting to find document with ID: ${docId}`);
+
+      const document = await collection.findOne({ selector: { id: docId } }).exec();
+
+      console.log("Found document:", document);
+      if (!document) {
+        throw new Error(`Document with ID '${docId}' not found`);
+      }
+      await document.remove();
+      console.log(`Document with ID '${docId}' successfully removed`);
+    } catch (error) {
+      console.error(`Error in deleteFromDb:`, error);
       throw error;
     }
   }
