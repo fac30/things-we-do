@@ -41,9 +41,9 @@ export default function MoodsPage() {
     <NeurochemContext.Provider value={{ neuroState, setNeuroState }}>
       <div className="flex flex-col gap-4">
         <Header
-          title="Decision maker"
+          title="Decision Maker"
           description="assess your mood before making a decision."
-          Icon={PresentationChartLineIcon}
+          isHome={false}
         />
         <Cube />
         <SliderBox />
