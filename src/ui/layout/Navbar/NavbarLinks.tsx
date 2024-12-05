@@ -25,7 +25,7 @@ const links = [
 
 export default function NavbarLinks() {
   return (
-    <div className="flex justify-between items-center h-full w-11/12 m-auto">
+    <div className="grid grid-cols-5 items-center h-full w-11/12 m-auto">
       {links.map((link, index) => (
         <NavLink
           key={index}
