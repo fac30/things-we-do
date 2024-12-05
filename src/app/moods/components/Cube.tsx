@@ -4,7 +4,7 @@ import { useContext, useMemo, useState } from "react";
 import { NeurochemContext } from "@/context/NeurochemContext";
 import { PlotData } from "plotly.js";
 
-import MatrixToggle from "./MatrixToggle";
+import Toggle from "@/ui/shared/Toggle";
 import PlotlyChart from "@/ui/shared/PlotlyChart";
 
 import quadrants from "./data/quadrants.json";
@@ -76,9 +76,12 @@ export function Cube() {
 
   return (
     <>
-      <MatrixToggle
-        isPriorityMatrix={isPriorityMatrix}
-        setIsPriorityMatrix={setIsPriorityMatrix}
+      <Toggle
+        isToggled={isPriorityMatrix}
+        setIsToggled={setIsPriorityMatrix}
+        toggledOff={"Mood"}
+        toggledOn={"Priority"}
+        showLabels={true}
       />
       <div className="flex flex-col items-center justify-center w-full">
         <div className="relative flex justify-center w-full">
