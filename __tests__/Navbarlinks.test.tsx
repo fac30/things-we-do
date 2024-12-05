@@ -19,7 +19,7 @@ describe("NavbarLinks", () => {
     // Check if all link titles are rendered
     expect(screen.getByText("Home")).toBeInTheDocument();
     expect(screen.getByText("Moods")).toBeInTheDocument();
-    expect(screen.getByText("Toolkit")).toBeInTheDocument();
+    //expect(screen.getByText("Toolkit")).toBeInTheDocument(); toolkit text removed from navbar
     expect(screen.getByText("Needs")).toBeInTheDocument();
     expect(screen.getByText("Insights")).toBeInTheDocument();
   });
@@ -47,8 +47,8 @@ describe("NavbarLinks", () => {
     const navContainer = container.firstChild;
 
     expect(navContainer).toHaveClass(
-      "grid",
-      "grid-cols-5",
+      "flex",
+      "justify-between",
       "items-center",
       "h-full",
       "w-11/12",
