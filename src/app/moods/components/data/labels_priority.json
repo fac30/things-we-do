@@ -1,0 +1,54 @@
+[
+  {
+    "type": "scatter3d",
+    "x": [2.75],
+    "y": [0],
+    "z": [2.75],
+    "text": ["Delete it"],
+    "mode": "text",
+    "textposition": "middle center",
+    "textfont": {
+      "size": 15,
+      "color": "white"
+    }
+  },
+  {
+    "type": "scatter3d",
+    "x": [8.25],
+    "y": [0],
+    "z": [2.75],
+    "text": ["Schedule it"],
+    "mode": "text",
+    "textposition": "middle center",
+    "textfont": {
+      "size": 15,
+      "color": "white"
+    }
+  },
+  {
+    "type": "scatter3d",
+    "x": [2.75],
+    "y": [0],
+    "z": [8.25],
+    "text": ["Delegate it"],
+    "mode": "text",
+    "textposition": "middle center",
+    "textfont": {
+      "size": 15,
+      "color": "white"
+    }
+  },
+  {
+    "type": "scatter3d",
+    "x": [8.25],
+    "y": [0],
+    "z": [8.25],
+    "text": ["Do it first"],
+    "mode": "text",
+    "textposition": "middle center",
+    "textfont": {
+      "size": 15,
+      "color": "white"
+    }
+  }
+]
