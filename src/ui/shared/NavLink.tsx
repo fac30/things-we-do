@@ -17,11 +17,14 @@ export default function NavLink({ title, Icon, destination }: NavLinkProps) {
   return (
     <Link
       href={destination}
-      className={clsx(`flex flex-col items-center rounded-3xl p-1 py-3`, {
-        "bg-purple-900": isActive,
-      })}
+      className={clsx(
+        `flex flex-col items-center justify-center w-14 h-14 text-gray-400`,
+        {
+          " text-white": isActive,
+        }
+      )}
     >
-      {Icon && <Icon className="h-6 w-6 text-white" />}
+      {Icon && <Icon className="h-7 w-7" />}
       <p className="text-xs mt-1">{title}</p>
     </Link>
   );
