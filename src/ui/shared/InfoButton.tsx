@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
@@ -20,10 +21,12 @@ export default function InfoButton({
   const togglePopup = () => setIsPopupOpen(!isPopupOpen);
   const closePopup = () => setIsPopupOpen(false);
   const openInfo = () => {
-    const basePath = window.location.pathname.endsWith("/")
-      ? window.location.pathname.slice(0, -1)
-      : window.location.pathname;
-    router.push(`${basePath}/info`);
+    if (typeof window !== "undefined") {
+      const basePath = window.location.pathname.endsWith("/")
+        ? window.location.pathname.slice(0, -1)
+        : window.location.pathname;
+      router.push(`${basePath}/info`);
+    }
   };
 
   useEffect(() => {
