@@ -4,13 +4,10 @@
 /*  */
 
 body {
-  background: #1b192e;
-  color: white;
-  overflow-x: hidden;
+  @apply bg-twd-background text-white overflow-x-hidden;
 }
 header {
-  background: inherit;
-  border-bottom: 2px solid #6b7280; /* Subtle border */
+  @apply bg-inherit;
 }
 
 @layer components {

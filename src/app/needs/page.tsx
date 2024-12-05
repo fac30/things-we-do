@@ -1,9 +1,15 @@
 "use client";
 
+import { Header } from "@/ui/shared/Header";
+
 export default function Page() {
   return (
     <>
-      <h1 className="text-white">this is the needs page</h1>
+      <Header
+        title="Needs"
+        description="address unmet needs and assess next actions."
+        isHome={false}
+      />
     </>
   );
 }
