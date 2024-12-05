@@ -1,9 +1,14 @@
+import { Header } from "@/ui/shared/Header";
 import InsightsDisplay from "./components/InsightsDisplay";
 
 export default function InsightsPage() {
   return (
     <>
-      <h1 className="text-white">this is the insights page</h1>
+      <Header
+        title="Insights"
+        description="analyse your moods and needs over time."
+        isHome={false}
+      />
       <InsightsDisplay />
     </>
   );
