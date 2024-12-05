@@ -25,14 +25,14 @@ export default function AddTags() {
         setCategories([]);
       }
     };
-    
+
     fetchCategories();
   }, []);
-  
+
   const handleAddNewCategory = async () => {
     if (newCategory.trim()) {
       await DatabaseManager.addCategory(newCategory.trim());
-      setCategories(prev => [...prev, newCategory.trim()]);
+      setCategories((prev) => [...prev, newCategory.trim()]);
       setNewCategory("");
       setIsAddingNew(false);
     }
@@ -60,11 +60,11 @@ export default function AddTags() {
               formState.categories.includes(category)
                 ? "bg-twd-secondary-purple text-white"
                 : "bg-twd-background text-white"
-            } hover:bg-twd-secondary-purple`}
+            } `}
             ariaPressed={formState.categories.includes(category)}
           />
         ))}
-        
+
         {isAddingNew ? (
           <div className="flex gap-2">
             <input
@@ -78,7 +78,7 @@ export default function AddTags() {
             <Button
               label="Add"
               onClick={handleAddNewCategory}
-              className="bg-twd-primary-purple hover:bg-twd-secondary-purple text-white"
+              className="bg-twd-primary-purple text-white"
             />
             <Button
               label="Cancel"
@@ -86,14 +86,14 @@ export default function AddTags() {
                 setNewCategory("");
                 setIsAddingNew(false);
               }}
-              className="bg-twd-background hover:bg-twd-secondary-purple text-white"
+              className="bg-twd-background text-white"
             />
           </div>
         ) : (
           <Button
             label="+ New Category"
             onClick={() => setIsAddingNew(true)}
-            className="bg-twd-secondary-purple hover:bg-twd-primary-purple text-white"
+            className="bg-twd-secondary-purple text-white"
           />
         )}
       </div>

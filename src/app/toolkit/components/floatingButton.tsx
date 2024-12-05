@@ -8,7 +8,7 @@ export default function FloatingButton() {
     <Link href="/addTool">
       <Button
         label="Add a Tool"
-        className="fixed bottom-20 right-4 bg-blue-500 text-white shadow-lg hover:bg-blue-600"
+        className="fixed bottom-20 right-4 bg-blue-500 text-white shadow-lg"
       />
     </Link>
   );

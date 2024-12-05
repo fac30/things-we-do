@@ -16,18 +16,18 @@ import { validateUrl } from "@/lib/utils/validateUrl";
 
 function SubmitButton() {
   const router = useRouter();
-  const { formState, /* setFormState */ } = useToolkitForm();
+  const { formState /* setFormState */ } = useToolkitForm();
 
   const handleSubmit = async () => {
     console.log(`Validating form with state: ${JSON.stringify(formState)}`);
-    
+
     if (formState.categories.length === 0) {
       alert("Please select at least one category");
       return;
     }
 
     if (formState.infoUrl) {
-      const infoUrlValidation = validateUrl(formState.infoUrl, 'Info URL');
+      const infoUrlValidation = validateUrl(formState.infoUrl, "Info URL");
       if (!infoUrlValidation.isValid) {
         console.error(`Info URL validation failed: ${infoUrlValidation.error}`);
         alert(infoUrlValidation.error);
@@ -37,13 +37,17 @@ function SubmitButton() {
     }
 
     if (formState.imageUrl) {
-      const imageUrlValidation = validateUrl(formState.imageUrl, 'Image URL');
+      const imageUrlValidation = validateUrl(formState.imageUrl, "Image URL");
       if (!imageUrlValidation.isValid) {
-        console.error(`Image URL validation failed: ${imageUrlValidation.error}`);
+        console.error(
+          `Image URL validation failed: ${imageUrlValidation.error}`
+        );
         alert(imageUrlValidation.error);
         return;
       }
-      console.log(`Image URL validated successfully: ${imageUrlValidation.url}`);
+      console.log(
+        `Image URL validated successfully: ${imageUrlValidation.url}`
+      );
     }
 
     try {
@@ -61,18 +65,22 @@ function SubmitButton() {
       });
 
       console.log(`Created ${formState.name} in the database`);
-      
+
       // Show success message and wait for user acknowledgment
       const userAcknowledged = window.confirm(
         `Successfully added ${formState.name} to your toolkit!\n\nClick OK to return to the toolkit.`
       );
-      
+
       if (userAcknowledged) {
         router.push("/toolkit");
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert(`Failed to save tool: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      alert(
+        `Failed to save tool: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
     }
   };
 
@@ -80,7 +88,7 @@ function SubmitButton() {
     <Button
       label="Add Tool"
       onClick={handleSubmit}
-      className="w-full mt-4 bg-twd-primary-purple hover:bg-twd-secondary-purple"
+      className="w-full mt-4 bg-twd-primary-purple "
     />
   );
 }
