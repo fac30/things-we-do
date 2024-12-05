@@ -1,6 +1,6 @@
 import CategoryBar from "@/app/toolkit/components/CategoryBar";
 import SearchBar from "@/app/toolkit/components/SearchBar";
-import CheckBox from "@/app/toolkit/components/CheckBox";
+import ToolList from "@/app/toolkit/components/ToolList";
 import FloatingButton from "@/app/toolkit/components/floatingButton";
 
 export default function ToolkitPage() {
@@ -12,7 +12,7 @@ export default function ToolkitPage() {
       {/* Shared SearchBar and CheckBox */}
       <div className="p-4">
         <SearchBar />
-        <CheckBox />
+        <ToolList />
       </div>
 
       {/* Floating Button */}

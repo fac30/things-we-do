@@ -33,15 +33,11 @@ const CategoryBar = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const handleCategoryClick = (category: string) => {
-    if (category === "All") {
-      setSelectedCategories(["All"]);
-    } else {
-      setSelectedCategories((prev) =>
-        prev.includes(category)
-          ? prev.filter((c) => c !== category)
-          : [...prev.filter((c) => c !== "All"), category]
-      );
-    }
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
+    );
   };
 
   return (
