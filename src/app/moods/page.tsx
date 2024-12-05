@@ -9,8 +9,6 @@ import Button from "@/ui/shared/Button";
 import DatabaseManager from "../../lib/db/DatabaseManager";
 import { useRouter } from "next/navigation";
 
-import { PresentationChartLineIcon } from "@heroicons/react/24/outline";
-
 export default function MoodsPage() {
   const router = useRouter();
   const [neuroState, setNeuroState] = useState<NeurochemState>({
