@@ -1,6 +1,6 @@
 {
-  "name": "My Awesome PWA app",
-  "short_name": "PWA App",
+  "name": "Things We Do",
+  "short_name": "TWD",
   "icons": [
     {
       "src": "/icons/android-144.png",

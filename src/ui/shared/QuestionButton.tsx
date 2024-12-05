@@ -52,7 +52,7 @@ export default function QuestionMarkButton({
       {/* Question Mark Button */}
       <button
         onClick={togglePopup}
-        className="flex items-center justify-center w-8 h-8 border-2 border-twd-background rounded-full text-white font-bold hover:bg-white hover:text-black transition"
+        className="flex items-center justify-center w-8 h-8 border-2 border-twd-background rounded-full text-white font-bold transition"
       >
         ?
       </button>
@@ -65,7 +65,7 @@ export default function QuestionMarkButton({
           <p className="text-sm">{popupText}</p>
           <button
             onClick={closePopup}
-            className="mt-2 px-3 py-1 bg-gray-700 text-white rounded hover:bg-gray-600"
+            className="mt-2 px-3 py-1 bg-gray-700 text-white rounded"
           >
             Close
           </button>
