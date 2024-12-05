@@ -3,11 +3,15 @@ import { useState, useEffect } from "react";
 
 import Button from "@/ui/shared/Button";
 import clsx from "clsx";
+import { Insight } from "./InsightsDisplay";
 
-export default function LineGraph({ dataArray }) {
-  const [startOfRange, setStartOfRange] = useState<Date>();
-  const [endOfRange, setEndOfRange] = useState<Date>();
-  const [selectedButton, setSelectedButton] = useState("day");
+interface LineGraphProps {
+  dataArray: Insight[];
+}
+
+export default function LineGraph({ dataArray }: LineGraphProps) {
+  const [selectedButton, setSelectedButton] =
+    useState<keyof typeof dateParams>("day");
   const [useNow, setUseNow] = useState(true);
 
   const handleUseNowClick = () => {
@@ -60,6 +64,9 @@ export default function LineGraph({ dataArray }) {
     },
   };
 
+  const [startOfRange, setStartOfRange] = useState<Date>(dateParams.day.start);
+  const [endOfRange, setEndOfRange] = useState<Date>(dateParams.day.end);
+
   useEffect(() => {
     const { start, end } = dateParams[selectedButton];
     setStartOfRange(start);
@@ -71,27 +78,27 @@ export default function LineGraph({ dataArray }) {
   }
 
   const sortedData = [...dataArray].sort(
-    (a, b) => new Date(a._data.timestamp) - new Date(b._data.timestamp)
+    (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
   );
 
   const xAxis = sortedData.map((entry) =>
-    new Date(entry._data.timestamp).toISOString()
+    new Date(entry.timestamp).toISOString()
   );
   const dopamineValues = sortedData.map(
-    (entry) => entry._data.neurotransmitters.dopamine
+    (entry) => entry.neurotransmitters.dopamine
   );
 
   const serotoninValues = sortedData.map(
-    (entry) => entry._data.neurotransmitters.serotonin
+    (entry) => entry.neurotransmitters.serotonin
   );
 
   const adrenalineValues = sortedData.map(
-    (entry) => entry._data.neurotransmitters.adrenaline
+    (entry) => entry.neurotransmitters.adrenaline
   );
 
   const dateOptions = ["day", "week", "month", "year"];
 
-  const handleDateChange = (dateChoice) => {
+  const handleDateChange = (dateChoice: keyof typeof dateParams) => {
     setSelectedButton(dateChoice);
   };
 
@@ -104,7 +111,9 @@ export default function LineGraph({ dataArray }) {
             <Button
               key={index}
               label={dateOption}
-              onClick={() => handleDateChange(dateOption)}
+              onClick={() =>
+                handleDateChange(dateOption as keyof typeof dateParams)
+              }
               className={clsx(
                 "font-normal",
                 isActive && "bg-twd-primary-purple text-white"

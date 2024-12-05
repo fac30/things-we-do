@@ -3,8 +3,9 @@
 import DatabaseManager from "@/lib/db/DatabaseManager";
 import { useEffect, useState } from "react";
 import LineGraph from "./LineGraph";
+import retrieveDataObject from "@/lib/utils/retrieveDataObject";
 
-interface Insight {
+export interface Insight {
   neurotransmitters: {
     dopamine: number;
     serotonin: number;
@@ -21,7 +22,9 @@ export default function InsightsDisplay() {
 
   const getInsights = async () => {
     const myInsights = await DatabaseManager.getFromDb("mood_records");
-    setInsights(myInsights);
+    const goodInsights = retrieveDataObject(myInsights);
+    console.log(goodInsights);
+    setInsights(goodInsights);
   };
 
   useEffect(() => {
@@ -30,18 +33,11 @@ export default function InsightsDisplay() {
 
   return (
     <>
-      <LineGraph dataArray={insights} />
-      {/* {insights ? (
-        insights.map((insight, index) => (
-          <div key={index} className="mb-5">
-            <p>dopamine: {insight.neurotransmitters.dopamine}</p>
-            <p>serotonin: {insight.neurotransmitters.serotonin}</p>
-            <p>adrenaline: {insight.neurotransmitters.adrenaline}</p>
-          </div>
-        ))
+      {insights ? (
+        <LineGraph dataArray={insights} />
       ) : (
-        <p>No insights available</p>
-      )} */}
+        <div>Loading insights...</div>
+      )}
     </>
   );
 }
