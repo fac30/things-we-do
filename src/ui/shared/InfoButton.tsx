@@ -19,7 +19,12 @@ export default function InfoButton({
 
   const togglePopup = () => setIsPopupOpen(!isPopupOpen);
   const closePopup = () => setIsPopupOpen(false);
-  const openInfo = () => router.push(`${window.location.pathname}/info`);
+  const openInfo = () => {
+    const basePath = window.location.pathname.endsWith("/")
+      ? window.location.pathname.slice(0, -1)
+      : window.location.pathname;
+    router.push(`${basePath}/info`);
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
