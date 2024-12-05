@@ -1,5 +1,5 @@
 import PlotlyChart from "@/ui/shared/PlotlyChart";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 import Button from "@/ui/shared/Button";
 import clsx from "clsx";
@@ -17,52 +17,55 @@ export default function LineGraph({ dataArray }: LineGraphProps) {
   const handleUseNowClick = () => {
     setUseNow((prevUseNow) => !prevUseNow);
   };
-  const now = new Date();
+  const now = useMemo(() => new Date(), []);
 
-  const dateParams = {
-    day: {
-      start: new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate(),
-        6,
-        0,
-        0,
-        0
-      ),
-      end: new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate(),
-        24,
-        0,
-        0,
-        0
-      ),
-    },
+  const dateParams = useMemo(
+    () => ({
+      day: {
+        start: new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate(),
+          6,
+          0,
+          0,
+          0
+        ),
+        end: new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate(),
+          24,
+          0,
+          0,
+          0
+        ),
+      },
 
-    // This is from Monday to Sunday
-    week: {
-      start: new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate() - now.getDay() + 1
-      ),
-      end: new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate() - now.getDay() + 7
-      ),
-    },
-    month: {
-      start: new Date(now.getFullYear(), now.getMonth(), 1),
-      end: new Date(now.getFullYear(), now.getMonth() + 1, 0),
-    },
-    year: {
-      start: new Date(now.getFullYear(), 0, 1),
-      end: new Date(now.getFullYear(), 11, 31),
-    },
-  };
+      // This is from Monday to Sunday
+      week: {
+        start: new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate() - now.getDay() + 1
+        ),
+        end: new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate() - now.getDay() + 7
+        ),
+      },
+      month: {
+        start: new Date(now.getFullYear(), now.getMonth(), 1),
+        end: new Date(now.getFullYear(), now.getMonth() + 1, 0),
+      },
+      year: {
+        start: new Date(now.getFullYear(), 0, 1),
+        end: new Date(now.getFullYear(), 11, 31),
+      },
+    }),
+    [now]
+  );
 
   const [startOfRange, setStartOfRange] = useState<Date>(dateParams.day.start);
   const [endOfRange, setEndOfRange] = useState<Date>(dateParams.day.end);
@@ -71,7 +74,7 @@ export default function LineGraph({ dataArray }: LineGraphProps) {
     const { start, end } = dateParams[selectedButton];
     setStartOfRange(start);
     setEndOfRange(useNow ? now : end);
-  }, [useNow, selectedButton]);
+  }, [useNow, selectedButton, dateParams, now]);
 
   if (!dataArray || dataArray.length === 0) {
     return <div>No data available for the graph.</div>;
