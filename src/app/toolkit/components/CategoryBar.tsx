@@ -46,34 +46,32 @@ const CategoryBar = () => {
 
   return (
     <div className={categoryBarClass} data-testid="category-bar">
-      <Button
-        key={""}
-        label={"All"}
+      <Button key={"All"} label={"All"} 
         className={`${
           selectedCategories.length == 0
             ? "bg-twd-secondary-purple text-white"
             : "bg-twd-background text-white"
         } hover:bg-twd-secondary-purple`}
-        // TODO onClick={() => handleCategoryClick()}
-        // TODO ariaPressed={isActive}
+        onClick={() => setSelectedCategories([])}
+        ariaPressed={selectedCategories.length == 0}
       />
-      {categories.map((category) => {
-        const isActive = selectedCategories.includes(category);
+      
+      {categories.map(
+        (category) => {
+          const isActive = selectedCategories.includes(category);
 
-        return (
-          <Button
-            key={category}
-            label={category}
-            className={`${
-              isActive
-                ? "bg-twd-secondary-purple text-white"
-                : "bg-twd-background text-white"
-            } hover:bg-twd-secondary-purple`}
-            onClick={() => handleCategoryClick(category)}
-            ariaPressed={isActive}
-          />
-        );
-      })}
+          return (
+            <Button key={category} label={category}
+              className={`${isActive
+                  ? "bg-twd-secondary-purple text-white"
+                  : "bg-twd-background text-white"
+              } hover:bg-twd-secondary-purple`}
+              onClick={() => handleCategoryClick(category)}
+              ariaPressed={isActive}
+            />
+          );
+        }
+      )}
     </div>
   );
 };
