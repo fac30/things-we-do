@@ -46,6 +46,17 @@ const CategoryBar = () => {
 
   return (
     <div className={categoryBarClass} data-testid="category-bar">
+      <Button
+        key={""}
+        label={"All"}
+        className={`${
+          selectedCategories.length == 0
+            ? "bg-twd-secondary-purple text-white"
+            : "bg-twd-background text-white"
+        } hover:bg-twd-secondary-purple`}
+        // TODO onClick={() => handleCategoryClick()}
+        // TODO ariaPressed={isActive}
+      />
       {categories.map((category) => {
         const isActive = selectedCategories.includes(category);
 
