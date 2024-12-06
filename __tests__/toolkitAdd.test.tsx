@@ -1,12 +1,6 @@
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  act,
-} from "@testing-library/react";
-import AddToolPage from "@/app/toolkit/add-tool/page";
-import { ToolkitFormProvider } from "@/context/ToolkitFormContext";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
+import AddToolPage from "@/app/addTool/page";
+import { AddToolProvider } from "@/context/AddToolContext";
 import { validateUrl } from "@/lib/utils/validateUrl";
 import DatabaseManager from "@/lib/db/DatabaseManager";
 
@@ -31,8 +25,8 @@ jest.mock("@/lib/db/DatabaseManager", () => ({
     addToDb: jest.fn(),
     getFromDb: jest.fn(),
     initialiseDatabase: jest.fn(),
-    addCategory: jest.fn(),
-  },
+    addCategories: jest.fn()
+  }
 }));
 
 describe("AddToolInputs Component", () => {
@@ -48,9 +42,9 @@ describe("AddToolInputs Component", () => {
 
   it("renders all form components", () => {
     render(
-      <ToolkitFormProvider>
+      <AddToolProvider>
         <AddToolPage />
-      </ToolkitFormProvider>
+      </AddToolProvider>
     );
 
     expect(screen.getByText("Name")).toBeInTheDocument();
@@ -71,9 +65,9 @@ describe("AddToolInputs Component", () => {
       ]);
 
       render(
-        <ToolkitFormProvider>
+        <AddToolProvider>
           <AddToolPage />
-        </ToolkitFormProvider>
+        </AddToolProvider>
       );
 
       await waitFor(() => {
@@ -85,9 +79,9 @@ describe("AddToolInputs Component", () => {
 
   it("initializes form state correctly", () => {
     render(
-      <ToolkitFormProvider>
+      <AddToolProvider>
         <AddToolPage />
-      </ToolkitFormProvider>
+      </AddToolProvider>
     );
 
     const inputs = screen.getAllByRole("textbox");
@@ -108,9 +102,9 @@ describe("AddToolInputs Component", () => {
 
   it("updates form state on input change", () => {
     render(
-      <ToolkitFormProvider>
+      <AddToolProvider>
         <AddToolPage />
-      </ToolkitFormProvider>
+      </AddToolProvider>
     );
 
     const inputs = screen.getAllByRole("textbox");
@@ -130,9 +124,9 @@ describe("AddToolInputs Component", () => {
     }));
 
     render(
-      <ToolkitFormProvider>
+      <AddToolProvider>
         <AddToolPage />
-      </ToolkitFormProvider>
+      </AddToolProvider>
     );
 
     await waitFor(() => {
@@ -157,9 +151,9 @@ describe("AddToolInputs Component", () => {
     ]);
 
     render(
-      <ToolkitFormProvider>
+      <AddToolProvider>
         <AddToolPage />
-      </ToolkitFormProvider>
+      </AddToolProvider>
     );
 
     await waitFor(() => {
