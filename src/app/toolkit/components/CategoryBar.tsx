@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Button from "@/ui/shared/Button";
 import DatabaseManager from "@/lib/db/DatabaseManager";
+import { useToolkit } from "@/context/ToolkitContext";
 
 interface Category {
   id: string;
@@ -17,6 +18,7 @@ const categoryBarClass = `
 
 const CategoryBar = () => {
   const [categories, setCategories] = useState<string[]>([]);
+  const { selectedCategories, setSelectedCategories } = useToolkit();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -30,13 +32,11 @@ const CategoryBar = () => {
     fetchCategories();
   }, []);
 
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-
   const handleCategoryClick = (category: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
+    setSelectedCategories(
+      selectedCategories.includes(category)
+        ? selectedCategories.filter((c) => c !== category)
+        : [...selectedCategories, category]
     );
   };
 
