@@ -18,8 +18,9 @@ export default function NavLink({
   isToolkit,
 }: NavLinkProps) {
   const pathname = usePathname();
-  const isActive = pathname === destination;
-
+  console.log(pathname);
+  const isActive =
+    pathname === destination || pathname.startsWith(`${destination}/`);
   return (
     <Link
       href={destination}
