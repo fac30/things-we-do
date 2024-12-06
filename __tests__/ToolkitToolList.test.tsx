@@ -82,7 +82,7 @@ describe("ToolList Component", () => {
     });
   });
 
-  it("filters items by selected category", async () => {
+  it("filters items by selected categories", async () => {
     await act(async () => {
       renderWithToolkitContext(<ToolList />, { selectedCategories: ["Category1"] });
     });

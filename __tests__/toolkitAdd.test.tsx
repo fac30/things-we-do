@@ -25,7 +25,7 @@ jest.mock("@/lib/db/DatabaseManager", () => ({
     addToDb: jest.fn(),
     getFromDb: jest.fn(),
     initialiseDatabase: jest.fn(),
-    addCategory: jest.fn()
+    addCategories: jest.fn()
   }
 }));
 

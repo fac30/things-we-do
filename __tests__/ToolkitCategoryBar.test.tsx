@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import CategoryBar from "@/app/toolkit/components/CategoryBar";
+import CategoriesBar from "@/app/toolkit/components/CategoriesBar";
 import DatabaseManager from "@/lib/db/DatabaseManager";
 import { ToolkitProvider } from "@/context/ToolkitContext";
 
@@ -17,7 +17,7 @@ const renderWithToolkitContext = (ui: React.ReactNode, { selectedCategories = []
   );
 };
 
-describe("CategoryBar Component", () => {
+describe("CategoriesBar Component", () => {
   beforeEach(() => {
     (DatabaseManager.getFromDb as jest.Mock).mockResolvedValue([
       { id: "1", name: "Category1", timestamp: "2024-01-01" },
@@ -30,27 +30,27 @@ describe("CategoryBar Component", () => {
   });
 
   it("renders without crashing", async () => {
-    renderWithToolkitContext(<CategoryBar />);
-    const categoryBar = screen.getByTestId("category-bar");
-    expect(categoryBar).toBeInTheDocument();
+    renderWithToolkitContext(<CategoriesBar />);
+    const categoriesBar = screen.getByTestId("categories-bar");
+    expect(categoriesBar).toBeInTheDocument();
   });
 
   it("renders all categories as buttons", async () => {
-    renderWithToolkitContext(<CategoryBar />);
+    renderWithToolkitContext(<CategoriesBar />);
     
     // Wait for categories to load
     const allButton = await screen.findByRole("button", { name: "All" });
     expect(allButton).toBeInTheDocument();
     
-    const category1Button = await screen.findByRole("button", { name: "Category1" });
-    const category2Button = await screen.findByRole("button", { name: "Category2" });
+    const categories1Button = await screen.findByRole("button", { name: "Category1" });
+    const categories2Button = await screen.findByRole("button", { name: "Category2" });
     
-    expect(category1Button).toBeInTheDocument();
-    expect(category2Button).toBeInTheDocument();
+    expect(categories1Button).toBeInTheDocument();
+    expect(categories2Button).toBeInTheDocument();
   });
 
   it("highlights the 'All' button when clicked", async () => {
-    renderWithToolkitContext(<CategoryBar />);
+    renderWithToolkitContext(<CategoriesBar />);
     
     const allButton = await screen.findByRole("button", { name: "All" });
     fireEvent.click(allButton);
@@ -58,54 +58,54 @@ describe("CategoryBar Component", () => {
     expect(allButton).toHaveClass("bg-twd-secondary-purple");
   });
 
-  it("toggles selection for a single category", async () => {
-    renderWithToolkitContext(<CategoryBar />);
+  it("toggles selection for a single categories", async () => {
+    renderWithToolkitContext(<CategoriesBar />);
     
-    const category1Button = await screen.findByRole("button", { name: "Category1" });
-    fireEvent.click(category1Button);
+    const categories1Button = await screen.findByRole("button", { name: "Category1" });
+    fireEvent.click(categories1Button);
     
-    expect(category1Button).toHaveClass("bg-twd-secondary-purple");
+    expect(categories1Button).toHaveClass("bg-twd-secondary-purple");
     
-    fireEvent.click(category1Button);
-    expect(category1Button).not.toHaveClass("bg-twd-secondary-purple");
+    fireEvent.click(categories1Button);
+    expect(categories1Button).not.toHaveClass("bg-twd-secondary-purple");
   });
 
   it("clears other selections when 'All' is clicked", async () => {
-    renderWithToolkitContext(<CategoryBar />);
+    renderWithToolkitContext(<CategoriesBar />);
     
-    const category1Button = await screen.findByRole("button", { name: "Category1" });
+    const categories1Button = await screen.findByRole("button", { name: "Category1" });
     const allButton = await screen.findByRole("button", { name: "All" });
     
-    fireEvent.click(category1Button);
+    fireEvent.click(categories1Button);
     fireEvent.click(allButton);
     
-    expect(category1Button).not.toHaveClass("bg-twd-secondary-purple");
+    expect(categories1Button).not.toHaveClass("bg-twd-secondary-purple");
     expect(allButton).toHaveClass("bg-twd-secondary-purple");
   });
 
   it("allows selecting multiple categories (except 'All')", async () => {
-    renderWithToolkitContext(<CategoryBar />);
+    renderWithToolkitContext(<CategoriesBar />);
     
-    const category1Button = await screen.findByRole("button", { name: "Category1" });
-    const category2Button = await screen.findByRole("button", { name: "Category2" });
+    const categories1Button = await screen.findByRole("button", { name: "Category1" });
+    const categories2Button = await screen.findByRole("button", { name: "Category2" });
     
-    fireEvent.click(category1Button);
-    fireEvent.click(category2Button);
+    fireEvent.click(categories1Button);
+    fireEvent.click(categories2Button);
     
-    expect(category1Button).toHaveClass("bg-twd-secondary-purple");
-    expect(category2Button).toHaveClass("bg-twd-secondary-purple");
+    expect(categories1Button).toHaveClass("bg-twd-secondary-purple");
+    expect(categories2Button).toHaveClass("bg-twd-secondary-purple");
   });
 
-  it("deselects 'All' when another category is selected", async () => {
-    renderWithToolkitContext(<CategoryBar />);
+  it("deselects 'All' when another categories is selected", async () => {
+    renderWithToolkitContext(<CategoriesBar />);
     
     const allButton = await screen.findByRole("button", { name: "All" });
-    const category1Button = await screen.findByRole("button", { name: "Category1" });
+    const categories1Button = await screen.findByRole("button", { name: "Category1" });
     
     fireEvent.click(allButton);
-    fireEvent.click(category1Button);
+    fireEvent.click(categories1Button);
     
     expect(allButton).not.toHaveClass("bg-twd-secondary-purple");
-    expect(category1Button).toHaveClass("bg-twd-secondary-purple");
+    expect(categories1Button).toHaveClass("bg-twd-secondary-purple");
   });
 });

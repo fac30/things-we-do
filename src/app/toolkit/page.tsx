@@ -1,5 +1,5 @@
 "use client";
-import CategoryBar from "@/app/toolkit/components/CategoryBar";
+import CategoriesBar from "@/app/toolkit/components/CategoriesBar";
 import SearchBar from "@/app/toolkit/components/SearchBar";
 import ToolList from "@/app/toolkit/components/ToolList";
 import FloatingButton from "@/app/toolkit/components/floatingButton";
@@ -15,7 +15,7 @@ export default function ToolkitPage() {
           description="add and search tools which help you in your daily life."
           isHome={false}
         />
-        <CategoryBar />
+        <CategoriesBar />
         <div className="p-4">
           <SearchBar />
           <ToolList />

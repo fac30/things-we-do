@@ -3,7 +3,7 @@ import { useAddToolForm } from "@/context/AddToolContext";
 import Button from "@/ui/shared/Button";
 import DatabaseManager from "@/lib/db/DatabaseManager";
 
-interface Category {
+interface Categories {
   id: string;
   name: string;
   timestamp: string;
@@ -13,14 +13,14 @@ export default function AddTags() {
   const { formState, setFormState } = useAddToolForm();
 
   const [categories, setCategories] = useState<string[]>([]);
-  const [newCategory, setNewCategory] = useState<string>("");
+  const [newCategories, setNewCategories] = useState<string>("");
   const [isAddingNew, setIsAddingNew] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
       const allCategories = await DatabaseManager.getFromDb("categories");
       if (allCategories) {
-        setCategories(allCategories.map((cat: Category) => cat.name));
+        setCategories(allCategories.map((cat: Categories) => cat.name));
       } else {
         setCategories([]);
       }
@@ -29,21 +29,21 @@ export default function AddTags() {
     fetchCategories();
   }, []);
 
-  const handleAddNewCategory = async () => {
-    if (newCategory.trim()) {
-      await DatabaseManager.addCategory(newCategory.trim());
-      setCategories((prev) => [...prev, newCategory.trim()]);
-      setNewCategory("");
+  const handleAddNewCategories = async () => {
+    if (newCategories.trim()) {
+      await DatabaseManager.addCategories(newCategories.trim());
+      setCategories((prev) => [...prev, newCategories.trim()]);
+      setNewCategories("");
       setIsAddingNew(false);
     }
   };
 
-  const toggleCategory = (category: string) => {
+  const toggleCategories = (categories: string) => {
     setFormState((prev) => ({
       ...prev,
-      categories: prev.categories.includes(category)
-        ? prev.categories.filter((c) => c !== category)
-        : [...prev.categories, category],
+      categories: prev.categories.includes(categories)
+        ? prev.categories.filter((c) => c !== categories)
+        : [...prev.categories, categories],
     }));
   };
 
@@ -51,17 +51,17 @@ export default function AddTags() {
     <div>
       <p className="text-white">Tags</p>
       <div className="flex flex-wrap gap-2">
-        {categories.map((category) => (
+        {categories.map((categories) => (
           <Button
-            key={category}
-            label={category}
-            onClick={() => toggleCategory(category)}
+            key={categories}
+            label={categories}
+            onClick={() => toggleCategories(categories)}
             className={`${
-              formState.categories.includes(category)
+              formState.categories.includes(categories)
                 ? "bg-twd-secondary-purple text-white"
                 : "bg-twd-background text-white"
             } `}
-            ariaPressed={formState.categories.includes(category)}
+            ariaPressed={formState.categories.includes(categories)}
           />
         ))}
 
@@ -69,21 +69,21 @@ export default function AddTags() {
           <div className="flex gap-2">
             <input
               type="text"
-              value={newCategory}
-              onChange={(e) => setNewCategory(e.target.value)}
+              value={newCategories}
+              onChange={(e) => setNewCategories(e.target.value)}
               className="bg-twd-background text-white px-3 py-1 rounded"
-              placeholder="New category"
-              aria-label="New category name"
+              placeholder="New categories"
+              aria-label="New categories name"
             />
             <Button
               label="Add"
-              onClick={handleAddNewCategory}
+              onClick={handleAddNewCategories}
               className="bg-twd-primary-purple text-white"
             />
             <Button
               label="Cancel"
               onClick={() => {
-                setNewCategory("");
+                setNewCategories("");
                 setIsAddingNew(false);
               }}
               className="bg-twd-background text-white"

@@ -22,7 +22,7 @@ function SubmitButton() {
     console.log(`Validating form with state: ${JSON.stringify(formState)}`);
 
     if (formState.categories.length === 0) {
-      alert("Please select at least one category");
+      alert("Please select at least one categories");
       return;
     }
 
