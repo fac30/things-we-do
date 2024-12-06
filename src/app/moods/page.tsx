@@ -9,8 +9,6 @@ import Button from "@/ui/shared/Button";
 import DatabaseManager from "../../lib/db/DatabaseManager";
 import { useRouter } from "next/navigation";
 
-import { PresentationChartLineIcon } from "@heroicons/react/24/outline";
-
 export default function MoodsPage() {
   const router = useRouter();
   const [neuroState, setNeuroState] = useState<NeurochemState>({
@@ -41,9 +39,9 @@ export default function MoodsPage() {
     <NeurochemContext.Provider value={{ neuroState, setNeuroState }}>
       <div className="flex flex-col gap-4">
         <Header
-          title="Decision maker"
+          title="Decision Maker"
           description="assess your mood before making a decision."
-          Icon={PresentationChartLineIcon}
+          isHome={false}
         />
         <Cube />
         <SliderBox />
