@@ -7,8 +7,13 @@ interface ToolkitContextType {
 
 const ToolkitContext = createContext<ToolkitContextType | null>(null);
 
-export function ToolkitProvider({ children }: { children: ReactNode }) {
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+interface ToolkitProviderProps {
+  children: ReactNode;
+  initialSelectedCategories?: string[];
+}
+
+export function ToolkitProvider({ children, initialSelectedCategories = [] }: ToolkitProviderProps) {
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(initialSelectedCategories);
 
   return (
     <ToolkitContext.Provider value={{ selectedCategories, setSelectedCategories }}>
