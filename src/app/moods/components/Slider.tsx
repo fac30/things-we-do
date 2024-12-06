@@ -3,16 +3,16 @@
 import { Datum } from "plotly.js";
 
 interface SliderProps {
-  chem: "dopamine" | "serotonin" | "adrenaline"; // Type for the neurotransmitter
-  label: string; // Label for the slider
+  chem: "dopamine" | "serotonin" | "adrenaline";
+  label: string;
   handleChange: (
     value: number,
     chem: "dopamine" | "serotonin" | "adrenaline"
-  ) => void; // Function to handle changes
+  ) => void;
   neuroState: {
-    dopamine: Datum; // Current value of dopamine
-    serotonin: Datum; // Current value of serotonin
-    adrenaline: Datum; // Current value of adrenaline
+    dopamine: Datum;
+    serotonin: Datum;
+    adrenaline: Datum;
   };
 }
 export function Slider({ chem, label, handleChange, neuroState }: SliderProps) {

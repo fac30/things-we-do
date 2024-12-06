@@ -1,9 +1,4 @@
 import { Header } from "../../ui/shared/Header";
-// import { Cube } from "./components/Cube";
-// import { SliderBox } from "./components/SliderBox";
-// import { NeurochemContext, NeurochemState } from "@/context/NeurochemContext";
-// import DatabaseManager from "../../lib/db/DatabaseManager";
-// import MoodButtons from "./components/MoodButtons";
 import MoodsDisplay from "./components/MoodsDisplay";
 
 export default function MoodsPage() {
