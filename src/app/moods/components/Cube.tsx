@@ -100,9 +100,9 @@ export function Cube() {
             <PlotlyChart
               data={[
                 {
-                  x: [neuroState.dopamine ?? 0],
+                  x: [neuroState.adrenaline ?? 0],
                   y: [10 - (Number(neuroState.serotonin) ?? 0)],
-                  z: [neuroState.adrenaline ?? 0],
+                  z: [neuroState.dopamine ?? 0],
                   type: "scatter3d",
                   mode: "markers",
                   marker: {

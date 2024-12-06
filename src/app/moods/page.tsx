@@ -17,7 +17,7 @@ export default function MoodsPage() {
     adrenaline: 1,
   });
 
-  const submitMood = (path: string) => {
+  const submitMood = () => {
     const { dopamine, serotonin, adrenaline } = neuroState;
 
     const submitObj = {
@@ -31,8 +31,6 @@ export default function MoodsPage() {
     };
 
     DatabaseManager.addToDb("mood_records", submitObj);
-
-    router.push(`/${path}`);
   };
 
   return (
@@ -47,14 +45,14 @@ export default function MoodsPage() {
         <SliderBox />
         <div className="flex justify-between w-10/12 max-w-xl m-auto">
           <Button
-            label="Save and Exit"
-            className="border-white border-2 border-solid"
-            onClick={() => submitMood("")}
+            label="Save"
+            className="mt-2 px-3 py-1 bg-twd-primary-purple text-white rounded"
+            onClick={() => submitMood()}
           />
           <Button
-            label="Continue to Toolkit"
-            className="bg-twd-primary-purple"
-            onClick={() => submitMood("toolkit")}
+            label="Go to Insights"
+            className="mt-2 px-3 py-1 bg-gray-700 text-white rounded"
+            onClick={() => router.push("/insights")}
           />
         </div>
       </div>

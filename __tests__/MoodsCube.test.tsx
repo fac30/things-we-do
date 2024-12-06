@@ -60,8 +60,8 @@ describe("Cube and SliderBox integration", () => {
       (d: any) => d.type === "scatter3d" && d.mode === "markers"
     );
 
-    expect(scatterData.x).toEqual([5]);
+    expect(scatterData.x).toEqual([7]);
     expect(scatterData.y).toEqual([7]); // Inverted: 10 - 3 = 7
-    expect(scatterData.z).toEqual([7]);
+    expect(scatterData.z).toEqual([5]);
   });
 });

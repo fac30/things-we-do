@@ -1,5 +1,11 @@
-import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
-import AddToolPage from "@/app/addTool/page";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from "@testing-library/react";
+import AddToolPage from "@/app/toolkit/add-tool/page";
 import { AddToolProvider } from "@/context/AddToolContext";
 import { validateUrl } from "@/lib/utils/validateUrl";
 import DatabaseManager from "@/lib/db/DatabaseManager";
@@ -25,8 +31,8 @@ jest.mock("@/lib/db/DatabaseManager", () => ({
     addToDb: jest.fn(),
     getFromDb: jest.fn(),
     initialiseDatabase: jest.fn(),
-    addCategories: jest.fn()
-  }
+    addCategories: jest.fn(),
+  },
 }));
 
 describe("AddToolInputs Component", () => {
