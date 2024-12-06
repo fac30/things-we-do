@@ -1,6 +1,6 @@
 "use client";
 
-//import InfoButton from "./InfoButton";
+import InfoButton from "./InfoButton";
 
 interface HeaderProps {
   title: string;
@@ -14,12 +14,12 @@ export function Header({ title, description, isHome }: HeaderProps) {
       <div className="flex items-center align-middle gap-1">
         <h1 className="text-lg font-bold text-white sm:text-xl">{title}</h1>
       </div>
-      {/* {!isHome && (
+      {!isHome && (
         <InfoButton
           popupText={`This is the ${title} page where you can ${description}`}
           direction="bottomLeft"
         />
-      )} */}
+      )}
     </header>
   );
 }
