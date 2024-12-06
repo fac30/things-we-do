@@ -23,15 +23,16 @@ export default function NavLink({
   return (
     <Link
       href={destination}
-      className={clsx(
-        `flex flex-col items-center justify-center w-14 h-14 text-gray-400 relative`,
-        {
-          "text-white": isActive,
-          "border-twd-primary-purple border-solid border-[3px] rounded-full p-10 bg-twd-navbar-background shadow-[0px_0px_8px_2px_rgba(137,63,252)] -translate-y-4":
-            isToolkit,
-          "bg-gray-100 text-twd-primary-purple ": isActive && isToolkit,
-        }
-      )}
+      className="flex flex-col items-center justify-center w-14 h-14 text-gray-400 relative"
+      // className={clsx(
+      //   `flex flex-col items-center justify-center w-14 h-14 text-gray-400 relative`
+      // {
+      //   "text-white": isActive,
+      //   "border-twd-primary-purple border-solid border-[3px] rounded-full p-10 bg-twd-navbar-background shadow-[0px_0px_8px_2px_rgba(137,63,252)] -translate-y-4":
+      //     isToolkit,
+      //   "bg-gray-100 text-twd-primary-purple ": isActive && isToolkit,
+      // }
+      // )}
     >
       {isActive && !isToolkit && (
         <span
