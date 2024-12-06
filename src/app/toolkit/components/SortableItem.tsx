@@ -53,7 +53,7 @@ export default function SortableItem({
         <input
           type="checkbox"
           checked={item.checked}
-          onChange={(e) => {
+          onChange={() => {
             handleToggle(item.id);
           }}
           className="h-5 w-5 border-white bg-twd-background text-twd-background rounded focus:ring focus:ring-blue-300"
@@ -88,7 +88,7 @@ export default function SortableItem({
           Go to resource
         </a>
         <button
-          onClick={(e) => {
+          onClick={() => {
             handleDelete(item.id);
           }}
         >
