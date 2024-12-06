@@ -1,5 +1,3 @@
-"use client";
-
 import { Datum } from "plotly.js";
 
 interface SliderProps {
