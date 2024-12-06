@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/*  */
 
 body {
   @apply bg-twd-background text-white overflow-x-hidden;
