@@ -7,7 +7,7 @@ interface SortableItemProps {
   item: {
     id: string;
     name: string;
-    category: string[];
+    categories: string[];
     checked: boolean;
     description?: string;
     infoUrl: string;
