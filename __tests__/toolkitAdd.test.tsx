@@ -1,5 +1,11 @@
-import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
-import AddToolPage from "@/app/addTool/page";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from "@testing-library/react";
+import AddToolPage from "@/app/toolkit/add-tool/page";
 import { ToolkitFormProvider } from "@/context/ToolkitFormContext";
 import { validateUrl } from "@/lib/utils/validateUrl";
 import DatabaseManager from "@/lib/db/DatabaseManager";
@@ -25,8 +31,8 @@ jest.mock("@/lib/db/DatabaseManager", () => ({
     addToDb: jest.fn(),
     getFromDb: jest.fn(),
     initialiseDatabase: jest.fn(),
-    addCategory: jest.fn()
-  }
+    addCategory: jest.fn(),
+  },
 }));
 
 describe("AddToolInputs Component", () => {
@@ -34,12 +40,12 @@ describe("AddToolInputs Component", () => {
     jest.clearAllMocks();
     (validateUrl as jest.Mock).mockImplementation(() => ({
       isValid: true,
-      url: "https://test.com"
+      url: "https://test.com",
     }));
     (window.alert as jest.Mock) = jest.fn();
     (window.confirm as jest.Mock) = jest.fn();
   });
-  
+
   it("renders all form components", () => {
     render(
       <ToolkitFormProvider>
@@ -52,29 +58,31 @@ describe("AddToolInputs Component", () => {
     expect(screen.getByText("Description")).toBeInTheDocument();
     expect(screen.getByText("Image URL")).toBeInTheDocument();
     expect(screen.getByText("Link")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Add Tool" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Add Tool" })
+    ).toBeInTheDocument();
   });
 
   describe("AddToolTags Component", () => {
     it("renders existing categories", async () => {
       (DatabaseManager.getFromDb as jest.Mock).mockResolvedValue([
         { name: "Category 1" },
-        { name: "Category 2" }
+        { name: "Category 2" },
       ]);
-  
+
       render(
         <ToolkitFormProvider>
           <AddToolPage />
         </ToolkitFormProvider>
       );
-  
+
       await waitFor(() => {
         expect(screen.getByText("Category 1")).toBeInTheDocument();
         expect(screen.getByText("Category 2")).toBeInTheDocument();
       });
     });
   });
-  
+
   it("initializes form state correctly", () => {
     render(
       <ToolkitFormProvider>
@@ -85,8 +93,12 @@ describe("AddToolInputs Component", () => {
     const inputs = screen.getAllByRole("textbox");
     const nameInput = inputs[0] as HTMLInputElement;
     const descriptionInput = inputs[1] as HTMLInputElement;
-    const infoUrlInput = screen.getByRole("textbox", { name: "Link" }) as HTMLInputElement;
-    const imageUrlInput = screen.getByRole("textbox", { name: "Image URL" }) as HTMLInputElement;
+    const infoUrlInput = screen.getByRole("textbox", {
+      name: "Link",
+    }) as HTMLInputElement;
+    const imageUrlInput = screen.getByRole("textbox", {
+      name: "Image URL",
+    }) as HTMLInputElement;
 
     expect(nameInput.value).toBe("");
     expect(descriptionInput.value).toBe("");
@@ -109,12 +121,12 @@ describe("AddToolInputs Component", () => {
 
   it("validates URLs correctly", async () => {
     (DatabaseManager.getFromDb as jest.Mock).mockResolvedValue([
-      { name: "Category 1" }
+      { name: "Category 1" },
     ]);
-    
+
     (validateUrl as jest.Mock).mockImplementationOnce(() => ({
       isValid: false,
-      error: "Invalid URL"
+      error: "Invalid URL",
     }));
 
     render(
@@ -141,7 +153,7 @@ describe("AddToolInputs Component", () => {
 
   it("inserts data into the database", async () => {
     (DatabaseManager.getFromDb as jest.Mock).mockResolvedValue([
-      { name: "Category 1" }
+      { name: "Category 1" },
     ]);
 
     render(
@@ -163,7 +175,7 @@ describe("AddToolInputs Component", () => {
     fireEvent.change(infoUrlInput, { target: { value: "https://test.com" } });
 
     const submitButton = screen.getByRole("button", { name: "Add Tool" });
-    
+
     await act(async () => {
       fireEvent.click(submitButton);
     });
