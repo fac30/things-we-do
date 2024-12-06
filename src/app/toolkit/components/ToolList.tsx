@@ -17,7 +17,7 @@ import {
 } from "@dnd-kit/sortable";
 import SortableItem from "./SortableItem";
 
-interface CheckBoxComponentData {
+interface ToolListData {
   id: string;
   name: string;
   category: string[];
@@ -28,8 +28,8 @@ interface CheckBoxComponentData {
   timestamp?: string;
 }
 
-export default function CheckBox() {
-  const [data, setData] = useState<CheckBoxComponentData[]>([]);
+export default function ToolList() {
+  const [data, setData] = useState<ToolListData[]>([]);
   const isEmpty = data.length === 0;
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export default function CheckBox() {
       }
     };
     fetchData();
-  }, [isEmpty]);
+  }, [isEmpty]); // Trigger when no tools are in the render list
 
   // have to be fixed - Toggle checkbox state
   const handleToggle = (id: string) => {

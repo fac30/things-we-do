@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useToolkitForm } from "@/context/ToolkitFormContext";
+import { useAddToolForm } from "@/context/AddToolContext";
 import Button from "@/ui/shared/Button";
 import DatabaseManager from "@/lib/db/DatabaseManager";
 
@@ -10,7 +10,7 @@ interface Category {
 }
 
 export default function AddTags() {
-  const { formState, setFormState } = useToolkitForm();
+  const { formState, setFormState } = useAddToolForm();
 
   const [categories, setCategories] = useState<string[]>([]);
   const [newCategory, setNewCategory] = useState<string>("");

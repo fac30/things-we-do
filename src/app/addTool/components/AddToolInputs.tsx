@@ -7,16 +7,16 @@ import AddInfoUrl from "./AddToolInfoUrl";
 import AddName from "./AddToolName";
 import AddTags from "./AddToolTags";
 import {
-  ToolkitFormProvider,
-  useToolkitForm,
-} from "@/context/ToolkitFormContext";
+  AddToolProvider,
+  useAddToolForm,
+} from "@/context/AddToolContext";
 import Button from "@/ui/shared/Button";
 import DatabaseManager from "@/lib/db/DatabaseManager";
 import { validateUrl } from "@/lib/utils/validateUrl";
 
 function SubmitButton() {
   const router = useRouter();
-  const { formState /* setFormState */ } = useToolkitForm();
+  const { formState /* setFormState */ } = useAddToolForm();
 
   const handleSubmit = async () => {
     console.log(`Validating form with state: ${JSON.stringify(formState)}`);
@@ -95,7 +95,7 @@ function SubmitButton() {
 
 export default function Inputs() {
   return (
-    <ToolkitFormProvider>
+    <AddToolProvider>
       <div className="space-y-4 p-4">
         <AddName />
         <AddTags />
@@ -104,6 +104,6 @@ export default function Inputs() {
         <AddInfoUrl />
         <SubmitButton />
       </div>
-    </ToolkitFormProvider>
+    </AddToolProvider>
   );
 }
