@@ -24,7 +24,7 @@ describe("SortableItem Component", () => {
   const defaultItem = {
     id: "1",
     name: "Test Item",
-    category: ["Category1"],
+    categories: ["Category1"],
     checked: false,
     description: "A test description",
     infoUrl: "https://example.com",

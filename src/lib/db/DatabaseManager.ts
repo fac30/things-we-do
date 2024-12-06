@@ -4,7 +4,7 @@ import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
 import { createRxDatabase, RxDatabase } from "rxdb";
 import toolkitItemSchema from "./schemas/toolkitItemSchema.json";
 import moodRecordSchema from "./schemas/moodRecordSchema.json";
-import categorySchema from "./schemas/categorySchema.json";
+import categoriesSchema from "./schemas/categoriesSchema.json";
 import { v4 as uuidv4 } from "uuid";
 
 addRxPlugin(RxDBDevModePlugin);
@@ -13,7 +13,7 @@ const toolkitSeedData = [
   {
     id: uuidv4(),
     name: "Listen to my favourite music",
-    category: ["Replace", "Barrier"],
+    categories: ["Replace", "Barrier"],
     checked: false,
     infoUrl: "https://google.com/music",
     imageUrl:
@@ -23,7 +23,7 @@ const toolkitSeedData = [
   {
     id: uuidv4(),
     name: "Watch TV",
-    category: ["Distract"],
+    categories: ["Distract"],
     checked: false,
     infoUrl: "https://google.com/tv",
     imageUrl:
@@ -33,7 +33,7 @@ const toolkitSeedData = [
   {
     id: uuidv4(),
     name: "Call a friend",
-    category: ["Distract", "Change status"],
+    categories: ["Distract", "Change status"],
     checked: false,
     infoUrl: "https://example.com/call",
     imageUrl:
@@ -43,7 +43,7 @@ const toolkitSeedData = [
   {
     id: uuidv4(),
     name: "See a friend",
-    category: ["Distract", "Change status"],
+    categories: ["Distract", "Change status"],
     checked: false,
     infoUrl: "https://example.com/call",
     imageUrl:
@@ -64,7 +64,7 @@ class DatabaseManager {
       });
 
       await this.dbInstance.addCollections({
-        categories: { schema: categorySchema },
+        categories: { schema: categoriesSchema },
         mood_records: { schema: moodRecordSchema },
         toolkit_items: { schema: toolkitItemSchema },
       });
@@ -150,7 +150,7 @@ class DatabaseManager {
     }
   }
 
-  async addCategory(name: string) {
+  async addCategories(name: string) {
     try {
       const doc = {
         name: name,
@@ -159,7 +159,7 @@ class DatabaseManager {
 
       return await this.addToDb("categories", doc);
     } catch (error) {
-      console.error("Error adding category to database:", error);
+      console.error("Error adding categories to database:", error);
       throw error;
     }
   }
