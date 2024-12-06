@@ -22,7 +22,7 @@ import SortableItem from "./SortableItem";
 interface CheckBoxComponentData {
   id: string;
   name: string;
-  category: string[];
+  categories: string[];
   checked: boolean;
   description?: string;
   infoUrl: string;

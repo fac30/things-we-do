@@ -1,25 +1,26 @@
-import { useToolkitForm } from "@/context/ToolkitFormContext";
+import { useAddToolForm } from "@/context/AddToolContext";
+// import * as Icons from "@heroicons/react/24/outline";
 
-export default function AddInfoUrl() {
-  const { formState, setFormState } = useToolkitForm();
+export default function AddImageUrl() {
+  const { formState, setFormState } = useAddToolForm();
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormState(prev => ({ 
       ...prev,
-      infoUrl: e.target.value
+      imageUrl: e.target.value
     }));
   };
 
   return (
     <div>
-      <label htmlFor="infoUrl"
+      <label htmlFor="imageUrl"
         className="text-white"
-      >Link</label>
+      >Image URL</label>
 
       <input
         type="url"
-        id="infoUrl"
-        value={formState.infoUrl}
+        id="imageUrl"
+        value={formState.imageUrl}
         onChange={handleUrlChange}
         className="w-full p-2 rounded bg-twd-background text-white border border-gray-700"
       />

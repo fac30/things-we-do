@@ -1,34 +1,24 @@
 "use client";
-import ImageComponent from "../shared/Image";
-import QuestionMarkButton from "../shared/QuestionButton";
+import InfoButton from "./InfoButton";
 
 interface HeaderProps {
   title: string;
   description: string;
-  Icon: React.ComponentType<{ className?: string }>;
+  isHome: boolean;
 }
 
-export function Header({ title, description, Icon }: HeaderProps) {
+export function Header({ title, description, isHome }: HeaderProps) {
   return (
-    <header className="flex items-center justify-between pl-4 py-1 shadow-md">
-      {/* Left side: Icon, tab Name and Question Mark with info */}
+    <header className="flex items-center justify-between px-5 pt-3 pb-1">
       <div className="flex items-center align-middle gap-1">
-        {Icon && <Icon className="h-6 w-6 text-white" />}
         <h1 className="text-lg font-bold text-white sm:text-xl">{title}</h1>
-        <QuestionMarkButton
+      </div>
+      {!isHome && (
+        <InfoButton
           popupText={`This is the ${title} page where you can ${description}`}
-          direction="bottom"
+          direction="bottomLeft"
         />
-      </div>
-      {/* Right side: Image */}
-      <div className="relative w-10 h-10 sm:w-12 sm:h-12">
-        <ImageComponent
-          src=""
-          alt="Logo"
-          sizes="(max-width: 768px) 100vw, 50vw"
-          rounded={false}
-        />
-      </div>
+      )}
     </header>
   );
 }

@@ -1,7 +1,7 @@
 import { render, screen, waitFor, act } from "@testing-library/react";
-import CheckBox from "@/app/toolkit/components/CheckBox";
+import ToolList from "@/app/toolkit/components/ToolList";
 import DatabaseManager from "@/lib/db/DatabaseManager";
-//import { DndContext } from "@dnd-kit/core";
+import { ToolkitProvider } from "@/context/ToolkitContext";
 
 // Mock the DatabaseManager
 jest.mock("@/lib/db/DatabaseManager", () => ({
@@ -16,12 +16,20 @@ jest.mock("@/app/toolkit/components/SortableItem", () => ({
   ),
 }));
 
-describe("CheckBox Component", () => {
+const renderWithToolkitContext = (ui: React.ReactNode, { selectedCategories = [] } = {}) => {
+  return render(
+    <ToolkitProvider initialSelectedCategories={selectedCategories}>
+      {ui}
+    </ToolkitProvider>
+  );
+};
+
+describe("ToolList Component", () => {
   const mockData = [
     {
       id: "1",
       name: "Item 1",
-      category: ["Category1"],
+      categories: ["Category1"],
       checked: false,
       description: "Description 1",
       infoUrl: "https://example.com",
@@ -30,12 +38,21 @@ describe("CheckBox Component", () => {
     {
       id: "2",
       name: "Item 2",
-      category: ["Category2"],
+      categories: ["Category2"],
       checked: true,
       description: "Description 2",
       infoUrl: "https://example.com",
       imageUrl: "https://via.placeholder.com/150",
     },
+    {
+      id: "3",
+      name: "Item 3",
+      categories: ["Category1", "Category2"],
+      checked: false,
+      description: "Description 3",
+      infoUrl: "https://example.com",
+      imageUrl: "https://via.placeholder.com/150",
+    }
   ];
 
   beforeEach(() => {
@@ -50,20 +67,9 @@ describe("CheckBox Component", () => {
     jest.clearAllMocks();
   });
 
-//   it("renders DndContext with data-testid", () => {
-//     render(
-//       <DndContext data-testid="dnd-context">
-//         <div>Content</div>
-//       </DndContext>
-//     );
-  
-//     const container = screen.getByTestId("dnd-context");
-//     expect(container).toBeInTheDocument();
-//   });
-
-  it("fetches and displays items from the database", async () => {
+  it("fetches and displays all items when no categories are selected", async () => {
     await act(async () => {
-      render(<CheckBox />);
+      renderWithToolkitContext(<ToolList />);
     });
 
     await waitFor(() => {
@@ -76,9 +82,35 @@ describe("CheckBox Component", () => {
     });
   });
 
+  it("filters items by selected categories", async () => {
+    await act(async () => {
+      renderWithToolkitContext(<ToolList />, { selectedCategories: ["Category1"] });
+    });
+
+    await waitFor(() => {
+      // Should show items 1 and 3, but not item 2
+      expect(screen.getByTestId("sortable-item-1")).toBeInTheDocument();
+      expect(screen.getByTestId("sortable-item-3")).toBeInTheDocument();
+      expect(screen.queryByTestId("sortable-item-2")).not.toBeInTheDocument();
+    });
+  });
+
+  it("handles items with multiple categories correctly", async () => {
+    await act(async () => {
+      renderWithToolkitContext(<ToolList />, { selectedCategories: ["Category2"] });
+    });
+
+    await waitFor(() => {
+      // Should show items 2 and 3
+      expect(screen.getByTestId("sortable-item-2")).toBeInTheDocument();
+      expect(screen.getByTestId("sortable-item-3")).toBeInTheDocument();
+      expect(screen.queryByTestId("sortable-item-1")).not.toBeInTheDocument();
+    });
+  });
+
   it("handles drag-and-drop reorder without errors", async () => {
     await act(async () => {
-      render(<CheckBox />);
+      renderWithToolkitContext(<ToolList />);
     });
 
     await waitFor(() => {
