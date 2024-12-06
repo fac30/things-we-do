@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import DatabaseManager from "@/lib/db/DatabaseManager";
 import { 
   DndContext, 
@@ -16,6 +16,7 @@ import {
   arrayMove,
 } from "@dnd-kit/sortable";
 import SortableItem from "./SortableItem";
+import { useToolkit } from "@/context/ToolkitContext";
 
 interface ToolListData {
   id: string;
@@ -30,7 +31,7 @@ interface ToolListData {
 
 export default function ToolList() {
   const [data, setData] = useState<ToolListData[]>([]);
-  const isEmpty = data.length === 0;
+  const { selectedCategories } = useToolkit();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,9 +48,9 @@ export default function ToolList() {
       }
     };
     fetchData();
-  }, [isEmpty]); // Trigger when no tools are in the render list
+  }, []); // Trigger when no tools are in the render list
 
-  // have to be fixed - Toggle checkbox state
+  // TODO: Toggle checkbox state
   const handleToggle = (id: string) => {
     setData((prevData) =>
       prevData.map((item) =>
@@ -58,12 +59,11 @@ export default function ToolList() {
     );
   };
 
-  // have to be fixed - Delete an item
+  // TODO: Delete an item
   const handleDelete = (id: string) => {
     setData((prevData) => prevData.filter((item) => item.id !== id));
   };
 
-  // Handle drag-and-drop reorder
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
@@ -76,6 +76,13 @@ export default function ToolList() {
 
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
 
+  const filteredData = useMemo(() => {
+    if (selectedCategories.length === 0) return data;
+    return data.filter(item => 
+      item.category.some(cat => selectedCategories.includes(cat))
+    );
+  }, [data, selectedCategories]);
+
   return (
     <DndContext
       sensors={sensors}
@@ -84,11 +91,11 @@ export default function ToolList() {
       data-testid="dnd-context"
     >
       <SortableContext
-        items={data.map((item) => item.id)}
+        items={filteredData.map((item) => item.id)}
         strategy={verticalListSortingStrategy}
       >
         <div className="flex flex-col space-y-4">
-          {data.map((item) => (
+          {filteredData.map((item) => (
             <SortableItem
               key={item.id}
               item={item}
