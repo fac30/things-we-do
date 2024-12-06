@@ -8,7 +8,7 @@ export default function SearchBar() {
       <div className="flex items-center space-x-2">
         {/* Text */}
         <p className="text-md font-thin text-white">
-          What have you found that <span className="font-bold">helps?</span>
+          Fill your toolkit with things that <span className="font-bold">help</span> if you are spiralling:
         </p>
       </div>
 

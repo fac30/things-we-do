@@ -1,20 +1,22 @@
 "use client";
 import { useState, useEffect } from "react";
 import DatabaseManager from "@/lib/db/DatabaseManager";
-import { 
-  DndContext, 
-  closestCenter, 
-  useSensor, 
-  useSensors, 
-  MouseSensor, 
-  TouchSensor, 
-  DragEndEvent 
-} from "@dnd-kit/core";
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-  arrayMove,
-} from "@dnd-kit/sortable";
+// import { 
+//   DndContext, 
+//   closestCenter, 
+//   useSensor, 
+//   useSensors, 
+//   MouseSensor, 
+//   TouchSensor, 
+//   DragEndEvent 
+// } from "@dnd-kit/core";
+// import {
+//   SortableContext,
+//   verticalListSortingStrategy,
+//   arrayMove,
+// } from "@dnd-kit/sortable";
+//import { SmartPointerSensor } from "./SmartPointerSensor";
+import { restrictToWindowEdges } from '@dnd-kit/modifiers';
 import SortableItem from "./SortableItem";
 
 interface CheckBoxComponentData {
@@ -36,10 +38,8 @@ export default function CheckBox() {
     const fetchData = async () => {
       try {
         const items = await DatabaseManager.getFromDb("toolkit_items");
-        
         if (items) {
           setData(items.map((doc) => doc.toJSON()));
-          console.log("Collection content:", data);
         } else {
           console.log("No items found in toolkit_items collection.");
         }
@@ -57,20 +57,15 @@ export default function CheckBox() {
         item.id === id ? { ...item, checked: !item.checked } : item
       )
     );
+    console.log('Button click')
   };
-
 
   const handleDelete = async (id: string) => {
     console.log(`handleDelete called with ID: ${id}`);
-  
     try {
-      console.log(`Attempting to delete from database: ${id}`);
       await DatabaseManager.deleteFromDb("toolkit_items", id);
-      console.log(`Successfully deleted from database: ${id}`);
-  
       setData((prevData) => {
         const updatedData = prevData.filter((item) => item.id !== id);
-        console.log("Updated state after deletion:", updatedData);
         return updatedData;
       });
     } catch (error) {
@@ -78,30 +73,36 @@ export default function CheckBox() {
     }
   };
 
-  // Handle drag-and-drop reorder
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
+  // stop for now - this function is blocking other action (like delete and toggle) in the tool 
+  // const handleDragEnd = (event: DragEndEvent) => {
+  //   const { active, over } = event;
 
-    if (over && active.id !== over.id) {
-      const oldIndex = data.findIndex((item) => item.id === active.id);
-      const newIndex = data.findIndex((item) => item.id === over.id);
-      setData((prevData) => arrayMove(prevData, oldIndex, newIndex));
-    }
-  };
+  //   if (over && active.id !== over.id) {
+  //     const oldIndex = data.findIndex((item) => item.id === active.id);
+  //     const newIndex = data.findIndex((item) => item.id === over.id);
+  //     setData((prevData) => arrayMove(prevData, oldIndex, newIndex));
+  //   }
+  // };
 
-  const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
+  // const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
+
+  // const sensors = useSensors(
+  //   useSensor(SmartPointerSensor) // Include the custom sensor
+  // );
+
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-      data-testid="dnd-context"
-    >
-      <SortableContext
-        items={data.map((item) => item.id)}
-        strategy={verticalListSortingStrategy}
-      >
+    // <DndContext
+    //   sensors={sensors}
+    //   collisionDetection={closestCenter}
+    //   onDragEnd={handleDragEnd}
+    //   modifiers={[restrictToWindowEdges]} //Ensures that the drag movement does not exceed the boundaries of the browser window, which is particularly useful for mobile screens.
+    //   data-testid="dnd-context"
+    // >
+    //   <SortableContext
+    //     items={data.map((item) => item.id)}
+    //     strategy={verticalListSortingStrategy}
+    //   >
         <div className="flex flex-col space-y-4">
           {data.map((item) => (
             <SortableItem
@@ -112,7 +113,7 @@ export default function CheckBox() {
             />
           ))}
         </div>
-      </SortableContext>
-    </DndContext>
-  );
+  //   </SortableContext>
+  //  </DndContext>
+  )
 }
