@@ -1,8 +1,9 @@
 "use client";
 
-import { useContext, useMemo, useState } from "react";
-import { NeurochemContext } from "@/context/NeurochemContext";
+import { useMemo, useState } from "react";
+// import { NeurochemContext } from "@/context/NeurochemContext";
 import { PlotData } from "plotly.js";
+import { Datum } from "plotly.js";
 
 import Toggle from "@/ui/shared/Toggle";
 import PlotlyChart from "@/ui/shared/PlotlyChart";
@@ -44,16 +45,24 @@ interface TextLabel extends Partial<PlotData> {
   };
 }
 
-export function Cube() {
-  const context = useContext(NeurochemContext);
+interface CubeProps {
+  neuroState: {
+    dopamine: Datum; // Current value of dopamine
+    serotonin: Datum; // Current value of serotonin
+    adrenaline: Datum; // Current value of adrenaline
+  };
+}
+
+export function Cube({ neuroState }: CubeProps) {
+  // const context = useContext(NeurochemContext);
   const [isPriorityMatrix, setIsPriorityMatrix] = useState(false);
   const [hasRendered, setHasRendered] = useState(false);
 
-  if (!context) {
-    throw new Error("Cube must be used within a NeurochemContext Provider");
-  }
+  // if (!context) {
+  //   throw new Error("Cube must be used within a NeurochemContext Provider");
+  // }
 
-  const { neuroState } = context;
+  // const { neuroState } = context;
 
   const labels = useMemo(() => {
     return [
