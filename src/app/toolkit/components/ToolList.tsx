@@ -21,7 +21,7 @@ import { useToolkit } from "@/context/ToolkitContext";
 interface ToolListData {
   id: string;
   name: string;
-  category: string[];
+  categories: string[];
   checked: boolean;
   description?: string;
   infoUrl: string;
@@ -79,7 +79,7 @@ export default function ToolList() {
   const filteredData = useMemo(() => {
     if (selectedCategories.length === 0) return data;
     return data.filter(item => 
-      item.category.some(cat => selectedCategories.includes(cat))
+      item.categories && item.categories.some(cat => selectedCategories.includes(cat))
     );
   }, [data, selectedCategories]);
 

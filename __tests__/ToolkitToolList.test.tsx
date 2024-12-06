@@ -1,5 +1,5 @@
 import { render, screen, waitFor, act } from "@testing-library/react";
-import CheckBox from "@/app/toolkit/components/ToolList";
+import ToolList from "@/app/toolkit/components/ToolList";
 import DatabaseManager from "@/lib/db/DatabaseManager";
 //import { DndContext } from "@dnd-kit/core";
 
@@ -16,7 +16,7 @@ jest.mock("@/app/toolkit/components/SortableItem", () => ({
   ),
 }));
 
-describe("CheckBox Component", () => {
+describe("ToolList Component", () => {
   const mockData = [
     {
       id: "1",
@@ -63,7 +63,7 @@ describe("CheckBox Component", () => {
 
   it("fetches and displays items from the database", async () => {
     await act(async () => {
-      render(<CheckBox />);
+      render(<ToolList />);
     });
 
     await waitFor(() => {
@@ -78,7 +78,7 @@ describe("CheckBox Component", () => {
 
   it("handles drag-and-drop reorder without errors", async () => {
     await act(async () => {
-      render(<CheckBox />);
+      render(<ToolList />);
     });
 
     await waitFor(() => {

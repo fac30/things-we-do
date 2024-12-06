@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { Header } from "@/ui/shared/Header";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),

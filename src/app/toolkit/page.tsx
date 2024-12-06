@@ -1,3 +1,4 @@
+"use client";
 import CategoryBar from "@/app/toolkit/components/CategoryBar";
 import SearchBar from "@/app/toolkit/components/SearchBar";
 import ToolList from "@/app/toolkit/components/ToolList";
