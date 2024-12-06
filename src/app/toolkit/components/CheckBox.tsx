@@ -16,7 +16,7 @@ import DatabaseManager from "@/lib/db/DatabaseManager";
 //   arrayMove,
 // } from "@dnd-kit/sortable";
 //import { SmartPointerSensor } from "./SmartPointerSensor";
-import { restrictToWindowEdges } from '@dnd-kit/modifiers';
+//import { restrictToWindowEdges } from '@dnd-kit/modifiers';
 import SortableItem from "./SortableItem";
 
 interface CheckBoxComponentData {
