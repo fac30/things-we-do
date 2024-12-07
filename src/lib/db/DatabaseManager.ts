@@ -113,7 +113,7 @@ class DatabaseManager {
   async seedCategories() {
     console.groupCollapsed("Seeding Categories");
     try {
-      console.log("Initialising Database");
+      console.log("Looking for database");
       const db = await this.initialiseDatabase();
       if (!db) {
         console.error("Database initialisation failed");
