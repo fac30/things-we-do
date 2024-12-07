@@ -1,4 +1,4 @@
-import { Datum } from "plotly.js";
+import { NeurochemState } from "./MoodsDisplay";
 
 interface SliderProps {
   chem: "dopamine" | "serotonin" | "adrenaline";
@@ -7,11 +7,7 @@ interface SliderProps {
     value: number,
     chem: "dopamine" | "serotonin" | "adrenaline"
   ) => void;
-  neuroState: {
-    dopamine: Datum;
-    serotonin: Datum;
-    adrenaline: Datum;
-  };
+  neuroState: NeurochemState;
 }
 export function Slider({ chem, label, handleChange, neuroState }: SliderProps) {
   const normaliseValue = (value: unknown): number => {

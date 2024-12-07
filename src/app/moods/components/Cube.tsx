@@ -1,13 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
-
 import { PlotData } from "plotly.js";
-import { Datum } from "plotly.js";
-
+import { NeurochemState } from "./MoodsDisplay";
 import Toggle from "@/ui/shared/Toggle";
 import PlotlyChart from "@/ui/shared/PlotlyChart";
-
 import quadrants from "./data/quadrants.json";
 import labelsMood from "./data/labels_mood.json";
 import labelsPriority from "./data/labels_priority.json";
@@ -37,11 +34,7 @@ interface TextLabel extends Partial<PlotData> {
 }
 
 interface CubeProps {
-  neuroState: {
-    dopamine: Datum;
-    serotonin: Datum;
-    adrenaline: Datum;
-  };
+  neuroState: NeurochemState;
 }
 
 export function Cube({ neuroState }: CubeProps) {

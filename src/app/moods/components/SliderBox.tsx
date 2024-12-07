@@ -1,16 +1,12 @@
 import { Slider } from "./Slider";
-import { Datum } from "plotly.js";
+import { NeurochemState } from "./MoodsDisplay";
 
 interface SliderBoxProps {
   handleChange: (
     value: number,
     chem: "dopamine" | "serotonin" | "adrenaline"
   ) => void;
-  neuroState: {
-    dopamine: Datum;
-    serotonin: Datum;
-    adrenaline: Datum;
-  };
+  neuroState: NeurochemState;
 }
 
 export function SliderBox({ handleChange, neuroState }: SliderBoxProps) {
