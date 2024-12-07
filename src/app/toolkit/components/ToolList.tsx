@@ -61,7 +61,8 @@ export default function CheckBox() {
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
 
-    if (!destination) return; // If there's no destination (item dropped outside a valid drop area), return early
+    // If there's no destination (item dropped outside a valid drop area), return early
+    if (!destination) return; 
 
     // If the item is dropped in the same position, do nothing
     if (source.index === destination.index && source.droppableId === destination.droppableId) {
@@ -108,18 +109,4 @@ export default function CheckBox() {
       </Droppable>
     </DragDropContext>
   );
-
-
-  // return (
-  //       <div className="flex flex-col space-y-4">
-  //         {data.map((item) => (
-  //           <SortableItem
-  //             key={item.id}
-  //             item={item}
-  //             handleToggle={handleToggle}
-  //             handleDelete={handleDelete}
-  //           />
-  //         ))}
-  //       </div>
-  // )
 }
