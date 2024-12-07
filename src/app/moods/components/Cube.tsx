@@ -9,6 +9,16 @@ import quadrants from "./data/quadrants.json";
 import labelsMood from "./data/labels_mood.json";
 import labelsPriority from "./data/labels_priority.json";
 
+// Cube quadrants and labels order (in quadrants.json/labels.json):
+// Bottom-front-left
+// Bottom-front-right
+// Bottom-back-left
+// Bottom-back-right
+// Top-front-left
+// Top-front-right
+// Top-back-left
+// Top-back-right
+
 interface ExtendedMesh3d extends PlotData {
   alphahull?: number;
   flatshading?: boolean;
