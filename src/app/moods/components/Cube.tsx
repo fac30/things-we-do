@@ -1,15 +1,14 @@
 "use client";
 
-import { useContext, useMemo, useState } from "react";
-import { NeurochemContext } from "@/context/NeurochemContext";
+import { useMemo, useState } from "react";
 import { PlotData } from "plotly.js";
-
+import { NeurochemState } from "./MoodsDisplay";
 import Toggle from "@/ui/shared/Toggle";
 import PlotlyChart from "@/ui/shared/PlotlyChart";
-
 import quadrants from "./data/quadrants.json";
 import labelsMood from "./data/labels_mood.json";
 import labelsPriority from "./data/labels_priority.json";
+
 // Cube quadrants and labels order (in quadrants.json/labels.json):
 // Bottom-front-left
 // Bottom-front-right
@@ -44,16 +43,13 @@ interface TextLabel extends Partial<PlotData> {
   };
 }
 
-export function Cube() {
-  const context = useContext(NeurochemContext);
+interface CubeProps {
+  neuroState: NeurochemState;
+}
+
+export function Cube({ neuroState }: CubeProps) {
   const [isPriorityMatrix, setIsPriorityMatrix] = useState(false);
   const [hasRendered, setHasRendered] = useState(false);
-
-  if (!context) {
-    throw new Error("Cube must be used within a NeurochemContext Provider");
-  }
-
-  const { neuroState } = context;
 
   const labels = useMemo(() => {
     return [

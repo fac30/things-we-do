@@ -1,29 +1,15 @@
-"use client";
-
-import { useContext } from "react";
-import { NeurochemContext } from "@/context/NeurochemContext";
+import { NeurochemState } from "./MoodsDisplay";
 
 interface SliderProps {
   chem: "dopamine" | "serotonin" | "adrenaline";
   label: string;
+  handleChange: (
+    value: number,
+    chem: "dopamine" | "serotonin" | "adrenaline"
+  ) => void;
+  neuroState: NeurochemState;
 }
-
-export function Slider({ chem, label }: SliderProps) {
-  const context = useContext(NeurochemContext);
-
-  if (!context) {
-    throw new Error("Slider must be used within a NeurochemContext Provider");
-  }
-
-  const { neuroState, setNeuroState } = context;
-
-  const handleChange = (value: number) => {
-    setNeuroState((prev) => ({
-      ...prev,
-      [chem]: value,
-    }));
-  };
-
+export function Slider({ chem, label, handleChange, neuroState }: SliderProps) {
   const normaliseValue = (value: unknown): number => {
     if (value instanceof Date) return value.getTime();
     if (typeof value === "number") return value;
@@ -54,7 +40,7 @@ export function Slider({ chem, label }: SliderProps) {
         min="1"
         max="10"
         value={normaliseValue(neuroState[chem])}
-        onChange={(e) => handleChange(parseInt(e.target.value))}
+        onChange={(e) => handleChange(parseInt(e.target.value), chem)}
         className="w-full m-auto range-slider"
       />
       <div className="flex justify-between mt-4 w-full m-auto">
