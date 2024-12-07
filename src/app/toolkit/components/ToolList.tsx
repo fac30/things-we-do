@@ -1,22 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import DatabaseManager from "@/lib/db/DatabaseManager";
-// import { 
-//   DndContext, 
-//   closestCenter, 
-//   useSensor, 
-//   useSensors, 
-//   MouseSensor, 
-//   TouchSensor, 
-//   DragEndEvent 
-// } from "@dnd-kit/core";
-// import {
-//   SortableContext,
-//   verticalListSortingStrategy,
-//   arrayMove,
-// } from "@dnd-kit/sortable";
-//import { SmartPointerSensor } from "./SmartPointerSensor";
-//import { restrictToWindowEdges } from '@dnd-kit/modifiers';
+import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import SortableItem from "./SortableItem";
 
 interface CheckBoxComponentData {
@@ -73,47 +58,68 @@ export default function CheckBox() {
     }
   };
 
-  // stop for now - this function is blocking other action (like delete and toggle) in the tool 
-  // const handleDragEnd = (event: DragEndEvent) => {
-  //   const { active, over } = event;
+  const onDragEnd = (result: DropResult) => {
+    const { source, destination } = result;
 
-  //   if (over && active.id !== over.id) {
-  //     const oldIndex = data.findIndex((item) => item.id === active.id);
-  //     const newIndex = data.findIndex((item) => item.id === over.id);
-  //     setData((prevData) => arrayMove(prevData, oldIndex, newIndex));
-  //   }
-  // };
+    if (!destination) return; // If there's no destination (item dropped outside a valid drop area), return early
 
-  // const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
+    // If the item is dropped in the same position, do nothing
+    if (source.index === destination.index && source.droppableId === destination.droppableId) {
+      return;
+    }
+    const reorderedData = Array.from(data);
+    const [movedItem] = reorderedData.splice(source.index, 1);
+    reorderedData.splice(destination.index, 0, movedItem);
 
-  // const sensors = useSensors(
-  //   useSensor(SmartPointerSensor) // Include the custom sensor
-  // );
+    setData(reorderedData);
+  };
 
 
   return (
-    // <DndContext
-    //   sensors={sensors}
-    //   collisionDetection={closestCenter}
-    //   onDragEnd={handleDragEnd}
-    //   modifiers={[restrictToWindowEdges]} //Ensures that the drag movement does not exceed the boundaries of the browser window, which is particularly useful for mobile screens.
-    //   data-testid="dnd-context"
-    // >
-    //   <SortableContext
-    //     items={data.map((item) => item.id)}
-    //     strategy={verticalListSortingStrategy}
-    //   >
-        <div className="flex flex-col space-y-4">
-          {data.map((item) => (
-            <SortableItem
-              key={item.id}
-              item={item}
-              handleToggle={handleToggle}
-              handleDelete={handleDelete}
-            />
-          ))}
-        </div>
-  //   </SortableContext>
-  //  </DndContext>
-  )
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId="toolkit">
+        {(provided) => (
+          <div
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            className="flex flex-col space-y-4"
+          >
+            {data.map((item, index) => (
+              <Draggable key={item.id} draggableId={item.id} index={index}>
+                {(provided) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                  >
+                    <SortableItem
+                      key={item.id}
+                      item={item}
+                      handleToggle={handleToggle}
+                      handleDelete={handleDelete}
+                    />
+                  </div>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
+  );
+
+
+  // return (
+  //       <div className="flex flex-col space-y-4">
+  //         {data.map((item) => (
+  //           <SortableItem
+  //             key={item.id}
+  //             item={item}
+  //             handleToggle={handleToggle}
+  //             handleDelete={handleDelete}
+  //           />
+  //         ))}
+  //       </div>
+  // )
 }
