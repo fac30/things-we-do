@@ -45,7 +45,7 @@ export default function MoodsInfoPage() {
 
   return (
     <>
-      <Header title="Learn More" />
+      <Header title="Learn More" isInfoPage={true} />
       <Toggle
         isToggled={isPriority}
         setIsToggled={setIsPriority}
