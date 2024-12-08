@@ -67,12 +67,12 @@ export default function InsightsDisplay() {
         start: new Date(
           now.getFullYear(),
           now.getMonth(),
-          now.getDate() - now.getDay() + 1
+          now.getDate() - (now.getDay() === 0 ? 6 : now.getDay() - 1) // Adjust for Sunday
         ),
         end: new Date(
           now.getFullYear(),
           now.getMonth(),
-          now.getDate() - now.getDay() + 7
+          now.getDate() + (now.getDay() === 0 ? 0 : 7 - now.getDay()) // Adjust for Sunday
         ),
       },
       month: {
@@ -92,6 +92,7 @@ export default function InsightsDisplay() {
 
   useEffect(() => {
     const { start, end } = dateParams[selectedButton];
+    console.log(start, end);
     setStartOfRange(start);
     setEndOfRange(useNow ? now : end);
   }, [useNow, selectedButton, dateParams, now]);
