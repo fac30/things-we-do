@@ -149,14 +149,14 @@ export default function LineGraph({
               },
               legend: {
                 font: {
-                  size: 10, // Reduce the font size of the legend labels
-                  color: "white", // Color of the text in the legend
+                  size: 10,
+                  color: "white",
                 },
-                itemwidth: 9, // Reduce the allocated space for each legend item
-                orientation: "h", // Vertical layout (default is vertical)
-                // x: 0.9,
-                y: -0.15, // Keep legend aligned at the top
-                yanchor: "top", // Align the legend at the top vertically
+                itemwidth: 9,
+                orientation: "h",
+
+                y: -0.15,
+                yanchor: "top",
               },
               hidesources: true,
             }}
