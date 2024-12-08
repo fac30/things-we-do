@@ -80,13 +80,15 @@ export default function MoodsInfoPage() {
                 </p>
               ))}
             </div>
-            <h2 className="text-xl font-semibold">Breaking Tasks Down</h2>
-            <p>
-              Dealing with tasks little by little, as they come up, especially
-              those in Quadrants I and II, helps you reduce overwhelm and ensure
-              you&apos;re making continuous, meaningful progress towards what
-              truly matters.
-            </p>
+            <div className="flex flex-col gap-3">
+              <h2 className="text-xl font-semibold">Breaking Tasks Down</h2>
+              <p>
+                Dealing with tasks little by little, as they come up, especially
+                those in Quadrants I and II, helps you reduce overwhelm and
+                ensure you&apos;re making continuous, meaningful progress
+                towards what truly matters.
+              </p>
+            </div>
             <Image
               src="/images/simpleEisenhower.png"
               width={600}
