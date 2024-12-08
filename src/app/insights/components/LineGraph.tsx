@@ -6,12 +6,14 @@ interface LineGraphProps {
   dataArray: Insight[];
   startOfRange: Date;
   endOfRange: Date;
+  selectedButton: string;
 }
 
 export default function LineGraph({
   dataArray,
   startOfRange,
   endOfRange,
+  selectedButton,
 }: LineGraphProps) {
   if (!dataArray || dataArray.length === 0) {
     return <div>No data available for the graph.</div>;
@@ -36,9 +38,24 @@ export default function LineGraph({
     (entry) => entry.neurotransmitters.adrenaline
   );
 
+  const tickFormat = (() => {
+    switch (selectedButton) {
+      case "day":
+        return "%H:%M"; // Show hours and minutes
+      case "week":
+        return "%a"; // Show abbreviated day names (e.g., Mon, Tue)
+      case "month":
+        return "%d"; // Show day of the month (e.g., 1, 2, 3)
+      case "year":
+        return "%b"; // Show abbreviated month names (e.g., Jan, Feb)
+      default:
+        return ""; // Default format (no specific formatting)
+    }
+  })();
+
   return (
     <>
-      <div className="bg-">
+      <div className="bg-twd-graph-background mt-10 w-11/12 m-auto rounded-sm">
         <div className="w-10/12 m-auto pt-5">
           <h2 className="text-xl">Decision Maker</h2>
           <p>How did the things I wanted to do feel?</p>
@@ -60,7 +77,7 @@ export default function LineGraph({
                 y: serotoninValues,
                 type: "scatter",
                 mode: "lines+markers",
-                marker: { color: "blue", size: 10 },
+                marker: { color: "blue" },
                 line: { shape: "spline", width: 3 },
                 name: "Effortful",
               },
@@ -88,7 +105,7 @@ export default function LineGraph({
               plot_bgcolor: "#262538",
               xaxis: {
                 title: "",
-                tickformat: "%H:%M",
+                tickformat: tickFormat,
                 showgrid: false,
                 titlefont: {
                   color: "white",

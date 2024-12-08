@@ -145,6 +145,7 @@ export default function InsightsDisplay() {
           dataArray={insights}
           startOfRange={startOfRange}
           endOfRange={endOfRange}
+          selectedButton={selectedButton}
         />
       ) : (
         <div>Loading insights...</div>
