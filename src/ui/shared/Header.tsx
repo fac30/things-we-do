@@ -20,7 +20,7 @@ export function Header({
   const router = useRouter();
 
   const goBack = () => {
-    router.back(); // This will navigate the user to the previous page
+    router.back();
   };
 
   return (
