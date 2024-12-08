@@ -7,7 +7,7 @@ export default function InsightsPage() {
       <Header
         title="Insights"
         description="analyse your moods and needs over time."
-        isHome={false}
+        hasInfoButton={true}
       />
       <InsightsDisplay />
     </>
