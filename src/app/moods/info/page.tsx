@@ -54,7 +54,7 @@ export default function MoodsInfoPage() {
         showLabels={true}
       />
       <div className="w-10/12 m-auto flex flex-col gap-10 mt-8">
-        {!isPriority ? (
+        {isPriority ? (
           <>
             <Image
               src="/images/priorityCubeImage.png"
