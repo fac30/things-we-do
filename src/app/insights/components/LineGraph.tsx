@@ -149,7 +149,7 @@ export default function LineGraph({
               },
               legend: {
                 font: {
-                  size: 10,
+                  size: 12,
                   color: "white",
                 },
                 itemwidth: 9,
