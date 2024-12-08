@@ -43,7 +43,6 @@ export default function CheckBox() {
         item.id === id ? { ...item, checked: !item.checked } : item
       )
     );
-    console.log('Button click')
   };
 
   const handleDelete = async (id: string) => {
