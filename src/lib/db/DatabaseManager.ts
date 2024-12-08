@@ -147,17 +147,10 @@ class DatabaseManager {
   async seedToolkitItems() {
     console.groupCollapsed("Seeding Toolkit Items");
     try {
-      let db;
-      console.log("Looking for database");
-      if (this.dbInstance) {
-        console.log("Database found");
-        db = this.dbInstance;
-      } else {
-        db = await this.initialiseDatabase();
-        if (!db) {
-          console.error("Database initialisation failed");
-          return;
-        }     
+      const db = await this.initialiseDatabase();
+      if (!db) {
+        console.error("Database initialisation failed");
+        return;
       }
 
       console.log("Looking for toolkit_items collection");
