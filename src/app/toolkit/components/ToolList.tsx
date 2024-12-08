@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 import DatabaseManager from "@/lib/db/DatabaseManager";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import SortableItem from "./SortableItem";
+import Search from "@/ui/shared/Search";
 
-interface CheckBoxComponentData {
+export interface ToolkitComponentData {
   id: string;
   name: string;
   categories: string[];
@@ -16,7 +17,7 @@ interface CheckBoxComponentData {
 }
 
 export default function CheckBox() {
-  const [data, setData] = useState<CheckBoxComponentData[]>([]);
+  const [data, setData] = useState<ToolkitComponentData[]>([]);
   const isEmpty = data.length === 0;
 
   useEffect(() => {
@@ -58,6 +59,10 @@ export default function CheckBox() {
     }
   };
 
+  const onFilter = (filteredData: ToolkitComponentData[]) => {
+    setData(filteredData);
+  };
+
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
 
@@ -77,36 +82,39 @@ export default function CheckBox() {
 
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="toolkit">
-        {(provided) => (
-          <div
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-            className="flex flex-col space-y-4"
-          >
-            {data.map((item, index) => (
-              <Draggable key={item.id} draggableId={item.id} index={index}>
-                {(provided) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                  >
-                    <SortableItem
-                      key={item.id}
-                      item={item}
-                      handleToggle={handleToggle}
-                      handleDelete={handleDelete}
-                    />
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <div className="toolkit-container">
+      <Search items={data} onFilter={onFilter}/>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="toolkit">
+            {(provided) => (
+              <div
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className="flex flex-col space-y-4"
+              >
+                {data.map((item, index) => (
+                  <Draggable key={item.id} draggableId={item.id} index={index}>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <SortableItem
+                          key={item.id}
+                          item={item}
+                          handleToggle={handleToggle}
+                          handleDelete={handleDelete}
+                        />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+    </div>
   );
 }
