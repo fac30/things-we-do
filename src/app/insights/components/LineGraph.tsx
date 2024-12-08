@@ -70,7 +70,7 @@ export default function LineGraph({
 
   return (
     <>
-      <div className="bg-twd-graph-background mt-10 w-11/12 m-auto rounded-sm">
+      <div className="bg-twd-graph-background mt-10 w-11/12 m-auto rounded-lg">
         <div className="w-10/12 m-auto pt-5">
           <h2 className="text-xl">Decision Maker</h2>
           <p>How did the things I wanted to do feel?</p>
