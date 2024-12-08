@@ -41,15 +41,30 @@ export default function LineGraph({
   const tickFormat = (() => {
     switch (selectedButton) {
       case "day":
-        return "%H:%M"; // Show hours and minutes
+        return "%H";
       case "week":
-        return "%a"; // Show abbreviated day names (e.g., Mon, Tue)
+        return "%a";
       case "month":
-        return "%d"; // Show day of the month (e.g., 1, 2, 3)
+        return "%d";
       case "year":
-        return "%b"; // Show abbreviated month names (e.g., Jan, Feb)
+        return "%b";
       default:
-        return ""; // Default format (no specific formatting)
+        return "";
+    }
+  })();
+
+  const dtick = (() => {
+    switch (selectedButton) {
+      case "day":
+        return 3 * 3600000;
+      case "week":
+        return 86400000;
+      case "month":
+        return 3 * 86400000;
+      case "year":
+        return "M1";
+      default:
+        return undefined;
     }
   })();
 
@@ -101,6 +116,7 @@ export default function LineGraph({
                 b: 40,
                 pad: 10,
               },
+
               paper_bgcolor: "#262538",
               plot_bgcolor: "#262538",
               xaxis: {
@@ -114,6 +130,8 @@ export default function LineGraph({
                 tickfont: {
                   color: "white",
                 },
+                dtick: dtick,
+
                 range: [startOfRange.toISOString(), endOfRange.toISOString()],
               },
               yaxis: {
@@ -131,8 +149,14 @@ export default function LineGraph({
               },
               legend: {
                 font: {
-                  color: "white",
+                  size: 10, // Reduce the font size of the legend labels
+                  color: "white", // Color of the text in the legend
                 },
+                itemwidth: 9, // Reduce the allocated space for each legend item
+                orientation: "h", // Vertical layout (default is vertical)
+                // x: 0.9,
+                y: -0.15, // Keep legend aligned at the top
+                yanchor: "top", // Align the legend at the top vertically
               },
               hidesources: true,
             }}
