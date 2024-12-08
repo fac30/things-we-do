@@ -38,11 +38,11 @@ export default function LineGraph({
 
   return (
     <>
-      <div className="w-10/12 m-auto py-5">
+      <div className="w-10/12 m-auto pt-5">
         <h2 className="text-xl">Decision Maker</h2>
         <p>How did the things I wanted to do feel?</p>
       </div>
-      <div className="w-11/12 m-auto flex justify-center text-center mb-10 mt-10">
+      <div className="w-11/12 m-auto flex justify-center text-center mb-10 mt-5">
         <PlotlyChart
           data={[
             {
@@ -80,7 +80,8 @@ export default function LineGraph({
               l: 10,
               r: 10,
               t: 5,
-              b: 10,
+              b: 40,
+              pad: 10,
             },
             paper_bgcolor: "#262538",
             plot_bgcolor: "#262538",
@@ -101,6 +102,7 @@ export default function LineGraph({
               title: "",
               range: [0, 10],
               showgrid: false,
+              showticklabels: false,
               titlefont: {
                 color: "white",
               },
