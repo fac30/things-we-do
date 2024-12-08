@@ -80,7 +80,7 @@ class DatabaseManager {
   dbInstance: RxDatabase | null = null;
 
   async initialiseDatabase() {
-    console.groupCollapsed("Initialising Database");
+    console.groupCollapsed("Accessing Database");
     if (!this.dbInstance) {
       console.groupCollapsed("Creating New Database");
       this.dbInstance = await createRxDatabase({
