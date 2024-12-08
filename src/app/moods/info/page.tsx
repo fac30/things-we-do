@@ -96,7 +96,10 @@ export default function MoodsInfoPage() {
               alt="Image of an Eisenhower Matrix"
               layout="responsive"
             />
-            <Link href="https://www.eisenhower.me/eisenhower-matrix/#:~:text=What%20is%20the%20Eisenhower%20Matrix,or%20not%20do%20at%20all.">
+            <Link
+              className="text-twd-text-link"
+              href="https://www.eisenhower.me/eisenhower-matrix/#:~:text=What%20is%20the%20Eisenhower%20Matrix,or%20not%20do%20at%20all."
+            >
               Learn More Here
             </Link>
           </>
