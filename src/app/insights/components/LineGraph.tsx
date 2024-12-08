@@ -139,7 +139,7 @@ export default function LineGraph({ dataArray }: LineGraphProps) {
               type: "scatter",
               mode: "lines+markers",
               marker: { color: "green" },
-              line: { shape: "linear" },
+              line: { shape: "splin", width: 3 },
               name: "Urgent",
             },
             {
@@ -147,8 +147,8 @@ export default function LineGraph({ dataArray }: LineGraphProps) {
               y: serotoninValues,
               type: "scatter",
               mode: "lines+markers",
-              marker: { color: "blue" },
-              line: { shape: "linear" },
+              marker: { color: "blue", size: 10 },
+              line: { shape: "spline", width: 3 },
               name: "Effortful",
             },
             {
@@ -157,7 +157,7 @@ export default function LineGraph({ dataArray }: LineGraphProps) {
               type: "scatter",
               mode: "lines+markers",
               marker: { color: "red" },
-              line: { shape: "linear" },
+              line: { shape: "spline", width: 3 },
               name: "Worthwile",
             },
           ]}
@@ -168,14 +168,13 @@ export default function LineGraph({ dataArray }: LineGraphProps) {
               l: 10,
               r: 10,
               t: 5,
-
-              pad: 50,
+              b: 10,
             },
             paper_bgcolor: "#262538",
             plot_bgcolor: "#262538",
             xaxis: {
               title: "",
-              tickformat: "%H:%M:%S",
+              tickformat: "%H:%M",
               showgrid: false,
               titlefont: {
                 color: "white",

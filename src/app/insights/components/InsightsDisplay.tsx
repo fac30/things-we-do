@@ -39,11 +39,17 @@ export default function InsightsDisplay() {
 
   return (
     <>
-      {insights ? (
-        <LineGraph dataArray={insights} />
-      ) : (
-        <div>Loading insights...</div>
-      )}
+      <div className="bg-[#262538] w-11/12 m-auto">
+        <div className="w-10/12 m-auto py-5">
+          <h2 className="text-xl">Decision Maker</h2>
+          <p>How did the things I wanted to do feel?</p>
+        </div>
+        {insights ? (
+          <LineGraph dataArray={insights} />
+        ) : (
+          <div>Loading insights...</div>
+        )}
+      </div>
     </>
   );
 }
