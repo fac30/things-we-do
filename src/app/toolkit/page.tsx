@@ -1,6 +1,5 @@
 "use client";
 import CategoriesBar from "@/app/toolkit/components/CategoriesBar";
-import SearchBar from "@/app/toolkit/components/SearchBar";
 import ToolList from "@/app/toolkit/components/ToolList";
 import FloatingButton from "@/app/toolkit/components/floatingButton";
 import { Header } from "@/ui/shared/Header";
@@ -17,7 +16,6 @@ export default function ToolkitPage() {
         />
         <CategoriesBar />
         <div className="p-4">
-          <SearchBar />
           <ToolList />
         </div>
         <FloatingButton />

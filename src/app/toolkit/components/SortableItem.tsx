@@ -1,7 +1,4 @@
 "use client";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import Button from "@/ui/shared/Button";
 
 interface SortableItemProps {
   item: {
@@ -33,28 +30,21 @@ export default function SortableItem({
   handleToggle,
   handleDelete,
 }: SortableItemProps) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: item.id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
 
   return (
     <div
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
       className="flex flex-col items-start p-4 rounded-lg shadow-lg bg-twd-background"
+      draggable="false" // Ensure it doesn’t conflict with drag events
     >
       {/* First Row: Checkbox and Name */}
       <div className="flex items-center space-x-3 w-full">
         <input
           type="checkbox"
           checked={item.checked}
-          onChange={() => handleToggle(item.id)}
+          onChange={(e) => {
+            e.stopPropagation();
+            handleToggle(item.id);
+          }}
           className="h-5 w-5 border-white bg-twd-background text-twd-background rounded focus:ring focus:ring-blue-300"
         />
         <p
@@ -73,7 +63,7 @@ export default function SortableItem({
           <img
             src={item.imageUrl}
             alt={item.name}
-            className="h-10 w-10 object-cover"
+            className="h-10 w-10 object-cover rounded"
           />
         ) : (
           <span className="text-gray-400">No Image</span>
@@ -82,12 +72,21 @@ export default function SortableItem({
           href={item.infoUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-twd-text-link"
+          className="text-twd-text-link hover:underline"
         >
           Go to resource
         </a>
-        <Button label="Delete" onClick={() => handleDelete(item.id)} />
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            handleDelete(item.id);
+          }}
+          className="ml-4 text-white"
+        >
+          Delete
+        </button>
       </div>
     </div>
   );
+
 }

@@ -1,24 +1,11 @@
 "use client";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import DatabaseManager from "@/lib/db/DatabaseManager";
-import { 
-  DndContext, 
-  closestCenter, 
-  useSensor, 
-  useSensors, 
-  MouseSensor, 
-  TouchSensor, 
-  DragEndEvent 
-} from "@dnd-kit/core";
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-  arrayMove,
-} from "@dnd-kit/sortable";
+import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import SortableItem from "./SortableItem";
-import { useToolkit } from "@/context/ToolkitContext";
+import Search from "@/ui/shared/Search";
 
-interface ToolListData {
+export interface ToolkitComponentData {
   id: string;
   name: string;
   categories: string[];
@@ -29,15 +16,14 @@ interface ToolListData {
   timestamp?: string;
 }
 
-export default function ToolList() {
-  const [data, setData] = useState<ToolListData[]>([]);
-  const { selectedCategories } = useToolkit();
+export default function CheckBox() {
+  const [data, setData] = useState<ToolkitComponentData[]>([]);
+  const isEmpty = data.length === 0;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const items = await DatabaseManager.getFromDb("toolkit_items");
-        
         if (items) {
           setData(items.map((doc) => doc.toJSON()));
         } else {
@@ -48,9 +34,9 @@ export default function ToolList() {
       }
     };
     fetchData();
-  }, []); // Trigger when no tools are in the render list
+  }, [isEmpty]);
 
-  // TODO: Toggle checkbox state
+
   const handleToggle = (id: string) => {
     setData((prevData) =>
       prevData.map((item) =>
@@ -59,52 +45,75 @@ export default function ToolList() {
     );
   };
 
-  // TODO: Delete an item
-  const handleDelete = (id: string) => {
-    setData((prevData) => prevData.filter((item) => item.id !== id));
-  };
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (over && active.id !== over.id) {
-      const oldIndex = data.findIndex((item) => item.id === active.id);
-      const newIndex = data.findIndex((item) => item.id === over.id);
-      setData((prevData) => arrayMove(prevData, oldIndex, newIndex));
+  const handleDelete = async (id: string) => {
+    console.log(`handleDelete called with ID: ${id}`);
+    try {
+      await DatabaseManager.deleteFromDb("toolkit_items", id);
+      setData((prevData) => {
+        const updatedData = prevData.filter((item) => item.id !== id);
+        return updatedData;
+      });
+    } catch (error) {
+      console.error("Error in handleDelete:", error);
     }
   };
 
-  const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
+  const onFilter = (filteredData: ToolkitComponentData[]) => {
+    setData(filteredData);
+  };
 
-  const filteredData = useMemo(() => {
-    if (selectedCategories.length === 0) return data;
-    return data.filter(item => 
-      item.categories && item.categories.some(cat => selectedCategories.includes(cat))
-    );
-  }, [data, selectedCategories]);
+  const onDragEnd = (result: DropResult) => {
+    const { source, destination } = result;
+
+    // If there's no destination (item dropped outside a valid drop area), return early
+    if (!destination) return; 
+
+    // If the item is dropped in the same position, do nothing
+    if (source.index === destination.index && source.droppableId === destination.droppableId) {
+      return;
+    }
+    const reorderedData = Array.from(data);
+    const [movedItem] = reorderedData.splice(source.index, 1);
+    reorderedData.splice(destination.index, 0, movedItem);
+
+    setData(reorderedData);
+  };
+
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-      data-testid="dnd-context"
-    >
-      <SortableContext
-        items={filteredData.map((item) => item.id)}
-        strategy={verticalListSortingStrategy}
-      >
-        <div className="flex flex-col space-y-4">
-          {filteredData.map((item) => (
-            <SortableItem
-              key={item.id}
-              item={item}
-              handleToggle={handleToggle}
-              handleDelete={handleDelete}
-            />
-          ))}
-        </div>
-      </SortableContext>
-    </DndContext>
+    <div className="toolkit-container">
+      <Search items={data} onFilter={onFilter}/>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="toolkit">
+            {(provided) => (
+              <div
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className="flex flex-col space-y-4"
+              >
+                {data.map((item, index) => (
+                  <Draggable key={item.id} draggableId={item.id} index={index}>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <SortableItem
+                          key={item.id}
+                          item={item}
+                          handleToggle={handleToggle}
+                          handleDelete={handleDelete}
+                        />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+    </div>
   );
 }

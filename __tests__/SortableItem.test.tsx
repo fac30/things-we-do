@@ -1,24 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import SortableItem from "@/app/toolkit/components/SortableItem";
-
-// Mock the `@dnd-kit/sortable` module
-jest.mock("@dnd-kit/sortable", () => ({
-  useSortable: jest.fn().mockReturnValue({
-    attributes: {},
-    listeners: {},
-    setNodeRef: jest.fn(),
-    transform: null,
-    transition: null,
-  }),
-}));
-
-// Mock the `Button` component
-jest.mock("@/ui/shared/Button", () => ({
-  __esModule: true,
-  default: ({ label }: { label: string }) => (
-    <button data-testid="mock-button">{label}</button>
-  ),
-}));
 
 describe("SortableItem Component", () => {
   const defaultItem = {
@@ -31,32 +12,40 @@ describe("SortableItem Component", () => {
     imageUrl: "https://via.placeholder.com/150",
   };
 
+  const mockHandleToggle = jest.fn();
+  const mockHandleDelete = jest.fn();
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("renders without crashing", () => {
     render(
       <SortableItem
         item={defaultItem}
-        handleToggle={() => {}}
-        handleDelete={() => {}}
+        handleToggle={mockHandleToggle}
+        handleDelete={mockHandleDelete}
       />
     );
 
     // Check the main container renders
-    const container = screen.getByRole("checkbox").closest("div");
+    const container = screen.getByText("Test Item").closest("div");
     expect(container).toBeInTheDocument();
   });
 
-  it("renders the checkbox, name, image, link, and button", () => {
+  it("renders the checkbox, name, image, link, and delete button", () => {
     render(
       <SortableItem
         item={defaultItem}
-        handleToggle={() => {}}
-        handleDelete={() => {}}
+        handleToggle={mockHandleToggle}
+        handleDelete={mockHandleDelete}
       />
     );
 
     // Check for the checkbox
     const checkbox = screen.getByRole("checkbox");
     expect(checkbox).toBeInTheDocument();
+    expect(checkbox).not.toBeChecked();
 
     // Check for the item name
     const itemName = screen.getByText("Test Item");
@@ -73,9 +62,8 @@ describe("SortableItem Component", () => {
     expect(link).toHaveAttribute("href", defaultItem.infoUrl);
 
     // Check for the delete button
-    const deleteButton = screen.getByTestId("mock-button");
+    const deleteButton = screen.getByText("Delete");
     expect(deleteButton).toBeInTheDocument();
-    expect(deleteButton).toHaveTextContent("Delete");
   });
 
   it("renders 'No Image' when imageUrl is invalid", () => {
@@ -84,8 +72,8 @@ describe("SortableItem Component", () => {
     render(
       <SortableItem
         item={itemWithInvalidImage}
-        handleToggle={() => {}}
-        handleDelete={() => {}}
+        handleToggle={mockHandleToggle}
+        handleDelete={mockHandleDelete}
       />
     );
 
@@ -93,12 +81,57 @@ describe("SortableItem Component", () => {
     expect(screen.getByText("No Image")).toBeInTheDocument();
   });
 
+  it("calls handleToggle when the checkbox is clicked", () => {
+    render(
+      <SortableItem
+        item={defaultItem}
+        handleToggle={mockHandleToggle}
+        handleDelete={mockHandleDelete}
+      />
+    );
+
+    const checkbox = screen.getByRole("checkbox");
+    fireEvent.click(checkbox);
+
+    expect(mockHandleToggle).toHaveBeenCalledWith(defaultItem.id);
+  });
+
+  it("calls handleDelete when the delete button is clicked", () => {
+    render(
+      <SortableItem
+        item={defaultItem}
+        handleToggle={mockHandleToggle}
+        handleDelete={mockHandleDelete}
+      />
+    );
+
+    const deleteButton = screen.getByText("Delete");
+    fireEvent.click(deleteButton);
+
+    expect(mockHandleDelete).toHaveBeenCalledWith(defaultItem.id);
+  });
+
+  it("applies line-through styling when the item is checked", () => {
+    const checkedItem = { ...defaultItem, checked: true };
+
+    render(
+      <SortableItem
+        item={checkedItem}
+        handleToggle={mockHandleToggle}
+        handleDelete={mockHandleDelete}
+      />
+    );
+
+    const itemName = screen.getByText("Test Item");
+    expect(itemName).toHaveClass("line-through text-gray-400");
+  });
+
   it("has the correct layout", () => {
     const { container } = render(
       <SortableItem
         item={defaultItem}
-        handleToggle={() => {}}
-        handleDelete={() => {}}
+        handleToggle={mockHandleToggle}
+        handleDelete={mockHandleDelete}
       />
     );
 
