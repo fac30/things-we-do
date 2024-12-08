@@ -139,7 +139,7 @@ export default function LineGraph({ dataArray }: LineGraphProps) {
               type: "scatter",
               mode: "lines+markers",
               marker: { color: "green" },
-              line: { shape: "splin", width: 3 },
+              line: { shape: "spline", width: 3 },
               name: "Urgent",
             },
             {
