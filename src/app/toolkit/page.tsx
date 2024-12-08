@@ -13,7 +13,7 @@ export default function ToolkitPage() {
         <Header
           title="Toolkit"
           description="add and search tools which help you in your daily life."
-          isHome={false}
+          hasInfoButton={true}
         />
         <CategoriesBar />
         <div className="p-4">

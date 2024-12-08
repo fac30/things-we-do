@@ -7,7 +7,7 @@ export default function MoodsPage() {
       <Header
         title="Decision Maker"
         description="assess your mood before making a decision."
-        isHome={false}
+        hasInfoButton={true}
       />
       <MoodsDisplay />
     </div>

@@ -8,7 +8,7 @@ export default function Page() {
       <Header
         title="Needs"
         description="address unmet needs and assess next actions."
-        isHome={false}
+        hasInfoButton={true}
       />
     </>
   );
