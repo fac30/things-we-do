@@ -1,4 +1,5 @@
 "use client";
+import { Bars3Icon } from "@heroicons/react/24/outline";
 
 interface SortableItemProps {
   item: {
@@ -34,8 +35,10 @@ export default function SortableItem({
   return (
     <div
       className="flex flex-col items-start p-4 rounded-lg shadow-lg bg-twd-background"
-      draggable="false" // Ensure it doesn’t conflict with drag events
+      draggable="false"
     >
+      {/* have to check this icon */}
+      <Bars3Icon className="h-6 w-6 text-gray-400 cursor-grab" />
       {/* First Row: Checkbox and Name */}
       <div className="flex items-center space-x-3 w-full">
         <input

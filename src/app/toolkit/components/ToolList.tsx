@@ -15,7 +15,7 @@ export interface ToolkitComponentData {
   imageUrl: string;
   timestamp?: string;
 }
-
+// change the name
 export default function CheckBox() {
   const [data, setData] = useState<ToolkitComponentData[]>([]);
   const isEmpty = data.length === 0;
