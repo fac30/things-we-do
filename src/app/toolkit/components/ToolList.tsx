@@ -1,24 +1,12 @@
 "use client";
 import { useState, useEffect, useMemo } from "react";
 import DatabaseManager from "@/lib/db/DatabaseManager";
-import { 
-  DndContext, 
-  closestCenter, 
-  useSensor, 
-  useSensors, 
-  MouseSensor, 
-  TouchSensor, 
-  DragEndEvent 
-} from "@dnd-kit/core";
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-  arrayMove,
-} from "@dnd-kit/sortable";
+import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import SortableItem from "./SortableItem";
+import Search from "@/ui/shared/Search";
 import { useToolkit } from "@/context/ToolkitContext";
 
-interface ToolListData {
+export interface ToolkitComponentData {
   id: string;
   name: string;
   categories: string[];
@@ -29,17 +17,21 @@ interface ToolListData {
   timestamp?: string;
 }
 
-export default function ToolList() {
-  const [data, setData] = useState<ToolListData[]>([]);
+export default function ToolkitList() {
+  const [mainData, setMainData] = useState<ToolkitComponentData[]>([]);
+  const [displayedData, setDisplayedData] = useState<ToolkitComponentData[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const { selectedCategories } = useToolkit();
 
+  // Fetch data from the database
   useEffect(() => {
     const fetchData = async () => {
       try {
         const items = await DatabaseManager.getFromDb("toolkit_items");
-        
         if (items) {
-          setData(items.map((doc) => doc.toJSON()));
+          const data = items.map((doc) => doc.toJSON());
+          setMainData(data);
+          setDisplayedData(data);
         } else {
           console.log("No items found in toolkit_items collection.");
         }
@@ -48,63 +40,125 @@ export default function ToolList() {
       }
     };
     fetchData();
-  }, []); // Trigger when no tools are in the render list
+  }, []);
 
-  // TODO: Toggle checkbox state
+  // Toggle item `checked` state
   const handleToggle = (id: string) => {
-    setData((prevData) =>
+    setMainData((prevData) =>
+      prevData.map((item) =>
+        item.id === id ? { ...item, checked: !item.checked } : item
+      )
+    );
+    setDisplayedData((prevData) =>
       prevData.map((item) =>
         item.id === id ? { ...item, checked: !item.checked } : item
       )
     );
   };
 
-  // TODO: Delete an item
-  const handleDelete = (id: string) => {
-    setData((prevData) => prevData.filter((item) => item.id !== id));
-  };
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (over && active.id !== over.id) {
-      const oldIndex = data.findIndex((item) => item.id === active.id);
-      const newIndex = data.findIndex((item) => item.id === over.id);
-      setData((prevData) => arrayMove(prevData, oldIndex, newIndex));
+  // Delete an item
+  const handleDelete = async (id: string) => {
+    try {
+      await DatabaseManager.deleteFromDb("toolkit_items", id);
+      setMainData((prevData) => prevData.filter((item) => item.id !== id));
+      setDisplayedData((prevData) => prevData.filter((item) => item.id !== id));
+    } catch (error) {
+      console.error("Error in handleDelete:", error);
     }
   };
 
-  const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
+  // Handle drag-and-drop reordering
+  const onDragEnd = (result: DropResult) => {
+    const { source, destination } = result;
 
+    if (!destination) return;
+
+    const reorderedData = [...displayedData];
+    const [movedItem] = reorderedData.splice(source.index, 1);
+    reorderedData.splice(destination.index, 0, movedItem);
+
+    setDisplayedData(reorderedData);
+  };
+
+  // Handle search queries
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    if (query) {
+      const filtered = mainData.filter((item) =>
+        item.name.toLowerCase().includes(query.toLowerCase())
+      );
+      setDisplayedData(filtered);
+    } else {
+      setDisplayedData(mainData); 
+    }
+  };
+
+  // Clear search input
+  const handleClearSearch = () => {
+    setSearchQuery("");
+    setDisplayedData(mainData);
+  };
+
+  // Filter data based on selected categories
   const filteredData = useMemo(() => {
-    if (selectedCategories.length === 0) return data;
-    return data.filter(item => 
-      item.categories && item.categories.some(cat => selectedCategories.includes(cat))
+    if (selectedCategories.length === 0) return mainData;
+    return mainData.filter((item) =>
+      item.categories.some((cat) => selectedCategories.includes(cat))
     );
-  }, [data, selectedCategories]);
+  }, [mainData, selectedCategories]);
+
+  useEffect(() => {
+    if (searchQuery) {
+      // Filter the current displayed data (based on categories) by the search query
+      const searchFilteredData = (selectedCategories.length > 0 ? filteredData : mainData).filter((item) =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setDisplayedData(searchFilteredData);
+    } else if (selectedCategories.length > 0) {
+      // Show filtered data by categories when no search query
+      setDisplayedData(filteredData);
+    } else {
+      // Show all data if no categories or search query
+      setDisplayedData(mainData);
+    }
+  }, [filteredData, searchQuery, selectedCategories.length, mainData]);
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-      data-testid="dnd-context"
-    >
-      <SortableContext
-        items={filteredData.map((item) => item.id)}
-        strategy={verticalListSortingStrategy}
-      >
-        <div className="flex flex-col space-y-4">
-          {filteredData.map((item) => (
-            <SortableItem
-              key={item.id}
-              item={item}
-              handleToggle={handleToggle}
-              handleDelete={handleDelete}
-            />
-          ))}
-        </div>
-      </SortableContext>
-    </DndContext>
+    <div className="toolkit-container">
+      {/* Search Component */}
+      <Search onSearch={handleSearch} onClear={handleClearSearch} />
+
+      {/* Drag-and-Drop Context */}
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="toolkit">
+          {(provided) => (
+            <div
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className="flex flex-col space-y-4"
+            >
+              {displayedData.map((item, index) => (
+                <Draggable key={item.id} draggableId={item.id} index={index}>
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <SortableItem
+                        item={item}
+                        handleToggle={handleToggle}
+                        handleDelete={handleDelete}
+                      />
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </div>
   );
 }
