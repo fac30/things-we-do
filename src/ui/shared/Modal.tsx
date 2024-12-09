@@ -13,6 +13,7 @@ interface ModalProps {
     label: string;
     action: () => void;
   };
+  handleInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function Modal({
@@ -22,9 +23,12 @@ export default function Modal({
   title,
   forwardButton,
   backButton,
+  handleInputChange,
 }: ModalProps) {
-  if (inputModal && !placeholder) {
-    throw new Error("`placeholder` is required when `inputModal` is true.");
+  if (inputModal && (!placeholder || !handleInputChange)) {
+    throw new Error(
+      "Both `placeholder` and `handleInputChange` are required when `inputModal` is true."
+    );
   }
 
   return (
@@ -37,6 +41,7 @@ export default function Modal({
                 type="text"
                 placeholder={placeholder}
                 className="text-black p-2 mt-5 w-9/12"
+                onChange={handleInputChange}
               />
             ) : (
               <h2 className="text-2xl w-10/12 text-center">{title}</h2>
