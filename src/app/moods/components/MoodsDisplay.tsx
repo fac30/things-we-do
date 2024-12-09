@@ -3,7 +3,7 @@
 import { Cube } from "./Cube";
 import { SliderBox } from "./SliderBox";
 import MoodButtons from "./MoodButtons";
-import DatabaseManager from "@/lib/db/DatabaseManager";
+import { useDatabase } from "@/context/DatabaseContext";
 import { useState } from "react";
 import { Datum } from "plotly.js";
 import Modal from "@/ui/shared/Modal";
@@ -15,6 +15,7 @@ export interface NeurochemState {
 }
 
 export default function MoodsDisplay() {
+  const database = useDatabase();
   const [modalOpen, setModalOpen] = useState(false);
   const [neuroState, setNeuroState] = useState<NeurochemState>({
     dopamine: 1,
@@ -42,7 +43,7 @@ export default function MoodsDisplay() {
       timestamp: new Date().toISOString(),
     };
 
-    DatabaseManager.addToDb("mood_records", submitObj);
+    database.addToDb("mood_records", submitObj);
     setModalOpen(true);
   };
 
