@@ -47,9 +47,12 @@ export default function MoodsDisplay() {
   };
 
   const forwardButton = {
-    label: "close",
+    label: "continue",
     action: () => setModalOpen(false),
-    className: "bg-twd-primary-purple text-xl",
+  };
+  const backButton = {
+    label: "cancel",
+    action: () => setModalOpen(false),
   };
   return (
     <>
@@ -59,6 +62,7 @@ export default function MoodsDisplay() {
       <Modal
         modalOpen={modalOpen}
         forwardButton={forwardButton}
+        backButton={backButton}
         title={"You've submitted your mood!"}
       />
     </>
