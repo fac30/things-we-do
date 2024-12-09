@@ -1,6 +1,8 @@
 import { Header } from "../../ui/shared/Header";
-import MoodsDisplay from "./components/MoodsDisplay";
-import { Suspense } from "react";
+// import MoodsDisplay from "./components/MoodsDisplay";
+import { Suspense, lazy } from "react";
+
+const MoodsDisplay = lazy(() => import("./components/MoodsDisplay"));
 
 export default function MoodsPage() {
   return (
