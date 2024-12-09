@@ -1,7 +1,7 @@
 import Button from "./Button";
 
 interface ModalProps {
-  type?: string;
+  inputModal?: boolean;
   placeholder?: string;
   modalOpen: boolean;
   title: string;
@@ -16,19 +16,23 @@ interface ModalProps {
 }
 
 export default function Modal({
-  type,
+  inputModal,
   placeholder,
   modalOpen,
   title,
   forwardButton,
   backButton,
 }: ModalProps) {
+  if (inputModal && !placeholder) {
+    throw new Error("`placeholder` is required when `inputModal` is true.");
+  }
+
   return (
     <>
       {modalOpen && (
         <div className="h-64 w-11/12 absolute top-1/2 left-1/2 bg-gray-800 border-[1.5px] rounded-lg -translate-x-1/2 -translate-y-1/2">
           <div className="flex flex-col w-full items-center py-10 justify-between h-full">
-            {type === "input" ? (
+            {inputModal ? (
               <input
                 type="text"
                 placeholder={placeholder}
