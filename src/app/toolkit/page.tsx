@@ -1,4 +1,3 @@
-"use client";
 import CategoriesBar from "@/app/toolkit/components/CategoriesBar";
 import ToolList from "@/app/toolkit/components/ToolList";
 import FloatingButton from "@/app/toolkit/components/floatingButton";
