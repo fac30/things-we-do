@@ -8,7 +8,7 @@ import {
 import AddToolPage from "@/app/toolkit/add-tool/page";
 import { AddToolProvider } from "@/context/AddToolContext";
 import { validateUrl } from "@/lib/utils/validateUrl";
-import DatabaseManager from "@/lib/db/DatabaseManager";
+import { useDatabase } from "@/context/DatabaseContext";
 
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(() => ({
@@ -25,23 +25,24 @@ jest.mock("@/lib/utils/validateUrl", () => ({
   validateUrl: jest.fn(),
 }));
 
-jest.mock("@/lib/db/DatabaseManager", () => ({
-  __esModule: true,
-  default: {
-    addToDb: jest.fn(),
-    getFromDb: jest.fn(),
-    initialiseDatabase: jest.fn(),
-    addCategories: jest.fn(),
-  },
+jest.mock("@/context/DatabaseContext", () => ({
+  useDatabase: jest.fn(),
 }));
 
 describe("AddToolInputs Component", () => {
+  const mockDatabase = {
+    getFromDb: jest.fn(),
+    addToDb: jest.fn(),
+    accessDatabase: jest.fn(),
+  };
+
   beforeEach(() => {
     jest.clearAllMocks();
     (validateUrl as jest.Mock).mockImplementation(() => ({
       isValid: true,
       url: "https://test.com",
     }));
+    (useDatabase as jest.Mock).mockImplementation(() => mockDatabase);
     (window.alert as jest.Mock) = jest.fn();
     (window.confirm as jest.Mock) = jest.fn();
   });
@@ -65,7 +66,7 @@ describe("AddToolInputs Component", () => {
 
   describe("AddToolTags Component", () => {
     it("renders existing categories", async () => {
-      (DatabaseManager.getFromDb as jest.Mock).mockResolvedValue([
+      mockDatabase.getFromDb.mockResolvedValue([
         { name: "Category 1" },
         { name: "Category 2" },
       ]);
@@ -120,9 +121,7 @@ describe("AddToolInputs Component", () => {
   });
 
   it("validates URLs correctly", async () => {
-    (DatabaseManager.getFromDb as jest.Mock).mockResolvedValue([
-      { name: "Category 1" },
-    ]);
+    mockDatabase.getFromDb.mockResolvedValue([{ name: "Category 1" }]);
 
     (validateUrl as jest.Mock).mockImplementationOnce(() => ({
       isValid: false,
@@ -152,9 +151,7 @@ describe("AddToolInputs Component", () => {
   });
 
   it("inserts data into the database", async () => {
-    (DatabaseManager.getFromDb as jest.Mock).mockResolvedValue([
-      { name: "Category 1" },
-    ]);
+    mockDatabase.getFromDb.mockResolvedValue([{ name: "Category 1" }]);
 
     render(
       <AddToolProvider>
@@ -181,7 +178,7 @@ describe("AddToolInputs Component", () => {
     });
 
     await waitFor(() => {
-      expect(DatabaseManager.addToDb).toHaveBeenCalledWith(
+      expect(mockDatabase.addToDb).toHaveBeenCalledWith(
         "toolkit_items",
         expect.objectContaining({
           name: "Test Tool",

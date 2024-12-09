@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Button from "@/ui/shared/Button";
-import DatabaseManager from "@/lib/db/DatabaseManager";
+import { useDatabase } from "@/context/DatabaseContext";
 import { useToolkit } from "@/context/ToolkitContext";
 
 interface Categories {
@@ -17,12 +17,13 @@ const categoriesBarClass = `
 `;
 
 const CategoriesBar = () => {
+  const database = useDatabase();
   const [categories, setCategories] = useState<string[]>([]);
   const { selectedCategories, setSelectedCategories } = useToolkit();
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const allCategories = await DatabaseManager.getFromDb("categories");
+      const allCategories = await database.getFromDb("categories");
       if (allCategories) {
         setCategories(allCategories.map((cat: Categories) => cat.name));
       } else {
@@ -42,7 +43,9 @@ const CategoriesBar = () => {
 
   return (
     <div className={categoriesBarClass} data-testid="categories-bar">
-      <Button key={"All"} label={"All"} 
+      <Button
+        key={"All"}
+        label={"All"}
         className={`${
           selectedCategories.length == 0
             ? "bg-twd-secondary-purple text-white"
@@ -51,23 +54,24 @@ const CategoriesBar = () => {
         onClick={() => setSelectedCategories([])}
         ariaPressed={selectedCategories.length == 0}
       />
-      
-      {categories.map(
-        (categories) => {
-          const isActive = selectedCategories.includes(categories);
 
-          return (
-            <Button key={categories} label={categories}
-              className={`${isActive
-                  ? "bg-twd-secondary-purple text-white"
-                  : "bg-twd-background text-white"
-              } hover:bg-twd-secondary-purple`}
-              onClick={() => handleCategoriesClick(categories)}
-              ariaPressed={isActive}
-            />
-          );
-        }
-      )}
+      {categories.map((categories) => {
+        const isActive = selectedCategories.includes(categories);
+
+        return (
+          <Button
+            key={categories}
+            label={categories}
+            className={`${
+              isActive
+                ? "bg-twd-secondary-purple text-white"
+                : "bg-twd-background text-white"
+            } hover:bg-twd-secondary-purple`}
+            onClick={() => handleCategoriesClick(categories)}
+            ariaPressed={isActive}
+          />
+        );
+      })}
     </div>
   );
 };
