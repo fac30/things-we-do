@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import Navbar from "@/ui/layout/Navbar/Navbar";
+import { DatabaseProvider } from "@/context/DatabaseContext";
 
 const APP_NAME = "Things We Do";
 const APP_DEFAULT_TITLE = "Things We Do";
@@ -52,7 +53,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" dir="ltr">
       <head />
       <body>
-        <main className="pb-24">{children}</main>
+        <DatabaseProvider>
+          <main className="pb-24">{children}</main>
+        </DatabaseProvider>
         <Navbar />
       </body>
     </html>
