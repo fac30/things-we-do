@@ -1,6 +1,6 @@
 "use client";
 
-import DatabaseManager from "@/lib/db/DatabaseManager";
+import { useDatabase } from "@/context/DatabaseContext";
 
 import LineGraph from "./LineGraph";
 import retrieveDataObject from "@/lib/utils/retrieveDataObject";
@@ -22,6 +22,7 @@ export interface Insight {
 }
 
 export default function InsightsDisplay() {
+  const database = useDatabase();
   const [insights, setInsights] = useState<Insight[] | null>(null);
 
   const dateOptions = ["day", "week", "month", "year"];
@@ -98,7 +99,7 @@ export default function InsightsDisplay() {
   }, [useNow, selectedButton, dateParams, now]);
 
   const getInsights = async () => {
-    const myInsights = await DatabaseManager.getFromDb("mood_records");
+    const myInsights = await database.getFromDb("mood_records");
 
     if (!myInsights) {
       console.log("No insights found.");
