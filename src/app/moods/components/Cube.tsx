@@ -4,10 +4,12 @@ import { useMemo, useState } from "react";
 import { PlotData } from "plotly.js";
 import { NeurochemState } from "./MoodsDisplay";
 import Toggle from "@/ui/shared/Toggle";
-import PlotlyChart from "@/ui/shared/PlotlyChart";
+// import PlotlyChart from "@/ui/shared/PlotlyChart";
 import quadrants from "./data/quadrants.json";
 import labelsMood from "./data/labels_mood.json";
 import labelsPriority from "./data/labels_priority.json";
+
+import dynamic from "next/dynamic";
 
 // Cube quadrants and labels order (in quadrants.json/labels.json):
 // Bottom-front-left
@@ -18,6 +20,10 @@ import labelsPriority from "./data/labels_priority.json";
 // Top-front-right
 // Top-back-left
 // Top-back-right
+
+const PlotlyChart = dynamic(() => import("../../../ui/shared/PlotlyChart"), {
+  // ssr: false,
+});
 
 interface ExtendedMesh3d extends PlotData {
   alphahull?: number;
@@ -47,7 +53,7 @@ interface CubeProps {
   neuroState: NeurochemState;
 }
 
-export function Cube({ neuroState }: CubeProps) {
+export default function Cube({ neuroState }: CubeProps) {
   const [isPriorityMatrix, setIsPriorityMatrix] = useState(false);
   const [hasRendered, setHasRendered] = useState(false);
 

@@ -1,18 +1,23 @@
 "use client";
 
-import { Cube } from "./Cube";
+// import { Cube } from "./Cube";
 import { SliderBox } from "./SliderBox";
 import MoodButtons from "./MoodButtons";
 import DatabaseManager from "@/lib/db/DatabaseManager";
 import { useState } from "react";
 import { Datum } from "plotly.js";
 import Modal from "@/ui/shared/Modal";
+import dynamic from "next/dynamic";
 
 export interface NeurochemState {
   dopamine: Datum;
   serotonin: Datum;
   adrenaline: Datum;
 }
+
+const Cube = dynamic(() => import("./Cube"), {
+  // ssr: false,
+});
 
 export default function MoodsDisplay() {
   const [modalOpen, setModalOpen] = useState(false);
