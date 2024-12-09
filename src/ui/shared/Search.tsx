@@ -4,16 +4,15 @@ import { useState, useRef, useEffect } from "react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 interface SearchProps {
-  onSearch: (query: string) => void; // Sends search query to the parent
-  onClear: () => void;              // Notifies the parent to clear search
+  onSearch: (query: string) => void;
+  onClear: () => void;              
 }
 
 export default function Search({ onSearch, onClear }: SearchProps) {
-  const [isInputVisible, setIsInputVisible] = useState(false); // Toggle search input visibility
-  const [query, setQuery] = useState(""); // Local state for search query
-  const inputRef = useRef<HTMLInputElement | null>(null); // Reference to the input field
+  const [isInputVisible, setIsInputVisible] = useState(false);
+  const [query, setQuery] = useState(""); 
+  const inputRef = useRef<HTMLInputElement | null>(null); 
 
-  // Automatically focus input when it becomes visible
   useEffect(() => {
     if (isInputVisible) {
       inputRef.current?.focus();
@@ -23,12 +22,12 @@ export default function Search({ onSearch, onClear }: SearchProps) {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setQuery(value);
-    onSearch(value); // Notify the parent about the search query
+    onSearch(value);
   };
 
   const handleClear = () => {
-    setQuery(""); // Clear local query state
-    onClear();    // Notify the parent to clear search results
+    setQuery("");
+    onClear();
   };
 
   const toggleInputVisibility = () => {
@@ -61,8 +60,8 @@ export default function Search({ onSearch, onClear }: SearchProps) {
             />
             <button
               onClick={() => {
-                handleClear();     // Clear query
-                toggleInputVisibility(); // Hide the input
+                handleClear();
+                toggleInputVisibility();
               }}
               className="absolute right-3 top-2 text-gray-500"
             >

@@ -30,8 +30,8 @@ export default function ToolkitList() {
         const items = await DatabaseManager.getFromDb("toolkit_items");
         if (items) {
           const data = items.map((doc) => doc.toJSON());
-          setMainData(data); // Set main data
-          setDisplayedData(data); // Set initial displayed data
+          setMainData(data);
+          setDisplayedData(data);
         } else {
           console.log("No items found in toolkit_items collection.");
         }
@@ -77,7 +77,7 @@ export default function ToolkitList() {
     const [movedItem] = reorderedData.splice(source.index, 1);
     reorderedData.splice(destination.index, 0, movedItem);
 
-    setDisplayedData(reorderedData); // Update displayed data
+    setDisplayedData(reorderedData);
   };
 
   // Handle search queries
@@ -87,21 +87,21 @@ export default function ToolkitList() {
       const filtered = mainData.filter((item) =>
         item.name.toLowerCase().includes(query.toLowerCase())
       );
-      setDisplayedData(filtered); // Show search results
+      setDisplayedData(filtered);
     } else {
-      setDisplayedData(mainData); // Reset to main data if query is empty
+      setDisplayedData(mainData); 
     }
   };
 
   // Clear search input
   const handleClearSearch = () => {
     setSearchQuery("");
-    setDisplayedData(mainData); // Reset displayed data to main data
+    setDisplayedData(mainData);
   };
 
   // Filter data based on selected categories
   const filteredData = useMemo(() => {
-    if (selectedCategories.length === 0) return mainData; // If no categories selected, return all data
+    if (selectedCategories.length === 0) return mainData;
     return mainData.filter((item) =>
       item.categories.some((cat) => selectedCategories.includes(cat))
     );
@@ -110,7 +110,7 @@ export default function ToolkitList() {
   // Apply category filtering
   useEffect(() => {
     if (selectedCategories.length > 0 && !searchQuery) {
-      setDisplayedData(filteredData); // Update displayed data if filtering by category
+      setDisplayedData(filteredData);
     }
   }, [filteredData, searchQuery]);
 
