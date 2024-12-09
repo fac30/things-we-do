@@ -80,24 +80,27 @@ class DatabaseManager {
 
   private async createDatabase() {
     if (dbInstance) return dbInstance;
+
     dbInstance = await createRxDatabase({
       name: "database",
       storage: getRxStorageDexie(),
       ignoreDuplicate: true,
     });
 
+    const requiredCollections = ["categories", "mood_records", "toolkit_items"];
     const existingCollections = Object.keys(dbInstance.collections);
-    if (!existingCollections.includes("categories")) {
-      console.log("Database initialising...");
-      await dbInstance.addCollections({
-        categories: { schema: categoriesSchema },
-        mood_records: { schema: moodRecordSchema },
-        toolkit_items: { schema: toolkitItemSchema },
-      });
-      await this.seedDatabase();
-    } else {
-      console.log("Database instance rebooting after page reload...");
+
+    for (const collection of requiredCollections) {
+      if (!existingCollections.includes(collection)) {
+        console.log(`Adding missing collection: ${collection}`);
+        await dbInstance.addCollections({
+          [collection]: this.getSchemaForCollection(collection),
+        });
+      }
     }
+
+    console.log("Database initialized.");
+    await this.seedDatabase();
     return dbInstance;
   }
 
@@ -106,20 +109,26 @@ class DatabaseManager {
       dbInstance = await this.createDatabase();
     }
     if (!dbInstance) {
-      throw new Error("Failed to initialise the database.");
+      throw new Error("Failed to initialize the database.");
     }
-    console.log("Accessing database...");
     return dbInstance;
   }
 
   private async seedDatabase() {
     console.log("Seeding database...");
-    await this.seedCategories();
-    await this.seedToolkitItems();
+    try {
+      await this.seedCategories();
+      await this.seedToolkitItems();
+    } catch (error) {
+      console.error("Error during database seeding:", error);
+    }
   }
 
   private async seedCategories() {
-    if (!dbInstance) throw new Error("Database not initialised");
+    if (!dbInstance) throw new Error("Database not initialized.");
+    if (!dbInstance.collections.categories) {
+      throw new Error("Categories collection is missing.");
+    }
     const existingDocs = await dbInstance.categories.find().exec();
     if (existingDocs.length === 0) {
       console.log("Seeding categories...");
@@ -128,28 +137,43 @@ class DatabaseManager {
   }
 
   private async seedToolkitItems() {
-    if (!dbInstance) throw new Error("Database not initialised");
+    if (!dbInstance) throw new Error("Database not initialized.");
+    if (!dbInstance.collections.toolkit_items) {
+      throw new Error("Toolkit items collection is missing.");
+    }
     const existingDocs = await dbInstance.toolkit_items.find().exec();
     if (existingDocs.length === 0) {
-      console.log("Seeding toolkit...");
+      console.log("Seeding toolkit items...");
       await dbInstance.toolkit_items.bulkInsert(seedData.toolkit);
+    }
+  }
+
+  private getSchemaForCollection(collectionName: string) {
+    switch (collectionName) {
+      case "categories":
+        return { schema: categoriesSchema };
+      case "mood_records":
+        return { schema: moodRecordSchema };
+      case "toolkit_items":
+        return { schema: toolkitItemSchema };
+      default:
+        throw new Error(`Unknown collection: ${collectionName}`);
     }
   }
 
   async getFromDb(collection: string) {
     const db = await this.accessDatabase();
-    const collectionExists = db[collection];
+    const collectionExists = db.collections[collection];
     if (!collectionExists)
       throw new Error(`Collection '${collection}' not found`);
     const data = await collectionExists.find().exec();
-    console.log(`Getting data from ${collection}:`);
-    console.log(data);
+    console.log(`Getting data from ${collection}:`, data);
     return data;
   }
 
   async addToDb(collectionName: string, document: object) {
     const db = await this.accessDatabase();
-    const collection = db[collectionName];
+    const collection = db.collections[collectionName];
     if (!collection)
       throw new Error(`Collection '${collectionName}' not found`);
     const data = await collection.insert({
@@ -157,8 +181,7 @@ class DatabaseManager {
       id: uuidv4(),
       createdAt: new Date().toISOString(),
     });
-    console.log(`Adding data to ${collectionName}:`);
-    console.log(data);
+    console.log(`Adding data to ${collectionName}:`, data);
     return data;
   }
 
@@ -172,7 +195,7 @@ class DatabaseManager {
   async deleteFromDb(collectionName: string, docId: string): Promise<void> {
     try {
       const db = await this.accessDatabase();
-      const collection = db[collectionName];
+      const collection = db.collections[collectionName];
       if (!collection) {
         throw new Error(`Collection '${collectionName}' does not exist`);
       }
