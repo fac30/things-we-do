@@ -50,10 +50,7 @@ export default function MoodsDisplay() {
     label: "continue",
     action: () => setModalOpen(false),
   };
-  const backButton = {
-    label: "cancel",
-    action: () => setModalOpen(false),
-  };
+
   return (
     <>
       <Cube neuroState={neuroState} />
@@ -62,7 +59,6 @@ export default function MoodsDisplay() {
       <Modal
         modalOpen={modalOpen}
         forwardButton={forwardButton}
-        backButton={backButton}
         title={"You've submitted your mood!"}
       />
     </>
