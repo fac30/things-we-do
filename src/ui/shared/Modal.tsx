@@ -2,7 +2,7 @@ import Button from "./Button";
 
 interface ModalProps {
   modalOpen: boolean;
-//   setModalOpen: (value: boolean) => void;
+  //   setModalOpen: (value: boolean) => void;
   title: string;
   forwardButton?: {
     label: string;
@@ -18,7 +18,6 @@ interface ModalProps {
 
 export default function Modal({
   modalOpen,
-
   title,
   forwardButton,
   backButton,
@@ -30,13 +29,19 @@ export default function Modal({
           <div className="flex flex-col w-full items-center py-10 justify-between h-full">
             <h2 className="text-xl">{title}</h2>
             <div className="flex justify-between">
-              <Button
-                onClick={() => setModalOpen(false)}
-                label="close"
-                className="bg-twd-primary-purple text-xl"
-              />
+              {forwardButton && (
+                <Button
+                  onClick={forwardButton.action}
+                  label={forwardButton.label}
+                  className={forwardButton.className}
+                />
+              )}
               {backButton && (
-                <Button onClick={backButton.action} label={backButton.label} />
+                <Button
+                  onClick={backButton.action}
+                  label={backButton.label}
+                  className={backButton.label}
+                />
               )}
             </div>
           </div>
