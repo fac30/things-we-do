@@ -1,9 +1,10 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import DatabaseManager from "@/lib/db/DatabaseManager";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import SortableItem from "./SortableItem";
 import Search from "@/ui/shared/Search";
+import { useToolkit } from "@/context/ToolkitContext";
 
 export interface ToolkitComponentData {
   id: string;
@@ -15,17 +16,22 @@ export interface ToolkitComponentData {
   imageUrl: string;
   timestamp?: string;
 }
-// change the name
-export default function CheckBox() {
-  const [data, setData] = useState<ToolkitComponentData[]>([]);
-  const isEmpty = data.length === 0;
 
+export default function ToolkitList() {
+  const [mainData, setMainData] = useState<ToolkitComponentData[]>([]);
+  const [displayedData, setDisplayedData] = useState<ToolkitComponentData[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const { selectedCategories } = useToolkit();
+
+  // Fetch data from the database
   useEffect(() => {
     const fetchData = async () => {
       try {
         const items = await DatabaseManager.getFromDb("toolkit_items");
         if (items) {
-          setData(items.map((doc) => doc.toJSON()));
+          const data = items.map((doc) => doc.toJSON());
+          setMainData(data); // Set main data
+          setDisplayedData(data); // Set initial displayed data
         } else {
           console.log("No items found in toolkit_items collection.");
         }
@@ -34,86 +40,151 @@ export default function CheckBox() {
       }
     };
     fetchData();
-  }, [isEmpty]);
+  }, []);
 
-
+  // Toggle item `checked` state
   const handleToggle = (id: string) => {
-    setData((prevData) =>
+    setMainData((prevData) =>
+      prevData.map((item) =>
+        item.id === id ? { ...item, checked: !item.checked } : item
+      )
+    );
+    setDisplayedData((prevData) =>
       prevData.map((item) =>
         item.id === id ? { ...item, checked: !item.checked } : item
       )
     );
   };
 
+  // Delete an item
   const handleDelete = async (id: string) => {
-    console.log(`handleDelete called with ID: ${id}`);
     try {
       await DatabaseManager.deleteFromDb("toolkit_items", id);
-      setData((prevData) => {
-        const updatedData = prevData.filter((item) => item.id !== id);
-        return updatedData;
-      });
+      setMainData((prevData) => prevData.filter((item) => item.id !== id));
+      setDisplayedData((prevData) => prevData.filter((item) => item.id !== id));
     } catch (error) {
       console.error("Error in handleDelete:", error);
     }
   };
 
-  const onFilter = (filteredData: ToolkitComponentData[]) => {
-    setData(filteredData);
-  };
-
+  // Handle drag-and-drop reordering
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
 
-    // If there's no destination (item dropped outside a valid drop area), return early
-    if (!destination) return; 
+    if (!destination) return;
 
-    // If the item is dropped in the same position, do nothing
-    if (source.index === destination.index && source.droppableId === destination.droppableId) {
-      return;
-    }
-    const reorderedData = Array.from(data);
+    const reorderedData = [...displayedData];
     const [movedItem] = reorderedData.splice(source.index, 1);
     reorderedData.splice(destination.index, 0, movedItem);
 
-    setData(reorderedData);
+    setDisplayedData(reorderedData); // Update displayed data
   };
 
+  // Handle search queries
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    if (query) {
+      const filtered = mainData.filter((item) =>
+        item.name.toLowerCase().includes(query.toLowerCase())
+      );
+      setDisplayedData(filtered); // Show search results
+    } else {
+      setDisplayedData(mainData); // Reset to main data if query is empty
+    }
+  };
+
+  // Clear search input
+  const handleClearSearch = () => {
+    setSearchQuery("");
+    setDisplayedData(mainData); // Reset displayed data to main data
+  };
+
+  // Filter data based on selected categories
+  const filteredData = useMemo(() => {
+    if (selectedCategories.length === 0) return mainData; // If no categories selected, return all data
+    return mainData.filter((item) =>
+      item.categories.some((cat) => selectedCategories.includes(cat))
+    );
+  }, [mainData, selectedCategories]);
+
+  // Apply category filtering
+  useEffect(() => {
+    if (selectedCategories.length > 0 && !searchQuery) {
+      setDisplayedData(filteredData); // Update displayed data if filtering by category
+    }
+  }, [filteredData, searchQuery]);
 
   return (
     <div className="toolkit-container">
-      <Search items={data} onFilter={onFilter}/>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="toolkit">
-            {(provided) => (
-              <div
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                className="flex flex-col space-y-4"
-              >
-                {data.map((item, index) => (
-                  <Draggable key={item.id} draggableId={item.id} index={index}>
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        <SortableItem
-                          key={item.id}
-                          item={item}
-                          handleToggle={handleToggle}
-                          handleDelete={handleDelete}
-                        />
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+      {/* Search Component */}
+      <Search onSearch={handleSearch} onClear={handleClearSearch} />
+
+      {/* Drag-and-Drop Context */}
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="toolkit">
+          {(provided) => (
+            <div
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className="flex flex-col space-y-4"
+            >
+              {displayedData.map((item, index) => (
+                <Draggable key={item.id} draggableId={item.id} index={index}>
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <SortableItem
+                        item={item}
+                        handleToggle={handleToggle}
+                        handleDelete={handleDelete}
+                      />
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     </div>
   );
 }
+
+//     <div className="toolkit-container">
+//       <Search items={data} onFilter={handleSearch}/>
+//         <DragDropContext onDragEnd={onDragEnd}>
+//           <Droppable droppableId="toolkit">
+//             {(provided) => (
+//               <div
+//                 {...provided.droppableProps}
+//                 ref={provided.innerRef}
+//                 className="flex flex-col space-y-4"
+//               >
+//                 {finalFilteredData.map((item, index) => (
+//                   <Draggable key={item.id} draggableId={item.id} index={index}>
+//                     {(provided) => (
+//                       <div
+//                         ref={provided.innerRef}
+//                         {...provided.draggableProps}
+//                         {...provided.dragHandleProps}
+//                       >
+//                         <SortableItem
+//                           key={item.id}
+//                           item={item}
+//                           handleToggle={handleToggle}
+//                           handleDelete={handleDelete}
+//                         />
+//                       </div>
+//                     )}
+//                   </Draggable>
+//                 ))}
+//                 {provided.placeholder}
+//               </div>
+//             )}
+//           </Droppable>
+//         </DragDropContext>
+//     </div>
