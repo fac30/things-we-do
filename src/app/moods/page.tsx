@@ -19,7 +19,7 @@ export default function MoodsPage() {
         description="assess your mood before making a decision."
         hasInfoButton={true}
       />
-      <Suspense fallback={<div>Loading moods...</div>}>
+      <Suspense fallback={<div>Loading moods using suspense...</div>}>
         <MoodsDisplay />
       </Suspense>
     </div>
