@@ -9,6 +9,7 @@ interface NavLinkProps {
   Icon?: React.ComponentType<{ className?: string }>;
   destination: string;
   isToolkit?: boolean;
+  onClick?: (e: React.MouseEvent) => void;
 }
 
 export default function NavLink({
@@ -16,6 +17,7 @@ export default function NavLink({
   Icon,
   destination,
   isToolkit,
+  onClick,
 }: NavLinkProps) {
   const pathname = usePathname();
 
@@ -24,6 +26,7 @@ export default function NavLink({
   return (
     <Link
       href={destination}
+      onClick={onClick}
       className={clsx(
         `flex flex-col items-center justify-center w-14 h-14 text-gray-400 relative`,
         {
