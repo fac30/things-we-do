@@ -1,3 +1,5 @@
+"use client";
+
 import { Header } from "../../ui/shared/Header";
 // import MoodsDisplay from "./components/MoodsDisplay";
 // import { Suspense, lazy } from "react";
