@@ -107,12 +107,21 @@ export default function ToolkitList() {
     );
   }, [mainData, selectedCategories]);
 
-  // Apply category filtering
   useEffect(() => {
-    if (selectedCategories.length > 0 && !searchQuery) {
+    if (searchQuery) {
+      // Filter the current displayed data (based on categories) by the search query
+      const searchFilteredData = (selectedCategories.length > 0 ? filteredData : mainData).filter((item) =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setDisplayedData(searchFilteredData);
+    } else if (selectedCategories.length > 0) {
+      // Show filtered data by categories when no search query
       setDisplayedData(filteredData);
+    } else {
+      // Show all data if no categories or search query
+      setDisplayedData(mainData);
     }
-  }, [filteredData, searchQuery]);
+  }, [filteredData, searchQuery, selectedCategories.length, mainData]);
 
   return (
     <div className="toolkit-container">
@@ -153,38 +162,3 @@ export default function ToolkitList() {
     </div>
   );
 }
-
-//     <div className="toolkit-container">
-//       <Search items={data} onFilter={handleSearch}/>
-//         <DragDropContext onDragEnd={onDragEnd}>
-//           <Droppable droppableId="toolkit">
-//             {(provided) => (
-//               <div
-//                 {...provided.droppableProps}
-//                 ref={provided.innerRef}
-//                 className="flex flex-col space-y-4"
-//               >
-//                 {finalFilteredData.map((item, index) => (
-//                   <Draggable key={item.id} draggableId={item.id} index={index}>
-//                     {(provided) => (
-//                       <div
-//                         ref={provided.innerRef}
-//                         {...provided.draggableProps}
-//                         {...provided.dragHandleProps}
-//                       >
-//                         <SortableItem
-//                           key={item.id}
-//                           item={item}
-//                           handleToggle={handleToggle}
-//                           handleDelete={handleDelete}
-//                         />
-//                       </div>
-//                     )}
-//                   </Draggable>
-//                 ))}
-//                 {provided.placeholder}
-//               </div>
-//             )}
-//           </Droppable>
-//         </DragDropContext>
-//     </div>
