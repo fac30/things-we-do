@@ -1,5 +1,6 @@
 import { Header } from "../../ui/shared/Header";
 import MoodsDisplay from "./components/MoodsDisplay";
+import { Suspense } from "react";
 
 export default function MoodsPage() {
   return (
@@ -9,6 +10,9 @@ export default function MoodsPage() {
         description="assess your mood before making a decision."
         hasInfoButton={true}
       />
+      <Suspense fallback={<div>Loading moods...</div>}>
+        <MoodsDisplay />
+      </Suspense>
       <MoodsDisplay />
     </div>
   );
