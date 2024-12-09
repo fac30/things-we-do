@@ -2,17 +2,14 @@ import Button from "./Button";
 
 interface ModalProps {
   modalOpen: boolean;
-  //   setModalOpen: (value: boolean) => void;
   title: string;
   forwardButton?: {
     label: string;
     action: () => void;
-    className: string;
   };
   backButton?: {
     label: string;
     action: () => void;
-    className: string;
   };
 }
 
