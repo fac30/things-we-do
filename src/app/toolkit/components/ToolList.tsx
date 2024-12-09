@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useMemo } from "react";
-import DatabaseManager from "@/lib/db/DatabaseManager";
+import { useDatabase } from "@/context/DatabaseContext";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import SortableItem from "./SortableItem";
 import Search from "@/ui/shared/Search";
@@ -18,6 +18,7 @@ export interface ToolkitComponentData {
 }
 
 export default function ToolkitList() {
+  const database = useDatabase();
   const [mainData, setMainData] = useState<ToolkitComponentData[]>([]);
   const [displayedData, setDisplayedData] = useState<ToolkitComponentData[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -27,7 +28,7 @@ export default function ToolkitList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const items = await DatabaseManager.getFromDb("toolkit_items");
+        const items = await database.getFromDb("toolkit_items");
         if (items) {
           const data = items.map((doc) => doc.toJSON());
           setMainData(data);
@@ -59,7 +60,7 @@ export default function ToolkitList() {
   // Delete an item
   const handleDelete = async (id: string) => {
     try {
-      await DatabaseManager.deleteFromDb("toolkit_items", id);
+      await database.deleteFromDb("toolkit_items", id);
       setMainData((prevData) => prevData.filter((item) => item.id !== id));
       setDisplayedData((prevData) => prevData.filter((item) => item.id !== id));
     } catch (error) {

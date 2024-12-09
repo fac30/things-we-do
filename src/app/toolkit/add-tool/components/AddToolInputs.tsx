@@ -6,15 +6,13 @@ import AddImageUrl from "./AddToolImageUrl";
 import AddInfoUrl from "./AddToolInfoUrl";
 import AddName from "./AddToolName";
 import AddTags from "./AddToolTags";
-import {
-  AddToolProvider,
-  useAddToolForm,
-} from "@/context/AddToolContext";
+import { AddToolProvider, useAddToolForm } from "@/context/AddToolContext";
 import Button from "@/ui/shared/Button";
-import DatabaseManager from "@/lib/db/DatabaseManager";
+import { useDatabase } from "@/context/DatabaseContext";
 import { validateUrl } from "@/lib/utils/validateUrl";
 
 function SubmitButton() {
+  const database = useDatabase();
   const router = useRouter();
   const { formState /* setFormState */ } = useAddToolForm();
 
@@ -53,7 +51,7 @@ function SubmitButton() {
     try {
       console.log(`Inserting into database`);
 
-      DatabaseManager.addToDb("toolkit_items", {
+      database.addToDb("toolkit_items", {
         id: crypto.randomUUID(),
         name: formState.name,
         categories: formState.categories,

@@ -23,23 +23,47 @@ describe("LineGraph Component", () => {
     },
   ];
 
+  const mockStartOfRange = new Date("2023-01-01T00:00:00Z");
+  const mockEndOfRange = new Date("2023-12-31T23:59:59Z");
+
   it("renders without crashing", () => {
-    render(<LineGraph dataArray={mockData} />);
-    expect(screen.getByText("day")).toBeInTheDocument();
-    expect(screen.getByText("week")).toBeInTheDocument();
-    expect(screen.getByText("month")).toBeInTheDocument();
-    expect(screen.getByText("year")).toBeInTheDocument();
+    render(
+      <LineGraph
+        dataArray={mockData}
+        startOfRange={mockStartOfRange}
+        endOfRange={mockEndOfRange}
+        selectedButton="day"
+      />
+    );
+
+    const plotlyChart = screen.getByTestId("plotly-chart");
+    expect(plotlyChart).toBeInTheDocument();
   });
 
   it("displays a message when no data is available", () => {
-    render(<LineGraph dataArray={[]} />);
+    render(
+      <LineGraph
+        dataArray={[]}
+        startOfRange={mockStartOfRange}
+        endOfRange={mockEndOfRange}
+        selectedButton=""
+      />
+    );
+
     expect(
       screen.getByText("No data available for the graph.")
     ).toBeInTheDocument();
   });
 
   it("correctly sets the x-axis and y-axis data", () => {
-    render(<LineGraph dataArray={mockData} />);
+    render(
+      <LineGraph
+        dataArray={mockData}
+        startOfRange={mockStartOfRange}
+        endOfRange={mockEndOfRange}
+        selectedButton="day"
+      />
+    );
 
     const plotlyChart = screen.getByTestId("plotly-chart");
     const plotlyData = JSON.parse(
@@ -48,32 +72,18 @@ describe("LineGraph Component", () => {
 
     expect(plotlyData).toHaveLength(3);
 
-    const dopamineTrace = plotlyData.find((d) => d.name === "Urgent");
-    const serotoninTrace = plotlyData.find((d) => d.name === "Effortful");
-    const adrenalineTrace = plotlyData.find((d) => d.name === "Worthwile");
+    const dopamineTrace = plotlyData.find(
+      (d: { name: string }) => d.name === "Urgent"
+    );
+    const serotoninTrace = plotlyData.find(
+      (d: { name: string }) => d.name === "Effortful"
+    );
+    const adrenalineTrace = plotlyData.find(
+      (d: { name: string }) => d.name === "Worthwile"
+    );
 
     expect(dopamineTrace.y).toEqual([5]);
     expect(serotoninTrace.y).toEqual([3]);
     expect(adrenalineTrace.y).toEqual([7]);
-  });
-
-  it("updates the graph when the date range is changed", () => {
-    render(<LineGraph dataArray={mockData} />);
-
-    fireEvent.click(screen.getByText("week"));
-    const plotlyChart = screen.getByTestId("plotly-chart");
-    const plotlyData = JSON.parse(
-      plotlyChart.getAttribute("data-prop") || "[]"
-    );
-
-    expect(plotlyData).toHaveLength(3);
-  });
-
-  it("has the ToDate button already clicked on render", () => {
-    render(<LineGraph dataArray={mockData} />);
-
-    const toDateButton = screen.getByText("To Date");
-
-    expect(toDateButton).toHaveClass("bg-white text-black");
   });
 });
