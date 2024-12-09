@@ -10,10 +10,7 @@ import Modal from "@/ui/shared/Modal";
 import Button from "@/ui/shared/Button";
 import DatabaseManager from "@/lib/db/DatabaseManager";
 import { validateUrl } from "@/lib/utils/validateUrl";
-import {
-  AddToolProvider,
-  useAddToolForm,
-} from "@/context/AddToolContext";
+import { useAddToolForm } from "@/context/AddToolContext";
 
 export default function Inputs() {
   const router = useRouter();
@@ -21,12 +18,30 @@ export default function Inputs() {
 
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const confirmationForwardButton = {
-    label: "Continue",
-    action: () => {
+    label: "Continue", action: () => {
       setConfirmationModalOpen(false);
       router.push("/toolkit");
+    } 
+  };
+
+  const [unusedCategoryModalOpen, setUnusedCategoryModalOpen] = useState(false);
+  const unusedCategoryForwardButton = {
+    label: "Yes, save it",
+    action: () => {
+      setSaveUnusedCategory(true);
+      setUnusedCategoryModalOpen(false);
     }
   };
+  const unusedCategoryBackButton = {
+    label: "No, just save the tool",
+    action: () => {
+      setSaveUnusedCategory(false);
+      setUnusedCategoryModalOpen(false);
+    }
+  };
+
+  const [unusedCategory, setUnusedCategory] = useState([""]);
+  const [saveUnusedCategory, setSaveUnusedCategory] = useState(false);
 
   function SubmitButton() {
     const handleSubmit = async () => {
@@ -62,21 +77,18 @@ export default function Inputs() {
       }
   
       try {
-        // First, add any pending categories to the database
         for (const category of formState.pendingCategories) {
           if (formState.categories.includes(category)) {
             await DatabaseManager.addCategories(category);
           } else {
-            const shouldSave = window.confirm(
-              `You created the category "${category}" but didn't use it. Would you like to save it anyway?`
-            );
-            if (shouldSave) {
+            await setUnusedCategoryModalOpen(true);
+            if (saveUnusedCategory) {
+              setUnusedCategory(unusedCategory.concat(category));
               await DatabaseManager.addCategories(category);
             }
           }
         }
-  
-        // Then add the tool
+
         await DatabaseManager.addToDb("toolkit_items", {
           id: crypto.randomUUID(),
           name: formState.name,
@@ -123,6 +135,13 @@ export default function Inputs() {
         title="Tool Added"
         modalOpen={confirmationModalOpen}
         forwardButton={confirmationForwardButton}
+      />
+
+      <Modal
+        title="You created a category but didn't use it. Would you like to save it anyway?"
+        modalOpen={unusedCategoryModalOpen}
+        forwardButton={unusedCategoryForwardButton}
+        backButton={unusedCategoryBackButton}
       />
     </div>
   );
