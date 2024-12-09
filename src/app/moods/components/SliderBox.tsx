@@ -27,15 +27,13 @@ export function SliderBox({ handleChange, neuroState }: SliderBoxProps) {
         </legend>
         {sliders.map((slider) => {
           return (
-            <>
-              <Slider
-                key={slider.chem}
-                chem={slider.chem}
-                label={slider.label}
-                handleChange={handleChange}
-                neuroState={neuroState}
-              />
-            </>
+            <Slider
+              key={slider.chem}
+              chem={slider.chem}
+              label={slider.label}
+              handleChange={handleChange}
+              neuroState={neuroState}
+            />
           );
         })}
       </fieldset>
