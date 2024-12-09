@@ -1,8 +1,6 @@
-"use client";
-
 import { Header } from "@/ui/shared/Header";
 
-export default function Page() {
+export default function Home() {
   return (
     <>
       <Header
