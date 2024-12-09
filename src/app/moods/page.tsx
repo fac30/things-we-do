@@ -15,7 +15,6 @@ export default function MoodsPage() {
       <Suspense fallback={<div>Loading moods...</div>}>
         <MoodsDisplay />
       </Suspense>
-      <MoodsDisplay />
     </div>
   );
 }
