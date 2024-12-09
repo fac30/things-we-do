@@ -54,7 +54,7 @@ function CategoriesBar({ openModal, refreshCategories }: CategoriesBarProps) {
           selectedCategories.length == 0
             ? "bg-twd-secondary-purple text-white"
             : "bg-twd-background text-white"
-        } hover:bg-twd-secondary-purple`}
+        }`}
         onClick={() => setSelectedCategories([])}
         ariaPressed={selectedCategories.length == 0}
       />
@@ -68,7 +68,7 @@ function CategoriesBar({ openModal, refreshCategories }: CategoriesBarProps) {
               className={`${isActive
                   ? "bg-twd-secondary-purple text-white"
                   : "bg-twd-background text-white"
-              } hover:bg-twd-secondary-purple`}
+              }`}
               onClick={() => handleCategoriesClick(categories)}
               ariaPressed={isActive}
             />
