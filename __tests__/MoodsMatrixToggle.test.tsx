@@ -1,5 +1,4 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
-import { NeurochemContext } from "@/context/NeurochemContext";
 import { Cube } from "@/app/moods/components/Cube";
 import { useState } from "react";
 import { Datum } from "plotly.js";
@@ -26,11 +25,7 @@ describe("Cube label updates on toggle", () => {
         adrenaline: 1 as Datum,
       });
 
-      return (
-        <NeurochemContext.Provider value={{ neuroState, setNeuroState }}>
-          <Cube />
-        </NeurochemContext.Provider>
-      );
+      return <Cube neuroState={neuroState} />;
     };
 
     render(<Wrapper />);
