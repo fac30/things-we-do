@@ -1,5 +1,3 @@
-"use client";
-
 import Header from "./components/AddToolHeader";
 import Inputs from "./components/AddToolInputs";
 

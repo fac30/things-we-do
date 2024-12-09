@@ -1,13 +1,12 @@
 import { render, screen, waitFor, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ToolList from "@/app/toolkit/components/ToolList";
-import DatabaseManager from "@/lib/db/DatabaseManager";
+import { useDatabase } from "@/context/DatabaseContext";
+import { ToolkitProvider } from "@/context/ToolkitContext";
 
-
-// Mock the DatabaseManager
-jest.mock("@/lib/db/DatabaseManager", () => ({
-  getFromDb: jest.fn(),
-  deleteFromDb: jest.fn(),
+// Mock the DatabaseContext
+jest.mock("@/context/DatabaseContext", () => ({
+  useDatabase: jest.fn(),
 }));
 
 // Mock the SortableItem component
@@ -30,7 +29,7 @@ jest.mock("@/app/toolkit/components/SortableItem", () => ({
       </button>
     </div>
   ),
-}));  
+}));
 
 describe("Toolkit Component", () => {
   const mockData = [
@@ -53,37 +52,46 @@ describe("Toolkit Component", () => {
       imageUrl: "https://via.placeholder.com/150",
     },
   ];
-  
+
+  const mockDatabase = {
+    getFromDb: jest.fn(),
+    deleteFromDb: jest.fn(),
+  };
+
   beforeEach(() => {
-    (DatabaseManager.getFromDb as jest.Mock).mockResolvedValue(
+    jest.clearAllMocks();
+    (useDatabase as jest.Mock).mockImplementation(() => mockDatabase);
+    mockDatabase.getFromDb.mockResolvedValue(
       mockData.map((item) => ({
         toJSON: () => item,
       }))
     );
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
+  const renderWithToolkitProvider = (ui: React.ReactNode) => {
+    return render(<ToolkitProvider>{ui}</ToolkitProvider>);
+  };
 
   it("fetches and displays all items on load", async () => {
     await act(async () => {
-      render(<ToolList />);
+      renderWithToolkitProvider(<ToolList />);
     });
 
     await waitFor(() => {
-      expect(DatabaseManager.getFromDb).toHaveBeenCalledWith("toolkit_items");
+      expect(mockDatabase.getFromDb).toHaveBeenCalledWith("toolkit_items");
     });
 
     mockData.forEach((item) => {
-      expect(screen.getByTestId(`sortable-item-${item.id}`)).toBeInTheDocument();
+      expect(
+        screen.getByTestId(`sortable-item-${item.id}`)
+      ).toBeInTheDocument();
       expect(screen.getByText(item.name)).toBeInTheDocument();
     });
   });
 
   it("toggles item checked state correctly", async () => {
     await act(async () => {
-      render(<ToolList />);
+      renderWithToolkitProvider(<ToolList />);
     });
 
     await waitFor(() => {
@@ -94,14 +102,13 @@ describe("Toolkit Component", () => {
     userEvent.click(toggleButton);
 
     await waitFor(() => {
-      // State changes are internal; no direct DOM updates expected
       expect(toggleButton).toBeInTheDocument();
     });
   });
 
   it("deletes an item correctly", async () => {
     await act(async () => {
-      render(<ToolList />);
+      renderWithToolkitProvider(<ToolList />);
     });
 
     await waitFor(() => {
@@ -112,7 +119,7 @@ describe("Toolkit Component", () => {
     userEvent.click(deleteButton);
 
     await waitFor(() => {
-      expect(DatabaseManager.deleteFromDb).toHaveBeenCalledWith(
+      expect(mockDatabase.deleteFromDb).toHaveBeenCalledWith(
         "toolkit_items",
         "1"
       );
@@ -125,7 +132,7 @@ describe("Toolkit Component", () => {
     const mockOnDragEnd = jest.fn();
 
     await act(async () => {
-      render(
+      renderWithToolkitProvider(
         <DragDropContext onDragEnd={mockOnDragEnd}>
           <ToolList />
         </DragDropContext>
@@ -134,7 +141,9 @@ describe("Toolkit Component", () => {
 
     await waitFor(() => {
       mockData.forEach((item) => {
-        expect(screen.getByTestId(`sortable-item-${item.id}`)).toBeInTheDocument();
+        expect(
+          screen.getByTestId(`sortable-item-${item.id}`)
+        ).toBeInTheDocument();
       });
     });
 
