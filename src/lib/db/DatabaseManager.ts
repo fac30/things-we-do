@@ -11,21 +11,9 @@ addRxPlugin(RxDBDevModePlugin);
 
 const seedData = {
   categories: [
-    {
-      id: uuidv4(),
-      name: "Replace",
-      timestamp: new Date().toISOString(),
-    },
-    {
-      id: uuidv4(),
-      name: "Barrier",
-      timestamp: new Date().toISOString(),
-    },
-    {
-      id: uuidv4(),
-      name: "Distract",
-      timestamp: new Date().toISOString(),
-    },
+    { id: uuidv4(), name: "Replace", timestamp: new Date().toISOString() },
+    { id: uuidv4(), name: "Barrier", timestamp: new Date().toISOString() },
+    { id: uuidv4(), name: "Distract", timestamp: new Date().toISOString() },
     {
       id: uuidv4(),
       name: "Change Status",
@@ -76,169 +64,110 @@ const seedData = {
   ],
 };
 
+let dbInstance: RxDatabase | null = null;
+
 class DatabaseManager {
-  dbInstance: RxDatabase | null = null;
+  private static instance: DatabaseManager;
 
-  async initialiseDatabase() {
-    console.groupCollapsed("Accessing Database");
-    if (!this.dbInstance) {
-      console.groupCollapsed("Creating New Database");
-      this.dbInstance = await createRxDatabase({
-        name: "database",
-        //ignoreDuplicate: true,
-        storage: getRxStorageDexie(),
-      });
-      console.log("Database Created");
-      console.groupEnd();
+  private constructor() {}
 
-      console.groupCollapsed("Adding Collections");
-      await this.dbInstance.addCollections({
+  static getInstance() {
+    if (!DatabaseManager.instance) {
+      DatabaseManager.instance = new DatabaseManager();
+    }
+    return DatabaseManager.instance;
+  }
+
+  private async createDatabase() {
+    if (dbInstance) return dbInstance;
+    dbInstance = await createRxDatabase({
+      name: "database",
+      storage: getRxStorageDexie(),
+      ignoreDuplicate: true,
+    });
+
+    const existingCollections = Object.keys(dbInstance.collections);
+    if (!existingCollections.includes("categories")) {
+      console.log("Database initialising...");
+      await dbInstance.addCollections({
         categories: { schema: categoriesSchema },
         mood_records: { schema: moodRecordSchema },
         toolkit_items: { schema: toolkitItemSchema },
       });
-      console.log("Collections Added");
-      console.groupEnd();
-
-      console.groupCollapsed("Seeding Database");
-      await this.seedCategories();
-      await this.seedToolkitItems();
-      console.log("Database Seeded");
-      console.groupEnd();
+      await this.seedDatabase();
+    } else {
+      console.log("Database instance rebooting after page reload...");
     }
-    console.groupEnd();
-    return this.dbInstance;
-  }
-  
-  async seedCategories() {
-    console.groupCollapsed("Seeding Categories");
-  try {
-      const db = await this.initialiseDatabase();
-      if (!db) {
-        console.error("Database initialisation failed");
-        return;
-      }
-
-      console.log("Looking for categories collection");
-      const categoriesCollection = db.categories;
-      if (!categoriesCollection) {
-        console.error("Categories collection does not exist");
-        return;
-      }
-
-      console.log("Checking if categories collection is already seeded...");
-      const existingDocuments = await categoriesCollection.find().exec();
-      if (existingDocuments.length > 0) {
-        console.log(
-          "Categories collection is already seeded. Skipping seeding process."
-        );
-        return;
-      }
-
-      console.log("Seeding categories collection with initial data...");
-      const insertedDocs = await categoriesCollection.bulkInsert(seedData.categories);
-      console.log("Categories Seeded:", insertedDocs);
-    } catch (error) {
-      console.error("Error seeding the categories:", error);
-    }
-    console.groupEnd();
+    return dbInstance;
   }
 
-  async seedToolkitItems() {
-    console.groupCollapsed("Seeding Toolkit Items");
-    try {
-      const db = await this.initialiseDatabase();
-      if (!db) {
-        console.error("Database initialisation failed");
-        return;
-      }
-
-      console.log("Looking for toolkit_items collection");
-      const toolkitCollection = db.toolkit_items;
-      if (!toolkitCollection) {
-        console.error("Toolkit items collection does not exist");
-        return;
-      }
-
-      console.log("Checking if toolkit_items collection is already seeded...");
-      const existingDocuments = await toolkitCollection.find().exec();
-      if (existingDocuments.length > 0) {
-        console.log(
-          "Toolkit items collection is already seeded. Skipping seeding process."
-        );
-        return;
-      }
-
-      console.log("Seeding toolkit_items collection with initial data...");
-      const insertedDocs = await toolkitCollection.bulkInsert(seedData.toolkit);
-      console.log("Toolkit Items Seeded:", insertedDocs);
-    } catch (error) {
-      console.error("Error seeding the database:", error);
+  async accessDatabase() {
+    if (!dbInstance) {
+      dbInstance = await this.createDatabase();
     }
-    console.groupEnd();
+    if (!dbInstance) {
+      throw new Error("Failed to initialise the database.");
+    }
+    console.log("Accessing database...");
+    return dbInstance;
+  }
+
+  private async seedDatabase() {
+    console.log("Seeding database...");
+    await this.seedCategories();
+    await this.seedToolkitItems();
+  }
+
+  private async seedCategories() {
+    if (!dbInstance) throw new Error("Database not initialised");
+    const existingDocs = await dbInstance.categories.find().exec();
+    if (existingDocs.length === 0) {
+      console.log("Seeding categories...");
+      await dbInstance.categories.bulkInsert(seedData.categories);
+    }
+  }
+
+  private async seedToolkitItems() {
+    if (!dbInstance) throw new Error("Database not initialised");
+    const existingDocs = await dbInstance.toolkit_items.find().exec();
+    if (existingDocs.length === 0) {
+      console.log("Seeding toolkit...");
+      await dbInstance.toolkit_items.bulkInsert(seedData.toolkit);
+    }
   }
 
   async getFromDb(collection: string) {
-    const db = await this.initialiseDatabase();
-
-    if (db) {
-      const collectionExists = db[collection];
-      if (!collectionExists) {
-        console.error(`Collection '${collection}' does not exist`);
-        return null;
-      }
-
-      const myCollection = await collectionExists.find().exec();
-
-      return myCollection;
-    } else {
-      console.error("Failed to get data from database");
-      return null;
-    }
+    const db = await this.accessDatabase();
+    const collectionExists = db[collection];
+    if (!collectionExists)
+      throw new Error(`Collection '${collection}' not found`);
+    const data = await collectionExists.find().exec();
+    console.log(`Getting data from ${collection}:`);
+    console.log(data);
+    return data;
   }
 
   async addToDb(collectionName: string, document: object) {
-    try {
-      const db = await this.initialiseDatabase();
-      if (!db) {
-        console.error("Database initialisation failed");
-        return;
-      }
-      const collection = db[collectionName];
-      if (!collection) {
-        console.error(`Collection '${collectionName}' not found`);
-        return;
-      }
-      const documentWithDefaults = {
-        ...document,
-        id: uuidv4(),
-        createdAt: new Date().toISOString(),
-      };
-      const newDocument = await collection.insert(documentWithDefaults);
-      console.log(
-        `Document inserted into '${collectionName}' collection: `,
-        newDocument
-      );
-      return newDocument;
-    } catch (error) {
-      console.error("Error adding document to database:", error);
-    }
+    const db = await this.accessDatabase();
+    const collection = db[collectionName];
+    if (!collection)
+      throw new Error(`Collection '${collectionName}' not found`);
+    const data = await collection.insert({
+      ...document,
+      id: uuidv4(),
+      createdAt: new Date().toISOString(),
+    });
+    console.log(`Adding data to ${collectionName}:`);
+    console.log(data);
+    return data;
   }
 
   async addCategories(name: string) {
-    try {
-      const doc = {
-        name: name,
-        timestamp: new Date().toISOString(),
-      };
-
-      return await this.addToDb("categories", doc);
-    } catch (error) {
-      console.error("Error adding categories to database:", error);
-      throw error;
-    }
+    return this.addToDb("categories", {
+      name,
+      timestamp: new Date().toISOString(),
+    });
   }
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default new DatabaseManager();
+export default DatabaseManager.getInstance();
