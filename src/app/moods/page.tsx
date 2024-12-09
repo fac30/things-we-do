@@ -1,17 +1,18 @@
 "use client";
 
 import { Header } from "../../ui/shared/Header";
-// import MoodsDisplay from "./components/MoodsDisplay";
-import { Suspense, lazy } from "react";
-// import dynamic from "next/dynamic";
-
-// const MoodsDisplay = dynamic(() => import("./components/MoodsDisplay"), {
-//   ssr: false, // Disables SSR for this component
-// });
+import { Suspense, lazy, useState, useEffect } from "react";
 
 const MoodsDisplay = lazy(() => import("./components/MoodsDisplay"));
 
 export default function MoodsPage() {
+  const [key, setKey] = useState(0);
+
+  // This hook forces a re-render by changing the key value on every update
+  useEffect(() => {
+    setKey((prevKey) => prevKey + 1);
+  }, []); // Empty dependency array ensures it runs once on mount
+
   return (
     <div className="flex flex-col gap-4">
       <Header
@@ -19,7 +20,10 @@ export default function MoodsPage() {
         description="assess your mood before making a decision."
         hasInfoButton={true}
       />
-      <Suspense fallback={<div>Loading moods using suspense...</div>}>
+      <Suspense
+        key={key}
+        fallback={<div>Loading moods using suspense SUSPENSE WITH KEY...</div>}
+      >
         <MoodsDisplay />
       </Suspense>
     </div>
