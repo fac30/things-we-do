@@ -231,7 +231,6 @@ class DatabaseManager {
         name: name,
         timestamp: new Date().toISOString(),
       };
-
       return await this.addToDb("categories", doc);
     } catch (error) {
       console.error("Error adding categories to database:", error);
