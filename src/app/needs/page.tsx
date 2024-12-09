@@ -1,6 +1,6 @@
 import { Header } from "@/ui/shared/Header";
 
-export default function Home() {
+export default function NeedsPage() {
   return (
     <>
       <Header
