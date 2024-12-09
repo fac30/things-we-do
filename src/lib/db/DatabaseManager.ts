@@ -171,23 +171,23 @@ class DatabaseManager {
 
   async deleteFromDb(collectionName: string, docId: string): Promise<void> {
     try {
-      const db = await this.initialiseDatabase();
+      const db = await this.accessDatabase();
       const collection = db[collectionName];
       if (!collection) {
         throw new Error(`Collection '${collectionName}' does not exist`);
       }
-      const document = await collection.findOne({ selector: { id: docId } }).exec();
+      const document = await collection
+        .findOne({ selector: { id: docId } })
+        .exec();
       if (!document) {
         throw new Error(`Document with ID '${docId}' not found`);
       }
       await document.remove();
-      //console.log(`Document with ID '${docId}' successfully removed`);
     } catch (error) {
       console.error(`Error in deleteFromDb:`, error);
       throw error;
     }
   }
-
 }
 
 export default DatabaseManager.getInstance();
