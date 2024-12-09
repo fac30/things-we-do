@@ -41,7 +41,7 @@ export default function ToolkitList() {
       }
     };
     fetchData();
-  }, []);
+  }, [database]);
 
   // Toggle item `checked` state
   const handleToggle = (id: string) => {

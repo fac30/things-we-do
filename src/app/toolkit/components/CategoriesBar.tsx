@@ -35,7 +35,7 @@ function CategoriesBar({ openModal, refreshCategories }: CategoriesBarProps) {
       }
     };
     fetchCategories();
-  }, [refreshCategories]);
+  }, [refreshCategories, database]);
 
   const handleCategoriesClick = (category: string) => {
     setSelectedCategories(
@@ -46,39 +46,85 @@ function CategoriesBar({ openModal, refreshCategories }: CategoriesBarProps) {
   };
 
   return (
-    <div className={categoriesBarClass} data-testid="categories-bar">
-      <Button label="+" onClick={openModal} />
-      <Button
-        key={"All"}
-        label={"All"}
-        className={`${
-          selectedCategories.length == 0
-            ? "bg-twd-secondary-purple text-white"
-            : "bg-twd-background text-white"
-        }`}
-        onClick={() => setSelectedCategories([])}
-        ariaPressed={selectedCategories.length == 0}
-      />
-
-      {categories.map((categories) => {
-        const isActive = selectedCategories.includes(categories);
-
-        return (
-          <Button
-            key={categories}
-            label={categories}
-            className={`${
-              isActive
-                ? "bg-twd-secondary-purple text-white"
-                : "bg-twd-background text-white"
-            }`}
-            onClick={() => handleCategoriesClick(categories)}
-            ariaPressed={isActive}
-          />
-        );
-      })}
+    <div
+      className={categoriesBarClass}
+      data-testid="categories-bar"
+    >
+      {/* Fixed "+" Button */}
+      <div className="flex-shrink-0">
+        <Button label="+" onClick={openModal} className="bg-twd-primary-purple"/>
+      </div>
+  
+      {/* Scrollable Categories */}
+      <div className="flex overflow-x-auto whitespace-nowrap space-x-2 flex-grow">
+        <Button
+          key={"All"}
+          label={"All"}
+          className={`${
+            selectedCategories.length === 0
+              ? "bg-twd-secondary-purple text-white"
+              : "bg-twd-background text-white"
+          }`}
+          onClick={() => setSelectedCategories([])}
+          ariaPressed={selectedCategories.length === 0}
+        />
+  
+        {categories.map((category) => {
+          const isActive = selectedCategories.includes(category);
+  
+          return (
+            <Button
+              key={category}
+              label={category}
+              className={`${
+                isActive
+                  ? "bg-twd-secondary-purple text-white"
+                  : "bg-twd-background text-white"
+              }`}
+              onClick={() => handleCategoriesClick(category)}
+              ariaPressed={isActive}
+            />
+          );
+        })}
+      </div>
     </div>
   );
-};
+}
+
+//   return (
+//     <div className={categoriesBarClass} data-testid="categories-bar">
+//       <Button label="+" onClick={openModal} />
+//       <Button
+//         key={"All"}
+//         label={"All"}
+//         className={`${
+//           selectedCategories.length == 0
+//             ? "bg-twd-secondary-purple text-white"
+//             : "bg-twd-background text-white"
+//         }`}
+//         onClick={() => setSelectedCategories([])}
+//         ariaPressed={selectedCategories.length == 0}
+//       />
+
+//       {categories.map((categories) => {
+//         const isActive = selectedCategories.includes(categories);
+
+//         return (
+//           <Button
+//             key={categories}
+//             label={categories}
+//             className={`${
+//               isActive
+//                 ? "bg-twd-secondary-purple text-white"
+//                 : "bg-twd-background text-white"
+//             }`}
+//             onClick={() => handleCategoriesClick(categories)}
+//             ariaPressed={isActive}
+//           />
+//         );
+//       })}
+//     </div>
+//   );
+// };
 
 export default CategoriesBar;
