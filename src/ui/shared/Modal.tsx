@@ -4,7 +4,7 @@ interface ModalProps {
   inputModal?: boolean;
   placeholder?: string;
   modalOpen: boolean;
-  title: string;
+  title?: string;
   forwardButton?: {
     label: string;
     action: () => void;
