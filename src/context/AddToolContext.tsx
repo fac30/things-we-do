@@ -6,6 +6,7 @@ interface AddToolState {
   description: string;
   imageUrl: string;
   infoUrl: string;
+  pendingCategories: string[];
 }
 
 interface AddToolContextType {
@@ -22,6 +23,7 @@ export function AddToolProvider({ children }: { children: React.ReactNode }) {
     description: "",
     imageUrl: "",
     infoUrl: "",
+    pendingCategories: [],
   });
 
   return (
