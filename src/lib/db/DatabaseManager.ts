@@ -33,12 +33,12 @@ const seedData = {
     },
     {
       id: uuidv4(),
-      name: "Watch TV",
+      name: "Breathing exercises",
       categories: ["Distract"],
       checked: false,
-      infoUrl: "https://google.com/tv",
+      infoUrl: "https://www.youtube.com/watch?v=DbDoBzGY3vo",
       imageUrl:
-        "https://daily.jstor.org/wp-content/uploads/2023/01/good_times_with_bad_music_1050x700.jpg",
+        "https://www.bhf.org.uk/-/media/images/information-support/heart-matters/2023/december/wellbeing/deep-breathing-620x400.png?h=400&w=620&rev=4506ebd34dab4476b56c225b6ff3ad60&hash=B3CFFEEE704E4432D101432CEE8B2766",
       timestamp: new Date().toISOString(),
     },
     {
@@ -48,17 +48,17 @@ const seedData = {
       checked: false,
       infoUrl: "https://example.com/call",
       imageUrl:
-        "https://daily.jstor.org/wp-content/uploads/2023/01/good_times_with_bad_music_1050x700.jpg",
+        "https://t4.ftcdn.net/jpg/04/63/63/59/360_F_463635935_IweuYhCqZRtHp3SLguQL8svOVroVXvvZ.jpg",
       timestamp: new Date().toISOString(),
     },
     {
       id: uuidv4(),
-      name: "See a friend",
+      name: "Drink water",
       categories: ["Distract", "Change status"],
       checked: false,
       infoUrl: "https://example.com/call",
       imageUrl:
-        "https://daily.jstor.org/wp-content/uploads/2023/01/good_times_with_bad_music_1050x700.jpg",
+        "https://content.health.harvard.edu/wp-content/uploads/2023/07/b8a1309a-ba53-48c7-bca3-9c36aab2338a.jpg",
       timestamp: new Date().toISOString(),
     },
   ],
@@ -168,6 +168,26 @@ class DatabaseManager {
       timestamp: new Date().toISOString(),
     });
   }
+
+  async deleteFromDb(collectionName: string, docId: string): Promise<void> {
+    try {
+      const db = await this.initialiseDatabase();
+      const collection = db[collectionName];
+      if (!collection) {
+        throw new Error(`Collection '${collectionName}' does not exist`);
+      }
+      const document = await collection.findOne({ selector: { id: docId } }).exec();
+      if (!document) {
+        throw new Error(`Document with ID '${docId}' not found`);
+      }
+      await document.remove();
+      //console.log(`Document with ID '${docId}' successfully removed`);
+    } catch (error) {
+      console.error(`Error in deleteFromDb:`, error);
+      throw error;
+    }
+  }
+
 }
 
 export default DatabaseManager.getInstance();

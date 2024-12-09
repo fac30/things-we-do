@@ -6,6 +6,7 @@ import MoodButtons from "./MoodButtons";
 import DatabaseManager from "@/lib/db/DatabaseManager";
 import { useState } from "react";
 import { Datum } from "plotly.js";
+import Modal from "@/ui/shared/Modal";
 
 export interface NeurochemState {
   dopamine: Datum;
@@ -14,6 +15,7 @@ export interface NeurochemState {
 }
 
 export default function MoodsDisplay() {
+  const [modalOpen, setModalOpen] = useState(false);
   const [neuroState, setNeuroState] = useState<NeurochemState>({
     dopamine: 1,
     serotonin: 1,
@@ -41,12 +43,24 @@ export default function MoodsDisplay() {
     };
 
     DatabaseManager.addToDb("mood_records", submitObj);
+    setModalOpen(true);
   };
+
+  const forwardButton = {
+    label: "continue",
+    action: () => setModalOpen(false),
+  };
+
   return (
     <>
       <Cube neuroState={neuroState} />
       <SliderBox handleChange={handleChange} neuroState={neuroState} />
       <MoodButtons submitMood={submitMood} />
+      <Modal
+        modalOpen={modalOpen}
+        forwardButton={forwardButton}
+        title={"You've submitted your mood!"}
+      />
     </>
   );
 }
