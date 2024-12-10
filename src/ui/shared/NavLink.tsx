@@ -26,7 +26,6 @@ export default function NavLink({
   return (
     <Link
       href={destination}
-      onClick={onClick}
       className={clsx(
         `flex flex-col items-center justify-center w-14 h-14 text-gray-400 relative`,
         {
