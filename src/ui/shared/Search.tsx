@@ -52,7 +52,9 @@ export default function Search({ onSearch, onClear }: SearchProps) {
           <div className="relative flex items-center">
             <input
               ref={inputRef}
+              role="textbox"
               type="text"
+              aria-label="Search input"
               value={query}
               onChange={handleInputChange}
               placeholder="Search..."

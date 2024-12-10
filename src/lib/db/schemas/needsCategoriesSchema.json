@@ -9,7 +9,7 @@
     },
     "name": {
       "type": "string",
-      "maxLength": 255
+      "maxLength": 100
     },
     "timestamp": {
       "type": "string",
