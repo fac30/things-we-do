@@ -128,7 +128,6 @@ class DatabaseManager {
   }
 
   private async seedDatabase() {
-    console.log("Seeding database...");
     try {
       await this.seed("categories", categories);
       await this.seed("toolkit_items", toolkit);
