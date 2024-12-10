@@ -28,6 +28,7 @@ export default function AddTags() {
     };
 
     fetchCategories();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
