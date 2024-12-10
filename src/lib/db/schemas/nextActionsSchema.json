@@ -11,21 +11,33 @@
       "type": "string",
       "maxLength": 255
     },
-    "categories": {
+    "need": {
+      "type": "string",
+      "ref": "needs",
+      "maxLength": 100
+    },
+    "selectedTimestamps": {
       "type": "array",
       "items": {
         "type": "string",
-        "ref": "categories"
+        "format": "date-time"
       }
     },
-    "checked": { "type": "boolean" },
-    "description": { "type": "string" },
-    "infoUrl": { "type": "string" },
-    "imageUrl": { "type": "string" },
+    "selectedExpiry": {
+      "type": "string",
+      "format": "date-time"
+    },
     "timestamp": {
       "type": "string",
       "format": "date-time"
     }
   },
-  "required": ["id", "name", "categories", "checked", "timestamp"]
+  "required": [
+    "id",
+    "name",
+    "need",
+    "timestamp",
+    "selectedTimestamps",
+    "selectedExpiry"
+  ]
 }
