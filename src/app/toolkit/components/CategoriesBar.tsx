@@ -20,7 +20,7 @@ const categoriesBarClass = `
   border-gray-700 sm:gap-6 sm:px-6  focus:ring-2 focus:ring-twd-secondary-purple
 `;
 
-function CategoriesBar({ openModal, refreshCategories }: CategoriesBarProps) {
+export default function CategoriesBar({ openModal, refreshCategories }: CategoriesBarProps) {
   const database = useDatabase();
   const [categories, setCategories] = useState<string[]>([]);
   const { selectedCategories, setSelectedCategories } = useToolkit();
