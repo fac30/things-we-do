@@ -91,5 +91,3 @@ export default function CategoriesBar({ openModal, refreshCategories }: Categori
     </div>
   );
 }
-
-export default CategoriesBar;
