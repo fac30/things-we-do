@@ -35,7 +35,8 @@ function CategoriesBar({ openModal, refreshCategories }: CategoriesBarProps) {
       }
     };
     fetchCategories();
-  }, [refreshCategories, database]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refreshCategories]);
 
   const handleCategoriesClick = (category: string) => {
     setSelectedCategories(
@@ -90,41 +91,5 @@ function CategoriesBar({ openModal, refreshCategories }: CategoriesBarProps) {
     </div>
   );
 }
-
-//   return (
-//     <div className={categoriesBarClass} data-testid="categories-bar">
-//       <Button label="+" onClick={openModal} />
-//       <Button
-//         key={"All"}
-//         label={"All"}
-//         className={`${
-//           selectedCategories.length == 0
-//             ? "bg-twd-secondary-purple text-white"
-//             : "bg-twd-background text-white"
-//         }`}
-//         onClick={() => setSelectedCategories([])}
-//         ariaPressed={selectedCategories.length == 0}
-//       />
-
-//       {categories.map((categories) => {
-//         const isActive = selectedCategories.includes(categories);
-
-//         return (
-//           <Button
-//             key={categories}
-//             label={categories}
-//             className={`${
-//               isActive
-//                 ? "bg-twd-secondary-purple text-white"
-//                 : "bg-twd-background text-white"
-//             }`}
-//             onClick={() => handleCategoriesClick(categories)}
-//             ariaPressed={isActive}
-//           />
-//         );
-//       })}
-//     </div>
-//   );
-// };
 
 export default CategoriesBar;

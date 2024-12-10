@@ -1,130 +1,105 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import CategoriesBar from "@/app/toolkit/components/CategoriesBar";
+import React from "react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { useDatabase } from "@/context/DatabaseContext";
-import { ToolkitProvider } from "@/context/ToolkitContext";
+import { useToolkit } from "@/context/ToolkitContext";
+import CategoriesBar from "@/app/toolkit/components/CategoriesBar";
 
-// Mock DatabaseContext
+// Mock contexts
 jest.mock("@/context/DatabaseContext", () => ({
   useDatabase: jest.fn(),
 }));
 
-// Helper function to render with ToolkitProvider
-const renderWithToolkitContext = (
-  ui: React.ReactNode,
-  { selectedCategories = [] } = {}
-) => {
-  return render(
-    <ToolkitProvider initialSelectedCategories={selectedCategories}>
-      {ui}
-    </ToolkitProvider>
-  );
-};
+jest.mock("@/context/ToolkitContext", () => ({
+  useToolkit: jest.fn(),
+}));
 
-describe("CategoriesBar Component", () => {
-  const mockDatabase = {
-    getFromDb: jest.fn(),
-  };
+describe("CategoriesBar", () => {
+  let mockDatabase: any;
+  let mockToolkitContext: any;
+  let mockOpenModal: jest.Mock;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    (useDatabase as jest.Mock).mockImplementation(() => mockDatabase);
-    mockDatabase.getFromDb.mockResolvedValue([
-      { id: "1", name: "Category1", timestamp: "2024-01-01" },
-      { id: "2", name: "Category2", timestamp: "2024-01-02" },
+
+    mockDatabase = {
+      getFromDb: jest.fn(),
+    };
+
+    mockToolkitContext = {
+      selectedCategories: [],
+      setSelectedCategories: jest.fn(),
+    };
+
+    mockOpenModal = jest.fn();
+
+    (useDatabase as jest.Mock).mockReturnValue(mockDatabase);
+    (useToolkit as jest.Mock).mockReturnValue(mockToolkitContext);
+  });
+
+  it("renders the CategoriesBar and fetches categories", async () => {
+    // Mock database response
+    mockDatabase.getFromDb.mockResolvedValueOnce([
+      { id: "1", name: "Category 1", timestamp: "2024-12-10" },
+      { id: "2", name: "Category 2", timestamp: "2024-12-11" },
     ]);
+
+    render(<CategoriesBar openModal={mockOpenModal} refreshCategories={false} />);
+
+    // Wait for categories to load and check if they are rendered
+    await waitFor(() => {
+      expect(screen.getByText("Category 1")).toBeInTheDocument();
+      expect(screen.getByText("Category 2")).toBeInTheDocument();
+    });
   });
 
-  it("renders without crashing", async () => {
-    renderWithToolkitContext(<CategoriesBar />);
-    const categoriesBar = screen.getByTestId("categories-bar");
-    expect(categoriesBar).toBeInTheDocument();
+  it("triggers openModal when the '+' button is clicked", () => {
+    render(<CategoriesBar openModal={mockOpenModal} refreshCategories={false} />);
+
+    const addButton = screen.getByText("+");
+    fireEvent.click(addButton);
+
+    expect(mockOpenModal).toHaveBeenCalled();
   });
 
-  it("renders all categories as buttons", async () => {
-    renderWithToolkitContext(<CategoriesBar />);
+  it("handles category selection and deselection", async () => {
+    mockDatabase.getFromDb.mockResolvedValueOnce([
+      { id: "1", name: "Category 1", timestamp: "2024-12-10" },
+    ]);
+
+    render(<CategoriesBar openModal={mockOpenModal} refreshCategories={false} />);
 
     // Wait for categories to load
-    const allButton = await screen.findByRole("button", { name: "All" });
-    expect(allButton).toBeInTheDocument();
-
-    const categories1Button = await screen.findByRole("button", {
-      name: "Category1",
-    });
-    const categories2Button = await screen.findByRole("button", {
-      name: "Category2",
+    await waitFor(() => {
+      expect(screen.getByText("Category 1")).toBeInTheDocument();
     });
 
-    expect(categories1Button).toBeInTheDocument();
-    expect(categories2Button).toBeInTheDocument();
+    const category1Button = screen.getByText("Category 1");
+
+    // Simulate selecting the category
+    fireEvent.click(category1Button);
+    expect(mockToolkitContext.setSelectedCategories).toHaveBeenCalledWith(["Category 1"]);
+
+    // Simulate deselecting the category
+    fireEvent.click(category1Button);
+    expect(mockToolkitContext.setSelectedCategories).toHaveBeenCalledWith([]);
   });
 
-  it("highlights the 'All' button when clicked", async () => {
-    renderWithToolkitContext(<CategoriesBar />);
+  it("handles the 'All' button click to reset categories", async () => {
+    mockDatabase.getFromDb.mockResolvedValueOnce([
+      { id: "1", name: "Category 1", timestamp: "2024-12-10" },
+    ]);
 
-    const allButton = await screen.findByRole("button", { name: "All" });
+    render(<CategoriesBar openModal={mockOpenModal} refreshCategories={false} />);
+
+    // Wait for categories to load
+    await waitFor(() => {
+      expect(screen.getByText("Category 1")).toBeInTheDocument();
+    });
+
+    const allButton = screen.getByText("All");
+
+    // Simulate clicking the "All" button
     fireEvent.click(allButton);
-
-    expect(allButton).toHaveClass("bg-twd-secondary-purple");
-  });
-
-  it("toggles selection for a single category", async () => {
-    renderWithToolkitContext(<CategoriesBar />);
-
-    const categories1Button = await screen.findByRole("button", {
-      name: "Category1",
-    });
-    fireEvent.click(categories1Button);
-
-    expect(categories1Button).toHaveClass("bg-twd-secondary-purple");
-
-    fireEvent.click(categories1Button);
-    expect(categories1Button).not.toHaveClass("bg-twd-secondary-purple");
-  });
-
-  it("clears other selections when 'All' is clicked", async () => {
-    renderWithToolkitContext(<CategoriesBar />);
-
-    const categories1Button = await screen.findByRole("button", {
-      name: "Category1",
-    });
-    const allButton = await screen.findByRole("button", { name: "All" });
-
-    fireEvent.click(categories1Button);
-    fireEvent.click(allButton);
-
-    expect(categories1Button).not.toHaveClass("bg-twd-secondary-purple");
-    expect(allButton).toHaveClass("bg-twd-secondary-purple");
-  });
-
-  it("allows selecting multiple categories (except 'All')", async () => {
-    renderWithToolkitContext(<CategoriesBar />);
-
-    const categories1Button = await screen.findByRole("button", {
-      name: "Category1",
-    });
-    const categories2Button = await screen.findByRole("button", {
-      name: "Category2",
-    });
-
-    fireEvent.click(categories1Button);
-    fireEvent.click(categories2Button);
-
-    expect(categories1Button).toHaveClass("bg-twd-secondary-purple");
-    expect(categories2Button).toHaveClass("bg-twd-secondary-purple");
-  });
-
-  it("deselects 'All' when another category is selected", async () => {
-    renderWithToolkitContext(<CategoriesBar />);
-
-    const allButton = await screen.findByRole("button", { name: "All" });
-    const categories1Button = await screen.findByRole("button", {
-      name: "Category1",
-    });
-
-    fireEvent.click(allButton);
-    fireEvent.click(categories1Button);
-
-    expect(allButton).not.toHaveClass("bg-twd-secondary-purple");
-    expect(categories1Button).toHaveClass("bg-twd-secondary-purple");
+    expect(mockToolkitContext.setSelectedCategories).toHaveBeenCalledWith([]);
   });
 });

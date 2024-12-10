@@ -30,7 +30,7 @@ export default function ToolkitList() {
       try {
         const items = await database.getFromDb("toolkit_items");
         if (items) {
-          const data = items.map((doc) => doc.toJSON());
+          const data = items.map((doc) => (doc.toJSON ? doc.toJSON() : doc));
           setMainData(data);
           setDisplayedData(data);
         } else {
@@ -41,7 +41,8 @@ export default function ToolkitList() {
       }
     };
     fetchData();
-  }, [database]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Toggle item `checked` state
   const handleToggle = (id: string) => {
