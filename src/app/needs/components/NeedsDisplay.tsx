@@ -25,22 +25,20 @@ export default function NeedsDisplay() {
       <div className="w-11/12 m-auto">
         {categories.map((category, index) => {
           return (
-            <>
-              <h2 className="text-xl mb-5 font-semibold" key={index}>
-                {category.name}
-              </h2>
+            <div key={index}>
+              <h2 className="text-xl mb-5 font-semibold">{category.name}</h2>
               <div className="flex gap-5 flex-wrap mb-10">
-                {needs.map((need, index) => {
+                {/* {needs.map((need, index) => {
                   return (
                     <Button
-                      key={index}
+                    key={index}
                       label={need.name}
                       className="bg-gray-600 font-normal text-nowrap"
-                    />
+                      />
                   );
-                })}
+                })} */}
               </div>
-            </>
+            </div>
           );
         })}
       </div>
