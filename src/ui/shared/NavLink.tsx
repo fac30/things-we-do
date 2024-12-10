@@ -9,7 +9,6 @@ interface NavLinkProps {
   Icon?: React.ComponentType<{ className?: string }>;
   destination: string;
   isToolkit?: boolean;
-  onClick?: (e: React.MouseEvent) => void;
 }
 
 export default function NavLink({
