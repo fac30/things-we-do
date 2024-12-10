@@ -2,73 +2,19 @@ import { addRxPlugin } from "rxdb";
 import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
 import { createRxDatabase, RxDatabase } from "rxdb";
+import { v4 as uuidv4 } from "uuid";
+
 import toolkitItemSchema from "./schemas/toolkitItemSchema.json";
 import moodRecordSchema from "./schemas/moodRecordSchema.json";
 import categoriesSchema from "./schemas/categoriesSchema.json";
 import needsCategoriesSchema from "./schemas/categoriesSchema.json";
 import needsSchema from "./schemas/categoriesSchema.json";
 import nextActionsSchema from "./schemas/categoriesSchema.json";
-import { v4 as uuidv4 } from "uuid";
 
 import { categories, toolkit } from "./seed/toolkit";
 import { needsCategories, needs, nextActions } from "./seed/needs";
 
 addRxPlugin(RxDBDevModePlugin);
-
-const seedData = {
-  categories: [
-    { id: uuidv4(), name: "Replace", timestamp: new Date().toISOString() },
-    { id: uuidv4(), name: "Barrier", timestamp: new Date().toISOString() },
-    { id: uuidv4(), name: "Distract", timestamp: new Date().toISOString() },
-    {
-      id: uuidv4(),
-      name: "Change Status",
-      timestamp: new Date().toISOString(),
-    },
-  ],
-  toolkit: [
-    {
-      id: uuidv4(),
-      name: "Listen to my favourite music",
-      categories: ["Replace", "Barrier"],
-      checked: false,
-      infoUrl: "https://google.com/music",
-      imageUrl:
-        "https://daily.jstor.org/wp-content/uploads/2023/01/good_times_with_bad_music_1050x700.jpg",
-      timestamp: new Date().toISOString(),
-    },
-    {
-      id: uuidv4(),
-      name: "Breathing exercises",
-      categories: ["Distract"],
-      checked: false,
-      infoUrl: "https://www.youtube.com/watch?v=DbDoBzGY3vo",
-      imageUrl:
-        "https://www.bhf.org.uk/-/media/images/information-support/heart-matters/2023/december/wellbeing/deep-breathing-620x400.png?h=400&w=620&rev=4506ebd34dab4476b56c225b6ff3ad60&hash=B3CFFEEE704E4432D101432CEE8B2766",
-      timestamp: new Date().toISOString(),
-    },
-    {
-      id: uuidv4(),
-      name: "Call a friend",
-      categories: ["Distract", "Change status"],
-      checked: false,
-      infoUrl: "https://example.com/call",
-      imageUrl:
-        "https://t4.ftcdn.net/jpg/04/63/63/59/360_F_463635935_IweuYhCqZRtHp3SLguQL8svOVroVXvvZ.jpg",
-      timestamp: new Date().toISOString(),
-    },
-    {
-      id: uuidv4(),
-      name: "Drink water",
-      categories: ["Distract", "Change status"],
-      checked: false,
-      infoUrl: "https://example.com/call",
-      imageUrl:
-        "https://content.health.harvard.edu/wp-content/uploads/2023/07/b8a1309a-ba53-48c7-bca3-9c36aab2338a.jpg",
-      timestamp: new Date().toISOString(),
-    },
-  ],
-};
 
 let dbInstance: RxDatabase | null = null;
 
@@ -161,11 +107,11 @@ class DatabaseManager {
       case "toolkit_items":
         return { schema: toolkitItemSchema };
       case "needs_categories":
-        return { schema: toolkitItemSchema };
+        return { schema: needsCategoriesSchema };
       case "needs":
-        return { schema: toolkitItemSchema };
+        return { schema: needsSchema };
       case "next_actions":
-        return { schema: toolkitItemSchema };
+        return { schema: nextActionsSchema };
       default:
         throw new Error(`Unknown collection: ${collectionName}`);
     }
