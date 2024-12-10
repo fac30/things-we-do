@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { addRxPlugin } from "rxdb";
 import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
@@ -62,6 +63,58 @@ const seedData = {
       timestamp: new Date().toISOString(),
     },
   ],
+  mood_records: [
+    {
+      id: uuidv4(),
+      neurotransmitters: {
+        seratonin: 5,
+        dopamine: 1,
+        adrenaline: 1
+      },
+      moodName: "Freeze",
+      timestamp: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString()
+    },
+    {
+      id: uuidv4(),
+      neurotransmitters: {
+        seratonin: 4,
+        dopamine: 2,
+        adrenaline: 2
+      },
+      moodName: "Content",
+      timestamp: new Date(new Date().setDate(new Date().getDate() - 4)).toISOString()
+    },
+    {
+      id: uuidv4(),
+      neurotransmitters: {
+        seratonin: 3,
+        dopamine: 4,
+        adrenaline: 3
+      },
+      moodName: "Content",
+      timestamp: new Date(new Date().setDate(new Date().getDate() - 7)).toISOString()
+    },
+    {
+      id: uuidv4(),
+      neurotransmitters: {
+        seratonin: 2,
+        dopamine: 2,
+        adrenaline: 4
+      },
+      moodName: "Joy",
+      timestamp: new Date(new Date().setDate(new Date().getDate() - 14)).toISOString()
+    },
+    {
+      id: uuidv4(),
+      neurotransmitters: {
+        seratonin: 1,
+        dopamine: 4,
+        adrenaline: 5
+      },
+      moodName: "Freeze",
+      timestamp: new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString()
+    }
+  ],
 };
 
 let dbInstance: RxDatabase | null = null;
@@ -101,6 +154,7 @@ class DatabaseManager {
 
     console.log("Database initialized.");
     await this.seedDatabase();
+    await this.devSeedDatabase();
     return dbInstance;
   }
 
@@ -115,16 +169,41 @@ class DatabaseManager {
   }
 
   private async seedDatabase() {
-    console.log("Seeding database...");
     try {
-      await this.seedCategories();
-      await this.seedToolkitItems();
+      await this.oldSeedCategories();
+      // await this.seed("categories", categories);
+      await this.oldSeedToolkitItems();
+      // await this.seed("toolkit_items", toolkit);
+      // await this.seed("needs_categories", needsCategories);
+      // await this.seed("needs", needs);
+      // await this.seed("next_actions", nextActions);
     } catch (error) {
       console.error("Error during database seeding:", error);
     }
   }
 
-  private async seedCategories() {
+  private async devSeedDatabase() {
+    try {
+      await this.seed("mood_records", seedData.mood_records);
+    } catch (error) {
+      console.error("Error during database seeding:", error);
+    }
+  }
+
+  private async seed(collectionName: string, data: any[]) {
+    if (!dbInstance) throw new Error("Database not initialised.");
+    const collection = dbInstance.collections[collectionName];
+    if (!collection)
+      throw new Error(`${collectionName} collection is missing.`);
+
+    const existingDocs = await collection.find().exec();
+    if (existingDocs.length === 0) {
+      console.log(`Seeding ${collectionName}...`);
+      await collection.bulkInsert(data);
+    }
+  }
+
+  private async oldSeedCategories() {
     if (!dbInstance) throw new Error("Database not initialized.");
     if (!dbInstance.collections.categories) {
       throw new Error("Categories collection is missing.");
@@ -136,7 +215,7 @@ class DatabaseManager {
     }
   }
 
-  private async seedToolkitItems() {
+  private async oldSeedToolkitItems() {
     if (!dbInstance) throw new Error("Database not initialized.");
     if (!dbInstance.collections.toolkit_items) {
       throw new Error("Toolkit items collection is missing.");

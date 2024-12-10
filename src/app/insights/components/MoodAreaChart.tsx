@@ -15,7 +15,9 @@ export default function MoodAreaChart({
   selectedButton,
 }: MoodAreaChartProps) {
   if (!dataArray || dataArray.length === 0) {
-    return <div>No data available for the graph.</div>;
+    return (
+      <div>No data available for the graph.</div>
+    );
   }
 
   const sortedData = [...dataArray].sort(
@@ -24,7 +26,11 @@ export default function MoodAreaChart({
 
   // Get unique mood names
   const uniqueMoods = Array.from(
-    new Set(sortedData.map((entry) => entry.moodName))
+    new Set(
+      sortedData.map(
+        (entry) => entry.moodName
+      )
+    )
   );
 
   // Create time bins based on selectedButton
@@ -45,15 +51,21 @@ export default function MoodAreaChart({
 
   // Create data for each mood
   const traces = uniqueMoods.map((mood) => {
-    const moodData = sortedData.filter((entry) => entry.moodName === mood);
-    const timestamps = moodData.map((entry) => new Date(entry.timestamp));
+    const moodData = sortedData.filter(
+      (entry) => entry.moodName === mood
+    );
+    const timestamps = moodData.map(
+      (entry) => new Date(entry.timestamp)
+    );
     
     // Count occurrences in each time bin
     const counts = new Map();
-    timestamps.forEach((time) => {
-      const bin = timeFormat(time);
-      counts.set(bin, (counts.get(bin) || 0) + 1);
-    });
+    timestamps.forEach(
+      (time) => {
+        const bin = timeFormat(time);
+        counts.set(bin, (counts.get(bin) || 0) + 1);
+      }
+    );
 
     return {
       x: Array.from(counts.keys()),

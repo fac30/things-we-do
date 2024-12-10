@@ -112,7 +112,9 @@ export default function InsightsDisplay() {
     setInsights(goodInsights);
   };
 
-  useEffect(() => { getInsights(); }, []);
+  useEffect(() => { 
+    getInsights(); 
+  }, []);
 
   return (
     <>
@@ -148,6 +150,13 @@ export default function InsightsDisplay() {
             endOfRange={endOfRange}
             selectedButton={selectedButton}
           />
+        </>
+      ) : (
+        <div>Loading Line Graph...</div>
+      )}
+
+      {insights ? (
+        <>
           <MoodAreaChart
             dataArray={insights}
             startOfRange={startOfRange}
@@ -156,7 +165,7 @@ export default function InsightsDisplay() {
           />
         </>
       ) : (
-        <div>Loading insights...</div>
+        <div>Loading Area Chart...</div>
       )}
     </>
   );
