@@ -51,7 +51,7 @@ export default function Modal({
                 <Button
                   onClick={backButton.action}
                   label={backButton.label}
-                  className="text-lg font-normal w-32 bg-gray-700"
+                  className="text-lg font-normal w-36 bg-gray-700 text-nowrap"
                 />
               )}
               {forwardButton && (
