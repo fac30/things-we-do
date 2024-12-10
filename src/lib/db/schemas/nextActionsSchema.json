@@ -1,0 +1,43 @@
+{
+  "version": 0,
+  "primaryKey": "id",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "maxLength": 100
+    },
+    "name": {
+      "type": "string",
+      "maxLength": 255
+    },
+    "need": {
+      "type": "string",
+      "ref": "needs",
+      "maxLength": 100
+    },
+    "selectedTimestamps": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "date-time"
+      }
+    },
+    "selectedExpiry": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "need",
+    "timestamp",
+    "selectedTimestamps",
+    "selectedExpiry"
+  ]
+}
