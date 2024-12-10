@@ -45,12 +45,18 @@ export default function Inputs() {
   const [unusedCategory, setUnusedCategory] = useState([""]);
   const [saveUnusedCategory, setSaveUnusedCategory] = useState(false);
 
+  const [categoryErrorModal, setCategoryErrorModal] = useState(false);
+  const [infoUrlErrorModal, setInfoUrlErrorModal] = useState(false);
+  const [imageUrlErrorModal, setImageUrlErrorModal] = useState(false);
+  const [submitErrorModal, setSubmitErrorModal] = useState(false);
+  const [submitErrorMessage, setSubmitErrorMessage] = useState("");
+
   function SubmitButton() {
     const handleSubmit = async () => {
       console.log(`Validating form with state: ${JSON.stringify(formState)}`);
   
       if (formState.categories.length === 0) {
-        alert("Please select at least one category");
+        setCategoryErrorModal(true);
         return;
       }
   
@@ -58,7 +64,8 @@ export default function Inputs() {
         const infoUrlValidation = validateUrl(formState.infoUrl, "Info URL");
         if (!infoUrlValidation.isValid) {
           console.error(`Info URL validation failed: ${infoUrlValidation.error}`);
-          alert(infoUrlValidation.error);
+          setSubmitErrorMessage(infoUrlValidation.error);
+          setInfoUrlErrorModal(true);
           return;
         }
         console.log(`Info URL validated successfully: ${infoUrlValidation.url}`);
@@ -67,15 +74,12 @@ export default function Inputs() {
       if (formState.imageUrl) {
         const imageUrlValidation = validateUrl(formState.imageUrl, "Image URL");
         if (!imageUrlValidation.isValid) {
-          console.error(
-            `Image URL validation failed: ${imageUrlValidation.error}`
-          );
-          alert(imageUrlValidation.error);
+          console.error(`Image URL validation failed: ${imageUrlValidation.error}`);
+          setSubmitErrorMessage(imageUrlValidation.error);
+          setImageUrlErrorModal(true);
           return;
         }
-        console.log(
-          `Image URL validated successfully: ${imageUrlValidation.url}`
-        );
+        console.log(`Image URL validated successfully: ${imageUrlValidation.url}`);
       }
   
       try {
@@ -107,11 +111,8 @@ export default function Inputs() {
         setConfirmationModalOpen(true);
       } catch (error) {
         console.error("Error submitting form:", error);
-        alert(
-          `Failed to save tool: ${
-            error instanceof Error ? error.message : "Unknown error"
-          }`
-        );
+        setSubmitErrorMessage(error instanceof Error ? error.message : "Unknown error");
+        setSubmitErrorModal(true);
       }
     };
   
@@ -119,7 +120,7 @@ export default function Inputs() {
       <Button
         label="Add Tool"
         onClick={handleSubmit}
-        className="w-full mt-4 bg-twd-primary-purple "
+        className="w-full mt-4 bg-twd-primary-purple"
       />
     );
   }
@@ -144,6 +145,42 @@ export default function Inputs() {
         modalOpen={unusedCategoryModalOpen}
         forwardButton={unusedCategoryForwardButton}
         backButton={unusedCategoryBackButton}
+      />
+
+      <Modal
+        title="Please select at least one category"
+        modalOpen={categoryErrorModal}
+        forwardButton={{
+          label: "OK",
+          action: () => setCategoryErrorModal(false)
+        }}
+      />
+
+      <Modal
+        title={submitErrorMessage}
+        modalOpen={infoUrlErrorModal}
+        forwardButton={{
+          label: "OK",
+          action: () => setInfoUrlErrorModal(false)
+        }}
+      />
+
+      <Modal
+        title={submitErrorMessage}
+        modalOpen={imageUrlErrorModal}
+        forwardButton={{
+          label: "OK",
+          action: () => setImageUrlErrorModal(false)
+        }}
+      />
+
+      <Modal
+        title={`Failed to save tool: ${submitErrorMessage}`}
+        modalOpen={submitErrorModal}
+        forwardButton={{
+          label: "OK",
+          action: () => setSubmitErrorModal(false)
+        }}
       />
     </div>
   );
