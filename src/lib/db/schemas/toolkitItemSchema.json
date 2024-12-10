@@ -7,7 +7,10 @@
       "type": "string",
       "maxLength": 100
     },
-    "name": { "type": "string" },
+    "name": {
+      "type": "string",
+      "maxLength": 255
+    },
     "categories": {
       "type": "array",
       "items": {
@@ -24,11 +27,5 @@
       "format": "date-time"
     }
   },
-  "required": [
-    "id",
-    "name",
-    "categories",
-    "checked",
-    "timestamp"
-  ]
+  "required": ["id", "name", "categories", "checked", "timestamp"]
 }
