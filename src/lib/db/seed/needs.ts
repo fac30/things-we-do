@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 
-const categories = {
+const needsList = {
   physicalNurturance: [
     "Air",
     "Food",
@@ -50,24 +50,24 @@ const categories = {
   ],
 };
 
-const normalize = (str: string) =>
+const normalise = (str: string) =>
   str
     .toLowerCase()
     .replace(/\s+/g, "")
     .replace(/[^a-z0-9]/gi, "");
 
-const capitalizeWords = (str: string) =>
+const capitaliseWords = (str: string) =>
   str.replace(/\b\w/g, (char) => char.toUpperCase());
 
-const needsCategories = Object.keys(categories).map((key) => ({
+const needsCategories = Object.keys(needsList).map((key) => ({
   id: uuidv4(),
-  name: capitalizeWords(key.replace(/([A-Z])/g, " $1").trim()),
+  name: capitaliseWords(key.replace(/([A-Z])/g, " $1").trim()),
   timestamp: new Date().toISOString(),
 }));
 
-const needs = Object.entries(categories).flatMap(([categoryKey, items]) => {
+const needs = Object.entries(needsList).flatMap(([categoryKey, items]) => {
   const category = needsCategories.find(
-    (c) => normalize(c.name) === normalize(categoryKey)
+    (c) => normalise(c.name) === normalise(categoryKey)
   );
   if (!category) throw new Error(`Category '${categoryKey}' not found`);
 
