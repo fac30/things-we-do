@@ -1,9 +1,8 @@
 "use client";
 
-import NavLink from "@/ui/shared/NavLink";
+import Button from "@/ui/shared/Button";
 import Modal from "@/ui/shared/Modal";
 import Spacer from "./Spacer";
-import { ChevronLeftIcon as ChevronLeft } from "@heroicons/react/24/outline";
 import { useAddToolForm } from "@/context/AddToolContext";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -23,8 +22,7 @@ export default function Header() {
     );
   };
 
-  const handleNavigation = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const handleNavigation = () => {
     if (hasFormValues()) {
       setModalOpen(true);
     } else {
@@ -48,10 +46,10 @@ export default function Header() {
   return (
     <>
       <div className="flex justify-around">
-        <NavLink 
-          Icon={ChevronLeft} 
-          destination="/toolkit" 
+        <Button
+          label="< Go Back"
           onClick={handleNavigation}
+          className="bg-twd-secondary-purple text-white"
         />
 
         <h2 className="text-white text-2xl font-bold">Add Tool</h2>
