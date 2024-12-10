@@ -10,17 +10,24 @@ import { Insight } from "@/app/insights/components/InsightsDisplay";
 export default function NeedsDisplay() {
   const database = useDatabase();
   const [categories, setCategories] = useState<RxDocumentData<Insight>[]>([]);
-  //   const [needs, setNeeds] = useState([]);
+  const [needs, setNeeds] = useState([]);
 
   const fetchCategories = async () => {
     const response = await database.getFromDb("needs_categories");
-    const data = retrieveDataObject(response);
-    console.log(data);
-    setCategories(data);
+    const categories = retrieveDataObject(response);
+    console.log(categories);
+    setCategories(categories);
+  };
+
+  const fetchNeeds = async () => {
+    const response = await database.getFromDb("needs");
+    const needs = retrieveDataObject(response);
+    setNeeds(needs);
   };
 
   useEffect(() => {
     fetchCategories();
+    fetchNeeds();
   }, []);
 
   return (
