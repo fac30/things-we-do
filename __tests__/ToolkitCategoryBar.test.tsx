@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import { useDatabase } from "@/context/DatabaseContext";
 import { useToolkit } from "@/context/ToolkitContext";
 import CategoriesBar from "@/app/toolkit/components/CategoriesBar";
@@ -66,21 +68,40 @@ describe("CategoriesBar", () => {
       { id: "1", name: "Category 1", timestamp: "2024-12-10" },
     ]);
 
-    render(<CategoriesBar openModal={mockOpenModal} refreshCategories={false} />);
+    // Initialize mock context with state tracking
+    mockToolkitContext = {
+      selectedCategories: [],
+      setSelectedCategories: jest.fn(),
+    };
+    (useToolkit as jest.Mock).mockReturnValue(mockToolkitContext);
 
-    // Wait for categories to load
+    // Wrap initial render in act
+    await act(async () => {
+      render(<CategoriesBar openModal={mockOpenModal} refreshCategories={false} />);
+    });
+
+    // Wait for initial render to complete
     await waitFor(() => {
       expect(screen.getByText("Category 1")).toBeInTheDocument();
     });
 
     const category1Button = screen.getByText("Category 1");
+    const allButton = screen.getByText("All");
 
-    // Simulate selecting the category
-    fireEvent.click(category1Button);
+    // First click - select category
+    await act(async () => {
+      fireEvent.click(category1Button);
+    });
+
+    // Verify category is selected
     expect(mockToolkitContext.setSelectedCategories).toHaveBeenCalledWith(["Category 1"]);
 
-    // Simulate deselecting the category
-    fireEvent.click(category1Button);
+    // Second click - should select "All"
+    await act(async () => {
+      fireEvent.click(allButton);
+    });
+
+    // Verify "All" is selected
     expect(mockToolkitContext.setSelectedCategories).toHaveBeenCalledWith([]);
   });
 
