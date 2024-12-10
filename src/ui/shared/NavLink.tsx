@@ -17,7 +17,6 @@ export default function NavLink({
   Icon,
   destination,
   isToolkit,
-  onClick,
 }: NavLinkProps) {
   const pathname = usePathname();
 
