@@ -53,7 +53,7 @@ export default function SortableItem({
                 e.stopPropagation();
                 handleToggle(item.id);
               }}
-              className="h-5 w-5 border-white bg-twd-background text-twd-background rounded focus:ring focus:ring-blue-300"
+              className="h-5 w-5 appearance-none border-2 border-white rounded bg-twd-background checked:bg-white checked:border-white focus:ring focus:ring-twd-primary-purple checked:after:content-['✔']"
             />
             <p
               className={`text-lg ${
@@ -80,7 +80,7 @@ export default function SortableItem({
               href={item.infoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-twd-text-link hover:underline"
+              className="text-twd-text-link"
             >
               Go to resource
             </a>

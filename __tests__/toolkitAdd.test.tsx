@@ -147,7 +147,9 @@ describe("AddToolInputs Component", () => {
       fireEvent.click(submitButton);
     });
 
-    expect(window.alert).toHaveBeenCalledWith("Invalid URL");
+    await waitFor(() => {
+      expect(screen.getByText("Invalid URL")).toBeInTheDocument();
+    });
   });
 
   it("inserts data into the database", async () => {
