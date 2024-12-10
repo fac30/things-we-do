@@ -1,8 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useDatabase } from "@/context/DatabaseContext";
-
 import LineGraph from "./LineGraph";
+import MoodAreaChart from "./MoodAreaChart";
 import retrieveDataObject from "@/lib/utils/retrieveDataObject";
 import { useState, useEffect, useMemo } from "react";
 
@@ -111,9 +112,7 @@ export default function InsightsDisplay() {
     setInsights(goodInsights);
   };
 
-  useEffect(() => {
-    getInsights();
-  }, []);
+  useEffect(() => { getInsights(); }, []);
 
   return (
     <>
@@ -142,12 +141,20 @@ export default function InsightsDisplay() {
       </div>
 
       {insights ? (
-        <LineGraph
-          dataArray={insights}
-          startOfRange={startOfRange}
-          endOfRange={endOfRange}
-          selectedButton={selectedButton}
-        />
+        <>
+          <LineGraph
+            dataArray={insights}
+            startOfRange={startOfRange}
+            endOfRange={endOfRange}
+            selectedButton={selectedButton}
+          />
+          <MoodAreaChart
+            dataArray={insights}
+            startOfRange={startOfRange}
+            endOfRange={endOfRange}
+            selectedButton={selectedButton}
+          />
+        </>
       ) : (
         <div>Loading insights...</div>
       )}
