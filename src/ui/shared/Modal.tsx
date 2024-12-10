@@ -58,7 +58,7 @@ export default function Modal({
                 <Button
                   onClick={forwardButton.action}
                   label={forwardButton.label}
-                  className="bg-twd-primary-purple text-lg font-normal w-32"
+                  className="bg-twd-primary-purple text-lg font-normal w-36 text-nowrap"
                 />
               )}
             </div>
