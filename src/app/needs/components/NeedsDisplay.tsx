@@ -1,23 +1,26 @@
 "use client";
 
-import Button from "@/ui/shared/Button";
+// import Button from "@/ui/shared/Button";
 import { useState, useEffect } from "react";
+import { useDatabase } from "@/context/DatabaseContext";
+import retrieveDataObject from "@/lib/utils/retrieveDataObject";
+import { RxDocumentData } from "rxdb";
+import { Insight } from "@/app/insights/components/InsightsDisplay";
 
 export default function NeedsDisplay() {
-  const [categories, setCategories] = useState([]);
-  const [needs, setNeeds] = useState([]);
+  const database = useDatabase();
+  const [categories, setCategories] = useState<RxDocumentData<Insight>[]>([]);
+  //   const [needs, setNeeds] = useState([]);
 
-  const getData = async () => {
-    const response = await fetch("./mockNeeds.json");
-    const data = await response.json();
-    const { needs_categories, needs, next_actions } = data;
-    setCategories(needs_categories);
-    setNeeds(needs);
+  const fetchCategories = async () => {
+    const response = await database.getFromDb("needs_categories");
+    const data = retrieveDataObject(response);
     console.log(data);
+    setCategories(data);
   };
 
   useEffect(() => {
-    getData();
+    fetchCategories();
   }, []);
 
   return (
