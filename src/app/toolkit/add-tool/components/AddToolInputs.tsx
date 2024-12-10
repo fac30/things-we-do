@@ -19,32 +19,9 @@ export default function Inputs() {
   const { formState } = useAddToolForm();
 
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
-  const confirmationForwardButton = {
-    label: "Continue", action: () => {
-      setConfirmationModalOpen(false);
-      router.push("/toolkit");
-    } 
-  };
-
   const [unusedCategoryModalOpen, setUnusedCategoryModalOpen] = useState(false);
-  const unusedCategoryForwardButton = {
-    label: "Yes, save it",
-    action: () => {
-      setSaveUnusedCategory(true);
-      setUnusedCategoryModalOpen(false);
-    }
-  };
-  const unusedCategoryBackButton = {
-    label: "No, just save the tool",
-    action: () => {
-      setSaveUnusedCategory(false);
-      setUnusedCategoryModalOpen(false);
-    }
-  };
-
   const [unusedCategory, setUnusedCategory] = useState([""]);
   const [saveUnusedCategory, setSaveUnusedCategory] = useState(false);
-
   const [categoryErrorModal, setCategoryErrorModal] = useState(false);
   const [infoUrlErrorModal, setInfoUrlErrorModal] = useState(false);
   const [imageUrlErrorModal, setImageUrlErrorModal] = useState(false);
@@ -64,7 +41,7 @@ export default function Inputs() {
         const infoUrlValidation = validateUrl(formState.infoUrl, "Info URL");
         if (!infoUrlValidation.isValid) {
           console.error(`Info URL validation failed: ${infoUrlValidation.error}`);
-          setSubmitErrorMessage(infoUrlValidation.error);
+          setSubmitErrorMessage(infoUrlValidation.error || "");
           setInfoUrlErrorModal(true);
           return;
         }
@@ -75,7 +52,7 @@ export default function Inputs() {
         const imageUrlValidation = validateUrl(formState.imageUrl, "Image URL");
         if (!imageUrlValidation.isValid) {
           console.error(`Image URL validation failed: ${imageUrlValidation.error}`);
-          setSubmitErrorMessage(imageUrlValidation.error);
+          setSubmitErrorMessage(imageUrlValidation.error || "");
           setImageUrlErrorModal(true);
           return;
         }
@@ -117,8 +94,7 @@ export default function Inputs() {
     };
   
     return (
-      <Button
-        label="Add Tool"
+      <Button label="Add Tool"
         onClick={handleSubmit}
         className="w-full mt-4 bg-twd-primary-purple"
       />
@@ -137,14 +113,29 @@ export default function Inputs() {
       <Modal
         title="Tool Added"
         modalOpen={confirmationModalOpen}
-        forwardButton={confirmationForwardButton}
+        forwardButton={{ label: "Continue",
+          action: () => {
+            setConfirmationModalOpen(false);
+            router.push("/toolkit");
+          } 
+        }}
       />
 
       <Modal
-        title="You created a category but didn't use it. Would you like to save it anyway?"
+        title="You created an unused category. What would you like to save?"
         modalOpen={unusedCategoryModalOpen}
-        forwardButton={unusedCategoryForwardButton}
-        backButton={unusedCategoryBackButton}
+        forwardButton={{ label: "Tool & Category",
+          action: () => {
+            setSaveUnusedCategory(true);
+            setUnusedCategoryModalOpen(false);
+          }
+        }}
+        backButton={{ label: "Tool",
+          action: () => {
+            setSaveUnusedCategory(false);
+            setUnusedCategoryModalOpen(false);
+          }
+        }}
       />
 
       <Modal

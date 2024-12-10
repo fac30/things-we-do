@@ -44,21 +44,21 @@ export default function Modal({
                 onChange={handleInputChange}
               />
             ) : (
-              <h2 className="text-2xl w-10/12 text-center">{title}</h2>
+              <p className="text-xl w-10/12 text-center">{title}</p>
             )}
             <div className="flex justify-center gap-10 w-2/3">
               {backButton && (
                 <Button
                   onClick={backButton.action}
                   label={backButton.label}
-                  className="text-xl font-normal w-32 bg-gray-700"
+                  className="text-lg font-normal w-32 bg-gray-700"
                 />
               )}
               {forwardButton && (
                 <Button
                   onClick={forwardButton.action}
                   label={forwardButton.label}
-                  className="bg-twd-primary-purple text-xl font-normal w-32"
+                  className="bg-twd-primary-purple text-lg font-normal w-32"
                 />
               )}
             </div>
