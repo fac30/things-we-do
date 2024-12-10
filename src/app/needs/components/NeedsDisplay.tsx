@@ -75,9 +75,9 @@ export default function NeedsDisplay() {
   return (
     <>
       <div className="w-11/12 m-auto">
-        {needsData.map((need, index) => {
+        {needsData.map((need) => {
           return (
-            <div key={index} className="">
+            <>
               <h2 className="text-xl mb-5 font-semibold">{need.needName}</h2>
               <div className="flex gap-5 flex-wrap mb-10">
                 {need.needsArr.map((arrItem, index) => {
@@ -90,7 +90,7 @@ export default function NeedsDisplay() {
                   );
                 })}
               </div>
-            </div>
+            </>
           );
         })}
       </div>
