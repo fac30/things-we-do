@@ -1,6 +1,6 @@
 "use client";
 
-// import Button from "@/ui/shared/Button";
+import Button from "@/ui/shared/Button";
 import { useState, useEffect } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
 import retrieveDataObject from "@/lib/utils/retrieveDataObject";
@@ -30,23 +30,36 @@ export default function NeedsDisplay() {
     fetchNeeds();
   }, []);
 
+  const categorizedNeeds = categories.map((category) => {
+    const categoryNeeds = needs.filter((need) => need.category === category.id);
+    return {
+      category: category.name,
+      needs: categoryNeeds,
+    };
+  });
+
   return (
     <>
       <div className="w-11/12 m-auto">
         {categories.map((category, index) => {
+          const categoryNeeds =
+            categorizedNeeds.find(
+              (categorized) => categorized.category === category.name
+            )?.needs || [];
+
           return (
             <div key={index}>
               <h2 className="text-xl mb-5 font-semibold">{category.name}</h2>
               <div className="flex gap-5 flex-wrap mb-10">
-                {/* {needs.map((need, index) => {
+                {categoryNeeds.map((need, needIndex) => {
                   return (
                     <Button
-                    key={index}
+                      key={needIndex}
                       label={need.name}
                       className="bg-gray-600 font-normal text-nowrap"
-                      />
+                    />
                   );
-                })} */}
+                })}
               </div>
             </div>
           );
