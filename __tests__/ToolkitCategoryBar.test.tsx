@@ -67,7 +67,6 @@ describe("CategoriesBar", () => {
     mockDatabase.getFromDb.mockResolvedValueOnce([
       { id: "1", name: "Category 1", timestamp: "2024-12-10" },
     ]);
-
     // Initialize mock context with state tracking
     mockToolkitContext = {
       selectedCategories: [],
