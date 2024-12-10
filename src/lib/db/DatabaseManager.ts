@@ -85,7 +85,7 @@ class DatabaseManager {
     }
   }
 
-  private async seed(collectionName: string, data: any[]) {
+  private async seed<T>(collectionName: string, data: T[]) {
     if (!dbInstance) throw new Error("Database not initialised.");
     const collection = dbInstance.collections[collectionName];
     if (!collection)
