@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAddToolForm } from "@/context/AddToolContext";
 import Button from "@/ui/shared/Button";
-import DatabaseManager from "@/lib/db/DatabaseManager";
 import Modal from "@/ui/shared/Modal";
+import { useDatabase } from "@/context/DatabaseContext";
 
 interface Categories {
   id: string;
@@ -11,6 +11,7 @@ interface Categories {
 }
 
 export default function AddTags() {
+  const database = useDatabase();
   const { formState, setFormState } = useAddToolForm();
   const [categories, setCategories] = useState<string[]>([]);
   const [newCategory, setNewCategory] = useState<string>("");
@@ -18,7 +19,7 @@ export default function AddTags() {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const allCategories = await DatabaseManager.getFromDb("categories");
+      const allCategories = await database.getFromDb("categories");
       if (allCategories) {
         setCategories(allCategories.map((cat: Categories) => cat.name));
       } else {

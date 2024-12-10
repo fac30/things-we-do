@@ -1,5 +1,4 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { NeurochemContext } from "@/context/NeurochemContext";
 import { Cube } from "@/app/moods/components/Cube";
 import { SliderBox } from "@/app/moods/components/SliderBox";
 import { useState } from "react";
@@ -25,17 +24,26 @@ describe("Cube and SliderBox integration", () => {
         adrenaline: 1 as Datum,
       });
 
+      const handleChange = (
+        value: number,
+        chem: "dopamine" | "serotonin" | "adrenaline"
+      ) => {
+        setNeuroState((prev) => ({
+          ...prev,
+          [chem]: value,
+        }));
+      };
+
       return (
-        <NeurochemContext.Provider value={{ neuroState, setNeuroState }}>
-          <Cube />
-          <SliderBox />
-        </NeurochemContext.Provider>
+        <>
+          <Cube neuroState={neuroState} />
+          <SliderBox handleChange={handleChange} neuroState={neuroState} />
+        </>
       );
     };
 
     render(<Wrapper />);
 
-    // change slider values
     const dopamineSlider = screen.getByLabelText(
       "Step 1. How urgent does it feel?"
     );
@@ -50,7 +58,6 @@ describe("Cube and SliderBox integration", () => {
     fireEvent.change(serotoninSlider, { target: { value: "3" } });
     fireEvent.change(adrenalineSlider, { target: { value: "7" } });
 
-    // check Plotly chart data prop gets updated
     const plotlyChart = screen.getByTestId("plotly-chart");
     const plotlyData = JSON.parse(
       plotlyChart.getAttribute("data-prop") || "[]"
