@@ -1,10 +1,11 @@
-import CategoriesBar from "@/app/toolkit/components/CategoriesBar";
-import ToolList from "@/app/toolkit/components/ToolList";
-import FloatingButton from "@/app/toolkit/components/floatingButton";
+
 import { Header } from "@/ui/shared/Header";
 import { ToolkitProvider } from "@/context/ToolkitContext";
+import ToolkitDisplay from "./components/ToolkitDisplay";
+
 
 export default function ToolkitPage() {
+
   return (
     <ToolkitProvider>
       <div className="relative h-full">
@@ -13,11 +14,7 @@ export default function ToolkitPage() {
           description="add and search tools which help you in your daily life."
           hasInfoButton={true}
         />
-        <CategoriesBar />
-        <div className="p-4">
-          <ToolList />
-        </div>
-        <FloatingButton />
+        <ToolkitDisplay />
       </div>
     </ToolkitProvider>
   );

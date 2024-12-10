@@ -9,6 +9,10 @@ interface Categories {
   name: string;
   timestamp: string;
 }
+interface CategoriesBarProps {
+  openModal: () => void;
+  refreshCategories: boolean;
+}
 
 const categoriesBarClass = `
   whitespace-nowrap flex items-center gap-4 px-4 py-2 
@@ -16,7 +20,7 @@ const categoriesBarClass = `
   border-gray-700 sm:gap-6 sm:px-6  focus:ring-2 focus:ring-twd-secondary-purple
 `;
 
-const CategoriesBar = () => {
+export default function CategoriesBar({ openModal, refreshCategories }: CategoriesBarProps) {
   const database = useDatabase();
   const [categories, setCategories] = useState<string[]>([]);
   const { selectedCategories, setSelectedCategories } = useToolkit();
@@ -31,49 +35,59 @@ const CategoriesBar = () => {
       }
     };
     fetchCategories();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refreshCategories]);
 
-  const handleCategoriesClick = (categories: string) => {
+  const handleCategoriesClick = (category: string) => {
     setSelectedCategories(
-      selectedCategories.includes(categories)
-        ? selectedCategories.filter((c) => c !== categories)
-        : [...selectedCategories, categories]
+      selectedCategories.includes(category)
+        ? selectedCategories.filter((c) => c !== category)
+        : [...selectedCategories, category]
     );
   };
 
   return (
-    <div className={categoriesBarClass} data-testid="categories-bar">
-      <Button
-        key={"All"}
-        label={"All"}
-        className={`${
-          selectedCategories.length == 0
-            ? "bg-twd-secondary-purple text-white"
-            : "bg-twd-background text-white"
-        } hover:bg-twd-secondary-purple`}
-        onClick={() => setSelectedCategories([])}
-        ariaPressed={selectedCategories.length == 0}
-      />
-
-      {categories.map((categories) => {
-        const isActive = selectedCategories.includes(categories);
-
-        return (
-          <Button
-            key={categories}
-            label={categories}
-            className={`${
-              isActive
-                ? "bg-twd-secondary-purple text-white"
-                : "bg-twd-background text-white"
-            } hover:bg-twd-secondary-purple`}
-            onClick={() => handleCategoriesClick(categories)}
-            ariaPressed={isActive}
-          />
-        );
-      })}
+    <div
+      className={categoriesBarClass}
+      data-testid="categories-bar"
+    >
+      {/* Fixed "+" Button */}
+      <div className="flex-shrink-0">
+        <Button label="+" onClick={openModal} className="bg-twd-primary-purple"/>
+      </div>
+  
+      {/* Scrollable Categories */}
+      <div className="flex overflow-x-auto whitespace-nowrap space-x-2 flex-grow">
+        <Button
+          key={"All"}
+          label={"All"}
+          className={`${
+            selectedCategories.length === 0
+              ? "bg-twd-secondary-purple text-white"
+              : "bg-twd-background text-white"
+          }`}
+          onClick={() => setSelectedCategories([])}
+          ariaPressed={selectedCategories.length === 0}
+        />
+  
+        {categories.map((category) => {
+          const isActive = selectedCategories.includes(category);
+  
+          return (
+            <Button
+              key={category}
+              label={category}
+              className={`${
+                isActive
+                  ? "bg-twd-secondary-purple text-white"
+                  : "bg-twd-background text-white"
+              }`}
+              onClick={() => handleCategoriesClick(category)}
+              ariaPressed={isActive}
+            />
+          );
+        })}
+      </div>
     </div>
   );
-};
-
-export default CategoriesBar;
+}
