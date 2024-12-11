@@ -69,6 +69,9 @@ export default function NeedsDisplay() {
   const handleStepIncrease = () => {
     setNeedsStep((prevStep) => prevStep + 1);
   };
+  const handleStepDecrease = () => {
+    setNeedsStep((prevStep) => prevStep - 1);
+  };
 
   const handleIncrease = (setter) => {
     setter((prev) => prev + 1);
@@ -160,6 +163,7 @@ export default function NeedsDisplay() {
         }}
         title={`You have selected ${selectedNeed}`}
         needsStep={needsStep}
+        handleStepDecrease={handleStepDecrease}
       />
     </>
   );

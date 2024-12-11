@@ -1,3 +1,4 @@
+import { needs } from "@/lib/db/seed/needs";
 import Button from "@/ui/shared/Button";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 
@@ -23,13 +24,20 @@ export default function NeedsModal({
   forwardButton,
   backButton,
   needsStep,
+  handleStepDecrease,
 }: ModalProps) {
   return (
     <>
       {modalOpen && (
         <div className="h-96 w-11/12 absolute top-1/2 left-1/2 bg-gray-800 border-[1.5px] rounded-lg -translate-x-1/2 -translate-y-1/2">
+          <p className="text-center">step {needsStep} of 3</p>
           {needsStep > 1 && (
-            <ChevronLeftIcon className="h-10 w-10 absolute left-0 top-5" />
+            <button
+              className="absolute left-2 top-3"
+              onClick={handleStepDecrease}
+            >
+              <ChevronLeftIcon className="h-10 w-10" />
+            </button>
           )}
           <div className="flex flex-col w-full items-center py-10 justify-between h-full">
             <p className="text-xl w-10/12 text-center">{title}</p>
@@ -42,14 +50,14 @@ export default function NeedsModal({
                 <Button
                   onClick={backButton.action}
                   label={backButton.label}
-                  className="text-lg font-normal w-36 h-48 bg-twd-secondary-purple text-balance rounded-none"
+                  className="text-xl font-normal w-36 h-48 bg-twd-secondary-purple text-balance rounded-none"
                 />
               )}
               {forwardButton && (
                 <Button
                   onClick={forwardButton.action}
                   label={forwardButton.label}
-                  className="bg-twd-primary-purple text-lg font-normal w-36 text-balance rounded-none"
+                  className="bg-twd-primary-purple text-xl font-normal w-36 text-balance rounded-none"
                 />
               )}
             </div>
