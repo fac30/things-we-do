@@ -12,10 +12,69 @@ import needsCategoriesSchema from "./schemas/categoriesSchema.json";
 import needsSchema from "./schemas/categoriesSchema.json";
 import nextActionsSchema from "./schemas/categoriesSchema.json";
 
-import { categories, toolkit } from "./seed/toolkit";
-import { needsCategories, needs, nextActions } from "./seed/needs";
-
 addRxPlugin(RxDBDevModePlugin);
+
+function getMoodName(dopamine: number, adrenaline: number, serotonin: number): string {
+  if (dopamine <= 5) {
+    if (adrenaline <= 5) {
+      if (serotonin <= 5) {
+        return "guilt";
+      } else if (serotonin >= 6) {
+        return "content";
+      }
+    } else if (adrenaline >= 6) {
+      if (serotonin <= 5) {
+        return "distress";
+      } else if (serotonin >= 6) {
+        return "relief";
+      }
+    }
+  } else if (dopamine >= 6) {
+    if (adrenaline <= 5) {
+      if (serotonin <= 5) {
+        return "freeze";
+      } else if (serotonin >= 6) {
+        return "joy";
+      }
+    } else if (adrenaline >= 6) {
+      if (serotonin <= 5) {
+        return "fight/flight";
+      } else if (serotonin >= 6) {
+        return "interest";
+      }
+    }
+  }
+  return "content"; // default fallback
+}
+
+const generateMoodRecords = () => {
+  const records = [];
+  const now = new Date();
+  
+  for (let i = 0; i < 78; i++) {
+    // Random values between 1 and 10
+    const dopamine = Math.floor(Math.random() * 10) + 1;
+    const serotonin = Math.floor(Math.random() * 10) + 1;
+    const adrenaline = Math.floor(Math.random() * 10) + 1;
+    
+    // Calculate date (i weeks ago)
+    const timestamp = new Date(now);
+    timestamp.setDate(timestamp.getDate() - (i * 7));
+    
+    records.push({
+      id: uuidv4(),
+      neurotransmitters: {
+        serotonin,
+        dopamine,
+        adrenaline
+      },
+      moodName: getMoodName(dopamine, adrenaline, serotonin),
+      timestamp: timestamp.toISOString()
+    });
+  }
+  
+  return records;
+};
 
 const seedData = {
   categories: [
@@ -66,58 +125,7 @@ const seedData = {
       timestamp: new Date().toISOString(),
     },
   ],
-  mood_records: [
-    {
-      id: uuidv4(),
-      neurotransmitters: {
-        seratonin: 5,
-        dopamine: 1,
-        adrenaline: 1
-      },
-      moodName: "Freeze",
-      timestamp: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString()
-    },
-    {
-      id: uuidv4(),
-      neurotransmitters: {
-        seratonin: 4,
-        dopamine: 2,
-        adrenaline: 2
-      },
-      moodName: "Content",
-      timestamp: new Date(new Date().setDate(new Date().getDate() - 4)).toISOString()
-    },
-    {
-      id: uuidv4(),
-      neurotransmitters: {
-        seratonin: 3,
-        dopamine: 4,
-        adrenaline: 3
-      },
-      moodName: "Content",
-      timestamp: new Date(new Date().setDate(new Date().getDate() - 7)).toISOString()
-    },
-    {
-      id: uuidv4(),
-      neurotransmitters: {
-        seratonin: 2,
-        dopamine: 2,
-        adrenaline: 4
-      },
-      moodName: "Joy",
-      timestamp: new Date(new Date().setDate(new Date().getDate() - 14)).toISOString()
-    },
-    {
-      id: uuidv4(),
-      neurotransmitters: {
-        seratonin: 1,
-        dopamine: 4,
-        adrenaline: 5
-      },
-      moodName: "Freeze",
-      timestamp: new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString()
-    }
-  ],
+  mood_records: generateMoodRecords(),
 };
 
 let dbInstance: RxDatabase | null = null;
