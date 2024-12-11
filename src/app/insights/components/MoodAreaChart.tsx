@@ -86,7 +86,7 @@ export default function MoodAreaChart({
       <div className="bg-twd-graph-background mt-10 w-11/12 m-auto rounded-lg">
         <div className="w-10/12 m-auto pt-5">
           <h2 className="text-xl">Mood Accumulation</h2>
-          <p>How have your moods built up over time?</p>
+          <p>See how prevalent each mood has been at different times.</p>
         </div>
 
         <div className="w-11/12 m-auto flex justify-center text-center mb-10 mt-5">
@@ -147,21 +147,3 @@ export default function MoodAreaChart({
     </>
   );
 }
-
-/* Chart Guide
-  This chart is basically a heavily modified scatter graph.
-  - type: "scatter", mode: "none"
-    - records the updated total for that mood
-    - is hidden, leaving only the line connecting them
-  - `fill: tonexty`
-    - fills the area below the line with colour
-    - read it as "toNextY"
-  - stackgroup: "one"
-    - stacks areas on top of each other
-    - as opposed to stacking each one on the x-axis
-  - groupnorm: "percent"
-    - normalises the values to show percentage of records
-    - as opposed to total number of records
-  - line: { shape: "spline" }
-    - smooths the lines
-  */
