@@ -49,21 +49,28 @@ export default function MoodAreaChart({
   );
 
   const traces = uniqueMoods.map((mood) => {
-    const moodData = sortedData.filter((entry) => entry.moodName === mood);
-    let runningTotal = 0;
-    
-    const cumulativeData = moodData.map((entry) => {
-      runningTotal += 1;
-      return {
-        x: new Date(entry.timestamp).toISOString(),
-        y: runningTotal,
-      };
-    });
-
-    const dataPoints = [
-      ...cumulativeData,
-      { x: endOfRange.toISOString(), y: runningTotal }
-    ];
+    const dataPoints = sortedData.reduce((acc, entry) => {
+      const timestamp = new Date(entry.timestamp).toISOString();
+      
+      // Get all entries up to this timestamp
+      const entriesUpToNow = sortedData.filter(e => 
+        new Date(e.timestamp) <= new Date(entry.timestamp)
+      );
+      
+      // Count total entries and entries for this mood
+      const totalCount = entriesUpToNow.length;
+      const moodCount = entriesUpToNow.filter(e => e.moodName === mood).length;
+      
+      // Calculate percentage
+      const percentage = (moodCount / totalCount) * 100;
+      
+      acc.push({
+        x: timestamp,
+        y: percentage
+      });
+      
+      return acc;
+    }, [] as Array<{x: string, y: number}>);
 
     return {
       x: dataPoints.map(point => point.x),
@@ -73,7 +80,6 @@ export default function MoodAreaChart({
       fill: "tonexty",
       name: mood,
       stackgroup: "one",
-      groupnorm: "percent",
       line: { shape: "spline" }
     };
   });
@@ -99,6 +105,7 @@ export default function MoodAreaChart({
         <h2 className="text-xl">Mood Accumulation</h2>
         <p>How have your moods built up over time?</p>
       </div>
+
       <div className="w-11/12 m-auto flex justify-center text-center mb-10 mt-5">
         <PlotlyChart
           data={traces}
