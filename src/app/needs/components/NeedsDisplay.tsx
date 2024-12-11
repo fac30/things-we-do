@@ -54,9 +54,11 @@ export default function NeedsDisplay() {
   });
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [selectedNeed, setSelectedNeed] = useState(false);
 
-  const handleOpen = () => {
+  const handleOpen = (need) => {
     setModalOpen(true);
+    setSelectedNeed(need);
   };
 
   return (
@@ -72,7 +74,24 @@ export default function NeedsDisplay() {
           );
         })}
       </div>
-      <Modal modalOpen={modalOpen} />
+      <Modal
+        modalOpen={modalOpen}
+        forwardButton={{
+          label: "Worth Doing",
+          action: () => {
+            setModalOpen(false);
+            // router.push("/toolkit");
+          },
+        }}
+        backButton={{
+          label: "Not Worth Doing",
+          action: () => {
+            setModalOpen(false);
+            // router.push("/toolkit");
+          },
+        }}
+        title={`You have selected ${selectedNeed}. Select the button that best describes meeting this need right now.`}
+      />
     </>
   );
 }

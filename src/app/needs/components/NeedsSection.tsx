@@ -11,7 +11,7 @@ export default function NeedsSection({ categoryData, handleOpen }) {
               key={needIndex}
               label={need.name}
               className="bg-gray-600 font-normal text-nowrap"
-              onClick={handleOpen}
+              onClick={() => handleOpen(need.name)}
             />
           );
         })}
