@@ -32,6 +32,37 @@ export default function MoodsDisplay() {
 
   const submitMood = () => {
     const { dopamine, serotonin, adrenaline } = neuroState;
+    let moodName = "";
+
+    if (dopamine <= 5) {
+      if (adrenaline <= 5) {
+        if (seratonin <= 5) {
+          moodName = "guilt";
+        } else if (seratonin >= 6) {
+          moodName = "content";
+        }
+      } else if (adrenaline >= 6) {
+        if (seratonin <= 5) {
+          moodName = "distress";
+        } else if (seratonin >= 6) {
+          moodName = "relief";
+        }
+      }
+    } else if (dopamine >= 6) {
+      if (adrenaline <= 5) {
+        if (seratonin <= 5) {
+          moodName = "freeze";
+        } else if (seratonin >= 6) {
+          moodName = "joy";
+        }
+      } else if (adrenaline >= 6) {
+        if (seratonin <= 5) {
+          moodName = "fight/flight";
+        } else if (seratonin >= 6) {
+          moodName = "interest";
+        }
+      }
+    }
 
     const submitObj = {
       neurotransmitters: {
@@ -39,7 +70,7 @@ export default function MoodsDisplay() {
         serotonin: serotonin,
         adrenaline: adrenaline,
       },
-      moodName: "new-mood",
+      moodName: moodName,
       timestamp: new Date().toISOString(),
     };
 
