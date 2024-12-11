@@ -195,13 +195,14 @@ class DatabaseManager {
         );
       }
 
-      // Update the field directly on the document
-      await document.patch({
+      // Await the patch operation
+      const updatedDocument = await document.patch({
         [field]: update,
       });
 
-      console.log(`Updated document in ${collectionName}:`, document);
-      return document;
+      // Log after the update is complete
+      console.log(`Updated document in ${collectionName}:`, updatedDocument);
+      return updatedDocument;
     } catch (error) {
       console.error(`Error in updateDocument:`, error);
       throw error;
