@@ -28,7 +28,9 @@ export default function NeedsModal({
     <>
       {modalOpen && (
         <div className="h-96 w-11/12 absolute top-1/2 left-1/2 bg-gray-800 border-[1.5px] rounded-lg -translate-x-1/2 -translate-y-1/2">
-          <ChevronLeftIcon className="h-10 w-10 absolute left-0 top-5" />
+          {needsStep > 1 && (
+            <ChevronLeftIcon className="h-10 w-10 absolute left-0 top-5" />
+          )}
           <div className="flex flex-col w-full items-center py-10 justify-between h-full">
             <p className="text-xl w-10/12 text-center">{title}</p>
             <p className="text-md w-10/12 text-center">

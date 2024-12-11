@@ -159,6 +159,7 @@ export default function NeedsDisplay() {
           },
         }}
         title={`You have selected ${selectedNeed}`}
+        needsStep={needsStep}
       />
     </>
   );
