@@ -103,6 +103,12 @@ export default function NeedsDisplay() {
         const docId = selectedNeed.id;
 
         await database.updateDocument("needs", docId, "mood", action);
+        await database.updateDocument(
+          "needs",
+          docId,
+          "selectedExpiry",
+          new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString()
+        );
         console.log(`Updated ${needName} with action: ${action}`);
       } else {
         console.log(`Need ${needName} not found`);
