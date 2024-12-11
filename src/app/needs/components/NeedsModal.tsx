@@ -19,7 +19,7 @@ interface ModalProps {
   handleInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   needsStep: number; // Add this line
   setModalOpen: Dispatch<SetStateAction<boolean>>;
-  handleStepDecrease: () => void;
+  handleBackClick: () => void;
 }
 
 export default function NeedsModal({
@@ -28,9 +28,8 @@ export default function NeedsModal({
   forwardButton,
   backButton,
   needsStep,
-  handleStepDecrease,
-  setModalOpen,
   handleBackClick,
+  setModalOpen,
 }: ModalProps) {
   return (
     <>
@@ -48,10 +47,7 @@ export default function NeedsModal({
         >
           <p className="text-center">step {needsStep} of 3</p>
           {needsStep > 1 && (
-            <button
-              className="absolute left-2 top-3"
-              onClick={handleStepDecrease}
-            >
+            <button className="absolute left-2 top-3" onClick={handleBackClick}>
               <ChevronLeftIcon className="h-10 w-10" />
             </button>
           )}

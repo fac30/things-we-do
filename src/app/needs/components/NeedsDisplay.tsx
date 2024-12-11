@@ -69,7 +69,7 @@ export default function NeedsDisplay() {
   const handleStepIncrease = () => {
     setNeedsStep((prevStep) => prevStep + 1);
   };
-  const handleStepDecrease = () => {
+  const handleBackClick = () => {
     setNeedsStep((prevStep) => prevStep - 1);
     {
       if (needsStep === 2 && urgent > 0) {
@@ -117,15 +117,6 @@ export default function NeedsDisplay() {
       setModalOpen(false);
       setNeedsStep(1);
     }
-  };
-
-  const handleBackClick = () => {
-    if (needsStep === 2) {
-      handleDecrease(setUrgent); // Undo the action for step 1
-    } else if (needsStep === 3) {
-      handleDecrease(setEffortful); // Undo the action for step 2
-    }
-    setNeedsStep((prevStep) => prevStep - 1);
   };
 
   const handleLabelChange = () => {
@@ -200,7 +191,6 @@ export default function NeedsDisplay() {
         title={`You have selected ~${selectedNeed}~`}
         needsStep={needsStep}
         setModalOpen={setModalOpen}
-        handleStepDecrease={handleStepDecrease}
         handleBackClick={handleBackClick}
       />
     </>
