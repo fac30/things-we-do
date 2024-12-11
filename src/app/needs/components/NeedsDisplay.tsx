@@ -125,12 +125,8 @@ export default function NeedsDisplay() {
       handleIncrease(setWorthDoing);
       setIsModalCompleted(true);
 
-      const action = determineAction(urgent, effortful, worthDoing);
-      updateNeedWithAction(selectedNeed, action);
-
       setModalOpen(false);
       setNeedsStep(1);
-      resetNeuros();
       setIsModalCompleted(false);
     }
   };
@@ -144,12 +140,9 @@ export default function NeedsDisplay() {
       handleDecrease(setWorthDoing);
       setIsModalCompleted(true);
 
-      const action = determineAction(urgent, effortful, worthDoing);
-      updateNeedWithAction(selectedNeed, action);
-
       setModalOpen(false);
       setNeedsStep(1);
-      resetNeuros();
+      // resetNeuros();
       setIsModalCompleted(false);
     }
   };
@@ -201,6 +194,12 @@ export default function NeedsDisplay() {
     };
   }, [modalOpen]);
 
+  useEffect(() => {
+    const action = determineAction(urgent, effortful, worthDoing);
+    updateNeedWithAction(selectedNeed, action);
+    // resetNeuros();
+  }, [worthDoing]);
+
   function determineAction(
     urgent: number,
     effortful: number,
@@ -210,25 +209,25 @@ export default function NeedsDisplay() {
       case urgent === 1 && effortful === 1 && worthDoing === 1:
         console.log("interest");
         return "interest";
-      case urgent === 0 && effortful === 0 && worthDoing === 0:
+      case urgent === -1 && effortful === -1 && worthDoing === -1:
         console.log("guilt");
         return "guilt";
-      case urgent === 1 && effortful === 0 && worthDoing === 0:
+      case urgent === 1 && effortful === -1 && worthDoing === -1:
         console.log("freeze");
         return "freeze";
-      case urgent === 1 && effortful === 1 && worthDoing === 0:
+      case urgent === 1 && effortful === 1 && worthDoing === -1:
         console.log("fight/flight");
         return "fight/flight";
-      case urgent === 1 && effortful === 0 && worthDoing === 1:
+      case urgent === 1 && effortful === -1 && worthDoing === 1:
         console.log("joy");
         return "joy";
-      case urgent === 0 && effortful === 0 && worthDoing === 1:
+      case urgent === -1 && effortful === -1 && worthDoing === 1:
         console.log("content");
         return "content";
-      case urgent === 0 && effortful === 1 && worthDoing === 1:
+      case urgent === -1 && effortful === 1 && worthDoing === 1:
         console.log("relief");
         return "relief";
-      case urgent === 0 && effortful === 1 && worthDoing === 0:
+      case urgent === -1 && effortful === 1 && worthDoing === -1:
         console.log("distress");
         return "distress";
       default:
