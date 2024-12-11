@@ -32,7 +32,6 @@ export default function NeedsDisplay() {
   const [worthDoing, setWorthDoing] = useState<number>(0);
   const [positiveLabel, setPositiveLabel] = useState<string>("urgent");
   const [negativeLabel, setNegativeLabel] = useState<string>("not urgent");
-  const [isModalCompleted, setIsModalCompleted] = useState(false);
 
   const fetchCategories = async () => {
     const response = await database.getFromDb("needs_categories");
@@ -125,11 +124,9 @@ export default function NeedsDisplay() {
       handleIncrease(setEffortful);
     } else if (needsStep === 3) {
       handleIncrease(setWorthDoing);
-      setIsModalCompleted(true);
 
       setModalOpen(false);
       setNeedsStep(1);
-      setIsModalCompleted(false);
     }
   };
 
@@ -140,12 +137,9 @@ export default function NeedsDisplay() {
       handleDecrease(setEffortful);
     } else if (needsStep === 3) {
       handleDecrease(setWorthDoing);
-      setIsModalCompleted(true);
 
       setModalOpen(false);
       setNeedsStep(1);
-
-      setIsModalCompleted(false);
     }
   };
 

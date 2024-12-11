@@ -1,7 +1,6 @@
 import Button from "@/ui/shared/Button";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Dispatch, SetStateAction } from "react";
 
 interface ModalProps {
   inputModal?: boolean;
