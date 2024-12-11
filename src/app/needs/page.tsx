@@ -21,6 +21,8 @@ export default function NeedsPage() {
         relatedKey={"category" as keyof RxDocumentData<Base>}
         mainTable="needs_categories"
         relatedTable="needs"
+        filterKey={"selectedExpiry" as keyof RxDocumentData<Base>}
+        highlight={true}
       />
     </>
   );
