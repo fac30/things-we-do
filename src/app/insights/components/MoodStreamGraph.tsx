@@ -20,26 +20,27 @@ export default function MoodStreamGraph({
     );
   }
 
-  // Sort all the mood records by their timestamp
   const sortedData = [...dataArray].sort(
     (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
   );
 
-  // Create an array of the mood names that exist in sortedData
+  const filteredData = sortedData.filter(entry => {
+    const t = new Date(entry.timestamp).getTime();
+    return t >= startOfRange.getTime() && t <= endOfRange.getTime();
+  });
+  
   const uniqueMoods = Array.from(
-    new Set(sortedData.map((entry) => entry.moodName))
+    new Set(filteredData.map((entry) => entry.moodName))
   );
 
   const traces = uniqueMoods.map((mood) => {
-    const dataPoints = sortedData.reduce((acc, entry) => {
+    const dataPoints = filteredData.reduce((acc, entry) => {
       const timestamp = new Date(entry.timestamp).toISOString();
       
-      // Get all entries up to this timestamp
-      const entriesUpToNow = sortedData.filter(e => 
+      const entriesUpToNow = filteredData.filter(e => 
         new Date(e.timestamp) <= new Date(entry.timestamp)
       );
       
-      // Just count the occurrences of this mood
       const moodCount = entriesUpToNow.filter(e => e.moodName === mood).length;
       
       acc.push({
@@ -61,7 +62,6 @@ export default function MoodStreamGraph({
       fillcolor: "auto",
       orientation: "v",
       stackgaps: "interpolate",
-      offset: "silhouette",
       line: { shape: "spline" },
       fillpattern: {
         shape: ""
@@ -71,6 +71,22 @@ export default function MoodStreamGraph({
       stackpos: 1
     };
   });
+
+  if (traces.length > 0) { // Centre the Graph's anchor point
+    const timeSteps = traces[0].x; // all traces share the same x if data is consistent
+    for (let i = 0; i < timeSteps.length; i++) {
+      
+      let totalAtTime = 0;
+      for (let t = 0; t < traces.length; t++) {
+        totalAtTime += (traces[t].y as number[])[i];
+      }
+      const midpoint = totalAtTime / 2;
+      
+      for (let t = 0; t < traces.length; t++) {
+        (traces[t].y as number[])[i] = (traces[t].y as number[])[i] - midpoint;
+      }
+    }
+  }
 
   const tickFormat = (() => {
     switch (selectedButton) {
@@ -132,13 +148,11 @@ export default function MoodStreamGraph({
               tickfont: {
                 color: "white",
               },
-              autorange: true,
-              // Add these properties
+              autorange: true,              
               rangemode: "tozero",
               fixedrange: false,
-              // This helps center the visualization
               zeroline: true,
-              zerolinecolor: "#262538" // Same as plot background
+              zerolinecolor: "#262538"
             },
             legend: {
               font: {
@@ -158,23 +172,3 @@ export default function MoodStreamGraph({
     </div>
   );
 }
-
-/* Chart Guide
-  This chart is basically a heavily modified scatter graph.
-  - type: "scatter", mode: "none"
-    - records the updated total for that mood
-    - is hidden, leaving only the line connecting them
-  - `fill: tonexty`
-    - fills the area below the line with colour
-    - read it as "toNextY"
-  - stackgroup: "one"
-    - stacks areas on top of each other
-    - as opposed to stacking each one on the x-axis
-  - offset: "silhouette"
-    - centers the baseline
-    - creates the stream graph effect
-  - stackgaps: "interpolate"
-    - smooths any gaps in the data
-  - line: { shape: "spline" }
-    - smooths the lines
-  */
