@@ -72,10 +72,16 @@ export default function CategoriesInfoPage() {
                     )}
                 </div>
                 ))}
+                <div className="space-y-2">
+                  <h2 className="text-xl font-semibold text-white">
+                    Add your own category
+                  </h2>
+                  <p className="text-gray-400">Adding your own categories can help you organise in the best way for you.</p>
+                </div>
             </div>
             
 
-          {/* Back Button */}
+            {/* Back Button */}
             <div className="mt-6">
                <Button 
                   label="← Back" 
