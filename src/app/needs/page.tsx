@@ -1,5 +1,6 @@
 import { Header } from "@/ui/shared/Header";
-import NeedsDisplay from "./components/NeedsDisplay";
+import Display, { Base } from "./components/Display";
+import { RxDocumentData } from "rxdb";
 
 export default function NeedsPage() {
   return (
@@ -15,7 +16,12 @@ export default function NeedsPage() {
       <p className="w-11/12 m-auto mb-5">
         Select what you need from the list below
       </p>
-      <NeedsDisplay />
+      <Display
+        mainKey="id"
+        relatedKey={"category" as keyof RxDocumentData<Base>}
+        mainTable="needs_categories"
+        relatedTable="needs"
+      />
     </>
   );
 }
