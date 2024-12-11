@@ -195,9 +195,12 @@ export default function NeedsDisplay() {
   }, [modalOpen]);
 
   useEffect(() => {
-    const action = determineAction(urgent, effortful, worthDoing);
-    updateNeedWithAction(selectedNeed, action);
-    // resetNeuros();
+    // Only proceed if all values are non-zero
+    if (urgent !== 0 && effortful !== 0 && worthDoing !== 0) {
+      const action = determineAction(urgent, effortful, worthDoing);
+      updateNeedWithAction(selectedNeed, action);
+    }
+    resetNeuros();
   }, [worthDoing]);
 
   function determineAction(
