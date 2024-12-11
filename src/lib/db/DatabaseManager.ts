@@ -196,7 +196,7 @@ class DatabaseManager {
       }
 
       // Update the field directly on the document
-      await document.update({
+      await document.patch({
         [field]: update,
       });
 
