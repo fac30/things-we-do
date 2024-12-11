@@ -195,7 +195,6 @@ class DatabaseManager {
         );
       }
 
-      // Await the patch operation
       const updatedDocument = await document.patch({
         [field]: update,
       });
