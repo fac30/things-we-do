@@ -1,6 +1,7 @@
 import { needs } from "@/lib/db/seed/needs";
 import Button from "@/ui/shared/Button";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 interface ModalProps {
   inputModal?: boolean;
@@ -25,6 +26,7 @@ export default function NeedsModal({
   backButton,
   needsStep,
   handleStepDecrease,
+  setModalOpen,
 }: ModalProps) {
   return (
     <>
@@ -39,6 +41,13 @@ export default function NeedsModal({
               <ChevronLeftIcon className="h-10 w-10" />
             </button>
           )}
+          <button
+            className="absolute right-2 top-3"
+            onClick={() => setModalOpen(false)}
+          >
+            <XMarkIcon className="h-10 w-10" />
+          </button>
+
           <div className="flex flex-col w-full items-center py-10 justify-between h-full">
             <p className="text-xl w-10/12 text-center">{title}</p>
             <p className="text-md w-10/12 text-center">
