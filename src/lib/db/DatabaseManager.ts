@@ -3,10 +3,17 @@ import { addRxPlugin } from "rxdb";
 import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
 import { createRxDatabase, RxDatabase } from "rxdb";
+import { v4 as uuidv4 } from "uuid";
+
 import toolkitItemSchema from "./schemas/toolkitItemSchema.json";
 import moodRecordSchema from "./schemas/moodRecordSchema.json";
 import categoriesSchema from "./schemas/categoriesSchema.json";
-import { v4 as uuidv4 } from "uuid";
+import needsCategoriesSchema from "./schemas/categoriesSchema.json";
+import needsSchema from "./schemas/categoriesSchema.json";
+import nextActionsSchema from "./schemas/categoriesSchema.json";
+
+import { categories, toolkit } from "./seed/toolkit";
+import { needsCategories, needs, nextActions } from "./seed/needs";
 
 addRxPlugin(RxDBDevModePlugin);
 
@@ -15,11 +22,7 @@ const seedData = {
     { id: uuidv4(), name: "Replace", timestamp: new Date().toISOString() },
     { id: uuidv4(), name: "Barrier", timestamp: new Date().toISOString() },
     { id: uuidv4(), name: "Distract", timestamp: new Date().toISOString() },
-    {
-      id: uuidv4(),
-      name: "Change Status",
-      timestamp: new Date().toISOString(),
-    },
+    { id: uuidv4(), name: "Change Status", timestamp: new Date().toISOString() },
   ],
   toolkit: [
     {
@@ -140,7 +143,14 @@ class DatabaseManager {
       ignoreDuplicate: true,
     });
 
-    const requiredCollections = ["categories", "mood_records", "toolkit_items"];
+    const requiredCollections = [
+      "categories",
+      "mood_records",
+      "toolkit_items",
+      "needs_categories",
+      "needs",
+      "next_actions",
+    ];
     const existingCollections = Object.keys(dbInstance.collections);
 
     for (const collection of requiredCollections) {
@@ -152,7 +162,7 @@ class DatabaseManager {
       }
     }
 
-    console.log("Database initialized.");
+    console.log("Database initialised.");
     await this.seedDatabase();
     await this.devSeedDatabase();
     return dbInstance;
@@ -163,7 +173,7 @@ class DatabaseManager {
       dbInstance = await this.createDatabase();
     }
     if (!dbInstance) {
-      throw new Error("Failed to initialize the database.");
+      throw new Error("Failed to initialise the database.");
     }
     return dbInstance;
   }
@@ -190,13 +200,19 @@ class DatabaseManager {
     }
   }
 
-  private async seed(collectionName: string, data: any[]) {
-    if (!dbInstance) throw new Error("Database not initialised.");
+  private async seed<T>(collectionName: string, data: T[]) {
+    if (!dbInstance) throw new Error(
+      "Database not initialised."
+    );
+
     const collection = dbInstance.collections[collectionName];
-    if (!collection)
-      throw new Error(`${collectionName} collection is missing.`);
+
+    if (!collection) throw new Error(
+      `${collectionName} collection is missing.`
+    );
 
     const existingDocs = await collection.find().exec();
+    
     if (existingDocs.length === 0) {
       console.log(`Seeding ${collectionName}...`);
       await collection.bulkInsert(data);
@@ -220,9 +236,10 @@ class DatabaseManager {
     if (!dbInstance.collections.toolkit_items) {
       throw new Error("Toolkit items collection is missing.");
     }
+    
     const existingDocs = await dbInstance.toolkit_items.find().exec();
     if (existingDocs.length === 0) {
-      console.log("Seeding toolkit items...");
+      console.log(`Seeding Toolkit_Items...`);
       await dbInstance.toolkit_items.bulkInsert(seedData.toolkit);
     }
   }
@@ -235,6 +252,12 @@ class DatabaseManager {
         return { schema: moodRecordSchema };
       case "toolkit_items":
         return { schema: toolkitItemSchema };
+      case "needs_categories":
+        return { schema: needsCategoriesSchema };
+      case "needs":
+        return { schema: needsSchema };
+      case "next_actions":
+        return { schema: nextActionsSchema };
       default:
         throw new Error(`Unknown collection: ${collectionName}`);
     }
