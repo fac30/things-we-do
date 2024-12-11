@@ -13,35 +13,67 @@ export interface Base {
 
 interface FilteredData<U> {
   key: string;
-  items: U[];
+  items: (U & { label: string; highlighted?: boolean })[];
 }
 
 interface DisplayProps<
   T extends RxDocumentData<Base>,
-  U extends RxDocumentData<Base & Record<string, any>>
+  U extends RxDocumentData<Base>
 > {
   mainKey: keyof T;
   relatedKey: keyof U;
   mainTable: string;
   relatedTable: string;
+  filterKey?: keyof T | keyof U;
+  highlight?: boolean;
 }
+
+type ExtendedRelatedData<U> = U & { highlighted?: boolean };
 
 export default function Display<
   T extends RxDocumentData<Base>,
   U extends RxDocumentData<Base>
->({ mainKey, relatedKey, mainTable, relatedTable }: DisplayProps<T, U>) {
+>({
+  mainKey,
+  relatedKey,
+  mainTable,
+  relatedTable,
+  filterKey,
+  highlight = false,
+}: DisplayProps<T, U>) {
   const database = useDatabase();
   const [mainData, setMainData] = useState<RxDocumentData<T>[]>([]);
-  const [relatedData, setRelatedData] = useState<RxDocumentData<U>[]>([]);
+  const [relatedData, setRelatedData] = useState<ExtendedRelatedData<U>[]>([]);
 
   const fetchMainData = async () => {
     const response = await database.getFromDb<T>(mainTable);
-    setMainData(response);
+    let data = response;
+
+    if (filterKey && !highlight) {
+      const now = new Date();
+      data = data.filter(
+        (item) =>
+          new Date(item[filterKey as keyof T] as unknown as string) > now
+      );
+    }
+
+    setMainData(data);
   };
 
   const fetchRelatedData = async () => {
     const response = await database.getFromDb<U>(relatedTable);
-    setRelatedData(response);
+    let data = response;
+
+    if (filterKey && highlight) {
+      const now = new Date();
+      data = data.map((item) => ({
+        ...item,
+        highlighted:
+          new Date(item[filterKey as keyof U] as unknown as string) > now,
+      })) as ExtendedRelatedData<U>[];
+    }
+
+    setRelatedData(data);
   };
 
   useEffect(() => {
@@ -49,21 +81,21 @@ export default function Display<
     fetchRelatedData();
   }, []);
 
-  const filteredData: FilteredData<U & { label: string }>[] = mainData.map(
-    (mainItem) => {
-      const filteredItems = relatedData
-        .filter(
-          (relatedItem) =>
-            (relatedItem[relatedKey] as unknown as string) ===
-            (mainItem[mainKey] as unknown as string)
-        )
-        .map((item) => ({
-          ...item,
-          label: item.name, // Add label here
-        })) as (U & { label: string })[]; // Explicit type assertion
-      return { key: mainItem.name, items: filteredItems };
-    }
-  );
+  const filteredData: FilteredData<
+    ExtendedRelatedData<U> & { label: string }
+  >[] = mainData.map((mainItem) => {
+    const filteredItems = relatedData
+      .filter(
+        (relatedItem) =>
+          (relatedItem[relatedKey] as unknown as string) ===
+          (mainItem[mainKey] as unknown as string)
+      )
+      .map((item) => ({
+        ...item,
+        label: item.name,
+      })) as (ExtendedRelatedData<U> & { label: string })[];
+    return { key: mainItem.name, items: filteredItems };
+  });
 
   const [modalOpen, setModalOpen] = useState(false);
   const handleOpen = () => setModalOpen(true);
@@ -75,8 +107,8 @@ export default function Display<
           <Section
             key={index}
             categoryData={{
-              key: data.key, // Precomputed key
-              items: data.items, // Items already include precomputed label
+              key: data.key,
+              items: data.items,
             }}
             handleOpen={handleOpen}
           />
