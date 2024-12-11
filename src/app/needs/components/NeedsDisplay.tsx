@@ -15,6 +15,7 @@ export interface Category {
 }
 
 export interface Need {
+  id: string;
   name: string;
   category: string;
 }
@@ -96,6 +97,25 @@ export default function NeedsDisplay() {
     setter((prev) => prev - 1);
   };
 
+  const updateNeedWithAction = async (needName: string, action: string) => {
+    try {
+      // Find the document corresponding to needName
+      const selectedNeed = needs.find((need) => need.name === needName);
+
+      if (selectedNeed) {
+        const docId = selectedNeed.id; // Access the _id field (document ID)
+
+        // Now update the document with the action using docId
+        await database.updateDocument("needs", docId, "mood", action);
+        console.log(`Updated ${needName} with action: ${action}`);
+      } else {
+        console.log(`Need ${needName} not found`);
+      }
+    } catch (error) {
+      console.error(`Failed to update need: ${needName}`, error);
+    }
+  };
+
   const handlePositiveClick = () => {
     if (needsStep === 1) {
       handleIncrease(setUrgent);
@@ -104,6 +124,10 @@ export default function NeedsDisplay() {
     } else if (needsStep === 3) {
       handleIncrease(setWorthDoing);
       setIsModalCompleted(true);
+
+      const action = determineAction(urgent, effortful, worthDoing);
+      updateNeedWithAction(selectedNeed, action);
+
       setModalOpen(false);
       setNeedsStep(1);
       resetNeuros();
@@ -119,6 +143,10 @@ export default function NeedsDisplay() {
     } else if (needsStep === 3) {
       handleDecrease(setWorthDoing);
       setIsModalCompleted(true);
+
+      const action = determineAction(urgent, effortful, worthDoing);
+      updateNeedWithAction(selectedNeed, action);
+
       setModalOpen(false);
       setNeedsStep(1);
       resetNeuros();
@@ -155,6 +183,7 @@ export default function NeedsDisplay() {
 
   useEffect(() => {
     handleLabelChange();
+    console.log(`selected need: ${selectedNeed}`);
     console.log(`urgency: ${urgent}`);
     console.log(`effort: ${effortful}`);
     console.log(`worthDoing: ${worthDoing}`);
@@ -171,6 +200,33 @@ export default function NeedsDisplay() {
       document.body.style.overflow = "auto";
     };
   }, [modalOpen]);
+
+  function determineAction(
+    urgent: number,
+    effortful: number,
+    worthDoing: number
+  ): string {
+    switch (true) {
+      case urgent === 1 && effortful === 1 && worthDoing === 1:
+        return "interest";
+      case urgent === 0 && effortful === 0 && worthDoing === 0:
+        return "guilt";
+      case urgent === 1 && effortful === 0 && worthDoing === 0:
+        return "freeze";
+      case urgent === 1 && effortful === 1 && worthDoing === 0:
+        return "fight/flight";
+      case urgent === 1 && effortful === 0 && worthDoing === 1:
+        return "joy";
+      case urgent === 0 && effortful === 0 && worthDoing === 1:
+        return "content";
+      case urgent === 0 && effortful === 1 && worthDoing === 1:
+        return "relief";
+      case urgent === 0 && effortful === 1 && worthDoing === 0:
+        return "distress";
+      default:
+        return "Invalid input";
+    }
+  }
 
   return (
     <>

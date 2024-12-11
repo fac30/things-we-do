@@ -14,6 +14,9 @@ import nextActionsSchema from "./schemas/categoriesSchema.json";
 import { categories, toolkit } from "./seed/toolkit";
 import { needsCategories, needs, nextActions } from "./seed/needs";
 
+import { RxDBUpdatePlugin } from "rxdb/plugins/update";
+addRxPlugin(RxDBUpdatePlugin);
+
 addRxPlugin(RxDBDevModePlugin);
 
 let dbInstance: RxDatabase | null = null;
@@ -164,6 +167,43 @@ class DatabaseManager {
       await document.remove();
     } catch (error) {
       console.error(`Error in deleteFromDb:`, error);
+      throw error;
+    }
+  }
+
+  async updateDocument(
+    collectionName: string,
+    docId: string,
+    field: string,
+    update: string
+  ) {
+    try {
+      const db = await this.accessDatabase();
+      const collection = db.collections[collectionName];
+
+      if (!collection) {
+        throw new Error(`Collection '${collectionName}' does not exist`);
+      }
+
+      const document = await collection
+        .findOne({ selector: { id: docId } })
+        .exec();
+
+      if (!document) {
+        throw new Error(
+          `Document with ID '${docId}' not found in collection '${collectionName}'`
+        );
+      }
+
+      // Update the field directly on the document
+      await document.update({
+        [field]: update,
+      });
+
+      console.log(`Updated document in ${collectionName}:`, document);
+      return document;
+    } catch (error) {
+      console.error(`Error in updateDocument:`, error);
       throw error;
     }
   }
