@@ -7,9 +7,8 @@ import retrieveDataObject from "@/lib/utils/retrieveDataObject";
 import { RxDocumentData } from "rxdb";
 import NeedsSection from "./NeedsSection";
 
-import Modal from "@/ui/shared/Modal";
+import NeedsModal from "./NeedsModal";
 
-// Define the types for the category and need data
 interface Category {
   id: string;
   name: string;
@@ -17,7 +16,7 @@ interface Category {
 
 interface Need {
   name: string;
-  category: string; // Assuming category is a reference to the category ID
+  category: string;
 }
 
 interface CategorizedNeed {
@@ -29,6 +28,11 @@ export default function NeedsDisplay() {
   const database = useDatabase();
   const [categories, setCategories] = useState<RxDocumentData<Category>[]>([]);
   const [needs, setNeeds] = useState<RxDocumentData<Need>[]>([]);
+  const [urgent, setUrgent] = useState<number>(0);
+  const [effortful, setEffortful] = useState<number>(0);
+  const [worthDoing, setWorthDoing] = useState<number>(0);
+  const [positiveLabel, setPositiveLabel] = useState<string>("urgent");
+  const [negativeLabel, setNegativeLabel] = useState<string>("not urgent");
 
   const fetchCategories = async () => {
     const response = await database.getFromDb("needs_categories");
@@ -55,10 +59,63 @@ export default function NeedsDisplay() {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedNeed, setSelectedNeed] = useState(false);
+  const [needsStep, setNeedsStep] = useState(1);
 
   const handleOpen = (need) => {
     setModalOpen(true);
     setSelectedNeed(need);
+  };
+
+  const handleStepIncrease = () => {
+    setNeedsStep((prevStep) => prevStep + 1);
+  };
+
+  const handleIncrease = (setter) => {
+    setter((prev) => prev + 1);
+  };
+  const handleDecrease = (setter) => {
+    setter((prev) => prev - 1);
+  };
+
+  const handleNeuroIncrease = () => {
+    if (needsStep === 1) {
+      handleIncrease(setUrgent);
+    } else if (needsStep === 2) {
+      handleIncrease(setEffortful);
+    } else if (needsStep === 3) {
+      handleIncrease(setWorthDoing);
+    }
+    console.log(urgent);
+  };
+
+  const handleNeuroDecrease = () => {
+    if (needsStep === 1) {
+      handleDecrease(setUrgent);
+    } else if (needsStep === 2) {
+      handleDecrease(setEffortful);
+    } else if (needsStep === 3) {
+      handleDecrease(setWorthDoing);
+    }
+  };
+
+  const handleLabelChange = () => {
+    if (needsStep === 2) {
+      setPositiveLabel("A lot of effort");
+      setNegativeLabel("A little effort");
+    } else if (needsStep === 3) {
+      setPositiveLabel("worth doing");
+      setNegativeLabel("Worth doing");
+    }
+  };
+
+  const handleStepAction = () => {
+    handleStepIncrease();
+    handleLabelChange();
+    if (needsStep === 1 || needsStep === 2) {
+      handleNeuroIncrease();
+    } else if (needsStep === 3) {
+      handleNeuroDecrease();
+    }
   };
 
   return (
@@ -74,23 +131,17 @@ export default function NeedsDisplay() {
           );
         })}
       </div>
-      <Modal
+      <NeedsModal
         modalOpen={modalOpen}
         forwardButton={{
-          label: "Worth Doing",
-          action: () => {
-            setModalOpen(false);
-            // router.push("/toolkit");
-          },
+          label: positiveLabel,
+          action: handleStepAction,
         }}
         backButton={{
-          label: "Not Worth Doing",
-          action: () => {
-            setModalOpen(false);
-            // router.push("/toolkit");
-          },
+          label: negativeLabel,
+          action: handleStepAction,
         }}
-        title={`You have selected ${selectedNeed}. Select the button that best describes meeting this need right now.`}
+        title={`You have selected ${selectedNeed}`}
       />
     </>
   );
