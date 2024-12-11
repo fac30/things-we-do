@@ -5,7 +5,9 @@ import { useState, useEffect } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
 import retrieveDataObject from "@/lib/utils/retrieveDataObject";
 import { RxDocumentData } from "rxdb";
-import QuestionsModal from "./QuestionsModal";
+import NeedsSection from "./NeedsSection";
+
+import Modal from "@/ui/shared/Modal";
 
 // Define the types for the category and need data
 interface Category {
@@ -61,30 +63,16 @@ export default function NeedsDisplay() {
     <>
       <div className="w-11/12 m-auto">
         {categorisedNeeds.map((categoryData, index) => {
-          const categoryNeeds = categoryData.needs;
-
           return (
-            <div key={index}>
-              <h2 className="text-xl mb-5 font-semibold">
-                {categoryData.category}
-              </h2>
-              <div className="flex gap-5 flex-wrap mb-10">
-                {categoryNeeds.map((need, needIndex) => {
-                  return (
-                    <Button
-                      key={needIndex}
-                      label={need.name}
-                      className="bg-gray-600 font-normal text-nowrap"
-                      onClick={handleOpen}
-                    />
-                  );
-                })}
-              </div>
-            </div>
+            <NeedsSection
+              key={index}
+              categoryData={categoryData}
+              handleOpen={handleOpen}
+            />
           );
         })}
       </div>
-      <QuestionsModal modalOpen={modalOpen} />
+      <Modal modalOpen={modalOpen} />
     </>
   );
 }
