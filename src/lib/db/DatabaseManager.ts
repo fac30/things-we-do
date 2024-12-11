@@ -195,12 +195,10 @@ class DatabaseManager {
         );
       }
 
-      // Await the patch operation
       const updatedDocument = await document.patch({
         [field]: update,
       });
 
-      // Log after the update is complete
       console.log(`Updated document in ${collectionName}:`, updatedDocument);
       return updatedDocument;
     } catch (error) {
