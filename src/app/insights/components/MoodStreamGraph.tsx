@@ -15,41 +15,49 @@ export default function MoodStreamGraph({
   selectedButton,
 }: MoodStreamGraphProps) {
   if (!dataArray || dataArray.length === 0) {
-    return (
-      <div>No data available for the graph.</div>
-    );
+    return <div>No data available for the graph.</div>;
   }
 
+  // Sort data by timestamp
   const sortedData = [...dataArray].sort(
     (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
   );
 
+  // Filter to the current range
   const filteredData = sortedData.filter(entry => {
     const t = new Date(entry.timestamp).getTime();
     return t >= startOfRange.getTime() && t <= endOfRange.getTime();
   });
-  
+
+  if (filteredData.length === 0) {
+    return <div>No data available in the selected range.</div>;
+  }
+
   const uniqueMoods = Array.from(
     new Set(filteredData.map((entry) => entry.moodName))
   );
 
+  // After filtering data but before creating traces
+  const firstMood = filteredData[0].moodName;
+  
   const traces = uniqueMoods.map((mood) => {
-    const dataPoints = filteredData.reduce((acc, entry) => {
+    const dataPoints = filteredData.map((entry, index) => {
       const timestamp = new Date(entry.timestamp).toISOString();
-      
-      const entriesUpToNow = filteredData.filter(e => 
-        new Date(e.timestamp) <= new Date(entry.timestamp)
-      );
-      
+      const entriesUpToNow = filteredData.slice(0, index + 1);
       const moodCount = entriesUpToNow.filter(e => e.moodName === mood).length;
       
-      acc.push({
-        x: timestamp,
-        y: moodCount
-      });
+      // For the first timestamp, set initial values
+      if (index === 0) {
+        // If this is the first mood, give it a height of 1
+        // Other moods start at 0
+        return { 
+          x: timestamp, 
+          y: mood === firstMood ? 1 : 0 
+        };
+      }
       
-      return acc;
-    }, [] as Array<{x: string, y: number}>);
+      return { x: timestamp, y: moodCount };
+    });
 
     return {
       x: dataPoints.map(point => point.x),
@@ -63,27 +71,26 @@ export default function MoodStreamGraph({
       orientation: "v",
       stackgaps: "interpolate",
       line: { shape: "spline" },
-      fillpattern: {
-        shape: ""
-      },
       hoveron: "points+fills",
-      hoverinfo: "name+y",
-      stackpos: 1
+      hoverinfo: "name+y"
     };
   });
 
-  if (traces.length > 0) { // Centre the Graph's anchor point
-    const timeSteps = traces[0].x; // all traces share the same x if data is consistent
+  // Apply silhouette offset at each timestamp to center the stack
+  if (traces.length > 0) {
+    const timeSteps = traces[0].x;
     for (let i = 0; i < timeSteps.length; i++) {
-      
       let totalAtTime = 0;
       for (let t = 0; t < traces.length; t++) {
         totalAtTime += (traces[t].y as number[])[i];
       }
       const midpoint = totalAtTime / 2;
       
+      // For the first timestamp, use a smaller offset to create the 20% band
+      const offset = i === 0 ? 0.5 : midpoint; // This will create roughly a 20% band
+      
       for (let t = 0; t < traces.length; t++) {
-        (traces[t].y as number[])[i] = (traces[t].y as number[])[i] - midpoint;
+        (traces[t].y as number[])[i] = (traces[t].y as number[])[i] - offset;
       }
     }
   }
@@ -107,7 +114,7 @@ export default function MoodStreamGraph({
     <div className="bg-twd-graph-background mt-10 w-11/12 m-auto rounded-lg">
       <div className="w-10/12 m-auto pt-5">
         <h2 className="text-xl">Mood Flow</h2>
-        <p>How have your moods flowed over time?</p>
+        <p>Find out how which moods have been most prevalent in this time period</p>
       </div>
 
       <div className="w-11/12 m-auto flex justify-center text-center mb-10 mt-5">
@@ -148,9 +155,7 @@ export default function MoodStreamGraph({
               tickfont: {
                 color: "white",
               },
-              autorange: true,              
-              rangemode: "tozero",
-              fixedrange: false,
+              autorange: true, // allow full range to show negative values
               zeroline: true,
               zerolinecolor: "#262538"
             },
