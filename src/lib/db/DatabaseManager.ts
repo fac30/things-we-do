@@ -1,4 +1,4 @@
-import { addRxPlugin } from "rxdb";
+import { addRxPlugin, RxDocumentData } from "rxdb";
 import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
 import { createRxDatabase, RxDatabase } from "rxdb";
@@ -117,14 +117,14 @@ class DatabaseManager {
     }
   }
 
-  async getFromDb(collection: string) {
+  async getFromDb<T>(collection: string): Promise<RxDocumentData<T>[]> {
     const db = await this.accessDatabase();
     const collectionExists = db.collections[collection];
     if (!collectionExists)
       throw new Error(`Collection '${collection}' not found`);
     const data = await collectionExists.find().exec();
     console.log(`Getting data from ${collection}:`, data);
-    return data;
+    return data.map((doc) => doc.toJSON() as RxDocumentData<T>);
   }
 
   async addToDb(collectionName: string, document: object) {
