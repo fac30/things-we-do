@@ -19,7 +19,7 @@ interface SortableItemProps {
 const isValidUrl = (url: string | undefined): boolean => {
   if (!url) return false;
   try {
-    new URL(url);
+    new URL(url, window.location.href);
     return true;
   } catch {
     return false;
@@ -65,17 +65,20 @@ export default function SortableItem({
           </div>
 
           {/* Second Row: Image, Link, and Delete Button */}
-          <div className="flex items-center justify-between mt-2 w-full">
-            {/* Display the image */}
-            {isValidUrl(item.imageUrl) ? (
-              <img
-                src={item.imageUrl}
-                alt={item.name}
-                className="h-10 w-10 object-cover rounded"
-              />
-            ) : (
-              <span className="text-gray-400">No Image</span>
-            )}
+        <div className="flex items-center justify-between mt-2 w-full">
+          {/* Display the image or reserve space */}
+          {isValidUrl(item.imageUrl) ? (
+            <img
+              src={item.imageUrl}
+              alt={item.name}
+              className="h-10 w-10 object-cover rounded"
+            />
+          ) : (
+            <div className="h-10 w-10"></div> // Reserve space when no image
+          )}
+
+          {/* Display the link or reserve space */}
+          {isValidUrl(item.infoUrl) ? (
             <a
               href={item.infoUrl}
               target="_blank"
@@ -84,6 +87,11 @@ export default function SortableItem({
             >
               Go to resource
             </a>
+            ) : (
+              <div className="w-24"></div> // Reserve space for the link (adjust width as needed)
+            )}
+
+            {/* Delete button */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
