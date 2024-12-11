@@ -33,6 +33,7 @@ export default function NeedsDisplay() {
   const [worthDoing, setWorthDoing] = useState<number>(0);
   const [positiveLabel, setPositiveLabel] = useState<string>("urgent");
   const [negativeLabel, setNegativeLabel] = useState<string>("not urgent");
+  const [isModalCompleted, setIsModalCompleted] = useState(false);
 
   const fetchCategories = async () => {
     const response = await database.getFromDb("needs_categories");
@@ -95,29 +96,33 @@ export default function NeedsDisplay() {
     setter((prev) => prev - 1);
   };
 
-  const handleNeuroIncrease = () => {
+  const handlePositiveClick = () => {
     if (needsStep === 1) {
       handleIncrease(setUrgent);
     } else if (needsStep === 2) {
       handleIncrease(setEffortful);
     } else if (needsStep === 3) {
       handleIncrease(setWorthDoing);
+      setIsModalCompleted(true);
       setModalOpen(false);
       setNeedsStep(1);
       resetNeuros();
+      setIsModalCompleted(false);
     }
   };
 
-  const handleNeuroDecrease = () => {
+  const handleNegativeClick = () => {
     if (needsStep === 1) {
       handleDecrease(setUrgent);
     } else if (needsStep === 2) {
       handleDecrease(setEffortful);
     } else if (needsStep === 3) {
       handleDecrease(setWorthDoing);
+      setIsModalCompleted(true);
       setModalOpen(false);
       setNeedsStep(1);
       resetNeuros();
+      setIsModalCompleted(false);
     }
   };
 
@@ -186,14 +191,14 @@ export default function NeedsDisplay() {
           label: positiveLabel,
           action: () => {
             handleStepAction();
-            handleNeuroIncrease();
+            handlePositiveClick();
           },
         }}
         backButton={{
           label: negativeLabel,
           action: () => {
             handleStepAction();
-            handleNeuroDecrease();
+            handlePositiveClick();
           },
         }}
         title={`You have selected ~${selectedNeed}~`}
