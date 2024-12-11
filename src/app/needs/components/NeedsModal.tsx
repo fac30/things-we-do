@@ -1,7 +1,7 @@
-import { needs } from "@/lib/db/seed/needs";
 import Button from "@/ui/shared/Button";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { Dispatch, SetStateAction } from "react";
 
 interface ModalProps {
   inputModal?: boolean;
@@ -17,6 +17,9 @@ interface ModalProps {
     action: () => void;
   };
   handleInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  needsStep: number; // Add this line
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
+  handleStepDecrease: () => void;
 }
 
 export default function NeedsModal({

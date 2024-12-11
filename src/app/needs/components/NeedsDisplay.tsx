@@ -1,6 +1,5 @@
 "use client";
 
-import Button from "@/ui/shared/Button";
 import { useState, useEffect } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
 import retrieveDataObject from "@/lib/utils/retrieveDataObject";
@@ -9,12 +8,12 @@ import NeedsSection from "./NeedsSection";
 
 import NeedsModal from "./NeedsModal";
 
-interface Category {
+export interface Category {
   id: string;
   name: string;
 }
 
-interface Need {
+export interface Need {
   name: string;
   category: string;
 }
@@ -58,10 +57,10 @@ export default function NeedsDisplay() {
   });
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedNeed, setSelectedNeed] = useState(false);
+  const [selectedNeed, setSelectedNeed] = useState("");
   const [needsStep, setNeedsStep] = useState(1);
 
-  const handleOpen = (need) => {
+  const handleOpen = (need: string) => {
     setModalOpen(true);
     setSelectedNeed(need);
   };
@@ -73,10 +72,14 @@ export default function NeedsDisplay() {
     setNeedsStep((prevStep) => prevStep - 1);
   };
 
-  const handleIncrease = (setter) => {
+  const handleIncrease = (
+    setter: React.Dispatch<React.SetStateAction<number>>
+  ) => {
     setter((prev) => prev + 1);
   };
-  const handleDecrease = (setter) => {
+  const handleDecrease = (
+    setter: React.Dispatch<React.SetStateAction<number>>
+  ) => {
     setter((prev) => prev - 1);
   };
 
@@ -134,18 +137,15 @@ export default function NeedsDisplay() {
 
   useEffect(() => {
     if (modalOpen) {
-      // Disable scrolling
       document.body.style.overflow = "hidden";
     } else {
-      // Enable scrolling
       document.body.style.overflow = "auto";
     }
 
-    // Cleanup when the component unmounts or modal is closed
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [modalOpen]); // Trigger this effect when modalOpen changes
+  }, [modalOpen]);
 
   return (
     <>
