@@ -13,10 +13,10 @@ export default function ToolkitInfoPage() {
   }
 
   return (
-    <div className="bg-twd-background text-white min-h-screen px-10 py-6">
+    <>
       {/* Header */}
       <Header title="Learn More" isInfoPage={true} />
-
+      <div className="bg-twd-background text-white min-h-screen px-10 py-6">
       {/* Introduction Section */}
       <div className="mt-6">
         <h1 className="text-2xl font-bold text-white mb-5">
@@ -84,5 +84,6 @@ export default function ToolkitInfoPage() {
         </ul>
       </div>
     </div>
+  </>
   );
 }
