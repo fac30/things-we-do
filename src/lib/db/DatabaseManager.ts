@@ -4,7 +4,6 @@ import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
 import { createRxDatabase, RxDatabase } from "rxdb";
 import { v4 as uuidv4 } from "uuid";
-
 import toolkitItemSchema from "./schemas/toolkitItemSchema.json";
 import moodRecordSchema from "./schemas/moodRecordSchema.json";
 import categoriesSchema from "./schemas/categoriesSchema.json";
@@ -13,120 +12,6 @@ import needsSchema from "./schemas/categoriesSchema.json";
 import nextActionsSchema from "./schemas/categoriesSchema.json";
 
 addRxPlugin(RxDBDevModePlugin);
-
-function getMoodName(dopamine: number, adrenaline: number, serotonin: number): string {
-  if (dopamine <= 5) {
-    if (adrenaline <= 5) {
-      if (serotonin <= 5) {
-        return "guilt";
-      } else if (serotonin >= 6) {
-        return "content";
-      }
-    } else if (adrenaline >= 6) {
-      if (serotonin <= 5) {
-        return "distress";
-      } else if (serotonin >= 6) {
-        return "relief";
-      }
-    }
-  } else if (dopamine >= 6) {
-    if (adrenaline <= 5) {
-      if (serotonin <= 5) {
-        return "freeze";
-      } else if (serotonin >= 6) {
-        return "joy";
-      }
-    } else if (adrenaline >= 6) {
-      if (serotonin <= 5) {
-        return "fight/flight";
-      } else if (serotonin >= 6) {
-        return "interest";
-      }
-    }
-  }
-  return "content"; // default fallback
-}
-
-const generateMoodRecords = () => {
-  const records = [];
-  const now = new Date();
-  
-  for (let i = 0; i < 78; i++) {
-    // Random values between 1 and 10
-    const dopamine = Math.floor(Math.random() * 10) + 1;
-    const serotonin = Math.floor(Math.random() * 10) + 1;
-    const adrenaline = Math.floor(Math.random() * 10) + 1;
-    
-    // Calculate date (i weeks ago)
-    const timestamp = new Date(now);
-    timestamp.setDate(timestamp.getDate() - (i * 7));
-    
-    records.push({
-      id: uuidv4(),
-      neurotransmitters: {
-        serotonin,
-        dopamine,
-        adrenaline
-      },
-      moodName: getMoodName(dopamine, adrenaline, serotonin),
-      timestamp: timestamp.toISOString()
-    });
-  }
-  
-  return records;
-};
-
-const seedData = {
-  categories: [
-    { id: uuidv4(), name: "Replace", timestamp: new Date().toISOString() },
-    { id: uuidv4(), name: "Barrier", timestamp: new Date().toISOString() },
-    { id: uuidv4(), name: "Distract", timestamp: new Date().toISOString() },
-    { id: uuidv4(), name: "Change Status", timestamp: new Date().toISOString() },
-  ],
-  toolkit: [
-    {
-      id: uuidv4(),
-      name: "Listen to my favourite music",
-      categories: ["Replace", "Barrier"],
-      checked: false,
-      infoUrl: "https://google.com/music",
-      imageUrl:
-        "https://daily.jstor.org/wp-content/uploads/2023/01/good_times_with_bad_music_1050x700.jpg",
-      timestamp: new Date().toISOString(),
-    },
-    {
-      id: uuidv4(),
-      name: "Breathing exercises",
-      categories: ["Distract"],
-      checked: false,
-      infoUrl: "https://www.youtube.com/watch?v=DbDoBzGY3vo",
-      imageUrl:
-        "https://www.bhf.org.uk/-/media/images/information-support/heart-matters/2023/december/wellbeing/deep-breathing-620x400.png?h=400&w=620&rev=4506ebd34dab4476b56c225b6ff3ad60&hash=B3CFFEEE704E4432D101432CEE8B2766",
-      timestamp: new Date().toISOString(),
-    },
-    {
-      id: uuidv4(),
-      name: "Call a friend",
-      categories: ["Distract", "Change status"],
-      checked: false,
-      infoUrl: "https://example.com/call",
-      imageUrl:
-        "https://t4.ftcdn.net/jpg/04/63/63/59/360_F_463635935_IweuYhCqZRtHp3SLguQL8svOVroVXvvZ.jpg",
-      timestamp: new Date().toISOString(),
-    },
-    {
-      id: uuidv4(),
-      name: "Drink water",
-      categories: ["Distract", "Change status"],
-      checked: false,
-      infoUrl: "https://example.com/call",
-      imageUrl:
-        "https://content.health.harvard.edu/wp-content/uploads/2023/07/b8a1309a-ba53-48c7-bca3-9c36aab2338a.jpg",
-      timestamp: new Date().toISOString(),
-    },
-  ],
-  mood_records: generateMoodRecords(),
-};
 
 let dbInstance: RxDatabase | null = null;
 
@@ -322,5 +207,119 @@ class DatabaseManager {
     }
   }
 }
+
+function getMoodName(dopamine: number, adrenaline: number, serotonin: number): string {
+  if (dopamine <= 5) {
+    if (adrenaline <= 5) {
+      if (serotonin <= 5) {
+        return "guilt";
+      } else if (serotonin >= 6) {
+        return "content";
+      }
+    } else if (adrenaline >= 6) {
+      if (serotonin <= 5) {
+        return "distress";
+      } else if (serotonin >= 6) {
+        return "relief";
+      }
+    }
+  } else if (dopamine >= 6) {
+    if (adrenaline <= 5) {
+      if (serotonin <= 5) {
+        return "freeze";
+      } else if (serotonin >= 6) {
+        return "joy";
+      }
+    } else if (adrenaline >= 6) {
+      if (serotonin <= 5) {
+        return "fight/flight";
+      } else if (serotonin >= 6) {
+        return "interest";
+      }
+    }
+  }
+  return "content"; // default fallback
+}
+
+const generateMoodRecords = () => {
+  const records = [];
+  const now = new Date();
+  
+  for (let i = 0; i < 78; i++) {
+    // Random values between 1 and 10
+    const dopamine = Math.floor(Math.random() * 10) + 1;
+    const serotonin = Math.floor(Math.random() * 10) + 1;
+    const adrenaline = Math.floor(Math.random() * 10) + 1;
+    
+    // Calculate date (i weeks ago)
+    const timestamp = new Date(now);
+    timestamp.setDate(timestamp.getDate() - (i * 7));
+    
+    records.push({
+      id: uuidv4(),
+      neurotransmitters: {
+        serotonin,
+        dopamine,
+        adrenaline
+      },
+      moodName: getMoodName(dopamine, adrenaline, serotonin),
+      timestamp: timestamp.toISOString()
+    });
+  }
+  
+  return records;
+};
+
+const seedData = {
+  categories: [
+    { id: uuidv4(), name: "Replace", timestamp: new Date().toISOString() },
+    { id: uuidv4(), name: "Barrier", timestamp: new Date().toISOString() },
+    { id: uuidv4(), name: "Distract", timestamp: new Date().toISOString() },
+    { id: uuidv4(), name: "Change Status", timestamp: new Date().toISOString() },
+  ],
+  toolkit: [
+    {
+      id: uuidv4(),
+      name: "Listen to my favourite music",
+      categories: ["Replace", "Barrier"],
+      checked: false,
+      infoUrl: "https://google.com/music",
+      imageUrl:
+        "https://daily.jstor.org/wp-content/uploads/2023/01/good_times_with_bad_music_1050x700.jpg",
+      timestamp: new Date().toISOString(),
+    },
+    {
+      id: uuidv4(),
+      name: "Breathing exercises",
+      categories: ["Distract"],
+      checked: false,
+      infoUrl: "https://www.youtube.com/watch?v=DbDoBzGY3vo",
+      imageUrl:
+        "https://www.bhf.org.uk/-/media/images/information-support/heart-matters/2023/december/wellbeing/deep-breathing-620x400.png?h=400&w=620&rev=4506ebd34dab4476b56c225b6ff3ad60&hash=B3CFFEEE704E4432D101432CEE8B2766",
+      timestamp: new Date().toISOString(),
+    },
+    {
+      id: uuidv4(),
+      name: "Call a friend",
+      categories: ["Distract", "Change status"],
+      checked: false,
+      infoUrl: "https://example.com/call",
+      imageUrl:
+        "https://t4.ftcdn.net/jpg/04/63/63/59/360_F_463635935_IweuYhCqZRtHp3SLguQL8svOVroVXvvZ.jpg",
+      timestamp: new Date().toISOString(),
+    },
+    {
+      id: uuidv4(),
+      name: "Drink water",
+      categories: ["Distract", "Change status"],
+      checked: false,
+      infoUrl: "https://example.com/call",
+      imageUrl:
+        "https://content.health.harvard.edu/wp-content/uploads/2023/07/b8a1309a-ba53-48c7-bca3-9c36aab2338a.jpg",
+      timestamp: new Date().toISOString(),
+    },
+  ],
+  mood_records: generateMoodRecords(),
+};
 
 export default DatabaseManager.getInstance();
