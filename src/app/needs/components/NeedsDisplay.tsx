@@ -132,6 +132,21 @@ export default function NeedsDisplay() {
     handleLabelChange();
   }, [needsStep]);
 
+  useEffect(() => {
+    if (modalOpen) {
+      // Disable scrolling
+      document.body.style.overflow = "hidden";
+    } else {
+      // Enable scrolling
+      document.body.style.overflow = "auto";
+    }
+
+    // Cleanup when the component unmounts or modal is closed
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [modalOpen]); // Trigger this effect when modalOpen changes
+
   return (
     <>
       <div className="w-11/12 m-auto">
@@ -161,7 +176,7 @@ export default function NeedsDisplay() {
             handleNeuroDecrease();
           },
         }}
-        title={`You have selected ${selectedNeed}`}
+        title={`You have selected ~${selectedNeed}~`}
         needsStep={needsStep}
         setModalOpen={setModalOpen}
         handleStepDecrease={handleStepDecrease}

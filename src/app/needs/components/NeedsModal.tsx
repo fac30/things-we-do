@@ -31,7 +31,17 @@ export default function NeedsModal({
   return (
     <>
       {modalOpen && (
-        <div className="h-96 w-11/12 absolute top-1/2 left-1/2 bg-gray-800 border-[1.5px] rounded-lg -translate-x-1/2 -translate-y-1/2">
+        <div
+          className="w-11/12 absolute top-1/2 left-1/2 bg-gray-800 border-[1.5px] rounded-lg -translate-x-1/2 -translate-y-1/2"
+          style={{
+            position: "fixed", // Ensure the modal is fixed relative to the viewport
+            top: "50%", // Center vertically
+            left: "50%", // Center horizontally
+            transform: "translate(-50%, -50%)", // Center the modal
+            zIndex: 1000, // Ensure it appears on top
+            overflow: "hidden",
+          }}
+        >
           <p className="text-center">step {needsStep} of 3</p>
           {needsStep > 1 && (
             <button
@@ -48,9 +58,9 @@ export default function NeedsModal({
             <XMarkIcon className="h-10 w-10" />
           </button>
 
-          <div className="flex flex-col w-full items-center py-10 justify-between h-full">
-            <p className="text-xl w-10/12 text-center">{title}</p>
-            <p className="text-md w-10/12 text-center">
+          <div className="flex flex-col w-full items-center py-10 justify-between h-full ">
+            <p className="text-xl w-10/12 text-center mb-5">{title}</p>
+            <p className="text-md w-10/12 text-center mb-10">
               Select the button that best describes meeting this need right now.
             </p>
 
