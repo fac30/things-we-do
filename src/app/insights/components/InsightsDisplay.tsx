@@ -5,10 +5,11 @@ import { useDatabase } from "@/context/DatabaseContext";
 import LineGraph from "./LineGraph";
 import MoodAreaChart from "./MoodAreaChart";
 import retrieveDataObject from "@/lib/utils/retrieveDataObject";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 
 import Button from "@/ui/shared/Button";
 import clsx from "clsx";
+import MoodStreamGraph from "./MoodStreamGraph";
 
 export interface Insight {
   neurotransmitters: {
@@ -28,76 +29,44 @@ export default function InsightsDisplay() {
 
   const dateOptions = ["day", "week", "month", "year"];
 
-  const handleDateChange = (dateChoice: keyof typeof dateParams) => {
+  const handleDateChange = (dateChoice: keyof typeof dateOffsets) => {
     setSelectedButton(dateChoice);
   };
 
-  const [selectedButton, setSelectedButton] =
-    useState<keyof typeof dateParams>("day");
+  const [selectedButton, setSelectedButton] = useState<keyof typeof dateOffsets>("day");
+
   const [useNow, setUseNow] = useState(true);
 
   const handleUseNowClick = () => {
     setUseNow((prevUseNow) => !prevUseNow);
   };
-  const now = useMemo(() => new Date(), []);
+  const [now, setNow] = useState<Date | null>(null);
 
-  const dateParams = useMemo(
-    () => ({
-      day: {
-        start: new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate(),
-          6,
-          0,
-          0,
-          0
-        ),
-        end: new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate(),
-          24,
-          0,
-          0,
-          0
-        ),
-      },
+  const getDateRange = (selected: keyof typeof dateOffsets) => {
+    if (!now) return { start: new Date(), end: new Date() }; // fallback if now not set
+    const offset = dateOffsets[selected];
+    const start = new Date(now.getTime() - offset);
+    const end = now;
+    return { start, end };
+  };
+  
+  const dateOffsets = {
+    day: 24 * 60 * 60 * 1000,
+    week: 7 * 24 * 60 * 60 * 1000,
+    month: 30 * 24 * 60 * 60 * 1000,
+    year: 365 * 24 * 60 * 60 * 1000
+  } as const;
 
-      // This is from Monday to Sunday
-      week: {
-        start: new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate() - (now.getDay() === 0 ? 6 : now.getDay() - 1) // Adjust for Sunday
-        ),
-        end: new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate() + (now.getDay() === 0 ? 0 : 7 - now.getDay()) // Adjust for Sunday
-        ),
-      },
-      month: {
-        start: new Date(now.getFullYear(), now.getMonth(), 1),
-        end: new Date(now.getFullYear(), now.getMonth() + 1, 0),
-      },
-      year: {
-        start: new Date(now.getFullYear(), 0, 1),
-        end: new Date(now.getFullYear(), 11, 31),
-      },
-    }),
-    [now]
-  );
-
-  const [startOfRange, setStartOfRange] = useState<Date>(dateParams.day.start);
-  const [endOfRange, setEndOfRange] = useState<Date>(dateParams.day.end);
+  const [startOfRange, setStartOfRange] = useState<Date>(new Date());
+  const [endOfRange, setEndOfRange] = useState<Date>(new Date());
 
   useEffect(() => {
-    const { start, end } = dateParams[selectedButton];
-    console.log(start, end);
+    if (!now) return;
+    const { start, end } = getDateRange(selectedButton);
     setStartOfRange(start);
-    setEndOfRange(useNow ? now : end);
-  }, [useNow, selectedButton, dateParams, now]);
+    setEndOfRange(end);
+  }, [useNow, selectedButton, now]);
+  
 
   const getInsights = async () => {
     const myInsights = await database.getFromDb("mood_records");
@@ -110,6 +79,15 @@ export default function InsightsDisplay() {
     const goodInsights = retrieveDataObject(myInsights);
 
     setInsights(goodInsights);
+
+    if (goodInsights.length > 0) {
+      const latestInsight = goodInsights.reduce((acc, curr) => {
+        return new Date(curr.timestamp) > new Date(acc.timestamp) ? curr : acc;
+      });
+      setNow(new Date(latestInsight.timestamp));
+    } else {
+      setNow(new Date());
+    }
   };
 
   useEffect(() => { 
@@ -125,9 +103,8 @@ export default function InsightsDisplay() {
             <Button
               key={index}
               label={dateOption}
-              onClick={() =>
-                handleDateChange(dateOption as keyof typeof dateParams)
-              }
+              onClick={() => handleDateChange(dateOption as keyof typeof dateOffsets)}
+
               className={clsx(
                 "font-normal",
                 isActive && "bg-twd-primary-purple text-white"
@@ -142,20 +119,18 @@ export default function InsightsDisplay() {
         />
       </div>
 
-      {insights ? (
-        <>
-          <LineGraph
+      {insights ? ( // Line Graph
+        <LineGraph
             dataArray={insights}
             startOfRange={startOfRange}
             endOfRange={endOfRange}
             selectedButton={selectedButton}
           />
-        </>
-      ) : (
-        <div>Loading Line Graph...</div>
+        ) : (
+          <div>Loading Line Graph...</div>
       )}
 
-      {insights ? (
+      {insights ? ( // Area Chart
         <>
           <MoodAreaChart
             dataArray={insights}
@@ -166,6 +141,19 @@ export default function InsightsDisplay() {
         </>
       ) : (
         <div>Loading Area Chart...</div>
+      )}
+
+      {insights ? ( // Stream Graph
+        <>
+          <MoodStreamGraph
+            dataArray={insights}
+            startOfRange={startOfRange}
+            endOfRange={endOfRange}
+            selectedButton={selectedButton}
+          />
+        </>
+      ) : (
+        <div>Loading Stream Graph...</div>
       )}
     </>
   );
