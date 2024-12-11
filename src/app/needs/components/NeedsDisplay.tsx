@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
 import retrieveDataObject from "@/lib/utils/retrieveDataObject";
 import { RxDocumentData } from "rxdb";
+import QuestionsModal from "./QuestionsModal";
 
 // Define the types for the category and need data
 interface Category {
@@ -50,6 +51,12 @@ export default function NeedsDisplay() {
     return { category: category.name, needs: categoryNeeds };
   });
 
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const handleOpen = () => {
+    setModalOpen(true);
+  };
+
   return (
     <>
       <div className="w-11/12 m-auto">
@@ -68,7 +75,7 @@ export default function NeedsDisplay() {
                       key={needIndex}
                       label={need.name}
                       className="bg-gray-600 font-normal text-nowrap"
-                      onClick={() => console.log(`you clicked ${need.name}`)}
+                      onClick={handleOpen}
                     />
                   );
                 })}
@@ -77,6 +84,7 @@ export default function NeedsDisplay() {
           );
         })}
       </div>
+      <QuestionsModal modalOpen={modalOpen} />
     </>
   );
 }
