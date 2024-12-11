@@ -16,16 +16,6 @@ interface SortableItemProps {
   handleDelete: (id: string) => void;
 }
 
-// const isValidUrl = (url: string | undefined): boolean => {
-//   if (!url) return false;
-//   try {
-//     new URL(url);
-//     return true;
-//   } catch {
-//     return false;
-//   }
-// };
-
 const isValidUrl = (url: string | undefined): boolean => {
   if (!url) return false;
   try {
