@@ -45,7 +45,7 @@ export default function CategoriesInfoPage() {
                 <div className="flex overflow-x-auto whitespace-nowrap space-x-2">
                 {categories.map((category) => (
                     <Button
-                    key={category.id} // Use a unique key for each item in the map
+                    key={category.id}
                     label={category.name}
                     className=" text-white px-4 py-2 text-sm font-bold rounded-full"
                     />
