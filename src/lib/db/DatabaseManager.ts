@@ -123,7 +123,7 @@ class DatabaseManager {
     if (!collectionExists)
       throw new Error(`Collection '${collection}' not found`);
     const data = await collectionExists.find().exec();
-    console.log(`Getting data from ${collection}:`, data);
+
     return data;
   }
 

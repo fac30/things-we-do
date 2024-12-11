@@ -13,7 +13,6 @@ export default function NeedsSection({
   categoryData,
   handleOpen,
 }: NeedsSectionProps) {
-  console.log(categoryData);
   return (
     <div>
       <h2 className="text-xl mb-5 font-semibold">{categoryData.category}</h2>

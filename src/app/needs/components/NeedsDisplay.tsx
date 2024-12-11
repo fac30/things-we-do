@@ -36,7 +36,7 @@ export default function NeedsDisplay() {
   const fetchCategories = async () => {
     const response = await database.getFromDb("needs_categories");
     const categories = retrieveDataObject(response);
-    console.log(categories);
+
     setCategories(categories);
   };
 
