@@ -26,14 +26,13 @@ export default function LineGraph({
   const xAxis = sortedData.map((entry) =>
     new Date(entry.timestamp).toISOString()
   );
+
   const dopamineValues = sortedData.map(
     (entry) => entry.neurotransmitters.dopamine
   );
-
   const serotoninValues = sortedData.map(
     (entry) => entry.neurotransmitters.serotonin
   );
-
   const adrenalineValues = sortedData.map(
     (entry) => entry.neurotransmitters.adrenaline
   );
@@ -75,6 +74,7 @@ export default function LineGraph({
           <h2 className="text-xl">Decision Maker</h2>
           <p>How did the things I wanted to do feel?</p>
         </div>
+        
         <div className="w-11/12 m-auto flex justify-center text-center mb-10 mt-5">
           <PlotlyChart
             data={[
