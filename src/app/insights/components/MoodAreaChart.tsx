@@ -8,6 +8,24 @@ interface MoodAreaChartProps {
   selectedButton: string;
 }
 
+/* Chart Guide
+  This chart is basically a heavily modified scatter graph.
+  - type: "scatter", mode: "none"
+    - records the updated total for that mood
+    - is hidden, leaving only the line connecting them
+  - `fill: tonexty`
+    - fills the area below the line with colour
+    - read it as "toNextY"
+  - stackgroup: "one"
+    - stacks areas on top of each other
+    - as opposed to stacking each one on the x-axis
+  - groupnorm: "percent"
+    - normalises the values to show percentage of records
+    - as opposed to total number of records
+  - line: { shape: "spline" }
+    - smooths the lines
+  */
+
 export default function MoodAreaChart({
   dataArray,
   startOfRange,
@@ -15,19 +33,21 @@ export default function MoodAreaChart({
   selectedButton,
 }: MoodAreaChartProps) {
   if (!dataArray || dataArray.length === 0) {
-    return <div>No data available for the graph.</div>;
+    return (
+      <div>No data available for the graph.</div>
+    );
   }
 
+  // Sort all the mood records by their timestamp
   const sortedData = [...dataArray].sort(
     (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
   );
 
-  // Get unique mood names
+  // Create an array of the mood names that exist in sortedData
   const uniqueMoods = Array.from(
     new Set(sortedData.map((entry) => entry.moodName))
   );
 
-  // Create traces for each mood with cumulative totals
   const traces = uniqueMoods.map((mood) => {
     const moodData = sortedData.filter((entry) => entry.moodName === mood);
     let runningTotal = 0;
