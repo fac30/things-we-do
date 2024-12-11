@@ -104,6 +104,7 @@ export default function NeedsDisplay() {
       handleIncrease(setWorthDoing);
       setModalOpen(false);
       setNeedsStep(1);
+      resetNeuros();
     }
   };
 
@@ -116,7 +117,14 @@ export default function NeedsDisplay() {
       handleDecrease(setWorthDoing);
       setModalOpen(false);
       setNeedsStep(1);
+      resetNeuros();
     }
+  };
+
+  const resetNeuros = () => {
+    setUrgent(0);
+    setEffortful(0);
+    setWorthDoing(0);
   };
 
   const handleLabelChange = () => {
