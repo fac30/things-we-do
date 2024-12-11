@@ -7,6 +7,7 @@ import { RxDocumentData } from "rxdb";
 import NeedsSection from "./NeedsSection";
 
 import NeedsModal from "./NeedsModal";
+import { userAgent } from "next/server";
 
 export interface Category {
   id: string;
@@ -70,6 +71,17 @@ export default function NeedsDisplay() {
   };
   const handleStepDecrease = () => {
     setNeedsStep((prevStep) => prevStep - 1);
+    {
+      if (needsStep === 2 && urgent > 0) {
+        handleDecrease(setUrgent);
+      } else if (needsStep === 2 && urgent < 0) {
+        handleIncrease(setUrgent);
+      } else if (needsStep === 3 && effortful > 0) {
+        handleDecrease(setEffortful);
+      } else if (needsStep === 3 && effortful < 0) {
+        handleIncrease(setEffortful);
+      }
+    }
   };
 
   const handleIncrease = (
@@ -105,6 +117,15 @@ export default function NeedsDisplay() {
       setModalOpen(false);
       setNeedsStep(1);
     }
+  };
+
+  const handleBackClick = () => {
+    if (needsStep === 2) {
+      handleDecrease(setUrgent); // Undo the action for step 1
+    } else if (needsStep === 3) {
+      handleDecrease(setEffortful); // Undo the action for step 2
+    }
+    setNeedsStep((prevStep) => prevStep - 1);
   };
 
   const handleLabelChange = () => {
@@ -180,6 +201,7 @@ export default function NeedsDisplay() {
         needsStep={needsStep}
         setModalOpen={setModalOpen}
         handleStepDecrease={handleStepDecrease}
+        handleBackClick={handleBackClick}
       />
     </>
   );

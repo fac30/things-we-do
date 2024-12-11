@@ -30,6 +30,7 @@ export default function NeedsModal({
   needsStep,
   handleStepDecrease,
   setModalOpen,
+  handleBackClick,
 }: ModalProps) {
   return (
     <>
