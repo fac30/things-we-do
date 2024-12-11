@@ -235,6 +235,12 @@ export default function NeedsDisplay() {
     }
   }
 
+  const handleCloseClick = () => {
+    resetNeuros();
+    setModalOpen(false);
+    setNeedsStep(1);
+  };
+
   return (
     <>
       <div className="w-11/12 m-auto">
@@ -266,8 +272,8 @@ export default function NeedsDisplay() {
         }}
         title={`You have selected ~${selectedNeed}~`}
         needsStep={needsStep}
-        setModalOpen={setModalOpen}
         handleBackClick={handleBackClick}
+        handleCloseClick={handleCloseClick}
       />
     </>
   );

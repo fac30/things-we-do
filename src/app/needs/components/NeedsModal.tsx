@@ -17,9 +17,9 @@ interface ModalProps {
     action: () => void;
   };
   handleInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  needsStep: number; // Add this line
-  setModalOpen: Dispatch<SetStateAction<boolean>>;
+  needsStep: number;
   handleBackClick: () => void;
+  handleCloseClick: () => void;
 }
 
 export default function NeedsModal({
@@ -29,7 +29,7 @@ export default function NeedsModal({
   backButton,
   needsStep,
   handleBackClick,
-  setModalOpen,
+  handleCloseClick,
 }: ModalProps) {
   return (
     <>
@@ -37,11 +37,11 @@ export default function NeedsModal({
         <div
           className="w-11/12 absolute top-1/2 left-1/2 bg-gray-800 border-[1.5px] rounded-lg -translate-x-1/2 -translate-y-1/2"
           style={{
-            position: "fixed", // Ensure the modal is fixed relative to the viewport
-            top: "50%", // Center vertically
-            left: "50%", // Center horizontally
-            transform: "translate(-50%, -50%)", // Center the modal
-            zIndex: 1000, // Ensure it appears on top
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 1000,
             overflow: "hidden",
           }}
         >
@@ -51,10 +51,7 @@ export default function NeedsModal({
               <ChevronLeftIcon className="h-10 w-10" />
             </button>
           )}
-          <button
-            className="absolute right-2 top-3"
-            onClick={() => setModalOpen(false)}
-          >
+          <button className="absolute right-2 top-3" onClick={handleCloseClick}>
             <XMarkIcon className="h-10 w-10" />
           </button>
 
