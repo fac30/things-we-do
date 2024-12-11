@@ -11,6 +11,11 @@ import needsCategoriesSchema from "./schemas/categoriesSchema.json";
 import needsSchema from "./schemas/categoriesSchema.json";
 import nextActionsSchema from "./schemas/categoriesSchema.json";
 
+// import { categories, toolkit } from "./seed/toolkit";
+// import { needsCategories, needs, nextActions } from "./seed/needs";
+
+import { RxDBUpdatePlugin } from "rxdb/plugins/update";
+addRxPlugin(RxDBUpdatePlugin);
 addRxPlugin(RxDBDevModePlugin);
 
 let dbInstance: RxDatabase | null = null;
@@ -162,7 +167,7 @@ class DatabaseManager {
     if (!collectionExists)
       throw new Error(`Collection '${collection}' not found`);
     const data = await collectionExists.find().exec();
-    console.log(`Getting data from ${collection}:`, data);
+
     return data;
   }
 
@@ -203,6 +208,42 @@ class DatabaseManager {
       await document.remove();
     } catch (error) {
       console.error(`Error in deleteFromDb:`, error);
+      throw error;
+    }
+  }
+
+  async updateDocument(
+    collectionName: string,
+    docId: string,
+    field: string,
+    update: string
+  ) {
+    try {
+      const db = await this.accessDatabase();
+      const collection = db.collections[collectionName];
+
+      if (!collection) {
+        throw new Error(`Collection '${collectionName}' does not exist`);
+      }
+
+      const document = await collection
+        .findOne({ selector: { id: docId } })
+        .exec();
+
+      if (!document) {
+        throw new Error(
+          `Document with ID '${docId}' not found in collection '${collectionName}'`
+        );
+      }
+
+      const updatedDocument = await document.patch({
+        [field]: update,
+      });
+
+      console.log(`Updated document in ${collectionName}:`, updatedDocument);
+      return updatedDocument;
+    } catch (error) {
+      console.error(`Error in updateDocument:`, error);
       throw error;
     }
   }
