@@ -14,6 +14,8 @@ export default function NextActionsPage() {
         relatedKey={"need" as keyof RxDocumentData<Base>}
         mainTable="needs"
         relatedTable="next_actions"
+        filterKey={"selectedExpiry" as keyof RxDocumentData<Base>}
+        highlight={false}
       />
     </>
   );
