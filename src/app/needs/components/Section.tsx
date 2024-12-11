@@ -1,9 +1,10 @@
 import Button from "@/ui/shared/Button";
+import clsx from "clsx";
 
 interface SectionProps<U> {
   categoryData: {
     key: string;
-    items: (U & { label: string })[];
+    items: (U & { label: string; highlighted?: boolean })[];
   };
   handleOpen: () => void;
 }
@@ -19,8 +20,11 @@ export default function Section<U>({
         {categoryData.items.map((item, index) => (
           <Button
             key={index}
-            label={item.label} // Use precomputed label
-            className="bg-gray-600 font-normal text-nowrap"
+            label={item.label}
+            className={clsx(
+              "font-normal text-nowrap",
+              item.highlighted ? "bg-twd-primary-purple" : "bg-gray-600"
+            )}
             onClick={handleOpen}
           />
         ))}
