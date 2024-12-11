@@ -93,9 +93,6 @@ export default function NeedsDisplay() {
       setModalOpen(false);
       setNeedsStep(1);
     }
-    console.log(urgent);
-    console.log(effortful);
-    console.log(worthDoing);
   };
 
   const handleNeuroDecrease = () => {
@@ -133,6 +130,9 @@ export default function NeedsDisplay() {
 
   useEffect(() => {
     handleLabelChange();
+    console.log(`urgency: ${urgent}`);
+    console.log(`effort: ${effortful}`);
+    console.log(`worthDoing: ${worthDoing}`);
   }, [needsStep]);
 
   useEffect(() => {
