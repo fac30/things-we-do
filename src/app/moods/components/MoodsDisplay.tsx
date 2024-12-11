@@ -1,7 +1,7 @@
 "use client";
 
-import { Cube } from "./Cube";
-import { SliderBox } from "./SliderBox";
+import Cube from "./Cube";
+import SliderBox from "./SliderBox";
 import MoodButtons from "./MoodButtons";
 import { useDatabase } from "@/context/DatabaseContext";
 import { useState } from "react";
