@@ -5,9 +5,7 @@ import { useDatabase } from "@/context/DatabaseContext";
 import retrieveDataObject from "@/lib/utils/retrieveDataObject";
 import { RxDocumentData } from "rxdb";
 import NeedsSection from "./NeedsSection";
-
 import NeedsModal from "./NeedsModal";
-import { userAgent } from "next/server";
 
 export interface Category {
   id: string;
