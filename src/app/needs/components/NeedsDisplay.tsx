@@ -84,8 +84,12 @@ export default function NeedsDisplay() {
       handleIncrease(setEffortful);
     } else if (needsStep === 3) {
       handleIncrease(setWorthDoing);
+      setModalOpen(false);
+      setNeedsStep(1);
     }
     console.log(urgent);
+    console.log(effortful);
+    console.log(worthDoing);
   };
 
   const handleNeuroDecrease = () => {
@@ -95,28 +99,35 @@ export default function NeedsDisplay() {
       handleDecrease(setEffortful);
     } else if (needsStep === 3) {
       handleDecrease(setWorthDoing);
+      setModalOpen(false);
+      setNeedsStep(1);
     }
   };
 
   const handleLabelChange = () => {
-    if (needsStep === 2) {
-      setPositiveLabel("A lot of effort");
-      setNegativeLabel("A little effort");
-    } else if (needsStep === 3) {
-      setPositiveLabel("worth doing");
-      setNegativeLabel("Worth doing");
+    switch (needsStep) {
+      case 1:
+        setPositiveLabel("urgent");
+        setNegativeLabel("not urgent");
+        break;
+      case 2:
+        setPositiveLabel("A lot of effort");
+        setNegativeLabel("A little effort");
+        break;
+      case 3:
+        setPositiveLabel("worth doing");
+        setNegativeLabel("not worth doing");
+        break;
     }
   };
 
   const handleStepAction = () => {
     handleStepIncrease();
-    handleLabelChange();
-    if (needsStep === 1 || needsStep === 2) {
-      handleNeuroIncrease();
-    } else if (needsStep === 3) {
-      handleNeuroDecrease();
-    }
   };
+
+  useEffect(() => {
+    handleLabelChange();
+  }, [needsStep]);
 
   return (
     <>
@@ -135,11 +146,17 @@ export default function NeedsDisplay() {
         modalOpen={modalOpen}
         forwardButton={{
           label: positiveLabel,
-          action: handleStepAction,
+          action: () => {
+            handleStepAction();
+            handleNeuroIncrease();
+          },
         }}
         backButton={{
           label: negativeLabel,
-          action: handleStepAction,
+          action: () => {
+            handleStepAction();
+            handleNeuroDecrease();
+          },
         }}
         title={`You have selected ${selectedNeed}`}
       />
