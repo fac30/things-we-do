@@ -99,13 +99,11 @@ export default function NeedsDisplay() {
 
   const updateNeedWithAction = async (needName: string, action: string) => {
     try {
-      // Find the document corresponding to needName
       const selectedNeed = needs.find((need) => need.name === needName);
 
       if (selectedNeed) {
-        const docId = selectedNeed.id; // Access the _id field (document ID)
+        const docId = selectedNeed.id;
 
-        // Now update the document with the action using docId
         await database.updateDocument("needs", docId, "mood", action);
         console.log(`Updated ${needName} with action: ${action}`);
       } else {
@@ -142,7 +140,7 @@ export default function NeedsDisplay() {
 
       setModalOpen(false);
       setNeedsStep(1);
-      // resetNeuros();
+
       setIsModalCompleted(false);
     }
   };
@@ -195,7 +193,6 @@ export default function NeedsDisplay() {
   }, [modalOpen]);
 
   useEffect(() => {
-    // Only proceed if all values are non-zero
     if (urgent !== 0 && effortful !== 0 && worthDoing !== 0) {
       const action = determineAction(urgent, effortful, worthDoing);
       updateNeedWithAction(selectedNeed, action);
