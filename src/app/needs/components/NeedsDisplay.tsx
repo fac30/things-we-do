@@ -45,13 +45,10 @@ export default function NeedsDisplay() {
     fetchNeeds();
   }, []);
 
-  // Organize needs by category and store them in an array
   const categorisedNeeds: CategorizedNeed[] = categories.map((category) => {
     const categoryNeeds = needs.filter((need) => need.category === category.id);
     return { category: category.name, needs: categoryNeeds };
   });
-
-  console.log(categorisedNeeds);
 
   return (
     <>
@@ -71,6 +68,7 @@ export default function NeedsDisplay() {
                       key={needIndex}
                       label={need.name}
                       className="bg-gray-600 font-normal text-nowrap"
+                      onClick={() => console.log(`you clicked ${need.name}`)}
                     />
                   );
                 })}
