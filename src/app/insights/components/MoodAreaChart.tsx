@@ -15,9 +15,7 @@ export default function MoodAreaChart({
   selectedButton,
 }: MoodAreaChartProps) {
   if (!dataArray || dataArray.length === 0) {
-    return (
-      <div>No data available for the graph.</div>
-    );
+    return <div>No data available for the graph.</div>;
   }
 
   const sortedData = [...dataArray].sort(
@@ -26,55 +24,37 @@ export default function MoodAreaChart({
 
   // Get unique mood names
   const uniqueMoods = Array.from(
-    new Set(
-      sortedData.map(
-        (entry) => entry.moodName
-      )
-    )
+    new Set(sortedData.map((entry) => entry.moodName))
   );
 
-  // Create time bins based on selectedButton
-  const timeFormat = (() => {
-    switch (selectedButton) {
-      case "day":
-        return (date: Date) => date.getHours();
-      case "week":
-        return (date: Date) => date.getDay();
-      case "month":
-        return (date: Date) => date.getDate();
-      case "year":
-        return (date: Date) => date.getMonth();
-      default:
-        return (date: Date) => date.getTime();
-    }
-  })();
-
-  // Create data for each mood
+  // Create traces for each mood with cumulative totals
   const traces = uniqueMoods.map((mood) => {
-    const moodData = sortedData.filter(
-      (entry) => entry.moodName === mood
-    );
-    const timestamps = moodData.map(
-      (entry) => new Date(entry.timestamp)
-    );
+    const moodData = sortedData.filter((entry) => entry.moodName === mood);
+    let runningTotal = 0;
     
-    // Count occurrences in each time bin
-    const counts = new Map();
-    timestamps.forEach(
-      (time) => {
-        const bin = timeFormat(time);
-        counts.set(bin, (counts.get(bin) || 0) + 1);
-      }
-    );
+    const cumulativeData = moodData.map((entry) => {
+      runningTotal += 1;
+      return {
+        x: new Date(entry.timestamp).toISOString(),
+        y: runningTotal,
+      };
+    });
+
+    const dataPoints = [
+      ...cumulativeData,
+      { x: endOfRange.toISOString(), y: runningTotal }
+    ];
 
     return {
-      x: Array.from(counts.keys()),
-      y: Array.from(counts.values()),
+      x: dataPoints.map(point => point.x),
+      y: dataPoints.map(point => point.y),
       type: "scatter",
       mode: "none",
       fill: "tonexty",
       name: mood,
       stackgroup: "one",
+      groupnorm: "percent",
+      line: { shape: "spline" }
     };
   });
 
@@ -96,8 +76,8 @@ export default function MoodAreaChart({
   return (
     <div className="bg-twd-graph-background mt-10 w-11/12 m-auto rounded-lg">
       <div className="w-10/12 m-auto pt-5">
-        <h2 className="text-xl">Mood Distribution</h2>
-        <p>How often did you experience each mood?</p>
+        <h2 className="text-xl">Mood Accumulation</h2>
+        <p>How have your moods built up over time?</p>
       </div>
       <div className="w-11/12 m-auto flex justify-center text-center mb-10 mt-5">
         <PlotlyChart
@@ -125,12 +105,12 @@ export default function MoodAreaChart({
               tickfont: {
                 color: "white",
               },
-              range: [startOfRange, endOfRange],
+              range: [startOfRange.toISOString(), endOfRange.toISOString()],
             },
             yaxis: {
               title: "",
               showgrid: false,
-              showticklabels: false,
+              showticklabels: true,
               titlefont: {
                 color: "white",
               },
