@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
 import Section from "./Section";
-import { RxDocumentData } from "rxdb";
+import { RxDocument, RxDocumentData } from "rxdb";
 
 export interface Base {
   id: string;
@@ -59,8 +59,8 @@ export default function Display<
   const [selectedItem, setSelectedItem] = useState<U | null>(null);
 
   const fetchMainData = useCallback(async () => {
-    const response = await database.getFromDb<T>(mainTable);
-    let data = response;
+    const response = await database.getFromDb<RxDocument<T>>(mainTable);
+    let data = response.map((doc) => doc.toJSON() as RxDocumentData<T>);
 
     if (filterKey && !highlight) {
       const now = new Date();
@@ -74,8 +74,8 @@ export default function Display<
   }, [database, mainTable, filterKey, highlight]);
 
   const fetchRelatedData = useCallback(async () => {
-    const response = await database.getFromDb<U>(relatedTable);
-    let data = response;
+    const response = await database.getFromDb<RxDocument<U>>(relatedTable);
+    let data = response.map((doc) => doc.toJSON() as RxDocumentData<U>);
 
     if (filterKey && highlight) {
       const now = new Date();
