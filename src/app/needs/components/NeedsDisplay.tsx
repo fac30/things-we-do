@@ -7,7 +7,6 @@ import NeedsModal from "./NeedsModal";
 import { RxDocumentData } from "rxdb";
 import Button from "@/ui/shared/Button";
 import { useRouter } from "next/navigation";
-import { Header } from "@/ui/shared/Header";
 
 type Category = RxDocumentData<Base>;
 interface Need extends RxDocumentData<Base> {
@@ -216,11 +215,6 @@ export default function NeedsDisplay() {
 
   return (
     <>
-      <Header
-        title="Needs"
-        description="address unmet needs and assess next actions."
-        hasInfoButton={true}
-      />
       <div className="flex">
         <Button
           onClick={openInfo}
