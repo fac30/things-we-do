@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
 import Display, { Base } from "./Display";
 import NeedsModal from "./NeedsModal";
 import { RxDocumentData } from "rxdb";
 
-interface Category extends RxDocumentData<Base> {}
+type Category = RxDocumentData<Base>;
 interface Need extends RxDocumentData<Base> {
   category: string;
 }
@@ -46,11 +46,19 @@ export default function NeedsDisplay() {
   };
 
   const adjustUrgency = () => {
-    urgent > 0 ? handleDecrease(setUrgent) : handleIncrease(setUrgent);
+    if (urgent > 0) {
+      handleDecrease(setUrgent);
+    } else {
+      handleIncrease(setUrgent);
+    }
   };
 
   const adjustEffort = () => {
-    effortful > 0 ? handleDecrease(setEffortful) : handleIncrease(setEffortful);
+    if (effortful > 0) {
+      handleDecrease(setEffortful);
+    } else {
+      handleIncrease(setEffortful);
+    }
   };
 
   const handleIncrease = (
@@ -64,24 +72,22 @@ export default function NeedsDisplay() {
   const handlePositiveClick = () => {
     if (needsStep === 1) handleIncrease(setUrgent);
     else if (needsStep === 2) handleIncrease(setEffortful);
-    else if (needsStep === 3) {
-      handleIncrease(setWorthDoing);
-      setModalOpen(false);
-    }
-    handleStepIncrease();
+    else if (needsStep === 3) handleIncrease(setWorthDoing);
+
+    if (needsStep === 3) setModalOpen(false);
+    else handleStepIncrease();
   };
 
   const handleNegativeClick = () => {
     if (needsStep === 1) handleDecrease(setUrgent);
     else if (needsStep === 2) handleDecrease(setEffortful);
-    else if (needsStep === 3) {
-      handleDecrease(setWorthDoing);
-      setModalOpen(false);
-    }
-    handleStepIncrease();
+    else if (needsStep === 3) handleDecrease(setWorthDoing);
+
+    if (needsStep === 3) setModalOpen(false);
+    else handleStepIncrease();
   };
 
-  const determineAction = (): string => {
+  const determineAction = useCallback((): string => {
     switch (true) {
       case urgent === 1 && effortful === 1 && worthDoing === 1:
         return "interest";
@@ -102,25 +108,28 @@ export default function NeedsDisplay() {
       default:
         return "Invalid input";
     }
-  };
+  }, [urgent, effortful, worthDoing]);
 
-  const updateNeedWithAction = async (action: string) => {
-    if (!selectedNeed) return;
-    try {
-      await database.updateDocument("needs", selectedNeed.id, "mood", action);
-      await database.updateDocument(
-        "needs",
-        selectedNeed.id,
-        "selectedExpiry",
-        new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString()
-      );
-      console.log(`Updated ${selectedNeed.name} with action: ${action}`);
-    } catch (error) {
-      console.error(`Failed to update need: ${selectedNeed.name}`, error);
-    }
-  };
+  const updateNeedWithAction = useCallback(
+    async (action: string) => {
+      if (!selectedNeed) return;
+      try {
+        await database.updateDocument("needs", selectedNeed.id, "mood", action);
+        await database.updateDocument(
+          "needs",
+          selectedNeed.id,
+          "selectedExpiry",
+          new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString()
+        );
+        console.log(`Updated ${selectedNeed.name} with action: ${action}`);
+      } catch (error) {
+        console.error(`Failed to update need: ${selectedNeed.name}`, error);
+      }
+    },
+    [selectedNeed, database]
+  );
 
-  const handleLabelChange = () => {
+  const handleLabelChange = useCallback(() => {
     switch (needsStep) {
       case 1:
         setPositiveLabel("urgent");
@@ -135,7 +144,7 @@ export default function NeedsDisplay() {
         setNegativeLabel("not worth doing");
         break;
     }
-  };
+  }, [needsStep]);
 
   const resetNeuros = () => {
     setUrgent(0);
@@ -161,12 +170,18 @@ export default function NeedsDisplay() {
   }, [needsStep]);
 
   useEffect(() => {
-    if (urgent !== 0 && effortful !== 0 && worthDoing !== 0) {
+    if (urgent !== 0 && effortful !== 0 && worthDoing !== 0 && selectedNeed) {
       const action = determineAction();
-      updateNeedWithAction(action);
+      updateNeedWithAction(action).then(() => resetNeuros());
     }
-    resetNeuros();
-  }, [worthDoing]);
+  }, [
+    determineAction,
+    updateNeedWithAction,
+    urgent,
+    effortful,
+    worthDoing,
+    selectedNeed,
+  ]);
 
   useEffect(() => {
     handleLabelChange();
@@ -174,7 +189,14 @@ export default function NeedsDisplay() {
     console.log(`urgency: ${urgent}`);
     console.log(`effort: ${effortful}`);
     console.log(`worthDoing: ${worthDoing}`);
-  }, [needsStep]);
+  }, [
+    effortful,
+    handleLabelChange,
+    needsStep,
+    selectedNeed,
+    urgent,
+    worthDoing,
+  ]);
 
   return (
     <>
