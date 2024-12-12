@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
-import Modal from "@/ui/shared/Modal";
 import Section from "./Section";
 import { RxDocumentData } from "rxdb";
 
@@ -26,6 +25,9 @@ interface DisplayProps<
   relatedTable: string;
   filterKey?: keyof T | keyof U;
   highlight?: boolean;
+  onItemClick?: (item: U & { label: string }) => void;
+  modalComponent?: React.ElementType<any>; // Accepts a custom modal component
+  modalProps?: Record<string, any>; // Additional props for the modal
 }
 
 type ExtendedRelatedData<U> = U & { highlighted?: boolean };
@@ -40,10 +42,15 @@ export default function Display<
   relatedTable,
   filterKey,
   highlight = false,
+  onItemClick,
+  modalComponent: CustomModal,
+  modalProps = {},
 }: DisplayProps<T, U>) {
   const database = useDatabase();
   const [mainData, setMainData] = useState<RxDocumentData<T>[]>([]);
   const [relatedData, setRelatedData] = useState<ExtendedRelatedData<U>[]>([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<U | null>(null);
 
   const fetchMainData = async () => {
     const response = await database.getFromDb<T>(mainTable);
@@ -97,8 +104,16 @@ export default function Display<
     return { key: mainItem.name, items: filteredItems };
   });
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const handleOpen = () => setModalOpen(true);
+  const handleItemClick = (item: U & { label: string }) => {
+    setSelectedItem(item);
+    setModalOpen(true);
+    if (onItemClick) onItemClick(item);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedItem(null);
+  };
 
   return (
     <>
@@ -110,11 +125,18 @@ export default function Display<
               key: data.key,
               items: data.items,
             }}
-            handleOpen={handleOpen}
+            handleOpen={(item) => handleItemClick(item)}
           />
         ))}
       </div>
-      <Modal modalOpen={modalOpen} />
+      {CustomModal && (
+        <CustomModal
+          modalOpen={modalOpen}
+          onClose={handleCloseModal}
+          selectedItem={selectedItem}
+          {...modalProps}
+        />
+      )}
     </>
   );
 }
