@@ -21,7 +21,7 @@ export default function HomePage() {
           </div>
           
           <p className="text-base mb-1">
-            Work out how your decision might affect how you feel, find out if it's important, and what you can do about it.
+            Work out how your decision might affect how you feel, find out if it&apos;s important, and what you can do about it.
           </p>
           <div className="flex justify-center">
             <img
