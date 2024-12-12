@@ -9,6 +9,11 @@ interface LineGraphProps {
   selectedButton: string;
 }
 
+interface AggregatedData { // Averaged Data for Year View
+  timestamp: string;
+  value: number;
+}
+
 export default function LineGraph({
   dataArray,
   startOfRange,
@@ -19,23 +24,52 @@ export default function LineGraph({
     return <div>No data available for the graph.</div>;
   }
 
+  const aggregateDataByMonth = (data: number[], timestamps: string[]): AggregatedData[] => {
+    const monthlyData: { [key: string]: number[] } = {};
+    
+    timestamps.forEach((timestamp, index) => {
+      const date = new Date(timestamp);
+      const monthKey = `${date.getFullYear()}-${date.getMonth()}`;
+      
+      if (!monthlyData[monthKey]) {
+        monthlyData[monthKey] = [];
+      }
+      monthlyData[monthKey].push(data[index]);
+    });
+  
+    return Object.entries(monthlyData).map(([monthKey, values]) => ({
+      timestamp: new Date(
+        parseInt(monthKey.split('-')[0]),
+        parseInt(monthKey.split('-')[1]),
+        1
+      ).toISOString(),
+      value: values.reduce((sum, val) => sum + val, 0) / values.length
+    }));
+  };
+
   const sortedData = [...dataArray].sort(
     (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
   );
-
+  
   const xAxis = sortedData.map((entry) =>
     new Date(entry.timestamp).toISOString()
   );
-  const dopamineValues = sortedData.map(
-    (entry) => entry.neurotransmitters.dopamine
+  
+  const processData = (values: number[]): [string[], number[]] => {
+    if (selectedButton === "year") {
+      const aggregated = aggregateDataByMonth(values, xAxis);
+      return [aggregated.map(d => d.timestamp), aggregated.map(d => d.value)];
+    }
+    return [xAxis, values];
+  };
+  const [dopamineX, dopamineY] = processData(
+    sortedData.map((entry) => entry.neurotransmitters.dopamine)
   );
-
-  const serotoninValues = sortedData.map(
-    (entry) => entry.neurotransmitters.serotonin
+  const [serotoninX, serotoninY] = processData(
+    sortedData.map((entry) => entry.neurotransmitters.serotonin)
   );
-
-  const adrenalineValues = sortedData.map(
-    (entry) => entry.neurotransmitters.adrenaline
+  const [adrenalineX, adrenalineY] = processData(
+    sortedData.map((entry) => entry.neurotransmitters.adrenaline)
   );
 
   const tickFormat = (() => {
@@ -68,6 +102,17 @@ export default function LineGraph({
     }
   })();
 
+  const yMax = Math.max(
+    ...dopamineY,
+    ...serotoninY,
+    ...adrenalineY
+  );
+  const yMin = Math.min(
+    ...dopamineY,
+    ...serotoninY,
+    ...adrenalineY
+  );
+
   return (
     <>
       <div className="bg-twd-graph-background mt-10 w-11/12 m-auto rounded-lg">
@@ -75,32 +120,33 @@ export default function LineGraph({
           <h2 className="text-xl">Decision Maker</h2>
           <p>How did the things I wanted to do feel?</p>
         </div>
+        
         <div className="w-11/12 m-auto flex justify-center text-center mb-10 mt-5">
           <PlotlyChart
             data={[
               {
-                x: xAxis,
-                y: dopamineValues,
+                x: dopamineX,
+                y: dopamineY,
                 type: "scatter",
-                mode: "lines+markers",
+                mode: "lines",
                 marker: { color: "green" },
                 line: { shape: "spline", width: 3 },
                 name: "Urgent",
               },
               {
-                x: xAxis,
-                y: serotoninValues,
+                x: serotoninX,
+                y: serotoninY,
                 type: "scatter",
-                mode: "lines+markers",
+                mode: "lines",
                 marker: { color: "blue" },
                 line: { shape: "spline", width: 3 },
                 name: "Effortful",
               },
               {
-                x: xAxis,
-                y: adrenalineValues,
+                x: adrenalineX,
+                y: adrenalineY,
                 type: "scatter",
-                mode: "lines+markers",
+                mode: "lines",
                 marker: { color: "red" },
                 line: { shape: "spline", width: 3 },
                 name: "Worthwile",
@@ -123,29 +169,20 @@ export default function LineGraph({
                 title: "",
                 tickformat: tickFormat,
                 showgrid: false,
-                titlefont: {
-                  color: "white",
-                },
+                titlefont: { color: "white" },
                 showticklabels: true,
-                tickfont: {
-                  color: "white",
-                },
+                tickfont: { color: "white" },
                 dtick: dtick,
 
                 range: [startOfRange.toISOString(), endOfRange.toISOString()],
               },
               yaxis: {
                 title: "",
-                range: [0, 10],
+                range: [Math.max(0, yMin - 0.5), yMax + 0.5],
                 showgrid: false,
                 showticklabels: false,
-                titlefont: {
-                  color: "white",
-                },
-
-                tickfont: {
-                  color: "white",
-                },
+                titlefont: { color: "white" },
+                tickfont: { color: "white" },
               },
               legend: {
                 font: {
