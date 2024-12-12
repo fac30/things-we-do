@@ -71,7 +71,7 @@ export default function AddTags() {
               formState.categories.includes(category)
                 ? "bg-twd-secondary-purple text-white"
                 : "bg-twd-background text-white"
-            }`}
+            } font-normal`}
             ariaPressed={formState.categories.includes(category)}
           />
         ))}
