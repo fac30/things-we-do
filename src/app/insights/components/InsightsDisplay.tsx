@@ -108,11 +108,12 @@ export default function InsightsDisplay() {
             />
           );
         })}
-        <Button
+
+        {/* DO NOT DELETE THIS COMMENTED BUTTON - UNCOMMENT IT WHEN CUSTOM DATE RANGE IS IMPLEMENTED <Button
           label="To Date"
           className={clsx(useNow && "bg-white text-black")}
           onClick={handleUseNowClick}
-        />
+        /> */}
       </div>
 
       {insights ? ( // Line Graph
