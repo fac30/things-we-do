@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { Cube } from "@/app/moods/components/Cube";
-import { SliderBox } from "@/app/moods/components/SliderBox";
+import Cube from "@/app/moods/components/Cube";
+import SliderBox from "@/app/moods/components/SliderBox";
 import { useState } from "react";
 import { Datum } from "plotly.js";
 
@@ -12,7 +12,6 @@ jest.mock("@/ui/shared/PlotlyChart", () => ({
 }));
 
 describe("Cube and SliderBox integration", () => {
-  // TODO: Fix this test
   it("updates Plotly chart data when sliders are moved", () => {
     const Wrapper = () => {
       const [neuroState, setNeuroState] = useState<{
