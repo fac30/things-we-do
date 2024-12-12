@@ -88,7 +88,7 @@ export default function CategoriesBar({
             <Button
               key={category}
               label={category}
-              className={`${
+              className={`font-normal ${
                 isActive
                   ? "bg-twd-secondary-purple text-white"
                   : "bg-twd-background text-white"
