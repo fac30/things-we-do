@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { Cube } from "@/app/moods/components/Cube";
-import { SliderBox } from "@/app/moods/components/SliderBox";
+import Cube from "@/app/moods/components/Cube";
+import SliderBox from "@/app/moods/components/SliderBox";
 import { useState } from "react";
 import { Datum } from "plotly.js";
 

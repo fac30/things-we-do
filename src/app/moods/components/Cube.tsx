@@ -47,7 +47,7 @@ interface CubeProps {
   neuroState: NeurochemState;
 }
 
-export function Cube({ neuroState }: CubeProps) {
+export default function Cube({ neuroState }: CubeProps) {
   const [isPriorityMatrix, setIsPriorityMatrix] = useState(false);
   const [hasRendered, setHasRendered] = useState(false);
 
