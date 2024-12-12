@@ -102,12 +102,15 @@ describe("StreamGraph Component", () => {
     // Check that we have two traces (one for each mood)
     expect(plotlyData).toHaveLength(2);
 
-    // First mood should start with height 1
+    // First mood should start with height 0.5
     const firstMoodTrace = plotlyData[0];
-    expect(firstMoodTrace.y[0]).toBe(1);
+    expect(firstMoodTrace.y[0]).toBe(0.5);
 
-    // Second mood should start with height 0
+    // Second mood should start with height -0.5 to balance the graph
     const secondMoodTrace = plotlyData[1];
-    expect(secondMoodTrace.y[0]).toBe(0);
+    expect(secondMoodTrace.y[0]).toBe(-0.5);
+
+    // Values should sum to 0 at any point
+    expect(firstMoodTrace.y[0] + secondMoodTrace.y[0]).toBe(0);
   });
 }); 
