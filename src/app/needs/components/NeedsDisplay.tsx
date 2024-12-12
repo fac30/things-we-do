@@ -66,10 +66,7 @@ export default function NeedsDisplay() {
     else if (needsStep === 2) handleIncrease(setEffortful);
     else if (needsStep === 3) {
       handleIncrease(setWorthDoing);
-      //const action = determineAction();
       setModalOpen(false);
-      //updateNeedWithAction(action);
-      //handleCloseModal();
     }
     handleStepIncrease();
   };
@@ -79,10 +76,7 @@ export default function NeedsDisplay() {
     else if (needsStep === 2) handleDecrease(setEffortful);
     else if (needsStep === 3) {
       handleDecrease(setWorthDoing);
-      //const action = determineAction();
       setModalOpen(false);
-      //updateNeedWithAction(action);
-      //handleCloseModal();
     }
     handleStepIncrease();
   };
