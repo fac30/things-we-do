@@ -10,6 +10,12 @@ export interface Base {
   name: string;
 }
 
+interface ModalProps<U> {
+  modalOpen: boolean;
+  onClose: () => void;
+  selectedItem: U | null;
+}
+
 interface FilteredData<U> {
   key: string;
   items: (U & { label: string; highlighted?: boolean })[];
@@ -26,8 +32,8 @@ interface DisplayProps<
   filterKey?: keyof T | keyof U;
   highlight?: boolean;
   onItemClick?: (item: U & { label: string }) => void;
-  modalComponent?: React.ElementType<any>; // Accepts a custom modal component
-  modalProps?: Record<string, any>; // Additional props for the modal
+  modalComponent?: React.ComponentType<ModalProps<U>>;
+  modalProps?: Partial<ModalProps<U>>;
 }
 
 type ExtendedRelatedData<U> = U & { highlighted?: boolean };
