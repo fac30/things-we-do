@@ -60,7 +60,6 @@ class DatabaseManager {
 
     console.log("Database initialised.");
     await this.seedDatabase();
-    await this.devSeedDatabase();
     return dbInstance;
   }
 
