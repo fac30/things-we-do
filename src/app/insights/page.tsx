@@ -9,6 +9,7 @@ export default function InsightsPage() {
         description="analyse your moods and needs over time."
         hasInfoButton={true}
       />
+      
       <InsightsDisplay />
     </>
   );
