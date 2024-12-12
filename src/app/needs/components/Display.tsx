@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
 import Section from "./Section";
 import { RxDocumentData } from "rxdb";
@@ -58,7 +58,7 @@ export default function Display<
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<U | null>(null);
 
-  const fetchMainData = async () => {
+  const fetchMainData = useCallback(async () => {
     const response = await database.getFromDb<T>(mainTable);
     let data = response;
 
@@ -71,9 +71,9 @@ export default function Display<
     }
 
     setMainData(data);
-  };
+  }, [database, mainTable, filterKey, highlight]);
 
-  const fetchRelatedData = async () => {
+  const fetchRelatedData = useCallback(async () => {
     const response = await database.getFromDb<U>(relatedTable);
     let data = response;
 
@@ -87,12 +87,12 @@ export default function Display<
     }
 
     setRelatedData(data);
-  };
+  }, [database, relatedTable, filterKey, highlight]);
 
   useEffect(() => {
     fetchMainData();
     fetchRelatedData();
-  }, []);
+  }, [fetchMainData, fetchRelatedData]);
 
   const filteredData: FilteredData<
     ExtendedRelatedData<U> & { label: string }
