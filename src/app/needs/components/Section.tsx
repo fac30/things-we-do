@@ -6,7 +6,7 @@ interface SectionProps<U> {
     key: string;
     items: (U & { label: string; highlighted?: boolean })[];
   };
-  handleOpen: () => void;
+  handleOpen: (item: U & { label: string; highlighted?: boolean }) => void;
 }
 
 export default function Section<U>({
@@ -25,7 +25,7 @@ export default function Section<U>({
               "font-normal text-nowrap",
               item.highlighted ? "bg-twd-primary-purple" : "bg-gray-600"
             )}
-            onClick={handleOpen}
+            onClick={() => handleOpen(item)}
           />
         ))}
       </div>
