@@ -4,7 +4,7 @@
 /*  */
 
 body {
-  @apply bg-twd-background text-white overflow-x-hidden;
+  @apply bg-gradient-to-b from-[#1B192E] to-[#25233A] text-white overflow-x-hidden min-h-screen;
 }
 header {
   @apply bg-inherit;

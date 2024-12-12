@@ -17,7 +17,7 @@ interface CategoriesBarProps {
 
 const categoriesBarClass = `
   whitespace-nowrap flex items-center justify-center gap-4 px-4 py-2 
-  overflow-x-auto bg-twd-background 
+  overflow-x-auto 
  sm:gap-6 sm:px-6  focus:ring-2 focus:ring-twd-secondary-purple
 `;
 
