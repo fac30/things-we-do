@@ -11,7 +11,7 @@ export default function FloatingButton() {
       /> */}
       <PlusIcon
         aria-label="Add New Tool"
-        className="w-16 fixed bottom-20 right-5  shadow-lg text-white bg-twd-primary-purple  p-4 rounded-full border-2 border-twd-secondary-purple"
+        className="w-16 fixed bottom-20 right-5  shadow-lg text-white bg-twd-primary-purple  p-4 rounded-full "
       />
     </Link>
   );
