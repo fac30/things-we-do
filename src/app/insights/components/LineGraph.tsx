@@ -9,6 +9,11 @@ interface LineGraphProps {
   selectedButton: string;
 }
 
+interface AggregatedData { // Averaged Data for Year View
+  timestamp: string;
+  value: number;
+}
+
 export default function LineGraph({
   dataArray,
   startOfRange,
@@ -19,22 +24,52 @@ export default function LineGraph({
     return <div>No data available for the graph.</div>;
   }
 
+  const aggregateDataByMonth = (data: number[], timestamps: string[]): AggregatedData[] => {
+    const monthlyData: { [key: string]: number[] } = {};
+    
+    timestamps.forEach((timestamp, index) => {
+      const date = new Date(timestamp);
+      const monthKey = `${date.getFullYear()}-${date.getMonth()}`;
+      
+      if (!monthlyData[monthKey]) {
+        monthlyData[monthKey] = [];
+      }
+      monthlyData[monthKey].push(data[index]);
+    });
+  
+    return Object.entries(monthlyData).map(([monthKey, values]) => ({
+      timestamp: new Date(
+        parseInt(monthKey.split('-')[0]),
+        parseInt(monthKey.split('-')[1]),
+        1
+      ).toISOString(),
+      value: values.reduce((sum, val) => sum + val, 0) / values.length
+    }));
+  };
+
   const sortedData = [...dataArray].sort(
     (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
   );
-
+  
   const xAxis = sortedData.map((entry) =>
     new Date(entry.timestamp).toISOString()
   );
-
-  const dopamineValues = sortedData.map(
-    (entry) => entry.neurotransmitters.dopamine
+  
+  const processData = (values: number[]): [string[], number[]] => {
+    if (selectedButton === "year") {
+      const aggregated = aggregateDataByMonth(values, xAxis);
+      return [aggregated.map(d => d.timestamp), aggregated.map(d => d.value)];
+    }
+    return [xAxis, values];
+  };
+  const [dopamineX, dopamineY] = processData(
+    sortedData.map((entry) => entry.neurotransmitters.dopamine)
   );
-  const serotoninValues = sortedData.map(
-    (entry) => entry.neurotransmitters.serotonin
+  const [serotoninX, serotoninY] = processData(
+    sortedData.map((entry) => entry.neurotransmitters.serotonin)
   );
-  const adrenalineValues = sortedData.map(
-    (entry) => entry.neurotransmitters.adrenaline
+  const [adrenalineX, adrenalineY] = processData(
+    sortedData.map((entry) => entry.neurotransmitters.adrenaline)
   );
 
   const tickFormat = (() => {
@@ -68,15 +103,14 @@ export default function LineGraph({
   })();
 
   const yMax = Math.max(
-    ...dopamineValues,
-    ...serotoninValues,
-    ...adrenalineValues
+    ...dopamineY,
+    ...serotoninY,
+    ...adrenalineY
   );
-  
   const yMin = Math.min(
-    ...dopamineValues,
-    ...serotoninValues,
-    ...adrenalineValues
+    ...dopamineY,
+    ...serotoninY,
+    ...adrenalineY
   );
 
   return (
@@ -91,8 +125,8 @@ export default function LineGraph({
           <PlotlyChart
             data={[
               {
-                x: xAxis,
-                y: dopamineValues,
+                x: dopamineX,
+                y: dopamineY,
                 type: "scatter",
                 mode: "lines",
                 marker: { color: "green" },
@@ -100,8 +134,8 @@ export default function LineGraph({
                 name: "Urgent",
               },
               {
-                x: xAxis,
-                y: serotoninValues,
+                x: serotoninX,
+                y: serotoninY,
                 type: "scatter",
                 mode: "lines",
                 marker: { color: "blue" },
@@ -109,8 +143,8 @@ export default function LineGraph({
                 name: "Effortful",
               },
               {
-                x: xAxis,
-                y: adrenalineValues,
+                x: adrenalineX,
+                y: adrenalineY,
                 type: "scatter",
                 mode: "lines",
                 marker: { color: "red" },

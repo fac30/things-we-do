@@ -35,15 +35,17 @@ export default function InsightsDisplay() {
 
   const [selectedButton, setSelectedButton] = useState<keyof typeof dateOffsets>("day");
 
-  const [useNow, setUseNow] = useState(true);
+  /* Handler & State for Currently Unused "To Now" Button
+    const [useNow, setUseNow] = useState(true);
 
-  const handleUseNowClick = () => {
-    setUseNow((prevUseNow) => !prevUseNow);
-  };
+    const handleUseNowClick = () => {
+      setUseNow((prevUseNow) => !prevUseNow);
+    }; */
+  
   const [now, setNow] = useState<Date | null>(null);
 
   const getDateRange = (selected: keyof typeof dateOffsets) => {
-    if (!now) return { start: new Date(), end: new Date() }; // fallback if now not set
+    if (!now) return { start: new Date(), end: new Date() };
     const offset = dateOffsets[selected];
     const start = new Date(now.getTime() - offset);
     const end = now;
@@ -65,7 +67,7 @@ export default function InsightsDisplay() {
     const { start, end } = getDateRange(selectedButton);
     setStartOfRange(start);
     setEndOfRange(end);
-  }, [useNow, selectedButton, now]);
+  }, [/* useNow, */ selectedButton, now]);
   
 
   const getInsights = async () => {
