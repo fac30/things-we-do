@@ -32,8 +32,11 @@
       "maxLength": 255
     },
     "priority": {
-      "type": "string",
-      "maxLength": 255
+      "type": "object",
+      "properties": {
+        "order": { "type": "number" },
+        "name": { "type": "string" }
+      }
     },
     "timestamp": {
       "type": "string",
