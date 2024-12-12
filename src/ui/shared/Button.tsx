@@ -20,7 +20,7 @@ const Button: React.FC<ButtonProps> = ({
   }
   return (
     <button
-      className={`px-4 py-2 text-sm font-bold rounded-full transition-colors duration-200 focus:outline-none ${className}`}
+      className={`px-4 py-2 text-sm font-bold rounded-full transition-colors duration-200 ${className}`}
       onClick={onClick || onEventClick}
       aria-pressed={ariaPressed}
     >
