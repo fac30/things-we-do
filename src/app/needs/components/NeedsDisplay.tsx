@@ -19,6 +19,7 @@ export default function NeedsDisplay() {
   const [urgent, setUrgent] = useState(0);
   const [effortful, setEffortful] = useState(0);
   const [worthDoing, setWorthDoing] = useState(0);
+  const [chainEnd, setChainEnd] = useState(0);
 
   const [positiveLabel, setPositiveLabel] = useState("urgent");
   const [negativeLabel, setNegativeLabel] = useState("not urgent");
@@ -172,7 +173,11 @@ export default function NeedsDisplay() {
   useEffect(() => {
     if (urgent !== 0 && effortful !== 0 && worthDoing !== 0 && selectedNeed) {
       const action = determineAction();
-      updateNeedWithAction(action).then(() => resetNeuros());
+      updateNeedWithAction(action).then(() => {
+        resetNeuros();
+        setChainEnd((prevChainEnd) => prevChainEnd + 1);
+        setNeedsStep(1);
+      });
     }
   }, [
     determineAction,
@@ -208,6 +213,7 @@ export default function NeedsDisplay() {
         filterKey={"selectedExpiry" as keyof RxDocumentData<Base>}
         highlight={true}
         onItemClick={handleItemClick}
+        chainEnd={chainEnd}
       />
       <NeedsModal
         modalOpen={modalOpen}
