@@ -66,9 +66,10 @@ export default function NeedsDisplay() {
     else if (needsStep === 2) handleIncrease(setEffortful);
     else if (needsStep === 3) {
       handleIncrease(setWorthDoing);
-      const action = determineAction();
-      updateNeedWithAction(action);
-      handleCloseModal();
+      //const action = determineAction();
+      setModalOpen(false);
+      //updateNeedWithAction(action);
+      //handleCloseModal();
     }
     handleStepIncrease();
   };
@@ -78,9 +79,10 @@ export default function NeedsDisplay() {
     else if (needsStep === 2) handleDecrease(setEffortful);
     else if (needsStep === 3) {
       handleDecrease(setWorthDoing);
-      const action = determineAction();
-      updateNeedWithAction(action);
-      handleCloseModal();
+      //const action = determineAction();
+      setModalOpen(false);
+      //updateNeedWithAction(action);
+      //handleCloseModal();
     }
     handleStepIncrease();
   };
@@ -124,6 +126,23 @@ export default function NeedsDisplay() {
     }
   };
 
+  const handleLabelChange = () => {
+    switch (needsStep) {
+      case 1:
+        setPositiveLabel("urgent");
+        setNegativeLabel("not urgent");
+        break;
+      case 2:
+        setPositiveLabel("A lot of effort");
+        setNegativeLabel("A little effort");
+        break;
+      case 3:
+        setPositiveLabel("worth doing");
+        setNegativeLabel("not worth doing");
+        break;
+    }
+  };
+
   const resetNeuros = () => {
     setUrgent(0);
     setEffortful(0);
@@ -147,6 +166,22 @@ export default function NeedsDisplay() {
     }
   }, [needsStep]);
 
+  useEffect(() => {
+    if (urgent !== 0 && effortful !== 0 && worthDoing !== 0) {
+      const action = determineAction();
+      updateNeedWithAction(action);
+    }
+    resetNeuros();
+  }, [worthDoing]);
+
+  useEffect(() => {
+    handleLabelChange();
+    console.log(`selected need: ${selectedNeed}`);
+    console.log(`urgency: ${urgent}`);
+    console.log(`effort: ${effortful}`);
+    console.log(`worthDoing: ${worthDoing}`);
+  }, [needsStep]);
+
   return (
     <>
       <Display<Category, Need>
@@ -154,6 +189,8 @@ export default function NeedsDisplay() {
         relatedKey="category"
         mainTable="needs_categories"
         relatedTable="needs"
+        filterKey={"selectedExpiry" as keyof RxDocumentData<Base>}
+        highlight={true}
         onItemClick={handleItemClick}
       />
       <NeedsModal
