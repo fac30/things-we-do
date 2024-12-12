@@ -13,7 +13,7 @@ export default function AddImageUrl() {
 
   return (
     <div>
-      <label htmlFor="imageUrl" className="text-white">
+      <label htmlFor="imageUrl" className="text-white block mb-1">
         Image URL
       </label>
 

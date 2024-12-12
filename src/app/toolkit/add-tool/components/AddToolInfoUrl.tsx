@@ -12,7 +12,7 @@ export default function AddInfoUrl() {
 
   return (
     <div>
-      <label htmlFor="infoUrl" className="text-white">
+      <label htmlFor="infoUrl" className="text-white block mb-1">
         Link
       </label>
 

@@ -5,7 +5,7 @@ export default function AddName() {
 
   return (
     <div>
-      <p className="text-white">Name</p>
+      <label className="text-white block mb-1">Name</label>
       <input
         type="text"
         value={formState.name}

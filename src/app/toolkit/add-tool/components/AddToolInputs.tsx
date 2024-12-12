@@ -107,7 +107,7 @@ export default function Inputs() {
       <Button
         label="Add Tool"
         onClick={handleSubmit}
-        className="w-full mt-6 bg-twd-primary-purple"
+        className="w-full mt-3 bg-twd-primary-purple"
       />
     );
   }

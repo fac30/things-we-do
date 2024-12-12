@@ -5,7 +5,7 @@ export default function AddDescription() {
 
   return (
     <div>
-      <p className="text-white">Description</p>
+      <label className="text-white block mb-1">Description</label>
       <input
         type="text"
         value={formState.description}
