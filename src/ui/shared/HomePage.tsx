@@ -28,10 +28,9 @@ export default function HomePage() {
             <Image
               src="/drawings/maker.svg"
               alt="Decision maker drawing"
-              className="object-contain"
-              layout="fixed"
-              width={64} 
-              height={64}
+              width={32} 
+              height={32}
+              objectFit="contain"
               priority
             />
           </div>
@@ -41,17 +40,16 @@ export default function HomePage() {
           <Image
             src="/images/decisionMaker.png"
             alt="Decision maker cube"
-            className="object-cover"
-            layout="responsive"
-            width={100}
-            height={76}
+            width={360}
+            height={360}
+            objectFit="cover"
             priority
           />
           <Link href="/moods">
             <button
               className="absolute bg-twd-primary-purple rounded-full text-white py-2 px-4 flex items-center gap-2"
               style={{
-                top: "78%",
+                top: "70%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
               }}
@@ -102,10 +100,9 @@ export default function HomePage() {
               <Image 
                 src="/drawings/toolkit.svg" 
                 alt="Toolkit drawing" 
-                className="max-w-xs object-contain" 
-                layout="responsive"
                 width={80}
                 height={80}
+                objectFit="contain"
                 priority />
             </div>
 
@@ -113,10 +110,10 @@ export default function HomePage() {
               <Image 
                 src="/images/toolkit_screen.png" 
                 alt="Toolkit screenshot" 
-                className="max-w-sm object-contain rounded-lg shadow-md"
-                layout="responsive" 
-                width={2}
-                height={3}
+                className="rounded-lg shadow-md"
+                width={213}
+                height={320}
+                objectFit="contain"
                 priority/>
             </div>
           </div>
@@ -147,10 +144,9 @@ export default function HomePage() {
               <Image 
                 src="/drawings/needs.svg" 
                 alt="Needs drawing" 
-                layout="intrinsic"
                 width={80}
                 height={80}
-                className="max-w-xs object-contain" 
+                objectFit="contain" 
                 priority />
           </div>
         </div>
@@ -177,10 +173,9 @@ export default function HomePage() {
           <Image
             src="/images/insights_screen.png"
             alt="Insights line graph"
-            className="object-cover"
-            layout="responsive"
-            width={16}
-            height={9}
+            width={350}
+            height={350}
+            objectFit="cover"
             priority
           />
 
@@ -204,9 +199,9 @@ export default function HomePage() {
           <Image
             src="/drawings/insights.svg"
             alt="Insights drawing"
-            className="object-contain"
-            width={120}
-            height={120}
+            width={140}
+            height={140}
+            objectFit="contain"
             priority
           />
         </div>
