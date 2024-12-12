@@ -19,10 +19,12 @@ jest.mock("next/navigation", () => ({
 }));
 
 describe("MoodsPage", () => {
+  // TODO: Fix this test
   it("renders without crashing", () => {
     render(<MoodsPage />);
   });
 
+  // TODO: Fix this test
   it("renders both Cube and SliderBox components", () => {
     render(<MoodsPage />);
 
@@ -30,9 +32,10 @@ describe("MoodsPage", () => {
     expect(screen.getByTestId("mock-slider-box")).toBeInTheDocument();
   });
 
+  // TODO: Fix this test
   it("has correct layout structure", () => {
     const { container } = render(<MoodsPage />);
-
+    
     const mainDiv = container.firstChild;
     expect(mainDiv).toHaveClass("flex", "flex-col", "gap-4");
   });

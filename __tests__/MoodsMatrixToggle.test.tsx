@@ -13,6 +13,7 @@ jest.mock("@/ui/shared/PlotlyChart", () => ({
 }));
 
 describe("Cube label updates on toggle", () => {
+  // TODO: Fix this test
   it("updates Plotly chart labels correctly and verifies the toggle value", async () => {
     const Wrapper = () => {
       const [neuroState, setNeuroState] = useState<{

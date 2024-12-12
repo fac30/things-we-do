@@ -12,6 +12,7 @@ jest.mock("@/ui/shared/PlotlyChart", () => ({
 }));
 
 describe("Cube and SliderBox integration", () => {
+  // TODO: Fix this test
   it("updates Plotly chart data when sliders are moved", () => {
     const Wrapper = () => {
       const [neuroState, setNeuroState] = useState<{
