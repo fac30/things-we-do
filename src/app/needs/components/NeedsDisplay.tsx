@@ -13,6 +13,11 @@ interface Need extends RxDocumentData<Base> {
   category: string;
 }
 
+interface Priority {
+  order: number;
+  name: string;
+}
+
 export default function NeedsDisplay() {
   const router = useRouter();
   const database = useDatabase();
@@ -91,7 +96,7 @@ export default function NeedsDisplay() {
     else handleStepIncrease();
   };
 
-  const determineAction = useCallback((): string => {
+  const determineMood = useCallback((): string => {
     switch (true) {
       case urgent === 1 && effortful === 1 && worthDoing === 1:
         return "interest";
@@ -114,18 +119,39 @@ export default function NeedsDisplay() {
     }
   }, [urgent, effortful, worthDoing]);
 
-  const updateNeedWithAction = useCallback(
-    async (action: string) => {
+  const determinePriority = useCallback((): Priority => {
+    switch (true) {
+      case urgent === 1 && worthDoing === 1:
+        return { order: 1, name: "do it first" };
+      case urgent === -1 && worthDoing === 1:
+        return { order: 2, name: "schedule it" };
+      case urgent === 1 && worthDoing === -1:
+        return { order: 3, name: "delegate it" };
+      case urgent === -1 && worthDoing === -1:
+        return { order: 4, name: "delete it" };
+      default:
+        return { order: 0, name: "Invalid input" };
+    }
+  }, [urgent, worthDoing]);
+
+  const updateNeedWithMood = useCallback(
+    async (mood: string, priority: Priority) => {
       if (!selectedNeed) return;
       try {
-        await database.updateDocument("needs", selectedNeed.id, "mood", action);
+        await database.updateDocument(
+          "needs",
+          selectedNeed.id,
+          "priority",
+          priority
+        );
+        await database.updateDocument("needs", selectedNeed.id, "mood", mood);
         await database.updateDocument(
           "needs",
           selectedNeed.id,
           "selectedExpiry",
           new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString()
         );
-        console.log(`Updated ${selectedNeed.name} with action: ${action}`);
+        console.log(`Updated ${selectedNeed.name} with mood: ${mood}`);
       } catch (error) {
         console.error(`Failed to update need: ${selectedNeed.name}`, error);
       }
@@ -182,20 +208,22 @@ export default function NeedsDisplay() {
 
   useEffect(() => {
     if (urgent !== 0 && effortful !== 0 && worthDoing !== 0 && selectedNeed) {
-      const action = determineAction();
-      updateNeedWithAction(action).then(() => {
+      const mood = determineMood();
+      const priority = determinePriority();
+      updateNeedWithMood(mood, priority).then(() => {
         resetNeuros();
         setChainEnd((prevChainEnd) => prevChainEnd + 1);
         setNeedsStep(1);
       });
     }
   }, [
-    determineAction,
-    updateNeedWithAction,
+    determineMood,
+    updateNeedWithMood,
     urgent,
     effortful,
     worthDoing,
     selectedNeed,
+    determinePriority,
   ]);
 
   useEffect(() => {
