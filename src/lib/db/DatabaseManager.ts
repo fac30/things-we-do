@@ -9,6 +9,7 @@ import categoriesSchema from "./schemas/categoriesSchema.json";
 import needsCategoriesSchema from "./schemas/categoriesSchema.json";
 import needsSchema from "./schemas/categoriesSchema.json";
 import nextActionsSchema from "./schemas/categoriesSchema.json";
+import getMoodName from "@/lib/utils/getMoodName";
 
 // import { categories, toolkit } from "./seed/toolkit";
 // import { needsCategories, needs, nextActions } from "./seed/needs";
@@ -246,39 +247,6 @@ class DatabaseManager {
       throw error;
     }
   }
-}
-
-function getMoodName(dopamine: number, adrenaline: number, serotonin: number): string {
-  if (dopamine <= 5) {
-    if (adrenaline <= 5) {
-      if (serotonin <= 5) {
-        return "guilt";
-      } else if (serotonin >= 6) {
-        return "content";
-      }
-    } else if (adrenaline >= 6) {
-      if (serotonin <= 5) {
-        return "distress";
-      } else if (serotonin >= 6) {
-        return "relief";
-      }
-    }
-  } else if (dopamine >= 6) {
-    if (adrenaline <= 5) {
-      if (serotonin <= 5) {
-        return "freeze";
-      } else if (serotonin >= 6) {
-        return "joy";
-      }
-    } else if (adrenaline >= 6) {
-      if (serotonin <= 5) {
-        return "fight/flight";
-      } else if (serotonin >= 6) {
-        return "interest";
-      }
-    }
-  }
-  return "content"; // default fallback
 }
 
 const generateMoodRecords = () => {
