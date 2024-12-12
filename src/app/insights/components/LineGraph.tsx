@@ -67,6 +67,18 @@ export default function LineGraph({
     }
   })();
 
+  const yMax = Math.max(
+    ...dopamineValues,
+    ...serotoninValues,
+    ...adrenalineValues
+  );
+  
+  const yMin = Math.min(
+    ...dopamineValues,
+    ...serotoninValues,
+    ...adrenalineValues
+  );
+
   return (
     <>
       <div className="bg-twd-graph-background mt-10 w-11/12 m-auto rounded-lg">
