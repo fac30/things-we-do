@@ -31,5 +31,5 @@ export default function getMoodName(dopamine: number, adrenaline: number, seroto
     }
   }
 
-return moodName;
+  return moodName;
 }

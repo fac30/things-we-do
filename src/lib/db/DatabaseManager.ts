@@ -9,11 +9,9 @@ import categoriesSchema from "./schemas/categoriesSchema.json";
 import needsCategoriesSchema from "./schemas/categoriesSchema.json";
 import needsSchema from "./schemas/categoriesSchema.json";
 import nextActionsSchema from "./schemas/categoriesSchema.json";
-import getMoodName from "@/lib/utils/getMoodName";
-
-// import { categories, toolkit } from "./seed/toolkit";
-// import { needsCategories, needs, nextActions } from "./seed/needs";
-
+import { categories, toolkit } from "./seed/toolkit";
+import { needsCategories, needs, nextActions } from "./seed/needs";
+import generateMoodRecords from "./seed/moods";
 import { RxDBUpdatePlugin } from "rxdb/plugins/update";
 addRxPlugin(RxDBUpdatePlugin);
 addRxPlugin(RxDBDevModePlugin);
@@ -78,67 +76,29 @@ class DatabaseManager {
 
   private async seedDatabase() {
     try {
-      await this.oldSeedCategories();
-      // await this.seed("categories", categories);
-      await this.oldSeedToolkitItems();
-      // await this.seed("toolkit_items", toolkit);
-      // await this.seed("needs_categories", needsCategories);
-      // await this.seed("needs", needs);
-      // await this.seed("next_actions", nextActions);
-    } catch (error) {
-      console.error("Error during database seeding:", error);
-    }
-  }
-
-  private async devSeedDatabase() {
-    try {
-      await this.seed("mood_records", seedData.mood_records);
+      await this.seed("mood_records", generateMoodRecords("dev"));
+      await this.seed("categories", categories);
+      await this.seed("toolkit_items", toolkit);
+      await this.seed("needs_categories", needsCategories);
+      await this.seed("needs", needs);
+      await this.seed("next_actions", nextActions);
     } catch (error) {
       console.error("Error during database seeding:", error);
     }
   }
 
   private async seed<T>(collectionName: string, data: T[]) {
-    if (!dbInstance) throw new Error(
-      "Database not initialised."
-    );
+    if (!dbInstance) throw new Error("Database not initialised.");
 
     const collection = dbInstance.collections[collectionName];
 
-    if (!collection) throw new Error(
-      `${collectionName} collection is missing.`
-    );
+    if (!collection) throw new Error(`${collectionName} collection is missing.`);
 
     const existingDocs = await collection.find().exec();
     
     if (existingDocs.length === 0) {
       console.log(`Seeding ${collectionName}...`);
       await collection.bulkInsert(data);
-    }
-  }
-
-  private async oldSeedCategories() {
-    if (!dbInstance) throw new Error("Database not initialized.");
-    if (!dbInstance.collections.categories) {
-      throw new Error("Categories collection is missing.");
-    }
-    const existingDocs = await dbInstance.categories.find().exec();
-    if (existingDocs.length === 0) {
-      console.log("Seeding categories...");
-      await dbInstance.categories.bulkInsert(seedData.categories);
-    }
-  }
-
-  private async oldSeedToolkitItems() {
-    if (!dbInstance) throw new Error("Database not initialized.");
-    if (!dbInstance.collections.toolkit_items) {
-      throw new Error("Toolkit items collection is missing.");
-    }
-    
-    const existingDocs = await dbInstance.toolkit_items.find().exec();
-    if (existingDocs.length === 0) {
-      console.log(`Seeding Toolkit_Items...`);
-      await dbInstance.toolkit_items.bulkInsert(seedData.toolkit);
     }
   }
 
@@ -248,86 +208,5 @@ class DatabaseManager {
     }
   }
 }
-
-const generateMoodRecords = () => {
-  const records = [];
-  const now = new Date();
-  
-  for (let i = 0; i < 78; i++) {
-    // Random values between 1 and 10
-    const dopamine = Math.floor(Math.random() * 10) + 1;
-    const serotonin = Math.floor(Math.random() * 10) + 1;
-    const adrenaline = Math.floor(Math.random() * 10) + 1;
-    
-    // Calculate date (i weeks ago)
-    const timestamp = new Date(now);
-    timestamp.setDate(timestamp.getDate() - (i * 7));
-    
-    records.push({
-      id: uuidv4(),
-      neurotransmitters: {
-        serotonin,
-        dopamine,
-        adrenaline
-      },
-      moodName: getMoodName(dopamine, adrenaline, serotonin),
-      timestamp: timestamp.toISOString()
-    });
-  }
-  
-  return records;
-};
-
-const seedData = {
-  categories: [
-    { id: uuidv4(), name: "Replace", timestamp: new Date().toISOString() },
-    { id: uuidv4(), name: "Barrier", timestamp: new Date().toISOString() },
-    { id: uuidv4(), name: "Distract", timestamp: new Date().toISOString() },
-    { id: uuidv4(), name: "Change Status", timestamp: new Date().toISOString() },
-  ],
-  toolkit: [
-    {
-      id: uuidv4(),
-      name: "Listen to my favourite music",
-      categories: ["Replace", "Barrier"],
-      checked: false,
-      infoUrl: "https://google.com/music",
-      imageUrl:
-        "https://daily.jstor.org/wp-content/uploads/2023/01/good_times_with_bad_music_1050x700.jpg",
-      timestamp: new Date().toISOString(),
-    },
-    {
-      id: uuidv4(),
-      name: "Breathing exercises",
-      categories: ["Distract"],
-      checked: false,
-      infoUrl: "https://www.youtube.com/watch?v=DbDoBzGY3vo",
-      imageUrl:
-        "https://www.bhf.org.uk/-/media/images/information-support/heart-matters/2023/december/wellbeing/deep-breathing-620x400.png?h=400&w=620&rev=4506ebd34dab4476b56c225b6ff3ad60&hash=B3CFFEEE704E4432D101432CEE8B2766",
-      timestamp: new Date().toISOString(),
-    },
-    {
-      id: uuidv4(),
-      name: "Call a friend",
-      categories: ["Distract", "Change status"],
-      checked: false,
-      infoUrl: "https://example.com/call",
-      imageUrl:
-        "https://t4.ftcdn.net/jpg/04/63/63/59/360_F_463635935_IweuYhCqZRtHp3SLguQL8svOVroVXvvZ.jpg",
-      timestamp: new Date().toISOString(),
-    },
-    {
-      id: uuidv4(),
-      name: "Drink water",
-      categories: ["Distract", "Change status"],
-      checked: false,
-      infoUrl: "https://example.com/call",
-      imageUrl:
-        "https://content.health.harvard.edu/wp-content/uploads/2023/07/b8a1309a-ba53-48c7-bca3-9c36aab2338a.jpg",
-      timestamp: new Date().toISOString(),
-    },
-  ],
-  mood_records: generateMoodRecords(),
-};
 
 export default DatabaseManager.getInstance();
