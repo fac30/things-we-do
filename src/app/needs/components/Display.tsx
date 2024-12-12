@@ -34,6 +34,7 @@ interface DisplayProps<
   onItemClick?: (item: U & { label: string }) => void;
   modalComponent?: React.ComponentType<ModalProps<U>>;
   modalProps?: Partial<ModalProps<U>>;
+  chainEnd: number;
 }
 
 type ExtendedRelatedData<U> = U & { highlighted?: boolean };
@@ -51,6 +52,7 @@ export default function Display<
   onItemClick,
   modalComponent: CustomModal,
   modalProps = {},
+  chainEnd,
 }: DisplayProps<T, U>) {
   const database = useDatabase();
   const [mainData, setMainData] = useState<RxDocumentData<T>[]>([]);
@@ -92,7 +94,7 @@ export default function Display<
   useEffect(() => {
     fetchMainData();
     fetchRelatedData();
-  }, [fetchMainData, fetchRelatedData]);
+  }, [fetchMainData, fetchRelatedData, chainEnd]);
 
   const filteredData: FilteredData<
     ExtendedRelatedData<U> & { label: string }
