@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { addRxPlugin } from "rxdb";
 import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
