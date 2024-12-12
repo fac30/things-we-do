@@ -15,7 +15,7 @@ export default {
         "twd-secondary-purple": "#3C246C",
         "twd-navbar-background": "#31284C",
         "twd-graph-background": "#262538",
-        "twd-text-link": "#77AADD",
+        "twd-text-link": "#3fb2fc",
         "twd-cube-red": "#CC1111",
         "twd-cube-yellow": "#FFAA22",
         "twd-cube-blue": "#4488EE",
