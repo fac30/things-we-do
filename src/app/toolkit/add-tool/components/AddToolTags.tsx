@@ -3,6 +3,7 @@ import { useAddToolForm } from "@/context/AddToolContext";
 import Button from "@/ui/shared/Button";
 import Modal from "@/ui/shared/Modal";
 import { useDatabase } from "@/context/DatabaseContext";
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
 interface Categories {
   id: string;
@@ -87,11 +88,17 @@ export default function AddTags() {
             ariaPressed={formState.categories.includes(category)}
           />
         ))}
-        <Button
+        {/* <Button
           label="+ New Category"
           onClick={() => setModalOpen(true)}
           className="bg-twd-secondary-purple text-white"
-        />
+        /> */}
+        <button
+          onClick={() => setModalOpen(true)}
+          className="flex justify-center items-center"
+        >
+          <PlusCircleIcon className="w-7 m-auto" />
+        </button>
       </div>
 
       <Modal
