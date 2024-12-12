@@ -1,19 +1,17 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
-import { Cube } from "@/app/moods/components/Cube";
+import Cube from "@/app/moods/components/Cube";
 import { useState } from "react";
 import { Datum } from "plotly.js";
 
 jest.mock("@/ui/shared/PlotlyChart", () => ({
   __esModule: true,
   default: ({ data, onLoaded }: { data: any; onLoaded: () => void }) => {
-    // Simulate the Plotly chart triggering the onLoaded callback
     setTimeout(onLoaded, 0);
     return <div data-testid="plotly-chart" data-prop={JSON.stringify(data)} />;
   },
 }));
 
 describe("Cube label updates on toggle", () => {
-  // TODO: Fix this test
   it("updates Plotly chart labels correctly and verifies the toggle value", async () => {
     const Wrapper = () => {
       const [neuroState, setNeuroState] = useState<{
