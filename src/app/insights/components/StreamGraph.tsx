@@ -119,7 +119,7 @@ export default function MoodStreamGraph({
 
       <div className="w-11/12 m-auto flex justify-center text-center mb-10 mt-5">
         <PlotlyChart
-          data={traces}
+          data={traces as Plotly.Data[]}
           layout={{
             width: 350,
             height: 350,
