@@ -135,29 +135,20 @@ export default function LineGraph({
                 title: "",
                 tickformat: tickFormat,
                 showgrid: false,
-                titlefont: {
-                  color: "white",
-                },
+                titlefont: { color: "white" },
                 showticklabels: true,
-                tickfont: {
-                  color: "white",
-                },
+                tickfont: { color: "white" },
                 dtick: dtick,
 
                 range: [startOfRange.toISOString(), endOfRange.toISOString()],
               },
               yaxis: {
                 title: "",
-                range: [0, 10],
+                range: [Math.max(0, yMin - 0.5), yMax + 0.5],
                 showgrid: false,
                 showticklabels: false,
-                titlefont: {
-                  color: "white",
-                },
-
-                tickfont: {
-                  color: "white",
-                },
+                titlefont: { color: "white" },
+                tickfont: { color: "white" },
               },
               legend: {
                 font: {
