@@ -30,9 +30,10 @@ export default function CategoriesInfoPage() {
     };
 
     return (
-        <div className="bg-twd-background text-white min-h-screen px-10 py-6">
+        <>
           {/* Header */}
           <Header title="Categories" isInfoPage={true}/>
+          <div className="bg-twd-background text-white min-h-screen px-10 py-6">
     
           {/* Subheader */}
           <p className="text-gray-400 mt-3 mb-2">
@@ -44,7 +45,7 @@ export default function CategoriesInfoPage() {
                 <div className="flex overflow-x-auto whitespace-nowrap space-x-2">
                 {categories.map((category) => (
                     <Button
-                    key={category.id} // Use a unique key for each item in the map
+                    key={category.id}
                     label={category.name}
                     className=" text-white px-4 py-2 text-sm font-bold rounded-full"
                     />
@@ -90,5 +91,6 @@ export default function CategoriesInfoPage() {
                 />
             </div>
         </div>
+      </>
 );
 }

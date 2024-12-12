@@ -13,15 +13,15 @@ export default function ToolkitInfoPage() {
   }
 
   return (
-    <div className="bg-twd-background text-white min-h-screen px-10 py-6">
+    <>
       {/* Header */}
       <Header title="Learn More" isInfoPage={true} />
-
+      <div className="bg-twd-background text-white min-h-screen px-10 py-6">
       {/* Introduction Section */}
       <div className="mt-6">
-        <h1 className="text-2xl font-bold text-white mb-5">
+        <h2 className="text-xl font-bold text-white mb-5">
           What is this Tab About?
-        </h1>
+        </h2>
         <p className="text-gray-400 leading-relaxed">
           Toolkit tab is your personal space to create, organize, and manage a
           toolkit that’s tailored to your unique needs and experiences. It’s
@@ -84,5 +84,6 @@ export default function ToolkitInfoPage() {
         </ul>
       </div>
     </div>
+  </>
   );
 }
