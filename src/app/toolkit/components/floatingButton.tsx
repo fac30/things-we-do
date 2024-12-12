@@ -1,17 +1,14 @@
 import Link from "next/link"; // Import Next.js Link component
-
 import { PlusIcon } from "@heroicons/react/24/solid";
 
 export default function FloatingButton() {
   return (
     <Link href="/toolkit/add-tool">
-      {/* <Button
-        label="+ Add a Tool"
-        className="fixed bottom-24 right-4 bg-twd-primary-purple text-white shadow-lg"
-      /> */}
       <PlusIcon
         aria-label="Add New Tool"
-        className="w-16 fixed bottom-20 right-5  shadow-lg text-white bg-twd-primary-purple  p-4 rounded-full "
+        className="w-16 h-16 fixed bottom-20 right-5 shadow-lg text-white 
+                   bg-gradient-to-r from-twd-primary-purple to-purple-600 
+                   p-4 rounded-full hover:scale-105 transform transition-all duration-200 ease-in-out"
       />
     </Link>
   );
