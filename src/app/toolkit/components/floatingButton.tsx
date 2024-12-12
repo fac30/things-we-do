@@ -1,6 +1,5 @@
 import Link from "next/link"; // Import Next.js Link component
-import Button from "@/ui/shared/Button";
-import { PlusCircleIcon } from "@heroicons/react/24/solid";
+
 import { PlusIcon } from "@heroicons/react/24/solid";
 
 export default function FloatingButton() {
