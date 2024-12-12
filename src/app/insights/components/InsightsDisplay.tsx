@@ -3,13 +3,13 @@
 
 import { useDatabase } from "@/context/DatabaseContext";
 import LineGraph from "./LineGraph";
-import MoodAreaChart from "./MoodAreaChart";
+import MoodAreaChart from "./AreaChart";
 import retrieveDataObject from "@/lib/utils/retrieveDataObject";
 import { useState, useEffect } from "react";
 
 import Button from "@/ui/shared/Button";
 import clsx from "clsx";
-import MoodStreamGraph from "./MoodStreamGraph";
+import MoodStreamGraph from "./StreamGraph";
 
 export interface Insight {
   neurotransmitters: {
@@ -104,11 +104,7 @@ export default function InsightsDisplay() {
               key={index}
               label={dateOption}
               onClick={() => handleDateChange(dateOption as keyof typeof dateOffsets)}
-
-              className={clsx(
-                "font-normal",
-                isActive && "bg-twd-primary-purple text-white"
-              )}
+              className={clsx("font-normal", isActive && "bg-twd-primary-purple text-white")}
             />
           );
         })}
