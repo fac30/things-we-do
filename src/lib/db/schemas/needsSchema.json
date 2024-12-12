@@ -27,6 +27,14 @@
       "ref": "needs_categories",
       "maxLength": 100
     },
+    "mood": {
+      "type": "string",
+      "maxLength": 255
+    },
+    "priority": {
+      "type": "string",
+      "maxLength": 255
+    },
     "timestamp": {
       "type": "string",
       "format": "date-time"
