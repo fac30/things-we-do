@@ -15,7 +15,7 @@ export default function AddDescription() {
             description: e.target.value,
           }))
         }
-        className="w-full p-2 rounded bg-twd-background text-white border-b border-gray-700"
+        className="addToolInput"
         placeholder="E.g. long, slow breaths and count to 10"
       />
     </div>

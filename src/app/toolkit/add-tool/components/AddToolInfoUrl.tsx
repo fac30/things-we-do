@@ -21,7 +21,7 @@ export default function AddInfoUrl() {
         id="infoUrl"
         value={formState.infoUrl}
         onChange={handleUrlChange}
-        className="w-full p-2 rounded bg-twd-background text-white border-b border-gray-700"
+        className="addToolInput"
         placeholder="E.g. https://www.verywellmind.com/breathing-2584115"
       />
     </div>

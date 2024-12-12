@@ -15,7 +15,7 @@ export default function AddName() {
             name: e.target.value,
           }))
         }
-        className="w-full p-2 rounded bg-twd-background text-white border-b border-gray-700"
+        className="addToolInput"
         placeholder="E.g. breathing exercises"
       />
     </div>

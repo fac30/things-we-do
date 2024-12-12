@@ -22,7 +22,7 @@ export default function AddImageUrl() {
         id="imageUrl"
         value={formState.imageUrl}
         onChange={handleUrlChange}
-        className="w-full p-2 rounded bg-twd-background text-white border-b border-gray-700"
+        className="addToolInput"
         placeholder="E.g. https://freepik.com/peaceful-countryside-with-green-fields-cl_1177965-116395.jpg"
       />
     </div>
