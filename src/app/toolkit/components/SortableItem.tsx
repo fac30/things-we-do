@@ -1,5 +1,6 @@
 "use client";
 import { Bars3Icon } from "@heroicons/react/24/outline";
+import Button from "@/ui/shared/Button";
 
 interface SortableItemProps {
   item: {
@@ -91,7 +92,7 @@ export default function SortableItem({
           )}
 
           {/* Delete button */}
-          <button
+          {/* <button
             onClick={(e) => {
               e.stopPropagation();
               handleDelete(item.id);
@@ -99,7 +100,15 @@ export default function SortableItem({
             className="ml-4 text-white"
           >
             Delete
-          </button>
+          </button> */}
+          <Button
+            onEventClick={(e) => {
+              e.stopPropagation();
+              handleDelete(item.id);
+            }}
+            label="delete"
+            className="bg-twd-primary-purple font-normal py-[5px] px-[14px]"
+          />
         </div>
       </div>
     </div>
