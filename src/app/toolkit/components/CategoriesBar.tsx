@@ -58,7 +58,7 @@ export default function CategoriesBar({
           onClick={openModal}
           className="flex justify-center items-center"
         >
-          <PlusCircleIcon className="w-8 m-auto " />
+          <PlusCircleIcon className="w-7 m-auto " />
         </button>
         {/* <Button
           label="+"
