@@ -44,7 +44,7 @@ export default function SortableItem({
       {/* Main content */}
       <div className="flex flex-col items-start w-full">
         {/* First Row: Checkbox and Name */}
-        <div className="flex items-center space-x-3 w-full">
+        <div className="flex items-center space-x-3 w-full mb-2">
           <input
             type="checkbox"
             checked={item.checked}
