@@ -4,6 +4,7 @@ import {
   EllipsisHorizontalCircleIcon,
   ChartBarIcon,
 } from "@heroicons/react/24/outline";
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function HomePage() {
@@ -13,7 +14,7 @@ export default function HomePage() {
       <p className="text-lg font-thin mb-1">Gain awareness and autonomy over what you are feeling and doing:</p>
       
       {/* Decision maker block */}
-      <div>
+      <div className="mt-6">
         <div className="pt-2">
           <div className="flex items-center space-x-2 mb-4">
             <PresentationChartLineIcon className="w-5 h-5" />
@@ -24,25 +25,33 @@ export default function HomePage() {
             Work out how your decision might affect how you feel, find out if it&apos;s important, and what you can do about it.
           </p>
           <div className="flex justify-center">
-            <img
+            <Image
               src="/drawings/maker.svg"
               alt="Decision maker drawing"
-              className="w-16 h-16 object-contain"
+              className="object-contain"
+              layout="fixed"
+              width={64} 
+              height={64}
+              priority
             />
           </div>
         </div>
     
         <>
-          <img
+          <Image
             src="/images/decisionMaker.png"
             alt="Decision maker cube"
-            className="w-full h-76 object-cover"
+            className="object-cover"
+            layout="responsive"
+            width={100}
+            height={76}
+            priority
           />
           <Link href="/moods">
             <button
               className="absolute bg-twd-primary-purple rounded-full text-white py-2 px-4 flex items-center gap-2"
               style={{
-                top: "70%",
+                top: "78%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
               }}
@@ -56,7 +65,7 @@ export default function HomePage() {
       </div>
 
       {/* Toolkit block */}
-      <div>
+      <div className="mt-6">
         <div className="pt-2">
           <h2 className="text-xl mb-4">Toolkit</h2>
           <p className="text-base mb-1">
@@ -90,11 +99,25 @@ export default function HomePage() {
 
           <div className="grid grid-rows-2 gap-6">
             <div className="flex justify-center">
-              <img src="/drawings/toolkit.svg" alt="Toolkit drawing" className="w-20 max-w-xs object-contain" />
+              <Image 
+                src="/drawings/toolkit.svg" 
+                alt="Toolkit drawing" 
+                className="max-w-xs object-contain" 
+                layout="responsive"
+                width={80}
+                height={80}
+                priority />
             </div>
 
             <div className="flex justify-center">
-              <img src="/images/toolkit_screen.png" alt="Toolkit screenshot" className="w-2/3 max-w-sm object-contain rounded-lg shadow-md" />
+              <Image 
+                src="/images/toolkit_screen.png" 
+                alt="Toolkit screenshot" 
+                className="max-w-sm object-contain rounded-lg shadow-md"
+                layout="responsive" 
+                width={2}
+                height={3}
+                priority/>
             </div>
           </div>
         </div>
@@ -102,7 +125,7 @@ export default function HomePage() {
 
 
       {/* Needs block */}
-      <div>
+      <div className="mt-6">
         <div className="pt-2">
           <h2 className="text-xl mb-4">Needs</h2>
           <p className="text-base mb-1">
@@ -121,14 +144,21 @@ export default function HomePage() {
             </Link>
           </div>
           <div className="flex justify-center mb-4">
-              <img src="/drawings/needs.svg" alt="Needs drawing" className="w-20 max-w-xs object-contain" />
+              <Image 
+                src="/drawings/needs.svg" 
+                alt="Needs drawing" 
+                layout="intrinsic"
+                width={80}
+                height={80}
+                className="max-w-xs object-contain" 
+                priority />
           </div>
         </div>
       </div>
 
 
       {/* Insights block */}
-      <div>
+      <div className="mt-6">
         <div className="pt-2">
           <h2 className="text-xl mb-4">Insights</h2>
           <p className="text-base mb-1">
@@ -144,10 +174,14 @@ export default function HomePage() {
             }}
           />
           
-          <img
+          <Image
             src="/images/insights_screen.png"
             alt="Insights line graph"
-            className="w-full h-76 object-cover"
+            className="object-cover"
+            layout="responsive"
+            width={16}
+            height={9}
+            priority
           />
 
           <Link href="/insights">
@@ -167,10 +201,13 @@ export default function HomePage() {
         </div>
 
         <div className="flex justify-end">
-          <img
+          <Image
             src="/drawings/insights.svg"
             alt="Insights drawing"
-            className="object-contain w-[120px] h-[120px]"
+            className="object-contain"
+            width={120}
+            height={120}
+            priority
           />
         </div>
       </div>
