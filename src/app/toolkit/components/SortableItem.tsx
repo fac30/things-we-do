@@ -107,7 +107,7 @@ export default function SortableItem({
               handleDelete(item.id);
             }}
             label="delete"
-            className="bg-twd-secondary-purple text-gray-200 font-normal py-[5px] px-[14px]"
+            className="bg-twd-secondary-purple  font-normal py-[6px] px-[14px]"
           />
         </div>
       </div>
