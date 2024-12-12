@@ -31,40 +31,39 @@ export default function SortableItem({
   handleToggle,
   handleDelete,
 }: SortableItemProps) {
-
   return (
     <div
-        className="flex items-center p-4 rounded-lg shadow-lg bg-twd-background"
-        draggable="false"
+      className="flex items-center p-4 rounded-lg shadow-lg bg-[#1d1b30] border-2 border-[#242139]"
+      draggable="false"
     >
-        {/* Icon on the left, vertically centered */}
-        <div className="flex-shrink-0 pr-4 flex items-center">
-          <Bars3Icon className="h-6 w-6 text-gray-400 cursor-grab" />
+      {/* Icon on the left, vertically centered */}
+      <div className="flex-shrink-0 pr-4 flex items-center">
+        <Bars3Icon className="h-6 w-6 text-gray-400 cursor-grab" />
+      </div>
+
+      {/* Main content */}
+      <div className="flex flex-col items-start w-full">
+        {/* First Row: Checkbox and Name */}
+        <div className="flex items-center space-x-3 w-full">
+          <input
+            type="checkbox"
+            checked={item.checked}
+            onChange={(e) => {
+              e.stopPropagation();
+              handleToggle(item.id);
+            }}
+            className="h-5 w-5 appearance-none border-2 border-white rounded bg-twd-background checked:bg-white checked:border-white focus:ring focus:ring-twd-primary-purple checked:after:content-['✔']"
+          />
+          <p
+            className={`text-lg ${
+              item.checked ? "line-through text-gray-400" : "text-white"
+            }`}
+          >
+            {item.name}
+          </p>
         </div>
 
-        {/* Main content */}
-        <div className="flex flex-col items-start w-full">
-          {/* First Row: Checkbox and Name */}
-          <div className="flex items-center space-x-3 w-full">
-            <input
-              type="checkbox"
-              checked={item.checked}
-              onChange={(e) => {
-                e.stopPropagation();
-                handleToggle(item.id);
-              }}
-              className="h-5 w-5 appearance-none border-2 border-white rounded bg-twd-background checked:bg-white checked:border-white focus:ring focus:ring-twd-primary-purple checked:after:content-['✔']"
-            />
-            <p
-              className={`text-lg ${
-                item.checked ? "line-through text-gray-400" : "text-white"
-              }`}
-            >
-              {item.name}
-            </p>
-          </div>
-
-          {/* Second Row: Image, Link, and Delete Button */}
+        {/* Seconow: Image, Link, and Delete Button */}
         <div className="flex items-center justify-between mt-2 w-full">
           {/* Display the image or reserve space */}
           {isValidUrl(item.imageUrl) ? (
@@ -87,22 +86,22 @@ export default function SortableItem({
             >
               Go to resource
             </a>
-            ) : (
-              <div className="w-24"></div> // Reserve space for the link (adjust width as needed)
-            )}
+          ) : (
+            <div className="w-24"></div> // Reserve space for the link (adjust width as needed)
+          )}
 
-            {/* Delete button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDelete(item.id);
-              }}
-              className="ml-4 text-white"
-            >
-              Delete
-            </button>
-          </div>
+          {/* Delete button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDelete(item.id);
+            }}
+            className="ml-4 text-white"
+          >
+            Delete
+          </button>
         </div>
       </div>
-  )
+    </div>
+  );
 }

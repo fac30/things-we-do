@@ -138,7 +138,9 @@ export default function ToolkitList() {
     <div className="toolkit-container">
       {/* Search Component */}
       <Search onSearch={handleSearch} onClear={handleClearSearch} />
-      <p className="text-xs text-slate-300">Hold and drag to rearrange items</p>
+      <p className="text-xs text-slate-300 mt-1 mb-4">
+        Hold and drag to rearrange items
+      </p>
       {/* Drag-and-Drop Context */}
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="toolkit">
