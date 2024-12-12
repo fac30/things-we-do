@@ -91,10 +91,11 @@ class DatabaseManager {
 
     const collection = dbInstance.collections[collectionName];
 
-    if (!collection) throw new Error(`${collectionName} collection is missing.`);
+    if (!collection)
+      throw new Error(`${collectionName} collection is missing.`);
 
     const existingDocs = await collection.find().exec();
-    
+
     if (existingDocs.length === 0) {
       console.log(`Seeding ${collectionName}...`);
       await collection.bulkInsert(data);
@@ -175,7 +176,7 @@ class DatabaseManager {
     collectionName: string,
     docId: string,
     field: string,
-    update: string
+    update: string | object
   ) {
     try {
       const db = await this.accessDatabase();
