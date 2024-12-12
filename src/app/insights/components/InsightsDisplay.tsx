@@ -1,13 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useDatabase } from "@/context/DatabaseContext";
-
 import LineGraph from "./LineGraph";
+import MoodAreaChart from "./AreaChart";
 import retrieveDataObject from "@/lib/utils/retrieveDataObject";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 
 import Button from "@/ui/shared/Button";
 import clsx from "clsx";
+import MoodStreamGraph from "./StreamGraph";
 
 export interface Insight {
   neurotransmitters: {
@@ -27,76 +29,46 @@ export default function InsightsDisplay() {
 
   const dateOptions = ["day", "week", "month", "year"];
 
-  const handleDateChange = (dateChoice: keyof typeof dateParams) => {
+  const handleDateChange = (dateChoice: keyof typeof dateOffsets) => {
     setSelectedButton(dateChoice);
   };
 
-  const [selectedButton, setSelectedButton] =
-    useState<keyof typeof dateParams>("day");
-  const [useNow, setUseNow] = useState(true);
+  const [selectedButton, setSelectedButton] = useState<keyof typeof dateOffsets>("day");
 
-  const handleUseNowClick = () => {
-    setUseNow((prevUseNow) => !prevUseNow);
+  /* Handler & State for Currently Unused "To Now" Button
+    const [useNow, setUseNow] = useState(true);
+
+    const handleUseNowClick = () => {
+      setUseNow((prevUseNow) => !prevUseNow);
+    }; */
+  
+  const [now, setNow] = useState<Date | null>(null);
+
+  const getDateRange = (selected: keyof typeof dateOffsets) => {
+    if (!now) return { start: new Date(), end: new Date() };
+    const offset = dateOffsets[selected];
+    const start = new Date(now.getTime() - offset);
+    const end = now;
+    return { start, end };
   };
-  const now = useMemo(() => new Date(), []);
+  
+  const dateOffsets = {
+    day: 24 * 60 * 60 * 1000,
+    week: 7 * 24 * 60 * 60 * 1000,
+    month: 30 * 24 * 60 * 60 * 1000,
+    year: 365 * 24 * 60 * 60 * 1000
+  } as const;
 
-  const dateParams = useMemo(
-    () => ({
-      day: {
-        start: new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate(),
-          6,
-          0,
-          0,
-          0
-        ),
-        end: new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate(),
-          24,
-          0,
-          0,
-          0
-        ),
-      },
-
-      // This is from Monday to Sunday
-      week: {
-        start: new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate() - (now.getDay() === 0 ? 6 : now.getDay() - 1) // Adjust for Sunday
-        ),
-        end: new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate() + (now.getDay() === 0 ? 0 : 7 - now.getDay()) // Adjust for Sunday
-        ),
-      },
-      month: {
-        start: new Date(now.getFullYear(), now.getMonth(), 1),
-        end: new Date(now.getFullYear(), now.getMonth() + 1, 0),
-      },
-      year: {
-        start: new Date(now.getFullYear(), 0, 1),
-        end: new Date(now.getFullYear(), 11, 31),
-      },
-    }),
-    [now]
-  );
-
-  const [startOfRange, setStartOfRange] = useState<Date>(dateParams.day.start);
-  const [endOfRange, setEndOfRange] = useState<Date>(dateParams.day.end);
+  const [startOfRange, setStartOfRange] = useState<Date>(new Date());
+  const [endOfRange, setEndOfRange] = useState<Date>(new Date());
 
   useEffect(() => {
-    const { start, end } = dateParams[selectedButton];
-    console.log(start, end);
+    if (!now) return;
+    const { start, end } = getDateRange(selectedButton);
     setStartOfRange(start);
-    setEndOfRange(useNow ? now : end);
-  }, [useNow, selectedButton, dateParams, now]);
+    setEndOfRange(end);
+  }, [/* useNow, */ selectedButton, now]);
+  
 
   const getInsights = async () => {
     const myInsights = await database.getFromDb("mood_records");
@@ -109,47 +81,78 @@ export default function InsightsDisplay() {
     const goodInsights = retrieveDataObject(myInsights);
 
     setInsights(goodInsights);
+
+    if (goodInsights.length > 0) {
+      const latestInsight = goodInsights.reduce((acc, curr) => {
+        return new Date(curr.timestamp) > new Date(acc.timestamp) ? curr : acc;
+      });
+      setNow(new Date(latestInsight.timestamp));
+    } else {
+      setNow(new Date());
+    }
   };
 
-  useEffect(() => {
-    getInsights();
+  useEffect(() => { 
+    getInsights(); 
   }, []);
 
   return (
     <>
-      <div className="flex text-center w-full m-auto justify-between bg-twd-navbar-background py-2 px-4">
+      <div className="flex text-center w-full m-auto justify-between bg-twd-navbar-background py-2 px-4 sticky top-0 z-50">
         {dateOptions.map((dateOption, index) => {
           const isActive = selectedButton === dateOption;
           return (
             <Button
               key={index}
               label={dateOption}
-              onClick={() =>
-                handleDateChange(dateOption as keyof typeof dateParams)
-              }
-              className={clsx(
-                "font-normal",
-                isActive && "bg-twd-primary-purple text-white"
-              )}
+              onClick={() => handleDateChange(dateOption as keyof typeof dateOffsets)}
+              className={clsx("font-normal", isActive && "bg-twd-primary-purple text-white")}
             />
           );
         })}
-        <Button
+
+        {/* DO NOT DELETE THIS COMMENTED BUTTON - UNCOMMENT IT WHEN CUSTOM DATE RANGE IS IMPLEMENTED <Button
           label="To Date"
           className={clsx(useNow && "bg-white text-black")}
           onClick={handleUseNowClick}
-        />
+        /> */}
       </div>
 
-      {insights ? (
+      {insights ? ( // Line Graph
         <LineGraph
-          dataArray={insights}
-          startOfRange={startOfRange}
-          endOfRange={endOfRange}
-          selectedButton={selectedButton}
-        />
+            dataArray={insights}
+            startOfRange={startOfRange}
+            endOfRange={endOfRange}
+            selectedButton={selectedButton}
+          />
+        ) : (
+          <div>Loading Line Graph...</div>
+      )}
+
+      {insights ? ( // Area Chart
+        <>
+          <MoodAreaChart
+            dataArray={insights}
+            startOfRange={startOfRange}
+            endOfRange={endOfRange}
+            selectedButton={selectedButton}
+          />
+        </>
       ) : (
-        <div>Loading insights...</div>
+        <div>Loading Area Chart...</div>
+      )}
+
+      {insights ? ( // Stream Graph
+        <>
+          <MoodStreamGraph
+            dataArray={insights}
+            startOfRange={startOfRange}
+            endOfRange={endOfRange}
+            selectedButton={selectedButton}
+          />
+        </>
+      ) : (
+        <div>Loading Stream Graph...</div>
       )}
     </>
   );

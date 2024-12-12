@@ -3,20 +3,17 @@ import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
 import { createRxDatabase, RxDatabase } from "rxdb";
 import { v4 as uuidv4 } from "uuid";
-
 import toolkitItemSchema from "./schemas/toolkitItemSchema.json";
 import moodRecordSchema from "./schemas/moodRecordSchema.json";
 import categoriesSchema from "./schemas/categoriesSchema.json";
 import needsCategoriesSchema from "./schemas/categoriesSchema.json";
 import needsSchema from "./schemas/categoriesSchema.json";
 import nextActionsSchema from "./schemas/categoriesSchema.json";
-
 import { categories, toolkit } from "./seed/toolkit";
 import { needsCategories, needs, nextActions } from "./seed/needs";
-
+import generateMoodRecords from "./seed/moods";
 import { RxDBUpdatePlugin } from "rxdb/plugins/update";
 addRxPlugin(RxDBUpdatePlugin);
-
 addRxPlugin(RxDBDevModePlugin);
 
 let dbInstance: RxDatabase | null = null;
@@ -78,6 +75,7 @@ class DatabaseManager {
 
   private async seedDatabase() {
     try {
+      await this.seed("mood_records", generateMoodRecords("dev"));
       await this.seed("categories", categories);
       await this.seed("toolkit_items", toolkit);
       await this.seed("needs_categories", needsCategories);
@@ -90,11 +88,13 @@ class DatabaseManager {
 
   private async seed<T>(collectionName: string, data: T[]) {
     if (!dbInstance) throw new Error("Database not initialised.");
+
     const collection = dbInstance.collections[collectionName];
-    if (!collection)
-      throw new Error(`${collectionName} collection is missing.`);
+
+    if (!collection) throw new Error(`${collectionName} collection is missing.`);
 
     const existingDocs = await collection.find().exec();
+    
     if (existingDocs.length === 0) {
       console.log(`Seeding ${collectionName}...`);
       await collection.bulkInsert(data);

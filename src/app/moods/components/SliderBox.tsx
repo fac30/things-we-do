@@ -18,7 +18,7 @@ const sliders: {
   { chem: "adrenaline", label: "Step 3. Does it feel worth doing?" },
 ];
 
-export function SliderBox({ handleChange, neuroState }: SliderBoxProps) {
+export default function SliderBox({ handleChange, neuroState }: SliderBoxProps) {
   return (
     <form className="flex flex-col gap-4 w-10/12 m-auto">
       <fieldset>
