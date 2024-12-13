@@ -130,12 +130,13 @@ export default function SortableItem({
       </div>
       <Modal
         modalOpen={isLinkModalOpen}
+        title="Following this link will leave the app. Do you want to continue?"
         forwardButton={{
           action: () => {
             const link = item.infoUrl; // Replace with your link
             window.open(link, "_blank"); // Opens in a new tab
           },
-          label: "Leave the app?",
+          label: "Yes",
         }}
         backButton={{
           action: () => {
