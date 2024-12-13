@@ -35,6 +35,7 @@ export default function SortableItem({
   handleDelete,
 }: SortableItemProps) {
   const [isLinkModalOpen, setIsLinkModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   return (
     <div
@@ -118,10 +119,19 @@ export default function SortableItem({
           >
             Delete
           </button> */}
-          <Button
+          {/* <Button
             onEventClick={(e) => {
               e.stopPropagation();
               handleDelete(item.id);
+            }}
+            label="delete"
+            className="bg-twd-secondary-purple  font-normal py-[6px] px-[14px]"
+          />
+        </div> */}
+          <Button
+            onEventClick={(e) => {
+              e.stopPropagation();
+              setIsDeleteModalOpen(true);
             }}
             label="delete"
             className="bg-twd-secondary-purple  font-normal py-[6px] px-[14px]"
@@ -141,6 +151,22 @@ export default function SortableItem({
         backButton={{
           action: () => {
             setIsLinkModalOpen(false);
+          },
+          label: "No",
+        }}
+      />
+      <Modal
+        modalOpen={isDeleteModalOpen}
+        title="Delete this tool?"
+        forwardButton={{
+          action: () => {
+            handleDelete(item.id);
+          },
+          label: "Yes",
+        }}
+        backButton={{
+          action: () => {
+            setIsDeleteModalOpen(false);
           },
           label: "No",
         }}
