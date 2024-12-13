@@ -109,16 +109,18 @@ export default function HomeContents() {
       {/* Needs block */}
       <section className="mt-6">
         <div className="pt-2 flex gap-8">
-          <Image
-            src="/images/needsImage.png"
-            alt="Needs screenshot"
-            className="rounded-lg shadow-md flex-1"
-            width={170}
-            height={0}
-            // objectFit="contain"
-            layout="intrinsic"
-            priority
-          />
+          <div className="flex flex-2 justify-center">
+            <Image
+              src="/images/needsImage.png"
+              alt="Needs screenshot"
+              className="rounded-lg shadow-md"
+              width={213}
+              height={320}
+              // objectFit="contain"
+              layout="intrinsic"
+              priority
+            />
+          </div>
           <div className=" mx-auto mt-4 mb-4 py-4 w-1/2 flex flex-col gap-8 items-center justify-center rounded-lg flex-1">
             <EllipsisHorizontalCircleIcon className="w-8 h-8 mb-4" />
             <p className="text-base mb-1 text-center">
