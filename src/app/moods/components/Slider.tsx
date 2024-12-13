@@ -37,7 +37,6 @@ export function MoodSlider({ chem, label, handleChange }: SliderProps) {
         {label}
       </label>
       <Slider
-        // id={chem}
         onChange={(value) => handleChange(value as number, chem)} // Ensure the value is a number
         styles={{
           rail: { backgroundColor: "#893FFC" },
