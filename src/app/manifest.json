@@ -33,9 +33,9 @@
       "form_factor": "wide"
     }
   ],
-  "theme_color": "#FFFFFF",
-  "background_color": "#FFFFFF",
-  "start_url": "/",
+  "theme_color": "#893FFC",
+  "background_color": "#893FFC",
+  "start_url": "/toolkit",
   "display": "standalone",
   "orientation": "portrait"
 }
