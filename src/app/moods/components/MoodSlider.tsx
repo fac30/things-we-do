@@ -48,6 +48,14 @@ export default function MoodSlider({ chem, label, handleChange }: SliderProps) {
         styles={{
           rail: { backgroundColor: "#3C246C" },
           track: { backgroundColor: "#893FFC" },
+          handle: {
+            backgroundColor: "#893FFC",
+            border: "#ffc100",
+            height: "18px",
+            width: "18px",
+            transform: "translate(-10px, -2px)", // Corrected transform syntax
+            opacity: 1,
+          },
         }}
         min={1}
         max={10}
