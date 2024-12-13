@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import Button from "@/ui/shared/Button";
 import clsx from "clsx";
 import MoodStreamGraph from "./StreamGraph";
+import BarGraph from "./BarGraph";
 
 export interface Insight {
   neurotransmitters: {
@@ -23,9 +24,25 @@ export interface Insight {
   createdAt: string;
 }
 
+interface Need {
+  id: string;
+  name: string;
+  category: string;
+  selectedTimestamps: string[]; 
+  timestamp: string; 
+  selectedExpiry?: string; 
+}
+
+interface Category {
+  id: string; 
+  name: string; 
+  timestamp: string; 
+}
+
 export default function InsightsDisplay() {
   const database = useDatabase();
   const [insights, setInsights] = useState<Insight[] | null>(null);
+  const [needsData, setNeedsData] = useState<{ name: string; value: number }[] | null>(null);
 
   const dateOptions = ["day", "week", "month", "year"];
 
@@ -92,8 +109,45 @@ export default function InsightsDisplay() {
     }
   };
 
+  const getNeedsData = async () => {
+    try {
+      const needsResponse = await database.getFromDb("needs");
+      const categoriesResponse = await database.getFromDb("needs_categories");
+
+      const needs: Need[] = retrieveDataObject<Need>(needsResponse);
+      const categories: Category[] = retrieveDataObject<Category>(categoriesResponse);
+      console.log("Needs Data:", needs);
+      console.log("Categories Data:", categories);
+
+      // Aggregate `selectedTimestamps` counts by category
+      const categoryCounts = needs.reduce((acc: Record<string, number>, need: Need) => {
+        const { category, selectedTimestamps } = need;
+
+        if (!acc[category]) {
+          acc[category] = 0;
+        }
+
+        acc[category] += selectedTimestamps ? selectedTimestamps.length : 0;
+        return acc;
+      }, {});
+      console.log("Category Counts:", categoryCounts);
+
+      // Map categories to their names with counts
+      const needsData = categories.map((category: Category) => ({
+        name: category.name,
+        value: categoryCounts[category.id] || 0,
+      }));
+      
+      console.log("Final Needs Data for BarGraph:", needsData);
+      setNeedsData(needsData);
+    } catch (error) {
+      console.error("Error fetching needs data:", error);
+    }
+  };
+
   useEffect(() => { 
     getInsights(); 
+    getNeedsData();
   }, []);
 
   return (
@@ -154,6 +208,11 @@ export default function InsightsDisplay() {
       ) : (
         <div>Loading Stream Graph...</div>
       )}
+      {needsData ? (
+        <BarGraph data={needsData} />
+      ) : (
+        <div>Loading Needs Data...</div>
+      )};
     </>
   );
 }
