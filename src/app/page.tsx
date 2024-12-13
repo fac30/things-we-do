@@ -1,11 +1,11 @@
 import { Header } from "@/ui/shared/Header";
-import HomeContents from "./home/components/HomeContents";
+import HomeContent from "./home/components/HomeContent";
 
 export default function Page() {
   return (
     <>
       <Header title="Home" description="" hasInfoButton={false} />
-      <HomeContents />
+      <HomeContent />
     </>
   );
 }

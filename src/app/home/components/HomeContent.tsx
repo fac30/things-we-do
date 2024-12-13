@@ -7,7 +7,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
-export default function HomeContents() {
+export default function HomeContent() {
   return (
     <div className=" text-white min-h-screen px-8 py-4 flex flex-col justify-center text-center">
       <h2 className="text-2xl text-center font-semibold mb-4">Hello There!</h2>
