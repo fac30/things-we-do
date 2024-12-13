@@ -34,7 +34,17 @@ export default function Modal({
   return (
     <>
       {modalOpen && (
-        <div className="h-64 w-11/12 absolute top-1/2 left-1/2 bg-gray-800 border-[1.5px] rounded-lg -translate-x-1/2 -translate-y-1/2">
+        <div
+          className="h-64 w-11/12 absolute top-1/2 left-1/2 bg-gray-800 border-[1.5px] rounded-lg -translate-x-1/2 -translate-y-1/2"
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 1000,
+            overflow: "hidden",
+          }}
+        >
           <div className="flex flex-col w-full items-center py-10 justify-between h-full">
             {inputModal ? (
               <input
