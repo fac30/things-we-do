@@ -204,10 +204,7 @@ export default function NeedsDisplay() {
           "needs",
           selectedNeed.id,
           "selectedTimestamps",
-          [
-            ...selectedNeed.selectedTimestamps,
-            new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString(),
-          ]
+          [...selectedNeed.selectedTimestamps, new Date().toISOString()]
         );
         await database.updateDocument(
           "needs",
