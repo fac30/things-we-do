@@ -3,6 +3,7 @@ import { useAddToolForm } from "@/context/AddToolContext";
 import Button from "@/ui/shared/Button";
 import Modal from "@/ui/shared/Modal";
 import { useDatabase } from "@/context/DatabaseContext";
+import { RxDocument } from "rxdb";
 
 interface Categories {
   id: string;
@@ -19,7 +20,9 @@ export default function AddTags() {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const allCategories = await database.getFromDb("categories");
+      const allCategories = await database.getFromDb<RxDocument<Categories>>(
+        "categories"
+      );
       if (allCategories) {
         setCategories(allCategories.map((cat: Categories) => cat.name));
       } else {
@@ -28,7 +31,7 @@ export default function AddTags() {
     };
 
     fetchCategories();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,10 +41,10 @@ export default function AddTags() {
   const handleAddCategory = () => {
     if (newCategory.trim()) {
       // Add to pending categories
-      setFormState(prev => ({
+      setFormState((prev) => ({
         ...prev,
         pendingCategories: [...prev.pendingCategories, newCategory.trim()],
-        categories: [...prev.categories, newCategory.trim()]
+        categories: [...prev.categories, newCategory.trim()],
       }));
       setNewCategory("");
       setModalOpen(false);
@@ -49,11 +52,11 @@ export default function AddTags() {
   };
 
   const toggleCategory = (category: string) => {
-    setFormState(prev => ({
+    setFormState((prev) => ({
       ...prev,
       categories: prev.categories.includes(category)
-        ? prev.categories.filter(c => c !== category)
-        : [...prev.categories, category]
+        ? prev.categories.filter((c) => c !== category)
+        : [...prev.categories, category],
     }));
   };
 
@@ -61,7 +64,7 @@ export default function AddTags() {
     <div>
       <p className="text-white">Tags</p>
       <div className="flex flex-wrap gap-2">
-        {categories.map(category => (
+        {categories.map((category) => (
           <Button
             key={category}
             label={category}
@@ -74,7 +77,7 @@ export default function AddTags() {
             ariaPressed={formState.categories.includes(category)}
           />
         ))}
-        {formState.pendingCategories.map(category => (
+        {formState.pendingCategories.map((category) => (
           <Button
             key={category}
             label={category}
@@ -102,14 +105,14 @@ export default function AddTags() {
         handleInputChange={handleInputChange}
         forwardButton={{
           label: "Add",
-          action: handleAddCategory
+          action: handleAddCategory,
         }}
         backButton={{
           label: "Cancel",
           action: () => {
             setNewCategory("");
             setModalOpen(false);
-          }
+          },
         }}
       />
     </div>
