@@ -1,7 +1,6 @@
 "use client";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import Button from "@/ui/shared/Button";
-// import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import Modal from "@/ui/shared/Modal";
 
