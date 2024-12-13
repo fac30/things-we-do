@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
 import Section from "./Section";
 import { RxDocument, RxDocumentData } from "rxdb";
@@ -17,11 +17,6 @@ interface ModalProps<U> {
   modalOpen: boolean;
   onClose: () => void;
   selectedItem: U | null;
-}
-
-interface FilteredData<U> {
-  key: string;
-  items: (U & { label: string; highlighted?: boolean })[];
 }
 
 interface DisplayProps<
@@ -82,7 +77,9 @@ export default function Display<
 
   const fetchRelatedData = useCallback(async () => {
     const response = await database.getFromDb<RxDocument<U>>(relatedTable);
-    let data = response.map((doc) => doc.toJSON() as RxDocumentData<U>);
+    let data: ExtendedRelatedData<U>[] = response.map(
+      (doc) => doc.toJSON() as RxDocumentData<U>
+    );
 
     if (filterKey && highlight) {
       const now = new Date();
@@ -90,34 +87,39 @@ export default function Display<
         ...item,
         highlighted:
           new Date(item[filterKey as keyof U] as unknown as string) > now,
-      })) as ExtendedRelatedData<U>[];
+      }));
     }
+
     setRelatedData(data);
+
     if (highlight) {
-      setIsUnmet(relatedData.some((datum) => datum.highlighted));
+      const hasHighlighted = data.some((datum) => datum.highlighted);
+      setIsUnmet(hasHighlighted);
     }
-  }, [database, relatedTable, filterKey, highlight, relatedData]);
+  }, [database, relatedTable, filterKey, highlight]);
 
   useEffect(() => {
     fetchMainData();
     fetchRelatedData();
   }, [fetchMainData, fetchRelatedData, chainEnd]);
 
-  const filteredData: FilteredData<
-    ExtendedRelatedData<U> & { label: string }
-  >[] = mainData.map((mainItem) => {
-    const filteredItems = relatedData
-      .filter(
-        (relatedItem) =>
-          (relatedItem[relatedKey] as unknown as string) ===
-          (mainItem[mainKey] as unknown as string)
-      )
-      .map((item) => ({
-        ...item,
-        label: item.name,
-      })) as (ExtendedRelatedData<U> & { label: string })[];
-    return { key: mainItem.name, items: filteredItems };
-  });
+  const filteredData = useMemo(
+    () =>
+      mainData.map((mainItem) => {
+        const filteredItems = relatedData
+          .filter(
+            (relatedItem) =>
+              (relatedItem[relatedKey] as unknown as string) ===
+              (mainItem[mainKey] as unknown as string)
+          )
+          .map((item) => ({
+            ...item,
+            label: item.name,
+          })) as (ExtendedRelatedData<U> & { label: string })[];
+        return { key: mainItem.name, items: filteredItems };
+      }),
+    [mainData, relatedData, mainKey, relatedKey]
+  );
 
   const handleItemClick = (item: U & { label: string }) => {
     setSelectedItem(item);
@@ -139,15 +141,17 @@ export default function Display<
 
   return (
     <>
-      <Button
-        onClick={openInfo}
-        label="Next actions"
-        disabled={!isUnmet}
-        className={clsx(
-          "text-white rounded fixed right-4 bottom-24",
-          isUnmet ? "bg-green-500" : "bg-gray-400 cursor-not-allowed"
-        )}
-      />
+      {highlight && (
+        <Button
+          onClick={openInfo}
+          label="Next actions"
+          disabled={!isUnmet}
+          className={clsx(
+            "text-white rounded fixed right-4 bottom-24",
+            isUnmet ? "bg-green-500" : "bg-gray-400 cursor-not-allowed"
+          )}
+        />
+      )}
       <div className="w-11/12 m-auto">
         {filteredData.map((data, index) => (
           <Section
