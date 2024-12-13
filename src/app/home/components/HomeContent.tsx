@@ -69,7 +69,7 @@ export default function HomeContent() {
 
         <div
           id="column-container-toolkit"
-          className="flex gap-8 max-w-6xl w-full justify-center items-center"
+          className="flex gap-8 max-w-6xl w-full justify-center items-center m-auto"
         >
           <div className="flex flex-1 flex-col h-full justify-center relative w-full items-center gap-5">
             <WrenchIcon className="w-10 h-10" />
@@ -106,8 +106,8 @@ export default function HomeContent() {
 
       {/* Needs block */}
       <section className="mt-6">
-        <div className="pt-2 flex gap-8">
-          <div className="flex flex-2 justify-center">
+        <div className="pt-2 flex gap-8 m-auto w-full">
+          <div className="flex flex-1 justify-center">
             <Image
               src="/images/needsImage.png"
               alt="Needs screenshot"
