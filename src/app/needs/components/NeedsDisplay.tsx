@@ -18,6 +18,7 @@ type Need = RxDocumentData<{
   selectedExpiry?: string;
   mood?: string;
   highlighted?: boolean;
+  selectedTimestamps: string;
 }>;
 
 interface Priority {
@@ -199,6 +200,15 @@ export default function NeedsDisplay() {
     async (mood: string, priority: Priority) => {
       if (!selectedNeed) return;
       try {
+        await database.updateDocument(
+          "needs",
+          selectedNeed.id,
+          "selectedTimestamps",
+          [
+            ...selectedNeed.selectedTimestamps,
+            new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString(),
+          ]
+        );
         await database.updateDocument(
           "needs",
           selectedNeed.id,
