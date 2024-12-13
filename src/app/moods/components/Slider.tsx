@@ -39,8 +39,8 @@ export function MoodSlider({ chem, label, handleChange }: SliderProps) {
       <Slider
         onChange={(value) => handleChange(value as number, chem)} // Ensure the value is a number
         styles={{
-          rail: { backgroundColor: "#893FFC" },
-          track: { backgroundColor: "#ffc100" },
+          rail: { backgroundColor: "#3C246C" },
+          track: { backgroundColor: "#893FFC" },
         }}
         min={1}
         max={10}
