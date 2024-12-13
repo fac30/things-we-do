@@ -1,4 +1,4 @@
-import { MoodSlider } from "./Slider";
+import MoodSlider from "./MoodSlider";
 import { NeurochemState } from "./MoodsDisplay";
 
 interface SliderBoxProps {

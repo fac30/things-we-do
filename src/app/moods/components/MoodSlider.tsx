@@ -11,7 +11,7 @@ interface SliderProps {
   ) => void;
   neuroState: NeurochemState;
 }
-export function MoodSlider({ chem, label, handleChange }: SliderProps) {
+export default function MoodSlider({ chem, label, handleChange }: SliderProps) {
   // const normaliseValue = (value: unknown): number => {
   //   if (value instanceof Date) return value.getTime();
   //   if (typeof value === "number") return value;
