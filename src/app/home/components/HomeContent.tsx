@@ -11,7 +11,7 @@ export default function HomeContent() {
   return (
     <div className=" text-white min-h-screen px-8 py-4 flex flex-col justify-center text-center">
       <h2 className="text-2xl text-center font-semibold mb-4">Hello There!</h2>
-      <p className="text-lg font-thin mb-1">
+      <p className="text-lg font-light mb-1">
         Gain awareness and autonomy over what you are feeling and doing:
       </p>
 
@@ -107,11 +107,11 @@ export default function HomeContent() {
       {/* Needs block */}
       <section className="mt-6">
         <div className="pt-2 flex gap-8 m-auto w-full">
-          <div className="flex flex-1 justify-center">
+          <div className="flex flex-1 justify-center flex-shrink bg-transparent">
             <Image
               src="/images/needsImage.png"
               alt="Needs screenshot"
-              className="rounded-lg shadow-md"
+              className="rounded-lg object-contain flex-shrink"
               width={213}
               height={320}
               priority
