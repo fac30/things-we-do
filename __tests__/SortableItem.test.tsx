@@ -55,7 +55,7 @@ describe("SortableItem Component", () => {
 
     // Check sub-layout for the second row
     const secondRow = screen
-      .getByRole("link", { name: /go to resource/i })
+      .getByRole("button", { name: /go to resource/i })
       .closest("div");
     expect(secondRow).toHaveClass(
       "flex",

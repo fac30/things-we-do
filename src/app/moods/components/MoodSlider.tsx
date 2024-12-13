@@ -34,15 +34,16 @@ export default function MoodSlider({ chem, label, handleChange }: SliderProps) {
   return (
     <div className="flex flex-col mb-2">
       <label
-        id={`${chem}label`}
-        htmlFor={chem}
+        id={`label-${chem}`}
+        htmlFor={`slider-${chem}`}
         className="text-white text-md mb-4"
       >
         {label}
       </label>
       <Slider
-        id={chem}
-        aria-labelledby={`${chem}label`}
+        data-testid={`slider-${chem}`}
+        id={`slider-${chem}`}
+        aria-labelledby={`label-${chem}`}
         onChange={(value) => handleChange(value as number, chem)} // Ensure the value is a number
         styles={{
           rail: { backgroundColor: "#3C246C" },
