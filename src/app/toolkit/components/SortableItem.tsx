@@ -1,6 +1,9 @@
 "use client";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import Button from "@/ui/shared/Button";
+// import { useSearchParams } from "next/navigation";
+import { useState } from "react";
+import Modal from "@/ui/shared/Modal";
 
 interface SortableItemProps {
   item: {
@@ -32,6 +35,8 @@ export default function SortableItem({
   handleToggle,
   handleDelete,
 }: SortableItemProps) {
+  const [isLinkModalOpen, setIsLinkModalOpen] = useState(false);
+
   return (
     <div
       className="flex items-center p-4 rounded-lg shadow-lg bg-[#1d1b30] border-2 border-[#242139]"
@@ -78,7 +83,7 @@ export default function SortableItem({
           )}
 
           {/* Display the link or reserve space */}
-          {isValidUrl(item.infoUrl) ? (
+          {/* {isValidUrl(item.infoUrl) ? (
             <a
               href={item.infoUrl}
               target="_blank"
@@ -89,6 +94,19 @@ export default function SortableItem({
             </a>
           ) : (
             <div className="w-24"></div> // Reserve space for the link (adjust width as needed)
+          )} */}
+
+          {isValidUrl(item.infoUrl) ? (
+            <button
+              onClick={() => {
+                setIsLinkModalOpen(true);
+              }}
+              className="bg-twd-primary-purple text-sm rounded-full font-normal py-[6px] px-[14px]"
+            >
+              Go to resource
+            </button>
+          ) : (
+            <div className="w-24"></div>
           )}
 
           {/* Delete button */}
@@ -111,6 +129,22 @@ export default function SortableItem({
           />
         </div>
       </div>
+      <Modal
+        modalOpen={isLinkModalOpen}
+        forwardButton={{
+          action: () => {
+            const link = item.infoUrl; // Replace with your link
+            window.open(link, "_blank"); // Opens in a new tab
+          },
+          label: "Leave the app?",
+        }}
+        backButton={{
+          action: () => {
+            setIsLinkModalOpen(false);
+          },
+          label: "No",
+        }}
+      />
     </div>
   );
 }
