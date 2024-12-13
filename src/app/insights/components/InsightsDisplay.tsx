@@ -4,12 +4,12 @@
 import { useDatabase } from "@/context/DatabaseContext";
 import LineGraph from "./LineGraph";
 import MoodAreaChart from "./AreaChart";
-import retrieveDataObject from "@/lib/utils/retrieveDataObject";
 import { useState, useEffect } from "react";
 
 import Button from "@/ui/shared/Button";
 import clsx from "clsx";
 import MoodStreamGraph from "./StreamGraph";
+import { RxDocument } from "rxdb";
 
 export interface Insight {
   neurotransmitters: {
@@ -33,7 +33,8 @@ export default function InsightsDisplay() {
     setSelectedButton(dateChoice);
   };
 
-  const [selectedButton, setSelectedButton] = useState<keyof typeof dateOffsets>("day");
+  const [selectedButton, setSelectedButton] =
+    useState<keyof typeof dateOffsets>("day");
 
   /* Handler & State for Currently Unused "To Now" Button
     const [useNow, setUseNow] = useState(true);
@@ -41,7 +42,7 @@ export default function InsightsDisplay() {
     const handleUseNowClick = () => {
       setUseNow((prevUseNow) => !prevUseNow);
     }; */
-  
+
   const [now, setNow] = useState<Date | null>(null);
 
   const getDateRange = (selected: keyof typeof dateOffsets) => {
@@ -51,12 +52,12 @@ export default function InsightsDisplay() {
     const end = now;
     return { start, end };
   };
-  
+
   const dateOffsets = {
     day: 24 * 60 * 60 * 1000,
     week: 7 * 24 * 60 * 60 * 1000,
     month: 30 * 24 * 60 * 60 * 1000,
-    year: 365 * 24 * 60 * 60 * 1000
+    year: 365 * 24 * 60 * 60 * 1000,
   } as const;
 
   const [startOfRange, setStartOfRange] = useState<Date>(new Date());
@@ -68,22 +69,23 @@ export default function InsightsDisplay() {
     setStartOfRange(start);
     setEndOfRange(end);
   }, [/* useNow, */ selectedButton, now]);
-  
 
   const getInsights = async () => {
-    const myInsights = await database.getFromDb("mood_records");
+    const insightsResponse = await database.getFromDb<RxDocument<Insight>>(
+      "mood_records"
+    );
 
-    if (!myInsights) {
+    if (!insightsResponse) {
       console.log("No insights found.");
       setInsights([]);
       return;
     }
-    const goodInsights = retrieveDataObject(myInsights);
 
-    setInsights(goodInsights);
+    const insightsData = insightsResponse.map((doc) => doc.toJSON() as Insight);
+    setInsights(insightsData);
 
-    if (goodInsights.length > 0) {
-      const latestInsight = goodInsights.reduce((acc, curr) => {
+    if (insightsData.length > 0) {
+      const latestInsight = insightsData.reduce((acc, curr) => {
         return new Date(curr.timestamp) > new Date(acc.timestamp) ? curr : acc;
       });
       setNow(new Date(latestInsight.timestamp));
@@ -92,8 +94,8 @@ export default function InsightsDisplay() {
     }
   };
 
-  useEffect(() => { 
-    getInsights(); 
+  useEffect(() => {
+    getInsights();
   }, []);
 
   return (
@@ -105,8 +107,13 @@ export default function InsightsDisplay() {
             <Button
               key={index}
               label={dateOption}
-              onClick={() => handleDateChange(dateOption as keyof typeof dateOffsets)}
-              className={clsx("font-normal", isActive && "bg-twd-primary-purple text-white")}
+              onClick={() =>
+                handleDateChange(dateOption as keyof typeof dateOffsets)
+              }
+              className={clsx(
+                "font-normal",
+                isActive && "bg-twd-primary-purple text-white"
+              )}
             />
           );
         })}
@@ -120,13 +127,13 @@ export default function InsightsDisplay() {
 
       {insights ? ( // Line Graph
         <LineGraph
-            dataArray={insights}
-            startOfRange={startOfRange}
-            endOfRange={endOfRange}
-            selectedButton={selectedButton}
-          />
-        ) : (
-          <div>Loading Line Graph...</div>
+          dataArray={insights}
+          startOfRange={startOfRange}
+          endOfRange={endOfRange}
+          selectedButton={selectedButton}
+        />
+      ) : (
+        <div>Loading Line Graph...</div>
       )}
 
       {insights ? ( // Area Chart
