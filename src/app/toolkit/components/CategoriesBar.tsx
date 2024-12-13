@@ -57,6 +57,7 @@ export default function CategoriesBar({
         <button
           onClick={openModal}
           className="flex justify-center items-center"
+          aria-label="Add category"
         >
           <PlusCircleIcon className="w-7 m-auto " />
         </button>
