@@ -78,7 +78,7 @@ const needs = Object.entries(needsList).flatMap(([categoryKey, items]) => {
     selectedExpiry: new Date().toISOString(),
     category: category.id,
     mood: "",
-    priority: "",
+    priority: { order: 0, name: "" },
     timestamp: new Date().toISOString(),
   }));
 });

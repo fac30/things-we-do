@@ -10,6 +10,7 @@ import {
 import SortableItem from "./SortableItem";
 import Search from "@/ui/shared/Search";
 import { useToolkit } from "@/context/ToolkitContext";
+import { RxDocument } from "rxdb";
 
 export interface ToolkitComponentData {
   id: string;
@@ -35,11 +36,15 @@ export default function ToolkitList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const items = await database.getFromDb("toolkit_items");
+        const items = await database.getFromDb<
+          RxDocument<ToolkitComponentData>
+        >("toolkit_items");
         if (items) {
-          const data = items.map((doc) => (doc.toJSON ? doc.toJSON() : doc));
-          setMainData(data);
-          setDisplayedData(data);
+          const toolkitData = items.map(
+            (doc) => doc.toJSON() as ToolkitComponentData
+          );
+          setMainData(toolkitData);
+          setDisplayedData(toolkitData);
         } else {
           console.log("No items found in toolkit_items collection.");
         }

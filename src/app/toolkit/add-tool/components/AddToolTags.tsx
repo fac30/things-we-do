@@ -3,6 +3,7 @@ import { useAddToolForm } from "@/context/AddToolContext";
 import Button from "@/ui/shared/Button";
 import Modal from "@/ui/shared/Modal";
 import { useDatabase } from "@/context/DatabaseContext";
+import { RxDocument } from "rxdb";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
 interface Categories {
@@ -20,7 +21,9 @@ export default function AddTags() {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const allCategories = await database.getFromDb("categories");
+      const allCategories = await database.getFromDb<RxDocument<Categories>>(
+        "categories"
+      );
       if (allCategories) {
         setCategories(allCategories.map((cat: Categories) => cat.name));
       } else {

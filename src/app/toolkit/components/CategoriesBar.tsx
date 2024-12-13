@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import Button from "@/ui/shared/Button";
 import { useDatabase } from "@/context/DatabaseContext";
 import { useToolkit } from "@/context/ToolkitContext";
+import { RxDocument } from "rxdb";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
-interface Categories {
+interface Category {
   id: string;
   name: string;
   timestamp: string;
@@ -31,9 +32,11 @@ export default function CategoriesBar({
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const allCategories = await database.getFromDb("categories");
+      const allCategories = await database.getFromDb<RxDocument<Category>>(
+        "categories"
+      );
       if (allCategories) {
-        setCategories(allCategories.map((cat: Categories) => cat.name));
+        setCategories(allCategories.map((cat: Category) => cat.name));
       } else {
         setCategories([]);
       }

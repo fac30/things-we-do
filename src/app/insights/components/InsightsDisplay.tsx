@@ -4,12 +4,12 @@
 import { useDatabase } from "@/context/DatabaseContext";
 import LineGraph from "./LineGraph";
 import MoodAreaChart from "./AreaChart";
-import retrieveDataObject from "@/lib/utils/retrieveDataObject";
 import { useState, useEffect } from "react";
 
 import Button from "@/ui/shared/Button";
 import clsx from "clsx";
 import MoodStreamGraph from "./StreamGraph";
+import { RxDocument } from "rxdb";
 
 export interface Insight {
   neurotransmitters: {
@@ -71,19 +71,21 @@ export default function InsightsDisplay() {
   }, [/* useNow, */ selectedButton, now]);
 
   const getInsights = async () => {
-    const myInsights = await database.getFromDb("mood_records");
+    const insightsResponse = await database.getFromDb<RxDocument<Insight>>(
+      "mood_records"
+    );
 
-    if (!myInsights) {
+    if (!insightsResponse) {
       console.log("No insights found.");
       setInsights([]);
       return;
     }
-    const goodInsights = retrieveDataObject(myInsights);
 
-    setInsights(goodInsights);
+    const insightsData = insightsResponse.map((doc) => doc.toJSON() as Insight);
+    setInsights(insightsData);
 
-    if (goodInsights.length > 0) {
-      const latestInsight = goodInsights.reduce((acc, curr) => {
+    if (insightsData.length > 0) {
+      const latestInsight = insightsData.reduce((acc, curr) => {
         return new Date(curr.timestamp) > new Date(acc.timestamp) ? curr : acc;
       });
       setNow(new Date(latestInsight.timestamp));
