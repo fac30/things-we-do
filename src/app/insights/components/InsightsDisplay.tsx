@@ -100,7 +100,7 @@ export default function InsightsDisplay() {
 
   return (
     <>
-      <div className="flex text-center w-full m-auto justify-between bg-twd-navbar-background py-2 px-4 sticky top-0 z-50">
+      <div className="flex text-center w-full m-auto justify-between bg-twd-background py-2 px-4 sticky top-0 z-50">
         {dateOptions.map((dateOption, index) => {
           const isActive = selectedButton === dateOption;
           return (

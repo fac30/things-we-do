@@ -23,11 +23,12 @@ export default function MoodsDisplay() {
     adrenaline: 1,
   });
 
-  const handleChange = (value: number, chem: string) => {
+  const handleChange = (value: number | number[], chem: string) => {
     setNeuroState((prev) => ({
       ...prev,
       [chem]: value,
     }));
+    console.log(neuroState);
   };
 
   const submitMood = () => {

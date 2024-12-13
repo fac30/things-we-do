@@ -5,24 +5,25 @@ export default function AddImageUrl() {
   const { formState, setFormState } = useAddToolForm();
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormState(prev => ({ 
+    setFormState((prev) => ({
       ...prev,
-      imageUrl: e.target.value
+      imageUrl: e.target.value,
     }));
   };
 
   return (
     <div>
-      <label htmlFor="imageUrl"
-        className="text-white"
-      >Image URL</label>
+      <label htmlFor="imageUrl" className="text-white block mb-1">
+        Image URL
+      </label>
 
       <input
         type="url"
         id="imageUrl"
         value={formState.imageUrl}
         onChange={handleUrlChange}
-        className="w-full p-2 rounded bg-twd-background text-white border border-gray-700"
+        className="addToolInput"
+        placeholder="E.g. https://freepik.com/peaceful-countryside-with-green-fields-cl_1177965-116395.jpg"
       />
     </div>
   );

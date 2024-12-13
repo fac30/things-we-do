@@ -34,43 +34,35 @@ export default function Modal({
   return (
     <>
       {modalOpen && (
-        <div
-          className="h-64 w-11/12 absolute top-1/2 left-1/2 bg-gray-800 border-[1.5px] rounded-lg -translate-x-1/2 -translate-y-1/2"
-          style={{
-            position: "fixed",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            zIndex: 1000,
-            overflow: "hidden",
-          }}
-        >
-          <div className="flex flex-col w-full items-center py-10 justify-between h-full">
-            {inputModal ? (
-              <input
-                type="text"
-                placeholder={placeholder}
-                className="text-black p-2 mt-5 w-9/12"
-                onChange={handleInputChange}
-              />
-            ) : (
-              <p className="text-xl w-10/12 text-center">{title}</p>
-            )}
-            <div className="flex justify-center gap-10 w-2/3">
-              {backButton && (
-                <Button
-                  onClick={backButton.action}
-                  label={backButton.label}
-                  className="text-lg font-normal w-36 bg-gray-700 text-nowrap"
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+          <div className="w-11/12 max-w-lg bg-gray-900 border border-gray-700 rounded-lg p-6 shadow-lg">
+            <div className="flex flex-col items-center">
+              {inputModal ? (
+                <input
+                  type="text"
+                  placeholder={placeholder}
+                  className="w-9/12 px-3 py-2 mt-4 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  onChange={handleInputChange}
                 />
+              ) : (
+                <p className="mt-4 text-xl text-center text-white">{title}</p>
               )}
-              {forwardButton && (
-                <Button
-                  onClick={forwardButton.action}
-                  label={forwardButton.label}
-                  className="bg-twd-primary-purple text-lg font-normal w-36 text-nowrap"
-                />
-              )}
+              <div className="flex justify-center gap-4 mt-6 w-full">
+                {backButton && (
+                  <Button
+                    onClick={backButton.action}
+                    label={backButton.label}
+                    className="px-4 py-2 text-lg font-medium text-white bg-gray-600 rounded-full hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 w-36 text-nowrap"
+                  />
+                )}
+                {forwardButton && (
+                  <Button
+                    onClick={forwardButton.action}
+                    label={forwardButton.label}
+                    className="px-4 py-2 text-lg font-medium text-white bg-twd-primary-purple rounded-full hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-400 w-36 text-nowrap"
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>

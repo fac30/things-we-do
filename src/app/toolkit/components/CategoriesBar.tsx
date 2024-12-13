@@ -4,6 +4,7 @@ import Button from "@/ui/shared/Button";
 import { useDatabase } from "@/context/DatabaseContext";
 import { useToolkit } from "@/context/ToolkitContext";
 import { RxDocument } from "rxdb";
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
 interface Category {
   id: string;
@@ -16,9 +17,9 @@ interface CategoriesBarProps {
 }
 
 const categoriesBarClass = `
-  whitespace-nowrap flex items-center gap-4 px-4 py-2 
-  overflow-x-auto bg-twd-background border-b 
-  border-gray-700 sm:gap-6 sm:px-6  focus:ring-2 focus:ring-twd-secondary-purple
+  whitespace-nowrap flex items-center justify-center gap-4 px-4 py-2 
+  overflow-x-auto 
+ sm:gap-6 sm:px-6  focus:ring-2 focus:ring-twd-secondary-purple
 `;
 
 export default function CategoriesBar({
@@ -55,12 +56,19 @@ export default function CategoriesBar({
   return (
     <div className={categoriesBarClass} data-testid="categories-bar">
       {/* Fixed "+" Button */}
-      <div className="flex-shrink-0">
-        <Button
+      <div className="flex-shrink-0 justify-center items-center">
+        <button
+          onClick={openModal}
+          className="flex justify-center items-center"
+          aria-label="Add category"
+        >
+          <PlusCircleIcon className="w-7 m-auto " />
+        </button>
+        {/* <Button
           label="+"
           onClick={openModal}
           className="bg-twd-primary-purple"
-        />
+        /> */}
       </div>
 
       {/* Scrollable Categories */}
@@ -84,7 +92,7 @@ export default function CategoriesBar({
             <Button
               key={category}
               label={category}
-              className={`${
+              className={`font-normal ${
                 isActive
                   ? "bg-twd-secondary-purple text-white"
                   : "bg-twd-background text-white"

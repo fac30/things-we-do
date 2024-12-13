@@ -4,6 +4,7 @@ import Button from "@/ui/shared/Button";
 import Modal from "@/ui/shared/Modal";
 import { useDatabase } from "@/context/DatabaseContext";
 import { RxDocument } from "rxdb";
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
 interface Categories {
   id: string;
@@ -62,7 +63,7 @@ export default function AddTags() {
 
   return (
     <div>
-      <p className="text-white">Tags</p>
+      <p className="text-white block mb-2">Tags</p>
       <div className="flex flex-wrap gap-2">
         {categories.map((category) => (
           <Button
@@ -73,7 +74,7 @@ export default function AddTags() {
               formState.categories.includes(category)
                 ? "bg-twd-secondary-purple text-white"
                 : "bg-twd-background text-white"
-            }`}
+            } font-normal`}
             ariaPressed={formState.categories.includes(category)}
           />
         ))}
@@ -90,11 +91,18 @@ export default function AddTags() {
             ariaPressed={formState.categories.includes(category)}
           />
         ))}
-        <Button
+        {/* <Button
           label="+ New Category"
           onClick={() => setModalOpen(true)}
           className="bg-twd-secondary-purple text-white"
-        />
+        /> */}
+        <button
+          onClick={() => setModalOpen(true)}
+          className="flex justify-center items-center"
+          aria-labels="Add category"
+        >
+          <PlusCircleIcon className="w-7 m-auto" />
+        </button>
       </div>
 
       <Modal

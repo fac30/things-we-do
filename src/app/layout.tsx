@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import Navbar from "@/ui/layout/Navbar/Navbar";
 import { DatabaseProvider } from "@/context/DatabaseContext";
+import { Roboto } from "next/font/google";
 
 const APP_NAME = "Things We Do";
 const APP_DEFAULT_TITLE = "Things We Do";
@@ -48,11 +49,17 @@ export const viewport: Viewport = {
   themeColor: "#1B192E",
 };
 
+const poppins = Roboto({
+  subsets: ["latin"],
+  weight: ["100", "300", "400", "500", "700", "900"],
+  display: "swap",
+});
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" dir="ltr">
       <head />
-      <body>
+      <body className={`${poppins.className}`}>
         <DatabaseProvider>
           <main className="pb-24">{children}</main>
         </DatabaseProvider>

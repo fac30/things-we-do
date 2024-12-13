@@ -1,5 +1,8 @@
 "use client";
 import { Bars3Icon } from "@heroicons/react/24/outline";
+import Button from "@/ui/shared/Button";
+import { useState } from "react";
+import Modal from "@/ui/shared/Modal";
 
 interface SortableItemProps {
   item: {
@@ -31,40 +34,42 @@ export default function SortableItem({
   handleToggle,
   handleDelete,
 }: SortableItemProps) {
+  const [isLinkModalOpen, setIsLinkModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   return (
     <div
-        className="flex items-center p-4 rounded-lg shadow-lg bg-twd-background"
-        draggable="false"
+      className="flex items-center p-4 rounded-lg shadow-lg bg-[#1d1b30] border-2 border-[#242139]"
+      draggable="false"
     >
-        {/* Icon on the left, vertically centered */}
-        <div className="flex-shrink-0 pr-4 flex items-center">
-          <Bars3Icon className="h-6 w-6 text-gray-400 cursor-grab" />
+      {/* Icon on the left, vertically centered */}
+      <div className="flex-shrink-0 pr-4 flex items-center">
+        <Bars3Icon className="h-6 w-6 text-gray-400 cursor-grab" />
+      </div>
+
+      {/* Main content */}
+      <div className="flex flex-col items-start w-full">
+        {/* First Row: Checkbox and Name */}
+        <div className="flex items-center space-x-3 w-full mb-2">
+          <input
+            type="checkbox"
+            checked={item.checked}
+            onChange={(e) => {
+              e.stopPropagation();
+              handleToggle(item.id);
+            }}
+            className="h-5 w-5 appearance-none border-2 border-white rounded bg-twd-background checked:bg-white checked:border-white focus:ring focus:ring-twd-primary-purple checked:after:content-['✔']"
+          />
+          <p
+            className={`text-lg ${
+              item.checked ? "line-through text-gray-400" : "text-white"
+            }`}
+          >
+            {item.name}
+          </p>
         </div>
 
-        {/* Main content */}
-        <div className="flex flex-col items-start w-full">
-          {/* First Row: Checkbox and Name */}
-          <div className="flex items-center space-x-3 w-full">
-            <input
-              type="checkbox"
-              checked={item.checked}
-              onChange={(e) => {
-                e.stopPropagation();
-                handleToggle(item.id);
-              }}
-              className="h-5 w-5 appearance-none border-2 border-white rounded bg-twd-background checked:bg-white checked:border-white focus:ring focus:ring-twd-primary-purple checked:after:content-['✔']"
-            />
-            <p
-              className={`text-lg ${
-                item.checked ? "line-through text-gray-400" : "text-white"
-              }`}
-            >
-              {item.name}
-            </p>
-          </div>
-
-          {/* Second Row: Image, Link, and Delete Button */}
+        {/* Seconow: Image, Link, and Delete Button */}
         <div className="flex items-center justify-between mt-2 w-full">
           {/* Display the image or reserve space */}
           {isValidUrl(item.imageUrl) ? (
@@ -78,31 +83,93 @@ export default function SortableItem({
           )}
 
           {/* Display the link or reserve space */}
-          {isValidUrl(item.infoUrl) ? (
+          {/* {isValidUrl(item.infoUrl) ? (
             <a
               href={item.infoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-twd-text-link"
+              className="bg-twd-primary-purple text-sm rounded-full font-normal py-[6px] px-[14px]"
             >
               Go to resource
             </a>
-            ) : (
-              <div className="w-24"></div> // Reserve space for the link (adjust width as needed)
-            )}
+          ) : (
+            <div className="w-24"></div> // Reserve space for the link (adjust width as needed)
+          )} */}
 
-            {/* Delete button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDelete(item.id);
+          {isValidUrl(item.infoUrl) ? (
+            <Button
+              onClick={() => {
+                setIsLinkModalOpen(true);
               }}
-              className="ml-4 text-white"
-            >
-              Delete
-            </button>
-          </div>
+              className="bg-twd-primary-purple text-sm rounded-full font-normal py-[6px] px-[14px]"
+              label="Go to resource"
+            ></Button>
+          ) : (
+            <div className="w-24"></div>
+          )}
+
+          {/* Delete button */}
+          {/* <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDelete(item.id);
+            }}
+            className="ml-4 text-white"
+          >
+            Delete
+          </button> */}
+          {/* <Button
+            onEventClick={(e) => {
+              e.stopPropagation();
+              handleDelete(item.id);
+            }}
+            label="delete"
+            className="bg-twd-secondary-purple  font-normal py-[6px] px-[14px]"
+          />
+        </div> */}
+          <Button
+            onEventClick={(e) => {
+              e.stopPropagation();
+              setIsDeleteModalOpen(true);
+            }}
+            label="delete"
+            className="bg-twd-secondary-purple  font-normal py-[6px] px-[14px]"
+          />
         </div>
       </div>
-  )
+      <Modal
+        modalOpen={isLinkModalOpen}
+        title="Following this link will leave the app. Do you want to continue?"
+        forwardButton={{
+          action: () => {
+            const link = item.infoUrl; // Replace with your link
+            window.open(link, "_blank"); // Opens in a new tab
+          },
+          label: "Yes",
+        }}
+        backButton={{
+          action: () => {
+            setIsLinkModalOpen(false);
+          },
+          label: "No",
+        }}
+      />
+      <Modal
+        modalOpen={isDeleteModalOpen}
+        title="Delete this tool?"
+        forwardButton={{
+          action: () => {
+            handleDelete(item.id);
+          },
+          label: "Yes",
+        }}
+        backButton={{
+          action: () => {
+            setIsDeleteModalOpen(false);
+          },
+          label: "No",
+        }}
+      />
+    </div>
+  );
 }
