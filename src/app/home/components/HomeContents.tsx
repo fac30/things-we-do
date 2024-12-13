@@ -36,7 +36,6 @@ export default function HomeContents() {
               alt="Decision maker cube"
               width={360}
               height={360}
-              objectFit="cover"
               priority
             />
             <Link
@@ -99,7 +98,6 @@ export default function HomeContents() {
               className="rounded-lg shadow-md"
               width={213}
               height={320}
-              objectFit="contain"
               priority
             />
           </div>
@@ -116,8 +114,6 @@ export default function HomeContents() {
               className="rounded-lg shadow-md"
               width={213}
               height={320}
-              // objectFit="contain"
-              layout="intrinsic"
               priority
             />
           </div>
@@ -157,7 +153,6 @@ export default function HomeContents() {
               alt="Insights line graph"
               width={350}
               height={350}
-              objectFit="cover"
               priority
             />
           </div>
