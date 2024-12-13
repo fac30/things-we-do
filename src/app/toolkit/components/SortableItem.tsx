@@ -97,14 +97,13 @@ export default function SortableItem({
           )} */}
 
           {isValidUrl(item.infoUrl) ? (
-            <button
+            <Button
               onClick={() => {
                 setIsLinkModalOpen(true);
               }}
               className="bg-twd-primary-purple text-sm rounded-full font-normal py-[6px] px-[14px]"
-            >
-              Go to resource
-            </button>
+              label="Go to resource"
+            ></Button>
           ) : (
             <div className="w-24"></div>
           )}
