@@ -1,4 +1,6 @@
 import { NeurochemState } from "./MoodsDisplay";
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
 
 interface SliderProps {
   chem: "dopamine" | "serotonin" | "adrenaline";
@@ -9,12 +11,12 @@ interface SliderProps {
   ) => void;
   neuroState: NeurochemState;
 }
-export function Slider({ chem, label, handleChange, neuroState }: SliderProps) {
-  const normaliseValue = (value: unknown): number => {
-    if (value instanceof Date) return value.getTime();
-    if (typeof value === "number") return value;
-    return 1;
-  };
+export function MoodSlider({ chem, label, handleChange }: SliderProps) {
+  // const normaliseValue = (value: unknown): number => {
+  //   if (value instanceof Date) return value.getTime();
+  //   if (typeof value === "number") return value;
+  //   return 1;
+  // };
 
   const renderText =
     label === "Step 2. How much effort does it take?" ? (
@@ -34,14 +36,15 @@ export function Slider({ chem, label, handleChange, neuroState }: SliderProps) {
       <label htmlFor={chem} className="text-white text-md mb-4">
         {label}
       </label>
-      <input
-        id={chem}
-        type="range"
-        min="1"
-        max="10"
-        value={normaliseValue(neuroState[chem])}
-        onChange={(e) => handleChange(parseInt(e.target.value), chem)}
-        className="w-full m-auto range-slider"
+      <Slider
+        // id={chem}
+        onChange={(value) => handleChange(value as number, chem)} // Ensure the value is a number
+        styles={{
+          rail: { backgroundColor: "#893FFC" },
+          track: { backgroundColor: "#ffc100" },
+        }}
+        min={1}
+        max={10}
       />
       <div className="flex justify-between mt-4 w-full m-auto">
         {renderText}
