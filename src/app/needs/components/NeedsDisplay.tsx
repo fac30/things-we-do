@@ -5,8 +5,6 @@ import { useDatabase } from "@/context/DatabaseContext";
 import Display, { Base } from "./Display";
 import NeedsModal from "./NeedsModal";
 import { RxDocumentData } from "rxdb";
-import Button from "@/ui/shared/Button";
-import { useRouter } from "next/navigation";
 
 type Category = RxDocumentData<Base>;
 interface Need extends RxDocumentData<Base> {
@@ -19,7 +17,6 @@ interface Priority {
 }
 
 export default function NeedsDisplay() {
-  const router = useRouter();
   const database = useDatabase();
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedNeed, setSelectedNeed] = useState<Need | null>(null);
@@ -182,13 +179,6 @@ export default function NeedsDisplay() {
     setWorthDoing(0);
   };
 
-  const openInfo = () => {
-    const basePath = window.location.pathname.endsWith("/")
-      ? window.location.pathname.slice(0, -1)
-      : window.location.pathname;
-    router.push(`${basePath}/next-actions`);
-  };
-
   useEffect(() => {
     switch (needsStep) {
       case 1:
@@ -243,13 +233,6 @@ export default function NeedsDisplay() {
 
   return (
     <>
-      <div className="flex">
-        <Button
-          onClick={openInfo}
-          label="Next actions"
-          className="bg-twd-primary-purple text-white rounded flex justify-end items-end"
-        />
-      </div>
       <h2 className="text-2xl w-11/12 mb-6 mt-4 m-auto">
         What do you need right now?
       </h2>
