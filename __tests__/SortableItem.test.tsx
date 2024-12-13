@@ -35,7 +35,9 @@ describe("SortableItem Component", () => {
       "p-4",
       "rounded-lg",
       "shadow-lg",
-      "bg-twd-background"
+      "bg-[#1d1b30]",
+      "border-2",
+      "border-[#242139]"
     );
 
     // Check the main content layout
