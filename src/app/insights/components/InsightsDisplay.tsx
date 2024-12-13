@@ -150,6 +150,16 @@ export default function InsightsDisplay() {
     getNeedsData();
   }, []);
 
+  const dummyNeedsData = [
+    { name: "Physical Nurturance", value: 12 },
+    { name: "Integrity", value: 8 },
+    { name: "Interdependence", value: 15 },
+    { name: "Harmony", value: 71 },
+    { name: "Autonomy", value: 10 },
+    { name: "Play", value: 54 },
+    { name: "Celebration", value: 35 },
+  ];
+
   return (
     <>
       <div className="flex text-center w-full m-auto justify-between bg-twd-navbar-background py-2 px-4 sticky top-0 z-50">
@@ -209,7 +219,7 @@ export default function InsightsDisplay() {
         <div>Loading Stream Graph...</div>
       )}
       {needsData ? (
-        <BarGraph data={needsData} />
+        <BarGraph data={dummyNeedsData} />
       ) : (
         <div>Loading Needs Data...</div>
       )};
