@@ -148,7 +148,9 @@ export default function Display<
           disabled={!isUnmet}
           className={clsx(
             "text-white rounded fixed right-4 bottom-24",
-            isUnmet ? "bg-green-500" : "bg-gray-400 cursor-not-allowed"
+            isUnmet
+              ? "bg-twd-primary-purple shadow-twd-primary-purple shadow-glow"
+              : "bg-gray-400 cursor-not-allowed"
           )}
         />
       )}
