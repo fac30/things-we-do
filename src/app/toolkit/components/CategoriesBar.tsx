@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import Button from "@/ui/shared/Button";
 import { useDatabase } from "@/context/DatabaseContext";
 import { useToolkit } from "@/context/ToolkitContext";
+import { RxDocument } from "rxdb";
 
-interface Categories {
+interface Category {
   id: string;
   name: string;
   timestamp: string;
@@ -20,16 +21,21 @@ const categoriesBarClass = `
   border-gray-700 sm:gap-6 sm:px-6  focus:ring-2 focus:ring-twd-secondary-purple
 `;
 
-export default function CategoriesBar({ openModal, refreshCategories }: CategoriesBarProps) {
+export default function CategoriesBar({
+  openModal,
+  refreshCategories,
+}: CategoriesBarProps) {
   const database = useDatabase();
   const [categories, setCategories] = useState<string[]>([]);
   const { selectedCategories, setSelectedCategories } = useToolkit();
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const allCategories = await database.getFromDb("categories");
+      const allCategories = await database.getFromDb<RxDocument<Category>>(
+        "categories"
+      );
       if (allCategories) {
-        setCategories(allCategories.map((cat: Categories) => cat.name));
+        setCategories(allCategories.map((cat: Category) => cat.name));
       } else {
         setCategories([]);
       }
@@ -47,15 +53,16 @@ export default function CategoriesBar({ openModal, refreshCategories }: Categori
   };
 
   return (
-    <div
-      className={categoriesBarClass}
-      data-testid="categories-bar"
-    >
+    <div className={categoriesBarClass} data-testid="categories-bar">
       {/* Fixed "+" Button */}
       <div className="flex-shrink-0">
-        <Button label="+" onClick={openModal} className="bg-twd-primary-purple"/>
+        <Button
+          label="+"
+          onClick={openModal}
+          className="bg-twd-primary-purple"
+        />
       </div>
-  
+
       {/* Scrollable Categories */}
       <div className="flex overflow-x-auto whitespace-nowrap space-x-2 flex-grow">
         <Button
@@ -69,10 +76,10 @@ export default function CategoriesBar({ openModal, refreshCategories }: Categori
           onClick={() => setSelectedCategories([])}
           ariaPressed={selectedCategories.length === 0}
         />
-  
+
         {categories.map((category) => {
           const isActive = selectedCategories.includes(category);
-  
+
           return (
             <Button
               key={category}
