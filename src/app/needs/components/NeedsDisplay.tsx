@@ -234,7 +234,10 @@ export default function NeedsDisplay() {
   };
 
   const openNextActions = () => {
-    router.push("/next-actions");
+    const basePath = window.location.pathname.endsWith("/")
+      ? window.location.pathname.slice(0, -1)
+      : window.location.pathname;
+    router.push(`${basePath}/next-actions`);
   };
 
   const hasHighlightedNeeds = categorizedNeeds.some((category) =>
