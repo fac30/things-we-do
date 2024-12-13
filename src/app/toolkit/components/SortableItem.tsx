@@ -83,7 +83,7 @@ export default function SortableItem({
               href={item.infoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-twd-text-link"
+              className="bg-twd-primary-purple text-sm rounded-full font-normal py-[6px] px-[14px]"
             >
               Go to resource
             </a>
