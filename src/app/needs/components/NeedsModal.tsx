@@ -45,11 +45,19 @@ export default function NeedsModal({
     >
       <p className="text-center">Step {needsStep} of 3</p>
       {needsStep > 1 && (
-        <button className="absolute left-2 top-3" onClick={handleBackClick}>
+        <button
+          className="absolute left-2 top-3"
+          onClick={handleBackClick}
+          aria-label="Back"
+        >
           <ChevronLeftIcon className="h-10 w-10" />
         </button>
       )}
-      <button className="absolute right-2 top-3" onClick={handleCloseClick}>
+      <button
+        className="absolute right-2 top-3"
+        onClick={handleCloseClick}
+        aria-label="Close"
+      >
         <XMarkIcon className="h-10 w-10" />
       </button>
 
@@ -64,11 +72,13 @@ export default function NeedsModal({
             onClick={handleNegativeClick}
             label={negativeLabel}
             className="text-xl font-normal w-36 h-48 bg-twd-secondary-purple text-balance rounded-none"
+            aria-label="Negative"
           />
           <Button
             onClick={handlePositiveClick}
             label={positiveLabel}
             className="bg-twd-primary-purple text-xl font-normal w-36 text-balance rounded-none"
+            aria-label="Positive"
           />
         </div>
       </div>
