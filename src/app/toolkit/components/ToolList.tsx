@@ -1,7 +1,12 @@
 "use client";
 import { useState, useEffect, useMemo } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
-import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from "@hello-pangea/dnd";
 import SortableItem from "./SortableItem";
 import Search from "@/ui/shared/Search";
 import { useToolkit } from "@/context/ToolkitContext";
@@ -20,7 +25,9 @@ export interface ToolkitComponentData {
 export default function ToolkitList() {
   const database = useDatabase();
   const [mainData, setMainData] = useState<ToolkitComponentData[]>([]);
-  const [displayedData, setDisplayedData] = useState<ToolkitComponentData[]>([]);
+  const [displayedData, setDisplayedData] = useState<ToolkitComponentData[]>(
+    []
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const { selectedCategories } = useToolkit();
 
@@ -91,7 +98,7 @@ export default function ToolkitList() {
       );
       setDisplayedData(filtered);
     } else {
-      setDisplayedData(mainData); 
+      setDisplayedData(mainData);
     }
   };
 
@@ -112,7 +119,9 @@ export default function ToolkitList() {
   useEffect(() => {
     if (searchQuery) {
       // Filter the current displayed data (based on categories) by the search query
-      const searchFilteredData = (selectedCategories.length > 0 ? filteredData : mainData).filter((item) =>
+      const searchFilteredData = (
+        selectedCategories.length > 0 ? filteredData : mainData
+      ).filter((item) =>
         item.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
       setDisplayedData(searchFilteredData);
@@ -129,7 +138,9 @@ export default function ToolkitList() {
     <div className="toolkit-container">
       {/* Search Component */}
       <Search onSearch={handleSearch} onClear={handleClearSearch} />
-
+      <p className="text-xs text-slate-300 mt-1 mb-4">
+        Hold and drag to rearrange items
+      </p>
       {/* Drag-and-Drop Context */}
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="toolkit">

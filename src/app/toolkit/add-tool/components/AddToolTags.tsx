@@ -3,6 +3,7 @@ import { useAddToolForm } from "@/context/AddToolContext";
 import Button from "@/ui/shared/Button";
 import Modal from "@/ui/shared/Modal";
 import { useDatabase } from "@/context/DatabaseContext";
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
 interface Categories {
   id: string;
@@ -28,7 +29,7 @@ export default function AddTags() {
     };
 
     fetchCategories();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,10 +39,10 @@ export default function AddTags() {
   const handleAddCategory = () => {
     if (newCategory.trim()) {
       // Add to pending categories
-      setFormState(prev => ({
+      setFormState((prev) => ({
         ...prev,
         pendingCategories: [...prev.pendingCategories, newCategory.trim()],
-        categories: [...prev.categories, newCategory.trim()]
+        categories: [...prev.categories, newCategory.trim()],
       }));
       setNewCategory("");
       setModalOpen(false);
@@ -49,19 +50,32 @@ export default function AddTags() {
   };
 
   const toggleCategory = (category: string) => {
-    setFormState(prev => ({
+    setFormState((prev) => ({
       ...prev,
       categories: prev.categories.includes(category)
-        ? prev.categories.filter(c => c !== category)
-        : [...prev.categories, category]
+        ? prev.categories.filter((c) => c !== category)
+        : [...prev.categories, category],
     }));
   };
 
   return (
     <div>
-      <p className="text-white">Tags</p>
+      <p className="text-white block mb-2">Tags</p>
       <div className="flex flex-wrap gap-2">
-        {categories.map(category => (
+        {categories.map((category) => (
+          <Button
+            key={category}
+            label={category}
+            onClick={() => toggleCategory(category)}
+            className={`${
+              formState.categories.includes(category)
+                ? "bg-twd-secondary-purple text-white"
+                : "bg-twd-background text-white"
+            } font-normal`}
+            ariaPressed={formState.categories.includes(category)}
+          />
+        ))}
+        {formState.pendingCategories.map((category) => (
           <Button
             key={category}
             label={category}
@@ -74,24 +88,18 @@ export default function AddTags() {
             ariaPressed={formState.categories.includes(category)}
           />
         ))}
-        {formState.pendingCategories.map(category => (
-          <Button
-            key={category}
-            label={category}
-            onClick={() => toggleCategory(category)}
-            className={`${
-              formState.categories.includes(category)
-                ? "bg-twd-secondary-purple text-white"
-                : "bg-twd-background text-white"
-            }`}
-            ariaPressed={formState.categories.includes(category)}
-          />
-        ))}
-        <Button
+        {/* <Button
           label="+ New Category"
           onClick={() => setModalOpen(true)}
           className="bg-twd-secondary-purple text-white"
-        />
+        /> */}
+        <button
+          onClick={() => setModalOpen(true)}
+          className="flex justify-center items-center"
+          aria-labels="Add category"
+        >
+          <PlusCircleIcon className="w-7 m-auto" />
+        </button>
       </div>
 
       <Modal
@@ -102,14 +110,14 @@ export default function AddTags() {
         handleInputChange={handleInputChange}
         forwardButton={{
           label: "Add",
-          action: handleAddCategory
+          action: handleAddCategory,
         }}
         backButton={{
           label: "Cancel",
           action: () => {
             setNewCategory("");
             setModalOpen(false);
-          }
+          },
         }}
       />
     </div>

@@ -4,30 +4,16 @@
 /*  */
 
 body {
-  @apply bg-twd-background text-white overflow-x-hidden;
+  @apply bg-gradient-to-b from-[#1B192E] to-[#25233A] text-white overflow-x-hidden min-h-screen;
 }
 header {
   @apply bg-inherit;
 }
 
-@layer components {
-  .range-slider {
-    @apply w-full h-1 bg-white rounded-lg cursor-pointer; /* White background and base styles */
-    -webkit-appearance: none; /* Remove default appearance */
-    appearance: none;
-  }
+p {
+  @apply font-light;
+}
 
-  .range-slider::-webkit-slider-thumb {
-    @apply h-8 w-8 bg-purple-500 rounded-full shadow-lg border-solid border-2 border-white; /* Purple thumb */
-    -webkit-appearance: none; /* Remove default appearance */
-    appearance: none;
-  }
-
-  .range-slider::-moz-range-thumb {
-    @apply h-8 w-8 bg-purple-500 rounded-full shadow-lg; /* Purple thumb for Firefox */
-  }
-
-  .range-slider:focus::-webkit-slider-runnable-track {
-    @apply bg-gray-100; /* Slightly darker white for focus state */
-  }
+.addToolInput {
+  @apply w-full p-2 rounded bg-transparent text-white border-b border-gray-700;
 }

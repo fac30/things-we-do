@@ -5,7 +5,7 @@ export default function AddName() {
 
   return (
     <div>
-      <p className="text-white">Name</p>
+      <label className="text-white block mb-1">Name</label>
       <input
         type="text"
         value={formState.name}
@@ -15,7 +15,8 @@ export default function AddName() {
             name: e.target.value,
           }))
         }
-        className="w-full p-2 rounded bg-twd-background text-white border border-gray-700"
+        className="addToolInput"
+        placeholder="E.g. breathing exercises"
       />
     </div>
   );

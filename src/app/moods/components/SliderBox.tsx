@@ -1,4 +1,4 @@
-import { Slider } from "./Slider";
+import MoodSlider from "./MoodSlider";
 import { NeurochemState } from "./MoodsDisplay";
 
 interface SliderBoxProps {
@@ -18,7 +18,10 @@ const sliders: {
   { chem: "adrenaline", label: "Step 3. Does it feel worth doing?" },
 ];
 
-export default function SliderBox({ handleChange, neuroState }: SliderBoxProps) {
+export default function SliderBox({
+  handleChange,
+  neuroState,
+}: SliderBoxProps) {
   return (
     <form className="flex flex-col gap-4 w-10/12 m-auto">
       <fieldset>
@@ -27,7 +30,7 @@ export default function SliderBox({ handleChange, neuroState }: SliderBoxProps) 
         </legend>
         {sliders.map((slider) => {
           return (
-            <Slider
+            <MoodSlider
               key={slider.chem}
               chem={slider.chem}
               label={slider.label}
