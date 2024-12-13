@@ -150,6 +150,7 @@ export default function InsightsDisplay() {
     getNeedsData();
   }, []);
 
+
   const dummyNeedsData = [
     { name: "Physical Nurturance", value: 12 },
     { name: "Integrity", value: 8 },
@@ -219,7 +220,7 @@ export default function InsightsDisplay() {
         <div>Loading Stream Graph...</div>
       )}
       {needsData ? (
-        <BarGraph data={dummyNeedsData} />
+        <BarGraph data={needsData || dummyNeedsData} />
       ) : (
         <div>Loading Needs Data...</div>
       )};
