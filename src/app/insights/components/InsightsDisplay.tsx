@@ -152,13 +152,13 @@ export default function InsightsDisplay() {
 
 
   const dummyNeedsData = [
-    { name: "Physical Nurturance", value: 12 },
     { name: "Integrity", value: 8 },
-    { name: "Interdependence", value: 15 },
-    { name: "Harmony", value: 71 },
-    { name: "Autonomy", value: 10 },
-    { name: "Play", value: 54 },
     { name: "Celebration", value: 35 },
+    { name: "Physical Nurturance", value: 12 },
+    { name: "Autonomy", value: 10 },
+    { name: "Harmony", value: 71 },  
+    { name: "Play", value: 54 },
+    { name: "Interdependence", value: 15 },
   ];
 
   return (
