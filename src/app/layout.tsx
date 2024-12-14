@@ -7,8 +7,8 @@ import { Roboto } from "next/font/google";
 
 const APP_NAME = "Things We Do";
 const APP_DEFAULT_TITLE = "Things We Do";
-const APP_TITLE_TEMPLATE = "%s - Thing We Do";
-const APP_DESCRIPTION = "Best PWA app in the world!";
+const APP_TITLE_TEMPLATE = "%s - Things We Do";
+const APP_DESCRIPTION = "Your app for tracking things you do.";
 
 export const metadata: Metadata = {
   applicationName: APP_NAME,
