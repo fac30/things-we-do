@@ -116,14 +116,9 @@ export default function InsightsDisplay() {
       const needsResponse = await database.getFromDb<RxDocument<Need>>("needs");
       const categoriesResponse = await database.getFromDb<RxDocument<Category>>("needs_categories");
 
-      //const needs: Need[] = retrieveDataObject<Need>(needsResponse);
       const needs = needsResponse.map((doc) => doc.toJSON() as Need);
 
-      //const categories: Category[] = retrieveDataObject<Category>(categoriesResponse);
       const categories = categoriesResponse.map((doc) => doc.toJSON() as Category);
-
-      console.log("Needs Data:", needs);
-      console.log("Categories Data:", categories);
 
       // Aggregate `selectedTimestamps` counts by category
       const categoryCounts = needs.reduce((acc: Record<string, number>, need: Need) => {
@@ -136,7 +131,6 @@ export default function InsightsDisplay() {
         acc[category] += selectedTimestamps ? selectedTimestamps.length : 0;
         return acc;
       }, {});
-      console.log("Category Counts:", categoryCounts);
 
       // Map categories to their names with counts
       const needsData = categories.map((category: Category) => ({
@@ -230,11 +224,15 @@ export default function InsightsDisplay() {
       ) : (
         <div>Loading Stream Graph...</div>
       )}
-      {needsData ? (
-        <BarGraph data={needsData || dummyNeedsData} />
-      ) : (
+
+      {/* unmet needs graph */}
+      {needsData === null ? (
         <div>Loading Needs Data...</div>
-      )};
+      ) : needsData.some(item => item.value > 0) ? (
+        <BarGraph data={needsData} />
+      ) : (
+        <BarGraph data={dummyNeedsData} />
+      )}
     </>
   );
 }
