@@ -12,7 +12,7 @@ import NavLink from "../../shared/NavLink";
 
 const links = [
   { title: "Home", icon: HomeIcon, destination: "/" },
-  { title: "Moods", icon: PresentationChartLineIcon, destination: "/moods" },
+  { title: "Track", icon: PresentationChartLineIcon, destination: "/moods" },
   {
     title: "Toolkit",
     icon: WrenchIcon,

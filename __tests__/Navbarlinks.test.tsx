@@ -18,7 +18,7 @@ describe("NavbarLinks", () => {
 
     // Check if all link titles are rendered
     expect(screen.getByText("Home")).toBeInTheDocument();
-    expect(screen.getByText("Moods")).toBeInTheDocument();
+    expect(screen.getByText("Track")).toBeInTheDocument();
 
     expect(screen.getByText("Needs")).toBeInTheDocument();
     expect(screen.getByText("Insights")).toBeInTheDocument();

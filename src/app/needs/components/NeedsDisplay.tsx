@@ -1,147 +1,231 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
-import retrieveDataObject from "@/lib/utils/retrieveDataObject";
-import { RxDocumentData } from "rxdb";
-import NeedsSection from "./NeedsSection";
+import Section from "./Section";
 import NeedsModal from "./NeedsModal";
+import Modal from "@/ui/shared/Modal";
+import Button from "@/ui/shared/Button";
+import clsx from "clsx";
+import { RxDocument, RxDocumentData } from "rxdb";
+import { useRouter } from "next/navigation";
 
-export interface Category {
-  id: string;
-  name: string;
-}
-
-export interface Need {
+type Category = RxDocumentData<{ id: string; name: string }>;
+type Need = RxDocumentData<{
   id: string;
   name: string;
   category: string;
-}
+  selectedExpiry?: string;
+  mood?: string;
+  highlighted?: boolean;
+  selectedTimestamps: string;
+}>;
 
-interface CategorizedNeed {
-  category: string;
-  needs: Need[];
+interface Priority {
+  order: number;
+  name: string;
 }
 
 export default function NeedsDisplay() {
   const database = useDatabase();
-  const [categories, setCategories] = useState<RxDocumentData<Category>[]>([]);
-  const [needs, setNeeds] = useState<RxDocumentData<Need>[]>([]);
-  const [urgent, setUrgent] = useState<number>(0);
-  const [effortful, setEffortful] = useState<number>(0);
-  const [worthDoing, setWorthDoing] = useState<number>(0);
-  const [positiveLabel, setPositiveLabel] = useState<string>("urgent");
-  const [negativeLabel, setNegativeLabel] = useState<string>("not urgent");
+  const router = useRouter();
 
-  const fetchCategories = async () => {
-    const response = await database.getFromDb("needs_categories");
-    const categories = retrieveDataObject(response);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [needs, setNeeds] = useState<Need[]>([]);
+  const [needsModalOpen, setNeedsModalOpen] = useState(false);
+  const [deselectModalOpen, setDeselectModalOpen] = useState(false);
+  const [selectedNeed, setSelectedNeed] = useState<Need | null>(null);
+  const [needsStep, setNeedsStep] = useState(1);
+  const [chainEnd, setChainEnd] = useState(0);
+  const [urgent, setUrgent] = useState(0);
+  const [effortful, setEffortful] = useState(0);
+  const [worthDoing, setWorthDoing] = useState(0);
+  const [positiveLabel, setPositiveLabel] = useState("urgent");
+  const [negativeLabel, setNegativeLabel] = useState("not urgent");
 
-    setCategories(categories);
-  };
-
-  const fetchNeeds = async () => {
-    const response = await database.getFromDb("needs");
-    const needs = retrieveDataObject(response);
-    setNeeds(needs);
-  };
+  const fetchCategoriesAndNeeds = useCallback(async () => {
+    const categoriesResponse = await database.getFromDb<RxDocument<Category>>(
+      "needs_categories"
+    );
+    const needsResponse = await database.getFromDb<RxDocument<Need>>("needs");
+    setCategories(categoriesResponse.map((doc) => doc.toJSON() as Category));
+    setNeeds(needsResponse.map((doc) => doc.toJSON() as Need));
+  }, [database]);
 
   useEffect(() => {
-    fetchCategories();
-    fetchNeeds();
-  }, []);
+    fetchCategoriesAndNeeds();
+  }, [fetchCategoriesAndNeeds, chainEnd]);
 
-  const categorisedNeeds: CategorizedNeed[] = categories.map((category) => {
-    const categoryNeeds = needs.filter((need) => need.category === category.id);
-    return { category: category.name, needs: categoryNeeds };
-  });
+  const categorizedNeeds = useMemo(() => {
+    return categories.map((category) => ({
+      key: category.name,
+      items: needs
+        .filter((need) => need.category === category.id)
+        .map((need) => ({
+          ...need,
+          highlighted: need.selectedExpiry
+            ? new Date(need.selectedExpiry) > new Date()
+            : false,
+          label: need.name,
+        })),
+    }));
+  }, [categories, needs]);
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedNeed, setSelectedNeed] = useState("");
-  const [needsStep, setNeedsStep] = useState(1);
+  const handleItemClick = (item: Need) => {
+    setSelectedNeed(item);
+    if (item.highlighted) {
+      setDeselectModalOpen(true);
+    } else {
+      setNeedsModalOpen(true);
+      setNeedsStep(1);
+    }
+  };
 
-  const handleOpen = (need: string) => {
-    setModalOpen(true);
-    setSelectedNeed(need);
+  const handleCloseNeedsModal = () => {
+    setNeedsModalOpen(false);
+    setSelectedNeed(null);
+    setNeedsStep(1);
+    resetNeuros();
+  };
+
+  const handleCloseDeselectModal = () => {
+    setDeselectModalOpen(false);
+    setSelectedNeed(null);
+  };
+
+  const handleDeselectNeed = async () => {
+    if (selectedNeed) {
+      await database.updateDocument(
+        "needs",
+        selectedNeed.id,
+        "selectedExpiry",
+        new Date().toISOString()
+      );
+      setChainEnd((prev) => prev + 1);
+      handleCloseDeselectModal();
+    }
   };
 
   const handleStepIncrease = () => {
-    setNeedsStep((prevStep) => prevStep + 1);
+    setNeedsStep((prev) => prev + 1);
   };
+
   const handleBackClick = () => {
-    setNeedsStep((prevStep) => prevStep - 1);
-    {
-      if (needsStep === 2 && urgent > 0) {
-        handleDecrease(setUrgent);
-      } else if (needsStep === 2 && urgent < 0) {
-        handleIncrease(setUrgent);
-      } else if (needsStep === 3 && effortful > 0) {
-        handleDecrease(setEffortful);
-      } else if (needsStep === 3 && effortful < 0) {
-        handleIncrease(setEffortful);
-      }
+    setNeedsStep((prev) => Math.max(1, prev - 1));
+    if (needsStep === 2) adjustUrgency();
+    if (needsStep === 3) adjustEffort();
+  };
+
+  const adjustUrgency = () => {
+    if (urgent > 0) {
+      handleDecrease(setUrgent);
+    } else {
+      handleIncrease(setUrgent);
+    }
+  };
+
+  const adjustEffort = () => {
+    if (effortful > 0) {
+      handleDecrease(setEffortful);
+    } else {
+      handleIncrease(setEffortful);
     }
   };
 
   const handleIncrease = (
     setter: React.Dispatch<React.SetStateAction<number>>
-  ) => {
-    setter((prev) => prev + 1);
-  };
+  ) => setter((prev) => prev + 1);
+
   const handleDecrease = (
     setter: React.Dispatch<React.SetStateAction<number>>
-  ) => {
-    setter((prev) => prev - 1);
-  };
-
-  const updateNeedWithAction = async (needName: string, action: string) => {
-    try {
-      const selectedNeed = needs.find((need) => need.name === needName);
-
-      if (selectedNeed) {
-        const docId = selectedNeed.id;
-
-        await database.updateDocument("needs", docId, "mood", action);
-        await database.updateDocument(
-          "needs",
-          docId,
-          "selectedExpiry",
-          new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString()
-        );
-        console.log(`Updated ${needName} with action: ${action}`);
-      } else {
-        console.log(`Need ${needName} not found`);
-      }
-    } catch (error) {
-      console.error(`Failed to update need: ${needName}`, error);
-    }
-  };
+  ) => setter((prev) => prev - 1);
 
   const handlePositiveClick = () => {
-    if (needsStep === 1) {
-      handleIncrease(setUrgent);
-    } else if (needsStep === 2) {
-      handleIncrease(setEffortful);
-    } else if (needsStep === 3) {
-      handleIncrease(setWorthDoing);
+    if (needsStep === 1) handleIncrease(setUrgent);
+    else if (needsStep === 2) handleIncrease(setEffortful);
+    else if (needsStep === 3) handleIncrease(setWorthDoing);
 
-      setModalOpen(false);
-      setNeedsStep(1);
-    }
+    if (needsStep === 3) setNeedsModalOpen(false);
+    else handleStepIncrease();
   };
 
   const handleNegativeClick = () => {
-    if (needsStep === 1) {
-      handleDecrease(setUrgent);
-    } else if (needsStep === 2) {
-      handleDecrease(setEffortful);
-    } else if (needsStep === 3) {
-      handleDecrease(setWorthDoing);
+    if (needsStep === 1) handleDecrease(setUrgent);
+    else if (needsStep === 2) handleDecrease(setEffortful);
+    else if (needsStep === 3) handleDecrease(setWorthDoing);
 
-      setModalOpen(false);
-      setNeedsStep(1);
-    }
+    if (needsStep === 3) setNeedsModalOpen(false);
+    else handleStepIncrease();
   };
+
+  const determineMood = useCallback((): string => {
+    switch (true) {
+      case urgent === 1 && effortful === 1 && worthDoing === 1:
+        return "interest";
+      case urgent === -1 && effortful === -1 && worthDoing === -1:
+        return "guilt";
+      case urgent === 1 && effortful === -1 && worthDoing === -1:
+        return "freeze";
+      case urgent === 1 && effortful === 1 && worthDoing === -1:
+        return "fight/flight";
+      case urgent === 1 && effortful === -1 && worthDoing === 1:
+        return "joy";
+      case urgent === -1 && effortful === -1 && worthDoing === 1:
+        return "content";
+      case urgent === -1 && effortful === 1 && worthDoing === 1:
+        return "relief";
+      case urgent === -1 && effortful === 1 && worthDoing === -1:
+        return "distress";
+      default:
+        return "Invalid input";
+    }
+  }, [urgent, effortful, worthDoing]);
+
+  const determinePriority = useCallback((): Priority => {
+    switch (true) {
+      case urgent === 1 && worthDoing === 1:
+        return { order: 1, name: "do it first" };
+      case urgent === -1 && worthDoing === 1:
+        return { order: 2, name: "schedule it" };
+      case urgent === 1 && worthDoing === -1:
+        return { order: 3, name: "delegate it" };
+      case urgent === -1 && worthDoing === -1:
+        return { order: 4, name: "delete it" };
+      default:
+        return { order: 0, name: "Invalid input" };
+    }
+  }, [urgent, worthDoing]);
+
+  const updateNeedWithMood = useCallback(
+    async (mood: string, priority: Priority) => {
+      if (!selectedNeed) return;
+      try {
+        await database.updateDocument(
+          "needs",
+          selectedNeed.id,
+          "selectedTimestamps",
+          [...selectedNeed.selectedTimestamps, new Date().toISOString()]
+        );
+        await database.updateDocument(
+          "needs",
+          selectedNeed.id,
+          "priority",
+          priority
+        );
+        await database.updateDocument("needs", selectedNeed.id, "mood", mood);
+        await database.updateDocument(
+          "needs",
+          selectedNeed.id,
+          "selectedExpiry",
+          new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString()
+        );
+        console.log(`Updated ${selectedNeed.name} with mood: ${mood}`);
+      } catch (error) {
+        console.error(`Failed to update need: ${selectedNeed.name}`, error);
+      }
+    },
+    [selectedNeed, database]
+  );
 
   const resetNeuros = () => {
     setUrgent(0);
@@ -149,7 +233,38 @@ export default function NeedsDisplay() {
     setWorthDoing(0);
   };
 
-  const handleLabelChange = () => {
+  const openNextActions = () => {
+    const basePath = window.location.pathname.endsWith("/")
+      ? window.location.pathname.slice(0, -1)
+      : window.location.pathname;
+    router.push(`${basePath}/next-actions`);
+  };
+
+  const hasHighlightedNeeds = categorizedNeeds.some((category) =>
+    category.items.some((need) => need.highlighted)
+  );
+
+  useEffect(() => {
+    if (urgent !== 0 && effortful !== 0 && worthDoing !== 0 && selectedNeed) {
+      const mood = determineMood();
+      const priority = determinePriority();
+      updateNeedWithMood(mood, priority).then(() => {
+        resetNeuros();
+        setChainEnd((prevChainEnd) => prevChainEnd + 1);
+        setNeedsStep(1);
+      });
+    }
+  }, [
+    determineMood,
+    updateNeedWithMood,
+    urgent,
+    effortful,
+    worthDoing,
+    selectedNeed,
+    determinePriority,
+  ]);
+
+  useEffect(() => {
     switch (needsStep) {
       case 1:
         setPositiveLabel("urgent");
@@ -164,114 +279,58 @@ export default function NeedsDisplay() {
         setNegativeLabel("not worth doing");
         break;
     }
-  };
-
-  const handleStepAction = () => {
-    handleStepIncrease();
-  };
-
-  useEffect(() => {
-    handleLabelChange();
-    console.log(`selected need: ${selectedNeed}`);
-    console.log(`urgency: ${urgent}`);
-    console.log(`effort: ${effortful}`);
-    console.log(`worthDoing: ${worthDoing}`);
   }, [needsStep]);
-
-  useEffect(() => {
-    if (modalOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [modalOpen]);
-
-  useEffect(() => {
-    if (urgent !== 0 && effortful !== 0 && worthDoing !== 0) {
-      const action = determineAction(urgent, effortful, worthDoing);
-      updateNeedWithAction(selectedNeed, action);
-    }
-    resetNeuros();
-  }, [worthDoing]);
-
-  function determineAction(
-    urgent: number,
-    effortful: number,
-    worthDoing: number
-  ): string {
-    switch (true) {
-      case urgent === 1 && effortful === 1 && worthDoing === 1:
-        console.log("interest");
-        return "interest";
-      case urgent === -1 && effortful === -1 && worthDoing === -1:
-        console.log("guilt");
-        return "guilt";
-      case urgent === 1 && effortful === -1 && worthDoing === -1:
-        console.log("freeze");
-        return "freeze";
-      case urgent === 1 && effortful === 1 && worthDoing === -1:
-        console.log("fight/flight");
-        return "fight/flight";
-      case urgent === 1 && effortful === -1 && worthDoing === 1:
-        console.log("joy");
-        return "joy";
-      case urgent === -1 && effortful === -1 && worthDoing === 1:
-        console.log("content");
-        return "content";
-      case urgent === -1 && effortful === 1 && worthDoing === 1:
-        console.log("relief");
-        return "relief";
-      case urgent === -1 && effortful === 1 && worthDoing === -1:
-        console.log("distress");
-        return "distress";
-      default:
-        return "Invalid input";
-    }
-  }
-
-  const handleCloseClick = () => {
-    resetNeuros();
-    setModalOpen(false);
-    setNeedsStep(1);
-  };
 
   return (
     <>
+      <h2 className="text-2xl w-11/12 mb-6 mt-4 m-auto">
+        What do you need right now?
+      </h2>
       <div className="w-11/12 m-auto">
-        {categorisedNeeds.map((categoryData, index) => {
-          return (
-            <NeedsSection
-              key={index}
-              categoryData={categoryData}
-              handleOpen={handleOpen}
-            />
-          );
-        })}
+        {categorizedNeeds.map((category, index) => (
+          <Section
+            key={index}
+            categoryData={category}
+            handleOpen={handleItemClick}
+          />
+        ))}
       </div>
+      <Button
+        onClick={openNextActions}
+        label="Next Actions"
+        disabled={!hasHighlightedNeeds}
+        className={clsx(
+          "fixed right-4 bottom-24 text-white rounded",
+          hasHighlightedNeeds
+            ? "bg-twd-primary-purple shadow-twd-primary-purple shadow-glow"
+            : "bg-gray-400 cursor-not-allowed"
+        )}
+      />
       <NeedsModal
-        modalOpen={modalOpen}
+        modalOpen={needsModalOpen}
+        title={`You have selected ~${selectedNeed?.name}~`}
+        needsStep={needsStep}
+        positiveLabel={positiveLabel}
+        negativeLabel={negativeLabel}
+        urgent={urgent}
+        effortful={effortful}
+        worthDoing={worthDoing}
+        handlePositiveClick={handlePositiveClick}
+        handleNegativeClick={handleNegativeClick}
+        handleBackClick={handleBackClick}
+        handleCloseClick={handleCloseNeedsModal}
+      />
+      <Modal
+        modalOpen={deselectModalOpen}
+        title="Has this need now been met?"
         forwardButton={{
-          label: positiveLabel,
-          action: () => {
-            handleStepAction();
-            handlePositiveClick();
-          },
+          label: "Yes",
+          action: handleDeselectNeed,
         }}
         backButton={{
-          label: negativeLabel,
-          action: () => {
-            handleStepAction();
-            handleNegativeClick();
-          },
+          label: "No",
+          action: handleCloseDeselectModal,
         }}
-        title={`You have selected ~${selectedNeed}~`}
-        needsStep={needsStep}
-        handleBackClick={handleBackClick}
-        handleCloseClick={handleCloseClick}
       />
     </>
   );
