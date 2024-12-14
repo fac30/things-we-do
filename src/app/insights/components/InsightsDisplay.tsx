@@ -12,6 +12,7 @@ import MoodStreamGraph from "./StreamGraph";
 import { RxDocument } from "rxdb";
 import BarGraph from "./BarGraph";
 
+
 export interface Insight {
   neurotransmitters: {
     dopamine: number;
@@ -110,6 +111,7 @@ export default function InsightsDisplay() {
       setNow(new Date());
     }
   };
+
 
   const getNeedsData = async () => {
     try {
