@@ -47,7 +47,7 @@ export default function InfoButton({
     <div className="relative">
       <button
         onClick={togglePopup}
-        className="flex items-center justify-center w-8 h-8 border-2 border-twd-background rounded-full text-white font-bold hover:bg-white hover:text-black transition"
+        className="flex items-center justify-center w-8 h-8 border-2 border-twd-background rounded-full text-white font-bold transition"
       >
         <InformationCircleIcon />
       </button>

@@ -8,7 +8,7 @@ export default function FloatingButton() {
         aria-label="Add New Tool"
         className="w-16 h-16 fixed bottom-20 right-5 shadow-lg text-white 
                    bg-gradient-to-r from-twd-primary-purple to-purple-600 
-                   p-4 rounded-full hover:scale-105 transform transition-all duration-200 ease-in-out"
+                   p-4 rounded-full transform transition-all duration-200 ease-in-out"
       />
     </Link>
   );
