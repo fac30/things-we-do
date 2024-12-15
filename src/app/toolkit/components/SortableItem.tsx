@@ -1,5 +1,5 @@
 "use client";
-import { Bars3Icon } from "@heroicons/react/24/outline";
+import { Bars3Icon, PhotoIcon } from "@heroicons/react/24/outline";
 import Button from "@/ui/shared/Button";
 import { useState } from "react";
 import Modal from "@/ui/shared/Modal";
@@ -79,22 +79,12 @@ export default function SortableItem({
               className="h-10 w-10 object-cover rounded"
             />
           ) : (
-            <div className="h-10 w-10"></div> // Reserve space when no image
+            <div className="h-10 w-10 flex items-center justify-center bg-twd-background rounded">
+            {/* Use a Heroicon as a placeholder */}
+              <PhotoIcon className="h-10 w-10 text-slate-300" />
+            </div>
+            // <div className="h-10 w-10"></div> // Reserve space when no image
           )}
-
-          {/* Display the link or reserve space */}
-          {/* {isValidUrl(item.infoUrl) ? (
-            <a
-              href={item.infoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-twd-primary-purple text-sm rounded-full font-normal py-[6px] px-[14px]"
-            >
-              Go to resource
-            </a>
-          ) : (
-            <div className="w-24"></div> // Reserve space for the link (adjust width as needed)
-          )} */}
 
           {isValidUrl(item.infoUrl) ? (
             <Button
@@ -109,24 +99,6 @@ export default function SortableItem({
           )}
 
           {/* Delete button */}
-          {/* <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDelete(item.id);
-            }}
-            className="ml-4 text-white"
-          >
-            Delete
-          </button> */}
-          {/* <Button
-            onEventClick={(e) => {
-              e.stopPropagation();
-              handleDelete(item.id);
-            }}
-            label="delete"
-            className="bg-twd-secondary-purple  font-normal py-[6px] px-[14px]"
-          />
-        </div> */}
           <Button
             onEventClick={(e) => {
               e.stopPropagation();

@@ -176,7 +176,7 @@ class DatabaseManager {
     collectionName: string,
     docId: string,
     field: string,
-    update: string | object
+    update: string | object | boolean
   ) {
     try {
       const db = await this.accessDatabase();

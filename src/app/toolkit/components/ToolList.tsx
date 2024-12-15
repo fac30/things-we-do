@@ -57,7 +57,7 @@ export default function ToolkitList() {
   }, []);
 
   // Toggle item `checked` state
-  const handleToggle = (id: string) => {
+  const handleToggle = async (id: string) => {
     setMainData((prevData) =>
       prevData.map((item) =>
         item.id === id ? { ...item, checked: !item.checked } : item
@@ -68,6 +68,17 @@ export default function ToolkitList() {
         item.id === id ? { ...item, checked: !item.checked } : item
       )
     );
+
+    // Find the item to update
+    const updatedItem = mainData.find((item) => item.id === id);
+    if (updatedItem) {
+      try {
+        // Update in database
+        await database.updateDocument("toolkit_items", id, "checked", !updatedItem.checked );
+      } catch (error) {
+        console.error("Error updating checked status in database:", error);
+      }
+    }
   };
 
   // Delete an item
