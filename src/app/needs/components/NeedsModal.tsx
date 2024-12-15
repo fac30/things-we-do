@@ -32,54 +32,50 @@ export default function NeedsModal({
   if (!modalOpen) return null;
 
   return (
-    <div
-      className="w-11/12 absolute top-1/2 left-1/2 bg-gray-800 border-[1.5px] rounded-lg -translate-x-1/2 -translate-y-1/2"
-      style={{
-        position: "fixed",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        zIndex: 1000,
-        overflow: "hidden",
-      }}
-    >
-      <p className="text-center">Step {needsStep} of 3</p>
-      {needsStep > 1 && (
-        <button
-          className="absolute left-2 top-3"
-          onClick={handleBackClick}
-          aria-label="Back"
-        >
-          <ChevronLeftIcon className="h-10 w-10" />
-        </button>
-      )}
-      <button
-        className="absolute right-2 top-3"
-        onClick={handleCloseClick}
-        aria-label="Close"
-      >
-        <XMarkIcon className="h-10 w-10" />
-      </button>
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+      <div className="w-11/12 max-w-lg bg-gray-900 border border-gray-700 rounded-lg p-6 shadow-lg">
+        <div className="relative">
+          <p className="text-center text-white mb-4">Step {needsStep} of 3</p>
 
-      <div className="flex flex-col w-full items-center py-10 justify-between h-full">
-        <p className="text-xl w-10/12 text-center mb-5">{title}</p>
-        <p className="text-md w-10/12 text-center mb-10">
-          Select the button that best describes meeting this need right now.
-        </p>
+          {needsStep > 1 && (
+            <button
+              className="absolute left-0 top-0"
+              onClick={handleBackClick}
+              aria-label="Back"
+            >
+              <ChevronLeftIcon className="h-8 w-8 text-white" />
+            </button>
+          )}
 
-        <div className="flex justify-center gap-10 w-2/3">
-          <Button
-            onClick={handleNegativeClick}
-            label={negativeLabel}
-            className="text-xl font-normal w-36 h-48 bg-twd-secondary-purple text-balance rounded-none"
-            aria-label="Negative"
-          />
-          <Button
-            onClick={handlePositiveClick}
-            label={positiveLabel}
-            className="bg-twd-primary-purple text-xl font-normal w-36 text-balance rounded-none"
-            aria-label="Positive"
-          />
+          <button
+            className="absolute right-0 top-0"
+            onClick={handleCloseClick}
+            aria-label="Close"
+          >
+            <XMarkIcon className="h-8 w-8 text-white" />
+          </button>
+        </div>
+
+        <div className="flex flex-col w-full items-center py-6 justify-between h-full">
+          <p className="text-xl w-10/12 text-center text-white mb-5">{title}</p>
+          <p className="text-md w-10/12 text-center text-gray-300 mb-10">
+            Select the button that best describes meeting this need right now.
+          </p>
+
+          <div className="flex justify-center gap-4 w-full">
+            <Button
+              onClick={handleNegativeClick}
+              label={negativeLabel}
+              className="px-4 py-2 text-lg font-medium text-white bg-gray-600 rounded-full w-36 text-nowrap"
+              aria-label="Negative"
+            />
+            <Button
+              onClick={handlePositiveClick}
+              label={positiveLabel}
+              className="px-4 py-2 text-lg font-medium text-white bg-twd-primary-purple rounded-full w-36 text-nowrap"
+              aria-label="Positive"
+            />
+          </div>
         </div>
       </div>
     </div>

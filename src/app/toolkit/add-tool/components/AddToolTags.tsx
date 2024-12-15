@@ -99,7 +99,7 @@ export default function AddTags() {
         <button
           onClick={() => setModalOpen(true)}
           className="flex justify-center items-center"
-          aria-labels="Add category"
+          aria-label="Add category"
         >
           <PlusCircleIcon className="w-7 m-auto" />
         </button>

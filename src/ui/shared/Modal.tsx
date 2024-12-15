@@ -41,7 +41,7 @@ export default function Modal({
                 <input
                   type="text"
                   placeholder={placeholder}
-                  className="w-9/12 px-3 py-2 mt-4 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-9/12 px-3 py-2 mt-4 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-twd-primary-purple addToolInput"
                   onChange={handleInputChange}
                 />
               ) : (
@@ -52,14 +52,14 @@ export default function Modal({
                   <Button
                     onClick={backButton.action}
                     label={backButton.label}
-                    className="px-4 py-2 text-lg font-medium text-white bg-gray-600 rounded-full hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 w-36 text-nowrap"
+                    className="px-4 py-2 text-lg font-medium text-white bg-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-400 w-36 text-nowrap"
                   />
                 )}
                 {forwardButton && (
                   <Button
                     onClick={forwardButton.action}
                     label={forwardButton.label}
-                    className="px-4 py-2 text-lg font-medium text-white bg-twd-primary-purple rounded-full hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-400 w-36 text-nowrap"
+                    className="px-4 py-2 text-lg font-medium text-white bg-twd-primary-purple rounded-full focus:outline-none focus:ring-2 focus:ring-purple-400 w-36 text-nowrap"
                   />
                 )}
               </div>
