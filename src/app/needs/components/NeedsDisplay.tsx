@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
-import Section from "./Section";
+import NeedsSection from "./NeedsSection";
 import NeedsModal from "./NeedsModal";
 import Modal from "@/ui/shared/Modal";
 import Button from "@/ui/shared/Button";
@@ -11,6 +11,7 @@ import { RxDocument, RxDocumentData } from "rxdb";
 import { useRouter } from "next/navigation";
 
 type Category = RxDocumentData<{ id: string; name: string }>;
+
 type Need = RxDocumentData<{
   id: string;
   name: string;
@@ -288,7 +289,7 @@ export default function NeedsDisplay() {
       </h2>
       <div className="w-11/12 m-auto">
         {categorizedNeeds.map((category, index) => (
-          <Section
+          <NeedsSection
             key={index}
             categoryData={category}
             handleOpen={handleItemClick}
@@ -306,6 +307,7 @@ export default function NeedsDisplay() {
             : "bg-gray-400 cursor-not-allowed"
         )}
       />
+
       <NeedsModal
         modalOpen={needsModalOpen}
         title={selectedNeed?.name}
@@ -320,6 +322,7 @@ export default function NeedsDisplay() {
         handleBackClick={handleBackClick}
         handleCloseClick={handleCloseNeedsModal}
       />
+
       <Modal
         modalOpen={deselectModalOpen}
         title="Has this need now been met?"
