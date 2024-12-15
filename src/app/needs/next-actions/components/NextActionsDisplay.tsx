@@ -166,7 +166,7 @@ export default function NextActionsDisplay() {
       <div className="w-11/12 m-auto">
         {priorityGroups.length === 0 ? (
           <p className="mb-5">
-            No highlighted needs found. Highlight some needs first, then come back here.
+            You have no unmet needs selected. Review which needs might be unmet before we can recommend next actions to meet those needs.
           </p>
         ) : (
           priorityGroups.map((group, i) => (
