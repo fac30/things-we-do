@@ -102,7 +102,7 @@ export default function NextActionsDisplay() {
 
   // onToggleAction logic
   const onToggleAction = async (action: NextActionDocument) => {
-    const highlighted = new Date(action.selectedExpiry) > new Date(action.timestamp);
+    const highlighted = new Date(action.selectedExpiry) > new Date();
     const collectionName = "next_actions";
 
     if (highlighted) {
