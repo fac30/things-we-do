@@ -2,14 +2,13 @@
 
 import React, { useEffect, useState, useMemo } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
-import { RxDocumentData } from "rxdb";
 import toTitleCase from "@/lib/utils/toTitleCase";
 import NextActionsSection from "./NextActionsSection";
 import Button from "@/ui/shared/Button";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
 
-type NeedDocument = RxDocumentData<{
+export interface NeedDocument {
   id: string;
   name: string;
   category: string;
@@ -21,16 +20,16 @@ type NeedDocument = RxDocumentData<{
     name: string;
   };
   timestamp: string;
-}>;
+}
 
-type NextActionDocument = RxDocumentData<{
+export interface NextActionDocument {
   id: string;
   name: string;
   need: string;
   selectedTimestamps: string[];
   selectedExpiry: string;
   timestamp: string;
-}>;
+}
 
 export default function NextActionsDisplay() {
   const database = useDatabase();
@@ -163,23 +162,23 @@ export default function NextActionsDisplay() {
   };
 
   return (
-    <div className="w-11/12 m-auto">
-      {priorityGroups.length === 0 ? (
-        <p className="mb-5">
-          No highlighted needs found. Highlight some needs first, then come back here.
-        </p>
-      ) : (
-        priorityGroups.map((group, i) => (
-          <div key={i} className="mb-6">
-            <h3 className="text-xl font-bold mb-2">
-              {toTitleCase(group.needs[0].mood ?? "No mood")}: {toTitleCase(group.priority.name)}
-            </h3>
-            
-            {group.needs.map((need) => {
-              const actions = getActionsForNeed(need.id);
+    <>
+      <div className="w-11/12 m-auto">
+        {priorityGroups.length === 0 ? (
+          <p className="mb-5">
+            No highlighted needs found. Highlight some needs first, then come back here.
+          </p>
+        ) : (
+          priorityGroups.map((group, i) => (
+            <div key={i} className="mb-6">
+              <h3 className="text-xl font-bold mb-2">
+                {toTitleCase(group.needs[0].mood ?? "No mood")}: {toTitleCase(group.priority.name)}
+              </h3>
+              
+              {group.needs.map((need) => {
+                const actions = getActionsForNeed(need.id);
 
-              return (
-                <>
+                return (
                   <div key={need.id} className="ml-4 mb-4">
                     <h4 className="font-semibold">{need.name}</h4>
 
@@ -193,21 +192,21 @@ export default function NextActionsDisplay() {
                       <p className="text-sm text-gray-500 ml-6">No next actions available for this need.</p>
                     )}
                   </div>
-        
-                  <Button
-                    onClick={saveAndExit}
-                    label="Save & Exit"
-                    className={clsx(
-                      "fixed right-4 bottom-24 text-white rounded",
-                      "bg-twd-primary-purple shadow-twd-primary-purple"
-                    )}
-                  />
-                </>
-              );
-            })}
-          </div>
-        ))
-      )}
-    </div>
+                );
+              })}
+            </div>
+          ))
+        )}
+      </div>
+      
+      <Button
+        onClick={saveAndExit}
+        label="Save & Exit"
+        className={clsx(
+          "fixed right-4 bottom-24 text-white rounded",
+          "bg-twd-primary-purple shadow-twd-primary-purple"
+        )}
+      />
+  </>
   );
 }

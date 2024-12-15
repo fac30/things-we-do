@@ -2,27 +2,13 @@
 
 import React from "react";
 import Button from "@/ui/shared/Button";
-
-type Need = {
-  id: string;
-  name: string;
-  selectedExpiry: string;
-  timestamp: string;
-};
-
-type NextAction = {
-  id: string;
-  name: string;
-  need: string;
-  selectedTimestamps: string[];
-  selectedExpiry: string;
-  timestamp: string;
-};
+import { NeedDocument } from "./NextActionsDisplay";
+import { NextActionDocument } from "./NextActionsDisplay";
 
 interface NextActionsSectionProps {
-  need: Need;
-  actions: NextAction[];
-  onToggleAction: (action: NextAction) => void;
+  need: NeedDocument;
+  actions: NextActionDocument[];
+  onToggleAction: (action: NextActionDocument) => Promise<void>;
 }
 
 export default function NextActionsSection({
