@@ -1,4 +1,4 @@
-import { addRxPlugin, RxDocumentData } from "rxdb";
+import { addRxPlugin, RxDocument, RxDocumentData } from "rxdb";
 import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
 import { createRxDatabase, RxDatabase } from "rxdb";
@@ -121,7 +121,7 @@ class DatabaseManager {
     }
   }
 
-  async getFromDb<T>(collection: string): Promise<RxDocumentData<T>[]> {
+  async getFromDb<T>(collection: string): Promise<RxDocument<T>[]> {
     const db = await this.accessDatabase();
     const collectionExists = db.collections[collection];
     if (!collectionExists)
