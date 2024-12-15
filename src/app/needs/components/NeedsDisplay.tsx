@@ -308,7 +308,7 @@ export default function NeedsDisplay() {
       />
       <NeedsModal
         modalOpen={needsModalOpen}
-        title={`You have selected ~${selectedNeed?.name}~`}
+        title={selectedNeed?.name}
         needsStep={needsStep}
         positiveLabel={positiveLabel}
         negativeLabel={negativeLabel}
