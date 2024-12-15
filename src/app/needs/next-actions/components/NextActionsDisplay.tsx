@@ -4,6 +4,10 @@ import React, { useEffect, useState, useMemo } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
 import { RxDocumentData } from "rxdb";
 import toTitleCase from "@/lib/utils/toTitleCase";
+import NextActionsSection from "./NextActionsSection";
+import Button from "@/ui/shared/Button";
+import clsx from "clsx";
+import { useRouter } from "next/navigation";
 
 type NeedDocument = RxDocumentData<{
   id: string;
@@ -30,30 +34,32 @@ type NextActionDocument = RxDocumentData<{
 
 export default function NextActionsDisplay() {
   const database = useDatabase();
-
+  const router = useRouter();
   const [highlightedNeeds, setHighlightedNeeds] = useState<NeedDocument[]>([]);
   const [relatedNextActions, setRelatedNextActions] = useState<NextActionDocument[]>([]);
+  const [chainEnd, setChainEnd] = useState(0); 
+  // chainEnd increments after toggling actions to refetch and update UI
 
   useEffect(() => {
     async function fetchData() {
-      // 1. Fetch all needs
+      // 1. Fetch all needs (as RxDocuments), then to JSON
       const needsDocs = await database.getFromDb("needs");
       const allNeeds = needsDocs.map(doc => doc.toJSON() as NeedDocument);
-      
-      // 2. Highlighted needs check
+
+      // 2. Highlighted needs check: selectedExpiry in the future means highlighted
       const now = new Date();
       const filteredNeeds = allNeeds.filter(need => {
         const expiry = new Date(need.selectedExpiry);
-        return expiry > now;
+        return expiry > now && need.priority && need.priority.order > 0;
       });
 
       setHighlightedNeeds(filteredNeeds);
 
-      // 3. Fetch all next actions
+      // 3. Fetch all next actions (as RxDocuments), then to JSON
       const nextActionsDocs = await database.getFromDb("next_actions");
       const allNextActions = nextActionsDocs.map(doc => doc.toJSON() as NextActionDocument);
 
-      // 4. Filter next actions
+      // 4. Filter next actions to only those related to highlighted needs
       const highlightedNeedIds = new Set(filteredNeeds.map(need => need.id));
       const filteredNextActions = allNextActions.filter(na => highlightedNeedIds.has(na.need));
 
@@ -61,22 +67,20 @@ export default function NextActionsDisplay() {
     }
 
     fetchData();
-  }, [database]);
+  }, [database, chainEnd]);
 
   // Group and sort highlighted needs by priority
   const priorityGroups = useMemo(() => {
-    // If no needs, return empty
     if (highlightedNeeds.length === 0) return [];
 
-    // Filter out any that don't have a priority (just in case)
-    const needsWithPriority = highlightedNeeds.filter(need => need.priority && need.priority.order);
+    const needsWithPriority = highlightedNeeds.filter(
+      need => need.priority && need.priority.order
+    );
 
-    // Sort by priority order (ascending)
     const sortedNeeds = needsWithPriority.sort((a, b) =>
       a.priority!.order - b.priority!.order
     );
 
-    // Group by priority order
     const groupsMap: Record<number, { priority: { order: number; name: string}; needs: NeedDocument[] }> = {};
     for (const need of sortedNeeds) {
       const order = need.priority!.order;
@@ -89,17 +93,77 @@ export default function NextActionsDisplay() {
       groupsMap[order].needs.push(need);
     }
 
-    // Convert to array for rendering
-    const groupArray = Object.values(groupsMap);
-
-    return groupArray;
+    return Object.values(groupsMap);
   }, [highlightedNeeds]);
+
+  // Helper to get next actions for a given need
+  const getActionsForNeed = (needId: string) => {
+    return relatedNextActions.filter(action => action.need === needId);
+  };
+
+  // onToggleAction logic
+  const onToggleAction = async (action: NextActionDocument) => {
+    const highlighted = new Date(action.selectedExpiry) > new Date(action.timestamp);
+    const collectionName = "next_actions";
+
+    if (highlighted) {
+      // Un-highlight action:
+      // Remove last selectedTimestamp
+      const updatedTimestamps = [...action.selectedTimestamps];
+      updatedTimestamps.pop();
+      
+      // Set selectedExpiry back to the original timestamp
+      await database.updateDocument(
+        collectionName,
+        action.id,
+        "selectedTimestamps",
+        updatedTimestamps
+      );
+
+      await database.updateDocument(
+        collectionName,
+        action.id,
+        "selectedExpiry",
+        action.timestamp
+      );
+    } else {
+      // Highlight action:
+      // Add new selectedTimestamp
+      const updatedTimestamps = [...action.selectedTimestamps, new Date().toISOString()];
+
+      // Find the parent need to copy its selectedExpiry
+      const parentNeed = highlightedNeeds.find((need) => need.id === action.need);
+      if (!parentNeed) {
+        console.error("Parent need not found for action:", action);
+        return;
+      }
+
+      await database.updateDocument(
+        collectionName,
+        action.id,
+        "selectedTimestamps",
+        updatedTimestamps
+      );
+
+      await database.updateDocument(
+        collectionName,
+        action.id,
+        "selectedExpiry",
+        parentNeed.selectedExpiry
+      );
+    }
+
+    // After toggling, increment chainEnd to re-fetch and update UI
+    setChainEnd(prev => prev + 1);
+  };
+
+  const saveAndExit = () => {
+    // All changes are saved on toggle, so just navigate back
+    router.push("/needs");
+  };
 
   return (
     <div className="w-11/12 m-auto">
-      <h2 className="text-2xl mb-6 mt-4">
-        Next Actions Display
-      </h2>
       {priorityGroups.length === 0 ? (
         <p className="mb-5">
           No highlighted needs found. Highlight some needs first, then come back here.
@@ -110,13 +174,37 @@ export default function NextActionsDisplay() {
             <h3 className="text-xl font-bold mb-2">
               {toTitleCase(group.needs[0].mood ?? "No mood")}: {toTitleCase(group.priority.name)}
             </h3>
-            {group.needs.map((need) => (
-              <div key={need.id} className="ml-4 mb-4">
-                <h4 className="font-semibold">{need.name}</h4>
-                <p className="text-sm text-gray-600">Need ID: {need.id}</p>
-                {/* In a future step, we will render NextActionsSection here */}
-              </div>
-            ))}
+            
+            {group.needs.map((need) => {
+              const actions = getActionsForNeed(need.id);
+
+              return (
+                <>
+                  <div key={need.id} className="ml-4 mb-4">
+                    <h4 className="font-semibold">{need.name}</h4>
+
+                    {actions.length > 0 ? (
+                      <NextActionsSection
+                        need={need}
+                        actions={actions}
+                        onToggleAction={onToggleAction}
+                      />
+                    ) : (
+                      <p className="text-sm text-gray-500 ml-6">No next actions available for this need.</p>
+                    )}
+                  </div>
+        
+                  <Button
+                    onClick={saveAndExit}
+                    label="Save & Exit"
+                    className={clsx(
+                      "fixed right-4 bottom-24 text-white rounded",
+                      "bg-twd-primary-purple shadow-twd-primary-purple"
+                    )}
+                  />
+                </>
+              );
+            })}
           </div>
         ))
       )}

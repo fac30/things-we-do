@@ -1,4 +1,4 @@
-import { addRxPlugin, RxDocument, RxDocumentData } from "rxdb";
+import { addRxPlugin, RxDocument } from "rxdb";
 import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
 import { createRxDatabase, RxDatabase } from "rxdb";

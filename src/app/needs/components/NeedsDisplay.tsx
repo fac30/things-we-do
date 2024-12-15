@@ -296,6 +296,7 @@ export default function NeedsDisplay() {
           />
         ))}
       </div>
+      
       <Button
         onClick={openNextActions}
         label="Next Actions"

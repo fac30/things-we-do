@@ -26,30 +26,27 @@ interface NextActionsSectionProps {
 }
 
 export default function NextActionsSection({
-  need,
   actions,
   onToggleAction,
 }: NextActionsSectionProps) {
   return (
-    <div className="ml-6 mb-4">
-      <h5 className="font-semibold">{need.name} - Next Actions</h5>
-      <div className="flex flex-wrap gap-4 mt-2">
-        {actions.map((action) => {
-          const highlighted = new Date(action.selectedExpiry) > new Date(action.timestamp);
-          return (
-            <Button
-              key={action.id}
-              label={action.name}
-              className={
-                highlighted
-                  ? "bg-twd-primary-purple text-black"
-                  : "bg-gray-600 text-white"
-              }
-              onClick={() => onToggleAction(action)}
-            />
-          );
-        })}
-      </div>
+    <div className="ml-4 mb-6">
+      {actions.map((action) => {
+        const highlighted = new Date(action.selectedExpiry) > new Date(action.timestamp);
+
+        return (
+          <Button
+            key={action.id}
+            label={action.name}
+            className={
+              highlighted
+                ? "bg-twd-primary-purple text-black"
+                : "bg-gray-600 text-white"
+            }
+            onClick={() => onToggleAction(action)}
+          />
+        );
+      })}
     </div>
   );
 }
