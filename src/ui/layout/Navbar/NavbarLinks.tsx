@@ -3,8 +3,8 @@
 import {
   HomeIcon,
   PresentationChartLineIcon,
-  EllipsisHorizontalCircleIcon,
   ChartBarIcon,
+  PuzzlePieceIcon,
 } from "@heroicons/react/24/outline";
 import { WrenchIcon } from "@heroicons/react/24/solid";
 
@@ -12,14 +12,14 @@ import NavLink from "../../shared/NavLink";
 
 const links = [
   { title: "Home", icon: HomeIcon, destination: "/" },
-  { title: "Moods", icon: PresentationChartLineIcon, destination: "/moods" },
+  { title: "Track", icon: PresentationChartLineIcon, destination: "/moods" },
   {
     title: "Toolkit",
     icon: WrenchIcon,
     destination: "/toolkit",
     isToolkit: true,
   },
-  { title: "Needs", icon: EllipsisHorizontalCircleIcon, destination: "/needs" },
+  { title: "Needs", icon: PuzzlePieceIcon, destination: "/needs" },
   { title: "Insights", icon: ChartBarIcon, destination: "/insights" },
 ];
 

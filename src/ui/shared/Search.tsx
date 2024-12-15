@@ -5,13 +5,13 @@ import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 interface SearchProps {
   onSearch: (query: string) => void;
-  onClear: () => void;              
+  onClear: () => void;
 }
 
 export default function Search({ onSearch, onClear }: SearchProps) {
   const [isInputVisible, setIsInputVisible] = useState(false);
-  const [query, setQuery] = useState(""); 
-  const inputRef = useRef<HTMLInputElement | null>(null); 
+  const [query, setQuery] = useState("");
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (isInputVisible) {
@@ -38,8 +38,9 @@ export default function Search({ onSearch, onClear }: SearchProps) {
     <div className="relative flex items-center space-x-2">
       {/* Text and magnifying glass on one line */}
       <div className="flex items-center justify-between">
-        <span className="text-white font-thin text-md my-4">
-          Fill your toolkit with things that <span className="font-bold">help</span> if you are spiralling:
+        <span className="text-white font-normal text-md my-4">
+          Fill your toolkit with things that <span className="">help</span> if
+          you are spiralling
         </span>
         {/* Conditionally render the magnifying glass */}
         {!isInputVisible && (
@@ -58,7 +59,7 @@ export default function Search({ onSearch, onClear }: SearchProps) {
               value={query}
               onChange={handleInputChange}
               placeholder="Search..."
-              className="w-full bg-twd-background px-3 py-2 rounded-md border border-gray-300"
+              className="w-full bg-twd-background px-3 py-2 rounded-md border border-gray-300 focus:border-none focus:outline-none focus:ring-2 focus:ring-twd-primary-purple"
             />
             <button
               onClick={() => {
@@ -71,7 +72,7 @@ export default function Search({ onSearch, onClear }: SearchProps) {
             </button>
           </div>
         )}
-    </div>
+      </div>
     </div>
   );
 }

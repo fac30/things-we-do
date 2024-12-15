@@ -35,7 +35,9 @@ describe("SortableItem Component", () => {
       "p-4",
       "rounded-lg",
       "shadow-lg",
-      "bg-twd-background"
+      "bg-[#1d1b30]",
+      "border-2",
+      "border-[#242139]"
     );
 
     // Check the main content layout
@@ -53,7 +55,7 @@ describe("SortableItem Component", () => {
 
     // Check sub-layout for the second row
     const secondRow = screen
-      .getByRole("link", { name: /go to resource/i })
+      .getByRole("button", { name: /go to resource/i })
       .closest("div");
     expect(secondRow).toHaveClass(
       "flex",

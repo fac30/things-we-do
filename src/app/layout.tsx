@@ -3,11 +3,12 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import Navbar from "@/ui/layout/Navbar/Navbar";
 import { DatabaseProvider } from "@/context/DatabaseContext";
+import { Roboto } from "next/font/google";
 
 const APP_NAME = "Things We Do";
 const APP_DEFAULT_TITLE = "Things We Do";
-const APP_TITLE_TEMPLATE = "%s - Thing We Do";
-const APP_DESCRIPTION = "Best PWA app in the world!";
+const APP_TITLE_TEMPLATE = "%s - Things We Do";
+const APP_DESCRIPTION = "Your app for tracking things you do.";
 
 export const metadata: Metadata = {
   applicationName: APP_NAME,
@@ -48,11 +49,17 @@ export const viewport: Viewport = {
   themeColor: "#1B192E",
 };
 
+const poppins = Roboto({
+  subsets: ["latin"],
+  weight: ["100", "300", "400", "500", "700", "900"],
+  display: "swap",
+});
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" dir="ltr">
       <head />
-      <body>
+      <body className={`${poppins.className}`}>
         <DatabaseProvider>
           <main className="pb-24">{children}</main>
         </DatabaseProvider>
