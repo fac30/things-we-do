@@ -54,7 +54,7 @@ export default function InfoButton({
       {isPopupOpen && (
         <div
           ref={popupRef}
-          className={`absolute z-10 w-64 p-4 bg-gray-800 text-white rounded-lg shadow-lg ${positionClasses[direction]}`}
+          className={`absolute z-20 w-64 p-4 bg-gray-800 text-white rounded-lg shadow-lg ${positionClasses[direction]}`}
         >
           <p className="text-sm">{popupText}</p>
           <div className="flex justify-between">
