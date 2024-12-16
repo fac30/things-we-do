@@ -77,28 +77,6 @@ export default function ToolkitList() {
     } catch (error) {
       console.error("Error updating checked status in database:", error);
     }
-
-    // setMainData((prevData) =>
-    //   prevData.map((item) =>
-    //     item.id === id ? { ...item, checked: !item.checked } : item
-    //   )
-    // );
-    // setDisplayedData((prevData) =>
-    //   prevData.map((item) =>
-    //     item.id === id ? { ...item, checked: !item.checked } : item
-    //   )
-    // );
-
-    // // Find the item to update
-    // const updatedItem = mainData.find((item) => item.id === id);
-    // if (updatedItem) {
-    //   try {
-    //     // Update in database
-    //     await database.updateDocument("toolkit_items", id, "checked", !updatedItem.checked );
-    //   } catch (error) {
-    //     console.error("Error updating checked status in database:", error);
-    //   }
-    // }
   };
 
   // Delete an item
@@ -139,11 +117,6 @@ export default function ToolkitList() {
 
     setDisplayedData(orderedData);
 
-    // const reorderedData = [...displayedData];
-    // const [movedItem] = reorderedData.splice(source.index, 1);
-    // reorderedData.splice(destination.index, 0, movedItem);
-
-    // setDisplayedData(reorderedData);
   };
 
   // Handle search queries
@@ -158,14 +131,7 @@ export default function ToolkitList() {
       .filter(Boolean) as ToolkitComponentData[];
 
     setDisplayedData(orderedData);
-    // if (query) {
-    //   const filtered = mainData.filter((item) =>
-    //     item.name.toLowerCase().includes(query.toLowerCase())
-    //   );
-    //   setDisplayedData(filtered);
-    // } else {
-    //   setDisplayedData(mainData);
-    // }
+  
   };
 
   // Clear search input
@@ -187,24 +153,6 @@ export default function ToolkitList() {
       item.categories.some((cat) => selectedCategories.includes(cat))
     );
   }, [mainData, selectedCategories]);
-
-  // useEffect(() => {
-  //   if (searchQuery) {
-  //     // Filter the current displayed data (based on categories) by the search query
-  //     const searchFilteredData = (
-  //       selectedCategories.length > 0 ? filteredData : mainData
-  //     ).filter((item) =>
-  //       item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  //     );
-  //     setDisplayedData(searchFilteredData);
-  //   } else if (selectedCategories.length > 0) {
-  //     // Show filtered data by categories when no search query
-  //     setDisplayedData(filteredData);
-  //   } else {
-  //     // Show all data if no categories or search query
-  //     setDisplayedData(mainData);
-  //   }
-  // }, [filteredData, searchQuery, selectedCategories.length, mainData]);
 
   // Filter data based on selected categories
   useEffect(() => {
