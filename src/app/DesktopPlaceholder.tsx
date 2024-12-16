@@ -29,10 +29,14 @@ export default function DesktopPlaceholder() {
   }, []);
 
   return (
-    <div className="hidden md:absolute md:block top-1/2 left-1/2 h-5/6 w-11/12 overflow-hidden -translate-x-1/2 -translate-y-1/2 bg-twd-primary-purple z-[9999]">
-      <p className="text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-7xl">
-        fuck off
-      </p>
+    <div className="hidden md:absolute md:block top-1/2 left-1/2 h-5/6 w-11/12 overflow-hidden -translate-x-1/2 -translate-y-1/2 bg-twd-background shadow-2xl border-2 rounded-lg z-[9999]">
+      <div className="text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-5xl flex gap-10 flex-col w-11/12">
+        <h2>Thanks for visiting Things We Do</h2>
+        <p className="text-3xl">
+          We are currently a mobile-only app. Please visit us on a mobile device
+          or tablet.
+        </p>
+      </div>
     </div>
   );
 }
