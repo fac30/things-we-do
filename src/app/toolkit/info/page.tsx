@@ -1,16 +1,9 @@
-"use client";
 
-import Button from "@/ui/shared/Button";
+import Link from "next/link";
 import { Header } from "@/ui/shared/Header";
-import { useState } from "react";
-import CategoriesInfoPage from "./CategoriesInfoPage";
+
 
 export default function ToolkitInfoPage() {
-  const [showCategories, setShowCategories] = useState(false);
-
-  if (showCategories) {
-    return <CategoriesInfoPage />;
-  }
 
   return (
     <>
@@ -62,11 +55,10 @@ export default function ToolkitInfoPage() {
               for quick access.
             </li>
             <div className="mt-10">
-              <Button
-                label="Explore Categories"
-                onClick={() => setShowCategories(true)}
-                className="bg-twd-primary-purple text-white text-base px-6 py-3 rounded-full font-semibold"
-              />
+              <Link href="/toolkit/info/categories-info" 
+                className="bg-twd-primary-purple text-white text-base px-6 py-3 rounded-full font-semibold">
+                Go to Categories
+              </Link>
             </div>
 
             <li>

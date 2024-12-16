@@ -1,7 +1,7 @@
+'use client'
 import Button from "@/ui/shared/Button";
 import { Header } from "@/ui/shared/Header";
 import { useRouter } from "next/navigation";
-
 
 const categoriesBarClass = `
   whitespace-nowrap flex items-center gap-4 px-4 py-2 
@@ -26,7 +26,8 @@ export default function CategoriesInfoPage() {
     const router = useRouter();
 
     const goBack = () => {
-      router.back();
+      router.push('/toolkit/info');
+      window.scrollTo(0, 0);
     };
 
     return (
