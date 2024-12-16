@@ -10,6 +10,11 @@ header {
   @apply bg-inherit;
 }
 
+/* Prevent scrolling when the purple div is visible */
+.device-desktop-body {
+  overflow: hidden;
+}
+
 p {
   @apply font-light;
 }
