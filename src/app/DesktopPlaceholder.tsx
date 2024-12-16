@@ -30,7 +30,7 @@ export default function DesktopPlaceholder() {
 
   return (
     <>
-      <div className="hidden md:absolute md:block h-screen w-screen blur-sm bg-twd-primary-purple z-[99998]"></div>
+      <div className="hidden md:absolute md:block h-screen w-screen blur-sm  bg-gradient-to-r from-twd-primary-purple to-purple-500 z-[99998]"></div>
       <div className="hidden md:absolute md:block top-1/2 left-1/2 h-5/6 w-11/12 overflow-hidden -translate-x-1/2 -translate-y-1/2 bg-gradient-to-b from-[#1B192E] to-[#25233A] shadow-2xl border- rounded-lg z-[99999]">
         <div className="text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-5xl flex gap-10 flex-col w-11/12">
           <h2>Thanks for visiting Things We Do</h2>
