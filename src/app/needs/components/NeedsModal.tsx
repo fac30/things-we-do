@@ -62,17 +62,17 @@ export default function NeedsModal({
             Select the button that best describes meeting this need right now.
           </p>
 
-          <div className="flex justify-center gap-4 w-full">
+          <div className="flex flex-col justify-center gap-6 w-full items-center">
             <Button
               onClick={handleNegativeClick}
               label={negativeLabel}
-              className="px-4 py-2 text-lg font-medium text-white bg-gray-600 rounded-full w-36 text-nowrap"
+              className="px-4 py-4 text-xl font-normal text-white bg-gradient-to-l from-twd-primary-purple to-purple-600 rounded-lg w-full text-nowrap"
               aria-label="Negative"
             />
             <Button
               onClick={handlePositiveClick}
               label={positiveLabel}
-              className="px-4 py-2 text-lg font-medium text-white bg-twd-primary-purple rounded-full w-36 text-nowrap"
+              className="px-4 py-4 text-xl font-normal text-white bg-gradient-to-r from-twd-primary-purple to-purple-600 rounded-lg w-full text-nowrap"
               aria-label="Positive"
             />
           </div>
