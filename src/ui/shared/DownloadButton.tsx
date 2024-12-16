@@ -9,7 +9,7 @@ interface BeforeInstallPromptEvent extends Event {
 
 let deferredPrompt: BeforeInstallPromptEvent | null = null;
 
-const PWAInstallPrompt: React.FC = () => {
+const DownloadButton: React.FC = () => {
   const [showInstallButton, setShowInstallButton] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
   const [buttonText, setButtonText] = useState("Install App");
@@ -74,7 +74,7 @@ const PWAInstallPrompt: React.FC = () => {
   if (!showInstallButton) return null;
 
   return (
-    <div className="fixed bottom-[120px] left-1/2 transform -translate-x-1/2 w-auto max-w-[350px] z-[999] mb-6">
+    <div className="fixed top-0 w-[200px] z-[999] -translate-x-1/2 left-1/2 shadow-xl">
       <button
         onClick={handleInstallClick}
         className="
@@ -84,8 +84,7 @@ const PWAInstallPrompt: React.FC = () => {
           h-auto 
           px-6 
           py-3 
-          m-2 
-          bg-blue-500 
+  bg-gradient-to-r from-twd-primary-purple to-purple-600 
           text-white 
           rounded-lg 
           hover:bg-blue-600 
@@ -93,6 +92,7 @@ const PWAInstallPrompt: React.FC = () => {
           flex 
           items-center 
           justify-center
+          rounded-t-none
         "
       >
         {buttonText}
@@ -101,4 +101,4 @@ const PWAInstallPrompt: React.FC = () => {
   );
 };
 
-export default PWAInstallPrompt;
+export default DownloadButton;
