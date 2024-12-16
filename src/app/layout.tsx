@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import Navbar from "@/ui/layout/Navbar/Navbar";
 import { DatabaseProvider } from "@/context/DatabaseContext";
 import { Roboto } from "next/font/google";
+import DesktopPlaceholder from "./DesktopPlaceholder";
 
 const APP_NAME = "Things We Do";
 const APP_DEFAULT_TITLE = "Things We Do";
@@ -60,8 +61,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" dir="ltr">
       <head />
       <body className={`${poppins.className}`}>
+        <DesktopPlaceholder />
         <DatabaseProvider>
-          <main className="pb-24">{children}</main>
+          <main className="pb-24 z-[60]">{children}</main>
         </DatabaseProvider>
         <Navbar />
       </body>
