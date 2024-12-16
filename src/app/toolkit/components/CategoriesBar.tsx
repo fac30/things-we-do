@@ -18,8 +18,8 @@ interface CategoriesBarProps {
 
 const categoriesBarClass = `
   whitespace-nowrap flex items-center justify-center gap-4 px-4 py-2 
-  overflow-x-auto 
- sm:gap-6 sm:px-6  focus:ring-2 focus:ring-twd-secondary-purple
+  overflow-x-auto sm:gap-6 sm:px-6  
+  focus:ring-2 focus:ring-twd-secondary-purple
 `;
 
 export default function CategoriesBar({
@@ -64,11 +64,6 @@ export default function CategoriesBar({
         >
           <PlusCircleIcon className="w-7 m-auto " />
         </button>
-        {/* <Button
-          label="+"
-          onClick={openModal}
-          className="bg-twd-primary-purple"
-        /> */}
       </div>
 
       {/* Scrollable Categories */}

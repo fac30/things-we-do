@@ -45,7 +45,7 @@ export default function ToolkitDisplay() {
         inputModal={true}
         modalOpen={modalOpen}
         title="Add New Category"
-        placeholder="Enter category name"
+        placeholder="Enter your category name"
         forwardButton={{
           label: "Add",
           action: handleAddCategory,
