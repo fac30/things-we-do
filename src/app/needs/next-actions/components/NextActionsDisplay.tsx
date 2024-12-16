@@ -2,7 +2,9 @@
 
 import React, { useEffect, useState, useMemo } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
+import clsx from "clsx";
 import changeCase from "@/lib/utils/changeCase";
+import getPriorityColour from "@/lib/utils/getPriorityColour";
 import NextActionsSection from "./NextActionsSection";
 
 export interface NeedDocument {
@@ -32,17 +34,14 @@ export default function NextActionsDisplay() {
   const database = useDatabase();
   const [highlightedNeeds, setHighlightedNeeds] = useState<NeedDocument[]>([]);
   const [relatedNextActions, setRelatedNextActions] = useState<NextActionDocument[]>([]);
-  const [chainEnd, setChainEnd] = useState(0); 
-  // chainEnd increments after toggling actions to refetch and update UI
+  const [chainEnd, setChainEnd] = useState(0);
 
-  useEffect(() => {
+  useEffect(() => { /* Fetch Data */
     async function fetchData() {
-      // 1. Fetch all needs (as RxDocuments), then to JSON
       const needsDocs = await database.getFromDb("needs");
       const allNeeds = needsDocs.map(doc => doc.toJSON() as NeedDocument);
-
-      // 2. Highlighted needs check: selectedExpiry in the future means highlighted
       const now = new Date();
+
       const filteredNeeds = allNeeds.filter(need => {
         const expiry = new Date(need.selectedExpiry);
         return expiry > now && need.priority && need.priority.order > 0;
@@ -50,13 +49,19 @@ export default function NextActionsDisplay() {
 
       setHighlightedNeeds(filteredNeeds);
 
-      // 3. Fetch all next actions (as RxDocuments), then to JSON
       const nextActionsDocs = await database.getFromDb("next_actions");
-      const allNextActions = nextActionsDocs.map(doc => doc.toJSON() as NextActionDocument);
 
-      // 4. Filter next actions to only those related to highlighted needs
-      const highlightedNeedIds = new Set(filteredNeeds.map(need => need.id));
-      const filteredNextActions = allNextActions.filter(na => highlightedNeedIds.has(na.need));
+      const allNextActions = nextActionsDocs.map(
+        doc => doc.toJSON() as NextActionDocument
+      );
+
+      const highlightedNeedIds = new Set(filteredNeeds.map(
+        need => need.id
+      ));
+
+      const filteredNextActions = allNextActions.filter(
+        action => highlightedNeedIds.has(action.need)
+      );
 
       setRelatedNextActions(filteredNextActions);
     }
@@ -64,7 +69,6 @@ export default function NextActionsDisplay() {
     fetchData();
   }, [database, chainEnd]);
 
-  // Group and sort highlighted needs by priority
   const priorityGroups = useMemo(() => {
     if (highlightedNeeds.length === 0) return [];
 
@@ -76,27 +80,34 @@ export default function NextActionsDisplay() {
       a.priority!.order - b.priority!.order
     );
 
-    const groupsMap: Record<number, { priority: { order: number; name: string}; needs: NeedDocument[] }> = {};
+    const groupsMap: Record<number, { 
+      priority: { 
+        order: number;
+        name: string;
+      };
+      needs: NeedDocument[]
+    }> = {};
+
     for (const need of sortedNeeds) {
       const order = need.priority!.order;
+
       if (!groupsMap[order]) {
         groupsMap[order] = {
           priority: need.priority!,
           needs: []
         };
       }
+
       groupsMap[order].needs.push(need);
     }
 
     return Object.values(groupsMap);
   }, [highlightedNeeds]);
 
-  // Helper to get next actions for a given need
   const getActionsForNeed = (needId: string) => {
     return relatedNextActions.filter(action => action.need === needId);
   };
 
-  // onToggleAction logic
   const onToggleAction = async (action: NextActionDocument) => {
     const highlighted = new Date(action.selectedExpiry) > new Date();
     const collectionName = "next_actions";
@@ -152,10 +163,9 @@ export default function NextActionsDisplay() {
     setChainEnd(prev => prev + 1);
   };
 
-  /* Commented out until we agree on an answer to my question in the PR
-    const saveAndExit = () => { router.push("/needs"); };
-  */
-
+  // Commented out until we agree on an answer to my question in the PR
+  // const saveAndExit = () => { router.push("/needs"); };
+ 
   return (
     <>
       <div className="w-11/12 m-auto">
@@ -165,8 +175,14 @@ export default function NextActionsDisplay() {
           </p>)
           : (priorityGroups.map((group, i) => (
             <div key={i} className="mb-6">
-              <h3 className="text-xl font-bold mb-2">
-                {changeCase(group.priority.name, "title")}
+              <h3 className={clsx(
+                "text-xl font-bold mb-2",
+                {"text-twd-cube-red" : group.priority.order === 1 },
+                {"text-twd-cube-yellow" : group.priority.order === 2},
+                {"text-twd-cube-blue" : group.priority.order === 3},
+                {"text-twd-cube-green" : group.priority.order === 4}
+              )}>
+                {changeCase(group.priority.name, "sentence")}
               </h3>
               
               {group.needs.map((need) => {
