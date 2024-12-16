@@ -17,6 +17,7 @@ export default function AddName() {
         }
         className="addToolInput"
         placeholder="E.g. breathing exercises"
+        required
       />
     </div>
   );

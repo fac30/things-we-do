@@ -25,12 +25,18 @@ export default function Inputs() {
   const [categoryErrorModal, setCategoryErrorModal] = useState(false);
   const [infoUrlErrorModal, setInfoUrlErrorModal] = useState(false);
   const [imageUrlErrorModal, setImageUrlErrorModal] = useState(false);
+  const [nameErrorModalOpen, setNameErrorModalOpen] = useState(false);
   const [submitErrorModal, setSubmitErrorModal] = useState(false);
   const [submitErrorMessage, setSubmitErrorMessage] = useState("");
 
   function SubmitButton() {
     const handleSubmit = async () => {
       console.log(`Validating form with state: ${JSON.stringify(formState)}`);
+     
+      if (!formState.name || formState.name.trim() === "") {
+        setNameErrorModalOpen(true);
+        return;
+      }
 
       if (formState.categories.length === 0) {
         setCategoryErrorModal(true);
@@ -133,11 +139,21 @@ export default function Inputs() {
         }}
       />
 
+      {/* Modal for missing name */}
       <Modal
-        title="You created an unused category. What would you like to save?"
+        title="Name is required"
+        modalOpen={nameErrorModalOpen}
+        forwardButton={{
+          label: "OK",
+          action: () => setNameErrorModalOpen(false),
+        }}
+      />
+
+      <Modal
+        title="You created an unused tag. What would you like to save?"
         modalOpen={unusedCategoryModalOpen}
         forwardButton={{
-          label: "Tool & Category",
+          label: "Tool & Tag",
           action: () => {
             setSaveUnusedCategory(true);
             setUnusedCategoryModalOpen(false);
@@ -153,7 +169,7 @@ export default function Inputs() {
       />
 
       <Modal
-        title="Please select at least one category"
+        title="Please select at least one tag"
         modalOpen={categoryErrorModal}
         forwardButton={{
           label: "OK",
