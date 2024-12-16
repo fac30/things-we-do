@@ -25,12 +25,18 @@ export default function Inputs() {
   const [categoryErrorModal, setCategoryErrorModal] = useState(false);
   const [infoUrlErrorModal, setInfoUrlErrorModal] = useState(false);
   const [imageUrlErrorModal, setImageUrlErrorModal] = useState(false);
+  const [nameErrorModalOpen, setNameErrorModalOpen] = useState(false);
   const [submitErrorModal, setSubmitErrorModal] = useState(false);
   const [submitErrorMessage, setSubmitErrorMessage] = useState("");
 
   function SubmitButton() {
     const handleSubmit = async () => {
       console.log(`Validating form with state: ${JSON.stringify(formState)}`);
+     
+      if (!formState.name || formState.name.trim() === "") {
+        setNameErrorModalOpen(true);
+        return;
+      }
 
       if (formState.categories.length === 0) {
         setCategoryErrorModal(true);
@@ -130,6 +136,16 @@ export default function Inputs() {
             setConfirmationModalOpen(false);
             router.push("/toolkit");
           },
+        }}
+      />
+
+      {/* Modal for missing name */}
+      <Modal
+        title="Name is required"
+        modalOpen={nameErrorModalOpen}
+        forwardButton={{
+          label: "OK",
+          action: () => setNameErrorModalOpen(false),
         }}
       />
 
