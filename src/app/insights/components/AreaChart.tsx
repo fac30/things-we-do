@@ -15,6 +15,8 @@ export default function MoodAreaChart({
   endOfRange,
   selectedButton,
 }: MoodAreaChartProps) {
+  const width = screen.width * 0.85;
+
   if (!dataArray || dataArray.length === 0) {
     return <div>No data available for the graph.</div>;
   }
@@ -95,8 +97,8 @@ export default function MoodAreaChart({
           <PlotlyChart
             data={traces as Plotly.Data[]}
             layout={{
-              width: 350,
-              height: 350,
+              width: width,
+              height: width,
               margin: {
                 l: 10,
                 r: 10,
