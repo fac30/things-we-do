@@ -7,7 +7,8 @@ export default function DesktopPlaceholder() {
     const mediaQuery = window.matchMedia("(min-width: 1024px)");
 
     // Function to check if the media query matches
-    const checkDesktop = (e: MediaQueryListEvent) => {
+    const checkDesktop = (e?: MediaQueryListEvent | MediaQueryList) => {
+      if (!e) return;
       if (e.matches) {
         document.body.classList.add("device-desktop-body");
       } else {
