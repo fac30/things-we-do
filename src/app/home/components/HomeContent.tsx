@@ -82,7 +82,7 @@ export default function HomeContent() {
             <div className=" flex items-start">
               <Link href="/toolkit">
                 <button className="bg-twd-primary-purple text-white py-2 px-4 rounded-full flex items-center gap-2">
-                  <span className="text-base font-medium text-center">
+                  <span className="text-base font-medium text-center text-nowrap">
                     Go to Toolkit
                   </span>
                   <ArrowRightIcon className="w-5 h-5" />
@@ -166,7 +166,9 @@ export default function HomeContent() {
                 transform: "translate(-50%, -50%)",
               }}
             >
-              <span className="text-base font-medium">Go to Insights</span>
+              <span className="text-base font-medium text-nowrap">
+                Go to Insights
+              </span>
               <ArrowRightIcon className="w-5 h-5" />
             </button>
           </Link>
