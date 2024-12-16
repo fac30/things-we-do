@@ -2,8 +2,8 @@
 
 ## Tasklist
 
-- [ ] Fix the RxDocument imports in InsightsDisplay
-- [ ] Apply colours to the priority groups
+- [X] ~~Fix the RxDocument imports in InsightsDisplay~~
+- [X] Apply colours to the priority groups
 - [ ] Write tests
 
 ## Questions

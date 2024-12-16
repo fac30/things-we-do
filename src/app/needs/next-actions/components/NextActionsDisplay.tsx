@@ -4,7 +4,6 @@ import React, { useEffect, useState, useMemo } from "react";
 import { useDatabase } from "@/context/DatabaseContext";
 import clsx from "clsx";
 import changeCase from "@/lib/utils/changeCase";
-import getPriorityColour from "@/lib/utils/getPriorityColour";
 import NextActionsSection from "./NextActionsSection";
 
 export interface NeedDocument {
