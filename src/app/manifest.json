@@ -33,8 +33,8 @@
       "form_factor": "wide"
     }
   ],
-  "theme_color": "#893FFC",
-  "background_color": "#893FFC",
+  "theme_color": "#1B192E",
+  "background_color": "#1B192E",
   "start_url": "/toolkit",
   "display": "standalone",
   "orientation": "portrait"
