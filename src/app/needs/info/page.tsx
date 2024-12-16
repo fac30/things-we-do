@@ -67,6 +67,13 @@ export default function NeedsInfoPage() {
         >
           Learn More Here
         </Link>
+        <div className="flex flex-col gap-3 bg-twd-primary-purple p-4 rounded-lg">
+          <p>
+            Note that unmet needs are automatically reset after 6 hours, even if
+            you do not explicitly unselect a need once it is met, it will be
+            unselected for you.
+          </p>
+        </div>
       </div>
     </>
   );
