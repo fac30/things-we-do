@@ -15,9 +15,7 @@ export default function MoodAreaChart({
   selectedButton,
 }: MoodAreaChartProps) {
   if (!dataArray || dataArray.length === 0) {
-    return (
-      <div>No data available for the graph.</div>
-    );
+    return <div>No data available for the graph.</div>;
   }
 
   // Sort all the mood records by their timestamp
@@ -33,36 +31,38 @@ export default function MoodAreaChart({
   const traces = uniqueMoods.map((mood) => {
     const dataPoints = sortedData.reduce((acc, entry) => {
       const timestamp = new Date(entry.timestamp).toISOString();
-      
+
       // Get all entries up to this timestamp
-      const entriesUpToNow = sortedData.filter(e => 
-        new Date(e.timestamp) <= new Date(entry.timestamp)
+      const entriesUpToNow = sortedData.filter(
+        (e) => new Date(e.timestamp) <= new Date(entry.timestamp)
       );
-      
+
       // Count total entries and entries for this mood
       const totalCount = entriesUpToNow.length;
-      const moodCount = entriesUpToNow.filter(e => e.moodName === mood).length;
-      
+      const moodCount = entriesUpToNow.filter(
+        (e) => e.moodName === mood
+      ).length;
+
       // Calculate percentage
       const percentage = (moodCount / totalCount) * 100;
-      
+
       acc.push({
         x: timestamp,
-        y: percentage
+        y: percentage,
       });
-      
+
       return acc;
-    }, [] as Array<{x: string, y: number}>);
+    }, [] as Array<{ x: string; y: number }>);
 
     return {
-      x: dataPoints.map(point => point.x),
-      y: dataPoints.map(point => point.y),
+      x: dataPoints.map((point) => point.x),
+      y: dataPoints.map((point) => point.y),
       type: "scatter",
       mode: "none",
       fill: "tonexty",
       name: mood,
       stackgroup: "one",
-      line: { shape: "spline" }
+      line: { shape: "spline" },
     };
   });
 
@@ -116,6 +116,7 @@ export default function MoodAreaChart({
                   color: "white",
                 },
                 range: [startOfRange.toISOString(), endOfRange.toISOString()],
+                fixedrange: true,
               },
               yaxis: {
                 title: "",
@@ -127,6 +128,7 @@ export default function MoodAreaChart({
                 tickfont: {
                   color: "white",
                 },
+                fixedrange: true,
               },
               legend: {
                 font: {
