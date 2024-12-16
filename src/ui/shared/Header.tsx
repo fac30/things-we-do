@@ -3,6 +3,7 @@ import InfoButton from "./InfoButton";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
+import DownloadButton from "./DownloadButton";
 
 interface HeaderProps {
   title: string;
@@ -45,6 +46,7 @@ export function Header({
           direction="bottomLeft"
         />
       )}
+      <DownloadButton />
     </header>
   );
 }
