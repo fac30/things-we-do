@@ -9,9 +9,7 @@ import { useState, useEffect } from "react";
 import Button from "@/ui/shared/Button";
 import clsx from "clsx";
 import MoodStreamGraph from "./StreamGraph";
-import { RxDocument } from "rxdb";
 import BarGraph from "./BarGraph";
-
 
 export interface Insight {
   neurotransmitters: {
@@ -29,21 +27,25 @@ interface Need {
   id: string;
   name: string;
   category: string;
-  selectedTimestamps: string[]; 
-  timestamp: string; 
-  selectedExpiry?: string; 
+  mood?: string;
+  priority?: object;
+  selectedTimestamps: string[];
+  timestamp: string;
+  selectedExpiry?: string;
 }
 
 interface Category {
-  id: string; 
-  name: string; 
-  timestamp: string; 
+  id: string;
+  name: string;
+  timestamp: string;
 }
 
 export default function InsightsDisplay() {
   const database = useDatabase();
   const [insights, setInsights] = useState<Insight[] | null>(null);
-  const [needsData, setNeedsData] = useState<{ name: string; value: number }[] | null>(null);
+  const [needsData, setNeedsData] = useState<
+    { name: string; value: number }[] | null
+  >(null);
 
   const dateOptions = ["day", "week", "month", "year"];
 
@@ -89,9 +91,7 @@ export default function InsightsDisplay() {
   }, [/* useNow, */ selectedButton, now]);
 
   const getInsights = async () => {
-    const insightsResponse = await database.getFromDb<RxDocument<Insight>>(
-      "mood_records"
-    );
+    const insightsResponse = await database.getFromDb("mood_records");
 
     if (!insightsResponse) {
       console.log("No insights found.");
@@ -112,34 +112,38 @@ export default function InsightsDisplay() {
     }
   };
 
-
   const getNeedsData = async () => {
     try {
-      const needsResponse = await database.getFromDb<RxDocument<Need>>("needs");
-      const categoriesResponse = await database.getFromDb<RxDocument<Category>>("needs_categories");
+      const needsResponse = await database.getFromDb("needs");
+      const categoriesResponse = await database.getFromDb("needs_categories");
 
       const needs = needsResponse.map((doc) => doc.toJSON() as Need);
 
-      const categories = categoriesResponse.map((doc) => doc.toJSON() as Category);
+      const categories = categoriesResponse.map(
+        (doc) => doc.toJSON() as Category
+      );
 
       // Aggregate `selectedTimestamps` counts by category
-      const categoryCounts = needs.reduce((acc: Record<string, number>, need: Need) => {
-        const { category, selectedTimestamps } = need;
+      const categoryCounts = needs.reduce(
+        (acc: Record<string, number>, need: Need) => {
+          const { category, selectedTimestamps } = need;
 
-        if (!acc[category]) {
-          acc[category] = 0;
-        }
+          if (!acc[category]) {
+            acc[category] = 0;
+          }
 
-        acc[category] += selectedTimestamps ? selectedTimestamps.length : 0;
-        return acc;
-      }, {});
+          acc[category] += selectedTimestamps ? selectedTimestamps.length : 0;
+          return acc;
+        },
+        {}
+      );
 
       // Map categories to their names with counts
       const needsData = categories.map((category: Category) => ({
         name: category.name,
         value: categoryCounts[category.id] || 0,
       }));
-      
+
       console.log("Final Needs Data for BarGraph:", needsData);
       setNeedsData(needsData);
     } catch (error) {
@@ -152,20 +156,19 @@ export default function InsightsDisplay() {
     getNeedsData();
   }, []);
 
-
   const dummyNeedsData = [
     { name: "Integrity", value: 8 },
     { name: "Celebration", value: 35 },
     { name: "Physical Nurturance", value: 12 },
     { name: "Autonomy", value: 10 },
-    { name: "Harmony", value: 71 },  
+    { name: "Harmony", value: 71 },
     { name: "Play", value: 54 },
     { name: "Interdependence", value: 15 },
   ];
 
   return (
     <>
-      <div className="flex text-center w-full m-auto justify-between bg-twd-background py-2 px-4 sticky top-0 z-50">
+      <div className="flex text-center w-full m-auto justify-between bg-twd-background py-2 px-4 sticky top-0 z-10">
         {dateOptions.map((dateOption, index) => {
           const isActive = selectedButton === dateOption;
           return (
@@ -230,7 +233,7 @@ export default function InsightsDisplay() {
       {/* unmet needs graph */}
       {needsData === null ? (
         <div>Loading Needs Data...</div>
-      ) : needsData.some(item => item.value > 0) ? (
+      ) : needsData.some((item) => item.value > 0) ? (
         <BarGraph data={needsData} />
       ) : (
         <BarGraph data={dummyNeedsData} />

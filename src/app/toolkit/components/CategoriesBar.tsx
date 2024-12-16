@@ -42,8 +42,7 @@ export default function CategoriesBar({
       }
     };
     fetchCategories();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshCategories]);
+  }, [database, refreshCategories]);
 
   const handleCategoriesClick = (category: string) => {
     setSelectedCategories(
@@ -64,11 +63,6 @@ export default function CategoriesBar({
         >
           <PlusCircleIcon className="w-7 m-auto " />
         </button>
-        {/* <Button
-          label="+"
-          onClick={openModal}
-          className="bg-twd-primary-purple"
-        /> */}
       </div>
 
       {/* Scrollable Categories */}

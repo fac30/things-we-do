@@ -35,12 +35,10 @@ export default function Search({ onSearch, onClear }: SearchProps) {
   };
 
   return (
-    <div className="relative flex items-center space-x-2">
-      {/* Text and magnifying glass on one line */}
-      <div className="flex items-center justify-between">
+      <div className="relative flex items-center justify-between">
+              {/* Text and magnifying glass on one line */}
         <span className="text-white font-normal text-md my-4">
-          Fill your toolkit with things that <span className="">help</span> if
-          you are spiralling
+          Fill your toolkit with things that <span className="">help</span>
         </span>
         {/* Conditionally render the magnifying glass */}
         {!isInputVisible && (
@@ -73,6 +71,6 @@ export default function Search({ onSearch, onClear }: SearchProps) {
           </div>
         )}
       </div>
-    </div>
+
   );
 }
