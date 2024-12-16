@@ -150,10 +150,10 @@ export default function Inputs() {
       />
 
       <Modal
-        title="You created an unused category. What would you like to save?"
+        title="You created an unused tag. What would you like to save?"
         modalOpen={unusedCategoryModalOpen}
         forwardButton={{
-          label: "Tool & Category",
+          label: "Tool & Tag",
           action: () => {
             setSaveUnusedCategory(true);
             setUnusedCategoryModalOpen(false);
@@ -169,7 +169,7 @@ export default function Inputs() {
       />
 
       <Modal
-        title="Please select at least one category"
+        title="Please select at least one tag"
         modalOpen={categoryErrorModal}
         forwardButton={{
           label: "OK",
