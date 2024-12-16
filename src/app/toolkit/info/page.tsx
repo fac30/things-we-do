@@ -9,7 +9,7 @@ export default function ToolkitInfoPage() {
     <>
       {/* Header */}
       <Header title="Learn More" isInfoPage={true} />
-      <div className="bg-twd-background text-white min-h-screen px-10 py-6">
+      <div className=" text-white min-h-screen px-10 py-6">
         {/* Introduction Section */}
         <div className="mt-6">
           <h2 className="text-xl font-bold text-white mb-5">
