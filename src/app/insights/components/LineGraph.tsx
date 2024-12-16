@@ -21,6 +21,8 @@ export default function LineGraph({
   endOfRange,
   selectedButton,
 }: LineGraphProps) {
+  const width = screen.width * 0.85;
+
   if (!dataArray || dataArray.length === 0) {
     return <div>No data available for the graph.</div>;
   }
@@ -51,6 +53,28 @@ export default function LineGraph({
     }));
   };
 
+  const aggregateDataByDay = (
+    data: number[],
+    timestamps: string[]
+  ): AggregatedData[] => {
+    const dailyData: { [key: string]: number[] } = {};
+
+    timestamps.forEach((timestamp, index) => {
+      const date = new Date(timestamp);
+      const dayKey = date.toISOString().split("T")[0];
+
+      if (!dailyData[dayKey]) {
+        dailyData[dayKey] = [];
+      }
+      dailyData[dayKey].push(data[index]);
+    });
+
+    return Object.entries(dailyData).map(([dayKey, values]) => ({
+      timestamp: new Date(dayKey).toISOString(),
+      value: values.reduce((sum, val) => sum + val, 0) / values.length,
+    }));
+  };
+
   const sortedData = [...dataArray].sort(
     (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
   );
@@ -66,9 +90,16 @@ export default function LineGraph({
         aggregated.map((d) => d.timestamp),
         aggregated.map((d) => d.value),
       ];
+    } else if (selectedButton === "week" || selectedButton === "month") {
+      const aggregated = aggregateDataByDay(values, xAxis);
+      return [
+        aggregated.map((d) => d.timestamp),
+        aggregated.map((d) => d.value),
+      ];
     }
     return [xAxis, values];
   };
+
   const [dopamineX, dopamineY] = processData(
     sortedData.map((entry) => entry.neurotransmitters.dopamine)
   );
@@ -128,8 +159,8 @@ export default function LineGraph({
                 y: dopamineY,
                 type: "scatter",
                 mode: "lines",
-                marker: { color: "green" },
-                line: { shape: "spline", width: 3 },
+                marker: { color: "#893FFC" },
+                line: { shape: "linear", width: 3 },
                 name: "Urgent",
               },
               {
@@ -137,8 +168,8 @@ export default function LineGraph({
                 y: serotoninY,
                 type: "scatter",
                 mode: "lines",
-                marker: { color: "blue" },
-                line: { shape: "spline", width: 3 },
+                marker: { color: "#D3A107" },
+                line: { shape: "linear", width: 3 },
                 name: "Effortful",
               },
               {
@@ -146,14 +177,14 @@ export default function LineGraph({
                 y: adrenalineY,
                 type: "scatter",
                 mode: "lines",
-                marker: { color: "red" },
-                line: { shape: "spline", width: 3 },
+                marker: { color: "#6FDC8C" },
+                line: { shape: "linear", width: 3 },
                 name: "Worthwile",
               },
             ]}
             layout={{
-              width: 350,
-              height: 350,
+              width: width,
+              height: width,
               margin: {
                 l: 10,
                 r: 10,
