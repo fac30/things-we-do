@@ -18,7 +18,7 @@ export default function NextActionsSection({
   return (
     <div className="ml-4 mb-6">
       {actions.map((action) => {
-        const highlighted = new Date(action.selectedExpiry) > new Date(action.timestamp);
+        const highlighted = new Date(action.selectedExpiry) > new Date();
 
         return (
           <Button
