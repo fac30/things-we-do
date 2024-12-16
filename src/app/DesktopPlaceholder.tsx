@@ -40,13 +40,14 @@ export default function DesktopPlaceholder() {
             For the best experience, please visit us on your mobile or tablet
             using the QR code below.
           </p>
-          <Image
-            src="/images/qr-code.png"
-            width={250}
-            height={250}
-            alt="QR code for website URL"
-            className="rounded-3xl"
-          />
+          <div className="bg-white w-72 h-72 rounded-3xl flex justify-center items-center">
+            <Image
+              src="/images/qr-code.png"
+              width={250}
+              height={250}
+              alt="QR code for website URL"
+            />
+          </div>
         </div>
       </div>
     </>
