@@ -21,6 +21,8 @@ export default function LineGraph({
   endOfRange,
   selectedButton,
 }: LineGraphProps) {
+  const width = screen.width * 0.85;
+
   if (!dataArray || dataArray.length === 0) {
     return <div>No data available for the graph.</div>;
   }
@@ -181,8 +183,8 @@ export default function LineGraph({
               },
             ]}
             layout={{
-              width: 350,
-              height: 350,
+              width: width,
+              height: width,
               margin: {
                 l: 10,
                 r: 10,
