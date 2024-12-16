@@ -36,9 +36,11 @@ export default function CategoriesBar({
         "categories"
       );
       if (allCategories) {
+        console.log(allCategories);
         setCategories(allCategories.map((cat: Category) => cat.name));
       } else {
         setCategories([]);
+
       }
     };
     fetchCategories();
