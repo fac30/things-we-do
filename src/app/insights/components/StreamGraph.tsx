@@ -149,6 +149,7 @@ export default function MoodStreamGraph({
                 color: "white",
               },
               range: [startOfRange.toISOString(), endOfRange.toISOString()],
+              fixedrange: true,
             },
             yaxis: {
               title: "",
@@ -163,6 +164,7 @@ export default function MoodStreamGraph({
               autorange: true, // allow full range to show negative values
               zeroline: true,
               zerolinecolor: "#262538",
+              fixedrange: true,
             },
             legend: {
               font: {

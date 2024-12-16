@@ -172,6 +172,7 @@ export default function LineGraph({
                 showticklabels: true,
                 tickfont: { color: "white" },
                 dtick: dtick,
+                fixedrange: true,
 
                 range: [startOfRange.toISOString(), endOfRange.toISOString()],
               },
@@ -182,6 +183,7 @@ export default function LineGraph({
                 showticklabels: false,
                 titlefont: { color: "white" },
                 tickfont: { color: "white" },
+                fixedrange: true,
               },
               legend: {
                 font: {

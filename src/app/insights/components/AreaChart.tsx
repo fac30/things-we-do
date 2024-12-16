@@ -118,6 +118,7 @@ export default function MoodAreaChart({
                   color: "white",
                 },
                 range: [startOfRange.toISOString(), endOfRange.toISOString()],
+                fixedrange: true,
               },
               yaxis: {
                 title: "",
@@ -129,6 +130,7 @@ export default function MoodAreaChart({
                 tickfont: {
                   color: "white",
                 },
+                fixedrange: true,
               },
               legend: {
                 font: {
