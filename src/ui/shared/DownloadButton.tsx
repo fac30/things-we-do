@@ -21,8 +21,13 @@ const DownloadButton: React.FC = () => {
 
     if (isIOSDevice) {
       setIsIOS(true);
-      setShowInstallButton(true);
-      setButtonText("Install on iOS");
+
+      if (window.matchMedia("(display-mode: standalone)").matches) {
+        setShowInstallButton(false);
+      } else {
+        setShowInstallButton(true);
+        setButtonText("Install on iOS");
+      }
       return;
     }
 
