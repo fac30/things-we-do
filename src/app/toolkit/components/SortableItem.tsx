@@ -58,7 +58,7 @@ export default function SortableItem({
               e.stopPropagation();
               handleToggle(item.id);
             }}
-            className="h-5 w-5 appearance-none border-2 border-white rounded bg-twd-background checked:bg-white checked:border-white focus:ring focus:ring-twd-primary-purple checked:after:content-['✔']"
+            className="h-6 w-6 appearance-none border-2 border-white rounded bg-twd-background checked:bg-white checked:border-white focus:ring focus:ring-twd-primary-purple checked:after:text-xl checked:after:content-['✔'] checked:after:text-black"
           />
           <p
             className={`text-lg ${
@@ -80,7 +80,7 @@ export default function SortableItem({
             />
           ) : (
             <div className="h-10 w-10 flex items-center justify-center bg-twd-background rounded">
-            {/* Use a Heroicon as a placeholder */}
+              {/* Use a Heroicon as a placeholder */}
               <PhotoIcon className="h-10 w-10 text-slate-300" />
             </div>
             // <div className="h-10 w-10"></div> // Reserve space when no image
