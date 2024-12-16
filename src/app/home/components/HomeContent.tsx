@@ -1,7 +1,7 @@
 import { ArrowRightIcon, WrenchIcon } from "@heroicons/react/24/solid";
 import {
   PresentationChartLineIcon,
-  EllipsisHorizontalCircleIcon,
+  PuzzlePieceIcon,
   ChartBarIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
@@ -118,7 +118,7 @@ export default function HomeContent() {
             />
           </div>
           <div className=" mx-auto mt-4 mb-4 py-4 w-1/2 flex flex-col gap-8 items-center justify-center rounded-lg flex-1">
-            <EllipsisHorizontalCircleIcon className="w-8 h-8 mb-4" />
+            <PuzzlePieceIcon className="w-8 h-8 mb-4" />
             <p className="text-base mb-1 text-center">
               Improve your mood by identifying what you need and how to get it:
             </p>
