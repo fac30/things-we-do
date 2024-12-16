@@ -6,7 +6,7 @@ export const categories = [
   { id: uuidv4(), name: "Distract", timestamp: new Date().toISOString() },
   {
     id: uuidv4(),
-    name: "Change Status",
+    name: "Change State",
     timestamp: new Date().toISOString(),
   },
 ];
