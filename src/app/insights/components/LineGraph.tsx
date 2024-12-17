@@ -70,7 +70,7 @@ export default function LineGraph({
     });
 
     return Object.entries(dailyData).map(([dayKey, values]) => ({
-      timestamp: new Date(dayKey).toISOString(),
+      timestamp: dayKey,
       value: values.reduce((sum, val) => sum + val, 0) / values.length,
     }));
   };
@@ -140,9 +140,6 @@ export default function LineGraph({
     }
   })();
 
-  const yMax = Math.max(...dopamineY, ...serotoninY, ...adrenalineY);
-  const yMin = Math.min(...dopamineY, ...serotoninY, ...adrenalineY);
-
   return (
     <>
       <div className="bg-twd-graph-background mt-10 w-11/12 m-auto rounded-lg">
@@ -179,7 +176,7 @@ export default function LineGraph({
                 mode: "lines",
                 marker: { color: "#6FDC8C" },
                 line: { shape: "linear", width: 3 },
-                name: "Worthwile",
+                name: "Worthwhile",
               },
             ]}
             layout={{
@@ -204,18 +201,40 @@ export default function LineGraph({
                 tickfont: { color: "white" },
                 dtick: dtick,
                 fixedrange: true,
-
+                type: "date",
                 range: [startOfRange.toISOString(), endOfRange.toISOString()],
               },
               yaxis: {
                 title: "",
-                range: [Math.max(0, yMin - 0.5), yMax + 0.5],
+                range: [1, 10],
                 showgrid: false,
                 showticklabels: false,
                 titlefont: { color: "white" },
                 tickfont: { color: "white" },
                 fixedrange: true,
               },
+              annotations: [
+                {
+                  x: 0,
+                  y: 1,
+                  xref: "paper",
+                  yref: "y",
+                  text: "Not at all",
+                  showarrow: false,
+                  font: { color: "white", size: 14 },
+                  align: "left",
+                },
+                {
+                  x: 0,
+                  y: 10,
+                  xref: "paper",
+                  yref: "y",
+                  text: "Very",
+                  showarrow: false,
+                  font: { color: "white", size: 14 },
+                  align: "left",
+                },
+              ],
               legend: {
                 font: {
                   size: 12,

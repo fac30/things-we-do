@@ -19,7 +19,7 @@ export default function HomeContent() {
       <div className="mt-6">
         <div className="pt-2">
           <div className="flex items-center justify-center space-x-2 mb-4 text-center w-full">
-            <PresentationChartLineIcon className="w-5 h-5" />
+            <PresentationChartLineIcon className="w-6 h-6" />
             <h2 className="text-xl mb-0">Decision maker</h2>
           </div>
 
@@ -31,28 +31,27 @@ export default function HomeContent() {
 
         <>
           <div className="flex justify-center relative">
-            <Image
-              src="/images/decisionMaker.png"
-              alt="Decision maker cube"
-              width={360}
-              height={360}
-              priority
-            />
-            <Link
-              href="/moods"
-              className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 text-nowrap"
-            >
-              <button
-                className="absolute bg-twd-primary-purple top-1/2 left-5 rounded-full text-white py-2 px-4 flex items-center gap-2 -translate-x-1/2 -translate-y-1/2"
-                style={{
-                  top: "70%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                }}
-              >
-                <span className="text-base font-medium">Decision maker</span>
-                <ArrowRightIcon className="w-5 h-5" />
-              </button>
+            <Link href="/moods">
+              <Image
+                src="/images/decisionMaker.png"
+                alt="Decision maker cube"
+                width={360}
+                height={360}
+                priority
+              />
+              <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 text-nowrap">
+                <button
+                  className="absolute bg-twd-primary-purple top-1/2 left-5 rounded-full text-white py-2 px-4 flex items-center gap-2 -translate-x-1/2 -translate-y-1/2"
+                  style={{
+                    top: "70%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                  }}
+                >
+                  <span className="text-base font-medium">Decision maker</span>
+                  <ArrowRightIcon className="w-5 h-5" />
+                </button>
+              </div>
             </Link>
           </div>
         </>
@@ -72,7 +71,9 @@ export default function HomeContent() {
           className="flex gap-8 max-w-6xl w-full justify-center items-center m-auto"
         >
           <div className="flex flex-1 flex-col h-full justify-center relative w-full items-center gap-5">
-            <WrenchIcon className="w-10 h-10" />
+            <Link href="/toolkit">
+              <WrenchIcon className="w-10 h-10" />
+            </Link>
 
             <p className="text-base text-center">
               Create a <span className="font-bold">Toolkit</span> of things that
@@ -91,7 +92,7 @@ export default function HomeContent() {
             </div>
           </div>
 
-          <div className="flex justify-center flex-1">
+          <Link href="/toolkit" className="flex justify-center flex-1">
             <Image
               src="/images/toolkit_screen.png"
               alt="Toolkit screenshot"
@@ -100,14 +101,17 @@ export default function HomeContent() {
               height={320}
               priority
             />
-          </div>
+          </Link>
         </div>
       </section>
 
       {/* Needs block */}
       <section className="mt-6">
         <div className="pt-2 flex gap-8 m-auto w-full">
-          <div className="flex flex-1 justify-center flex-shrink bg-transparent">
+          <Link
+            href="/needs"
+            className="flex flex-1 justify-center flex-shrink bg-transparent"
+          >
             <Image
               src="/images/needsImage.png"
               alt="Needs screenshot"
@@ -116,9 +120,11 @@ export default function HomeContent() {
               height={320}
               priority
             />
-          </div>
+          </Link>
           <div className=" mx-auto mt-4 mb-4 py-4 w-1/2 flex flex-col gap-8 items-center justify-center rounded-lg flex-1">
-            <PuzzlePieceIcon className="w-8 h-8 mb-4" />
+            <Link href="/needs">
+              <PuzzlePieceIcon className="w-10 h-10" />
+            </Link>
             <p className="text-base mb-1 text-center">
               Improve your mood by identifying what you need and how to get it:
             </p>
@@ -147,17 +153,16 @@ export default function HomeContent() {
           </p>
         </div>
         <div className="relative">
-          <div className="w-full flex justify-center">
-            <Image
-              src="/images/insights_screen.png"
-              alt="Insights line graph"
-              width={350}
-              height={350}
-              priority
-            />
-          </div>
-
           <Link href="/insights">
+            <div className="w-full flex justify-center">
+              <Image
+                src="/images/insights_screen.png"
+                alt="Insights line graph"
+                width={350}
+                height={350}
+                priority
+              />
+            </div>
             <button
               className="absolute bg-twd-primary-purple rounded-full text-white py-2 px-4 flex items-center gap-2"
               style={{

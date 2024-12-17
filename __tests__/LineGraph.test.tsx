@@ -1,9 +1,9 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import LineGraph from "@/app/insights/components/LineGraph";
 
 jest.mock("@/ui/shared/PlotlyChart", () => ({
   __esModule: true,
-  default: ({ data }: { data: any }) => (
+  default: ({ data }: { data: unknown }) => (
     <div data-testid="plotly-chart" data-prop={JSON.stringify(data)} />
   ),
 }));
@@ -79,7 +79,7 @@ describe("LineGraph Component", () => {
       (d: { name: string }) => d.name === "Effortful"
     );
     const adrenalineTrace = plotlyData.find(
-      (d: { name: string }) => d.name === "Worthwile"
+      (d: { name: string }) => d.name === "Worthwhile"
     );
 
     expect(dopamineTrace.y).toEqual([5]);
