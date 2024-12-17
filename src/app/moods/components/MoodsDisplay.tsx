@@ -84,7 +84,7 @@ export default function MoodsDisplay() {
   };
 
   const forwardButton = {
-    label: "continue",
+    label: "ok",
     action: () => setModalOpen(false),
   };
 
