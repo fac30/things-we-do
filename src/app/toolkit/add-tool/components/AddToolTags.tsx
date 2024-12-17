@@ -72,7 +72,10 @@ export default function AddTags() {
         {categories.map((category) => ( <Button key={ category }
           label={ category }
           onClick={ () => toggleCategory(category) }
-          className={`${ formState.categories.includes(category) } font-normal`}
+          className={`${formState.categories.includes(category)
+            ? "bg-twd-secondary-purple text-white"
+            : "bg-twd-background text-white"
+          } font-normal`}
           ariaPressed={ formState.categories.includes(category) }
         /> ))}
 
