@@ -57,7 +57,7 @@ export default function ToolkitInfoPage() {
             <div className="mt-10">
               <Link href="/toolkit/info/categories-info" 
                 className="bg-twd-primary-purple text-white text-base px-6 py-3 rounded-full font-semibold">
-                Go to Categories
+                Go to Tabs
               </Link>
             </div>
 

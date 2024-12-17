@@ -97,10 +97,10 @@ export default function MoodsInfoPage() {
               layout="responsive"
             />
             <Link
-              className="text-twd-text-link"
+              className="text-twd-text-link mb-6"
               href="https://www.eisenhower.me/eisenhower-matrix/#:~:text=What%20is%20the%20Eisenhower%20Matrix,or%20not%20do%20at%20all."
             >
-              Learn More Here
+              Learn more about the Eisenhower Matrix
             </Link>
           </>
         ) : (
@@ -146,7 +146,7 @@ export default function MoodsInfoPage() {
               alt="Image of an Eisenhower Matrix"
               layout="responsive"
             />
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 mb-6">
               <p>Three-Dimensional Model of Emotions (Lovheim, 2011)</p>
               <p>
                 Eight basic emotions are ordered into each corner of a cube.
@@ -158,6 +158,12 @@ export default function MoodsInfoPage() {
                 relabelled as their emotional state. Disgust refers to the
                 feeling of having had enough, and has been relabelled content.)
               </p>
+              <Link
+                className="text-twd-text-link"
+                href="https://www.researchgate.net/publication/51863789_A_new_three-dimensional_model_for_emotions_and_monoamine_neurotransmitters"
+              >
+                Learn more about the Three-Dimensional Model Of Emotions
+              </Link>
             </div>
           </>
         )}
