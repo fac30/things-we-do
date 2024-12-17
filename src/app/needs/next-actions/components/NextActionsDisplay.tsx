@@ -34,6 +34,8 @@ export default function NextActionsDisplay() {
   const [highlightedNeeds, setHighlightedNeeds] = useState<NeedDocument[]>([]);
   const [relatedNextActions, setRelatedNextActions] = useState<NextActionDocument[]>([]);
   const [chainEnd, setChainEnd] = useState(0);
+  const [actionState, setActionState] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => { /* Fetch Data */
     async function fetchData() {
@@ -66,7 +68,7 @@ export default function NextActionsDisplay() {
     }
 
     fetchData();
-  }, [database, chainEnd]);
+  }, [database, chainEnd, actionState]);
 
   const priorityGroups = useMemo(() => {
     if (highlightedNeeds.length === 0) return [];
@@ -157,6 +159,27 @@ export default function NextActionsDisplay() {
 
     setChainEnd(prev => prev + 1);
   };
+
+  const handleAddAction = async (newAction: string, need: NeedDocument) => {
+    if (newAction.trim()) {
+      const newActionDocument = {
+        id: crypto.randomUUID(),
+        name: newAction.trim(),
+        need: need.id,
+        selectedTimestamps: [],
+        selectedExpiry: new Date().toISOString(),
+        timestamp: new Date().toISOString(),
+      }
+      try {
+        await database.addToDb("next_actions", newActionDocument);
+        console.log(`Action Created: ${newActionDocument.name}`);
+      } catch (error) {
+        console.error("Error creating Action:", error);
+      }
+      
+      setActionState(prev => prev + 1);
+    }
+  };
  
   return (
     <div className="w-11/12 m-auto">
@@ -192,6 +215,7 @@ export default function NextActionsDisplay() {
                       need={need}
                       actions={actions}
                       onToggleAction={onToggleAction}
+                      handleAddAction={handleAddAction}
                     />
                   ) : (
                     <p className="text-sm text-gray-500 ml-6">

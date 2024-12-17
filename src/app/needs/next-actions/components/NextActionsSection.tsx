@@ -12,20 +12,29 @@ interface SectionProps {
   need: NeedDocument;
   actions: NextActionDocument[];
   onToggleAction: (action: NextActionDocument) => Promise<void>;
+  handleAddAction: (newAction: string, need: NeedDocument) => Promise<void>;
 }
 
 export default function NextActionsSection({
   need,
   actions,
   onToggleAction,
+  handleAddAction,
 }: SectionProps) {
   const [modalOpen, setModalOpen] = useState(false);
   const [newAction, setNewAction] = useState<string>("");
   const database = useDatabase();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => { setNewAction(e.target.value) };
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewAction(e.target.value)
+  };
 
-  const handleAddAction = async () => {
+  const handleSubmitAction = async () => {
+    await handleAddAction(newAction, need);
+    setModalOpen(false);
+  }
+
+  /* const handleAddAction = async () => {
     if (newAction.trim()) {
       const newActionDocument = {
         id: crypto.randomUUID(),
@@ -43,13 +52,15 @@ export default function NextActionsSection({
         console.log(`Name: ${newActionDocument.name}`);
         console.log(`Need: ${newActionDocument.need}`);
         console.groupEnd();
+
+        setTriggerRerender(triggerRerender + 1);
       } catch (error) {
         console.error("Error creating Action:", error);
       }
       
       setModalOpen(false);
     }
-  };
+  }; */
 
   return ( <>
     <div className="ml-4 mb-6">
@@ -80,7 +91,7 @@ export default function NextActionsSection({
       placeholder="What action might help meet this need?"
       handleInputChange={handleInputChange}
       forwardButton={{ label: "Add",
-        action: handleAddAction,
+        action: handleSubmitAction,
       }}
       backButton={{ label: "Cancel",
         action: () => {
