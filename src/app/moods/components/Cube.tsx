@@ -3,11 +3,13 @@
 import { useMemo, useState } from "react";
 import { PlotData } from "plotly.js";
 import { NeurochemState } from "./MoodsDisplay";
+import Modal from "@/ui/shared/Modal";
 import Toggle from "@/ui/shared/Toggle";
 import PlotlyChart from "@/ui/shared/PlotlyChart";
 import quadrants from "./data/quadrants.json";
 import labelsMood from "./data/labels_mood.json";
 import labelsPriority from "./data/labels_priority.json";
+import moodTooltips from "./data/mood_tooltips.json";
 
 // Cube quadrants and labels order (in quadrants.json/labels.json):
 // Bottom-front-left
@@ -50,6 +52,8 @@ interface CubeProps {
 export default function Cube({ neuroState }: CubeProps) {
   const [isPriorityMatrix, setIsPriorityMatrix] = useState(false);
   const [hasRendered, setHasRendered] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [tooltip, setTooltip] = useState("");
 
   const labels = useMemo(() => {
     return [
@@ -70,6 +74,11 @@ export default function Cube({ neuroState }: CubeProps) {
     ];
   }, [isPriorityMatrix, hasRendered]);
 
+  function handleTooltip(mood: string) {
+    setTooltip(moodTooltips[mood as keyof typeof moodTooltips]);
+    setModalOpen(true);
+  }
+
   return (
     <>
       <Toggle
@@ -79,6 +88,41 @@ export default function Cube({ neuroState }: CubeProps) {
         toggledOn={"Priority"}
         showLabels={true}
       />
+
+      <button
+        className="absolute left-1/2 top-[122px] transform -translate-x-28 z-20 w-20 h-6"
+        onClick={() => handleTooltip("fight/flight")}
+      ></button>
+      <button
+        className="absolute left-1/2 top-[122px] transform translate-x-14 z-20 w-14 h-6"
+        onClick={() => handleTooltip("interest")}
+      ></button>
+      <button
+        className="absolute left-1/2 top-[327px] transform -translate-x-28 z-20 w-16 h-6"
+        onClick={() => handleTooltip("distress")}
+      ></button>
+      <button
+        className="absolute left-1/2 top-[327px] transform translate-x-16 z-20 w-12 h-6"
+        onClick={() => handleTooltip("relief")}
+      ></button>
+
+      <button
+        className="absolute left-1/2 top-[180px] transform -translate-x-20 z-20 w-16 h-6"
+        onClick={() => handleTooltip("freeze")}
+      ></button>
+      <button
+        className="absolute left-1/2 top-[180px] transform translate-x-6 z-20 w-10 h-6"
+        onClick={() => handleTooltip("joy")}
+      ></button>
+      <button
+        className="absolute left-1/2 top-[267px] transform -translate-x-16 z-20 w-10 h-6"
+        onClick={() => handleTooltip("guilt")}
+      ></button>
+      <button
+        className="absolute left-1/2 top-[267px] transform translate-x-3 z-20 w-16 h-6"
+        onClick={() => handleTooltip("content")}
+      ></button>
+
       <div className="flex flex-col items-center justify-center w-full">
         <div className="relative flex justify-center w-full">
           {/* Left side labels */}
@@ -167,6 +211,14 @@ export default function Cube({ neuroState }: CubeProps) {
           <span className="text-white text-sm">Important</span>
         </div>
       </div>
+      <Modal
+        modalOpen={modalOpen}
+        title={tooltip}
+        forwardButton={{
+          label: "Close",
+          action: () => setModalOpen(false),
+        }}
+      />
     </>
   );
 }
