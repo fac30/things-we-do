@@ -114,8 +114,9 @@ export default function SortableItem({
         title="Following this link will leave the app. Do you want to continue?"
         forwardButton={{
           action: () => {
-            const link = item.infoUrl; // Replace with your link
-            window.open(link, "_blank"); // Opens in a new tab
+            const link = item.infoUrl;
+            window.open(link, "_blank");
+            setIsLinkModalOpen(false);
           },
           label: "Yes",
         }}

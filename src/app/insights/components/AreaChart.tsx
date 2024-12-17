@@ -1,5 +1,6 @@
 import PlotlyChart from "@/ui/shared/PlotlyChart";
 import { Insight } from "./InsightsDisplay";
+import moodColours from "./moodColours.json";
 
 interface MoodAreaChartProps {
   dataArray: Insight[];
@@ -14,6 +15,8 @@ export default function MoodAreaChart({
   endOfRange,
   selectedButton,
 }: MoodAreaChartProps) {
+  const width = screen.width * 0.85;
+
   if (!dataArray || dataArray.length === 0) {
     return <div>No data available for the graph.</div>;
   }
@@ -62,6 +65,7 @@ export default function MoodAreaChart({
       fill: "tonexty",
       name: mood,
       stackgroup: "one",
+      fillcolor: moodColours[mood as keyof typeof moodColours] || "#FFFFFF",
       line: { shape: "spline" },
     };
   });
@@ -93,8 +97,8 @@ export default function MoodAreaChart({
           <PlotlyChart
             data={traces as Plotly.Data[]}
             layout={{
-              width: 350,
-              height: 350,
+              width: width,
+              height: width,
               margin: {
                 l: 10,
                 r: 10,

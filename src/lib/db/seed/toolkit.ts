@@ -6,7 +6,7 @@ export const categories = [
   { id: uuidv4(), name: "Distract", timestamp: new Date().toISOString() },
   {
     id: uuidv4(),
-    name: "Change Status",
+    name: "Change State",
     timestamp: new Date().toISOString(),
   },
 ];
@@ -35,7 +35,7 @@ export const toolkit = [
   {
     id: uuidv4(),
     name: "Call a friend",
-    categories: ["Distract", "Change status"],
+    categories: ["Distract", "Change state"],
     checked: false,
     infoUrl: "https://example.com/call",
     imageUrl:
@@ -45,7 +45,7 @@ export const toolkit = [
   {
     id: uuidv4(),
     name: "Drink water",
-    categories: ["Distract", "Change status"],
+    categories: ["Distract", "Change state"],
     checked: false,
     infoUrl: "https://example.com/call",
     imageUrl:

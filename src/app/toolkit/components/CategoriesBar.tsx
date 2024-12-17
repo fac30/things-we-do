@@ -18,8 +18,8 @@ interface CategoriesBarProps {
 
 const categoriesBarClass = `
   whitespace-nowrap flex items-center justify-center gap-4 px-4 py-2 
-  overflow-x-auto 
- sm:gap-6 sm:px-6  focus:ring-2 focus:ring-twd-secondary-purple
+  overflow-x-auto sm:gap-6 sm:px-6  
+  focus:ring-2 focus:ring-twd-secondary-purple
 `;
 
 export default function CategoriesBar({
@@ -36,9 +36,11 @@ export default function CategoriesBar({
         "categories"
       );
       if (allCategories) {
+        console.log(allCategories);
         setCategories(allCategories.map((cat: Category) => cat.name));
       } else {
         setCategories([]);
+
       }
     };
     fetchCategories();
@@ -59,7 +61,7 @@ export default function CategoriesBar({
         <button
           onClick={openModal}
           className="flex justify-center items-center"
-          aria-label="Add category"
+          aria-label="Add tag"
         >
           <PlusCircleIcon className="w-7 m-auto " />
         </button>
