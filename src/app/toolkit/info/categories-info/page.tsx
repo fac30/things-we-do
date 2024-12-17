@@ -31,7 +31,7 @@ export default function CategoriesInfoPage() {
     
           {/* Subheader */}
           <p className="text-gray-400 mt-3 mb-2">
-            Filter by categories you might find helpful or add your own:
+            Filter by tags you might find helpful or add your own:
           </p>
 
           {/* Scrollable Categories */}
@@ -69,9 +69,9 @@ export default function CategoriesInfoPage() {
                 ))}
                 <div className="space-y-2">
                   <h2 className="text-xl font-semibold text-white">
-                    Add your own category
+                    Add your own tag
                   </h2>
-                  <p className="text-gray-400">Adding your own categories can help you organise in the best way for you.</p>
+                  <p className="text-gray-400">Adding your own tags can help you organise in the best way for you.</p>
                 </div>
             </div>
 

@@ -201,7 +201,9 @@ export default function InsightsDisplay() {
           selectedButton={selectedButton}
         />
       ) : (
-        <div>Loading Line Graph...</div>
+        <div className="flex h-40 w-full justify-center items-center">
+          <p className="text-xl">Loading Line Graph...</p>
+        </div>
       )}
 
       {insights ? ( // Area Chart
@@ -214,7 +216,9 @@ export default function InsightsDisplay() {
           />
         </>
       ) : (
-        <div>Loading Area Chart...</div>
+        <div className="flex h-40 w-full justify-center items-center">
+          <p className="text-xl">Loading Area Chart...</p>
+        </div>
       )}
 
       {insights ? ( // Stream Graph
@@ -227,12 +231,16 @@ export default function InsightsDisplay() {
           />
         </>
       ) : (
-        <div>Loading Stream Graph...</div>
+        <div className="flex h-40 w-full justify-center items-center">
+          <p className="text-xl">Loading Stream Graph...</p>
+        </div>
       )}
 
       {/* unmet needs graph */}
       {needsData === null ? (
-        <div>Loading Needs Data...</div>
+        <div className="flex h-40 w-full justify-center items-center">
+          <p className="text-xl">Loading Bar Chart...</p>
+        </div>
       ) : needsData.some((item) => item.value > 0) ? (
         <BarGraph data={needsData} />
       ) : (
