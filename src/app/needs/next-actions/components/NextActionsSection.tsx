@@ -12,6 +12,8 @@ interface SectionProps {
   actions: NextActionDocument[];
   onToggleAction: (action: NextActionDocument) => Promise<void>;
   handleAddAction: (newAction: string, need: NeedDocument) => Promise<void>;
+  onDeleteAction: (action: NextActionDocument) => Promise<void>;
+  mode: "create" | "destroy";
 }
 
 export default function NextActionsSection({
@@ -19,6 +21,8 @@ export default function NextActionsSection({
   actions,
   onToggleAction,
   handleAddAction,
+  onDeleteAction,
+  mode
 }: SectionProps) {
   const [modalOpen, setModalOpen] = useState(false);
   const [newAction, setNewAction] = useState<string>("");
@@ -39,30 +43,31 @@ export default function NextActionsSection({
           const highlighted = new Date(action.selectedExpiry) > new Date();
 
           return (
-            <Button
+            <Button label={action.name}
               key={action.id}
-              label={action.name}
-              className={
-                highlighted
+              className={ mode === "destroy"
+                ? "bg-twd-cube-red text-black font-normal"
+                : highlighted
                   ? "bg-twd-primary-purple text-black font-normal"
                   : "bg-gray-600 text-white font-normal"
               }
-              onClick={() => onToggleAction(action)}
+              onClick={() => (mode === "destroy"
+                ? onDeleteAction(action)
+                : onToggleAction(action)
+              )}
             />
           );
         })}
 
-        <button
+        <button aria-label="Add Action"
           onClick={() => setModalOpen(true)}
           className="flex justify-center items-center"
-          aria-label="Add Action"
         >
           <PlusCircleIcon className="w-7 m-auto" />
         </button>
       </div>
 
-      <Modal
-        title="Add a New Action"
+      <Modal title="Add a New Action"
         inputModal={true}
         modalOpen={modalOpen}
         placeholder="What action might help meet this need?"
