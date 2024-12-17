@@ -25,13 +25,12 @@ export interface ToolkitComponentData {
 export default function ToolkitList() {
   const database = useDatabase();
   const [mainData, setMainData] = useState<ToolkitComponentData[]>([]);
-  const [displayedData, setDisplayedData] = useState<ToolkitComponentData[]>(
-    []
-  );
+  const [displayedData, setDisplayedData] = useState<ToolkitComponentData[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [dragOrder, setDragOrder] = useState<string[]>([]);
   const { selectedCategories } = useToolkit();
 
-  // Fetch data from the database
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -42,6 +41,7 @@ export default function ToolkitList() {
           );
           setMainData(toolkitData);
           setDisplayedData(toolkitData);
+          setDragOrder(toolkitData.map((item) => item.id));
         } else {
           console.log("No items found in toolkit_items collection.");
         }
@@ -53,28 +53,29 @@ export default function ToolkitList() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+
   // Toggle item `checked` state
   const handleToggle = async (id: string) => {
-    setMainData((prevData) =>
-      prevData.map((item) =>
-        item.id === id ? { ...item, checked: !item.checked } : item
-      )
+    const updatedData = mainData.map((item) =>
+      item.id === id ? { ...item, checked: !item.checked } : item
     );
-    setDisplayedData((prevData) =>
-      prevData.map((item) =>
-        item.id === id ? { ...item, checked: !item.checked } : item
-      )
-    );
-
-    // Find the item to update
-    const updatedItem = mainData.find((item) => item.id === id);
-    if (updatedItem) {
-      try {
-        // Update in database
-        await database.updateDocument("toolkit_items", id, "checked", !updatedItem.checked );
-      } catch (error) {
-        console.error("Error updating checked status in database:", error);
+  
+    setMainData(updatedData);
+  
+    //  `displayedData`
+    const orderedData = dragOrder.map((id) =>
+      updatedData.find((item) => item.id === id)
+    ).filter(Boolean) as ToolkitComponentData[];
+  
+    setDisplayedData(orderedData);
+  
+    try {
+      const updatedItem = updatedData.find((item) => item.id === id);
+      if (updatedItem) {
+        await database.updateDocument("toolkit_items", id, "checked", updatedItem.checked);
       }
+    } catch (error) {
+      console.error("Error updating checked status in database:", error);
     }
   };
 
@@ -83,7 +84,15 @@ export default function ToolkitList() {
     try {
       await database.deleteFromDb("toolkit_items", id);
       setMainData((prevData) => prevData.filter((item) => item.id !== id));
-      setDisplayedData((prevData) => prevData.filter((item) => item.id !== id));
+      // setDisplayedData((prevData) => prevData.filter((item) => item.id !== id));
+      setDragOrder((prevOrder) => prevOrder.filter((itemId) => itemId !== id));
+
+      const orderedData = dragOrder
+        .filter((itemId) => itemId !== id)
+        .map((id) => mainData.find((item) => item.id === id))
+        .filter(Boolean) as ToolkitComponentData[];
+
+      setDisplayedData(orderedData);
     } catch (error) {
       console.error("Error in handleDelete:", error);
     }
@@ -95,30 +104,46 @@ export default function ToolkitList() {
 
     if (!destination) return;
 
-    const reorderedData = [...displayedData];
-    const [movedItem] = reorderedData.splice(source.index, 1);
-    reorderedData.splice(destination.index, 0, movedItem);
+    const newOrder = [...dragOrder];
+    const [movedItem] = newOrder.splice(source.index, 1);
+    newOrder.splice(destination.index, 0, movedItem);
 
-    setDisplayedData(reorderedData);
+    setDragOrder(newOrder);
+
+    // Обновляем `displayedData` в соответствии с новым порядком
+    const orderedData = newOrder.map((id) =>
+      mainData.find((item) => item.id === id)
+    ).filter(Boolean) as ToolkitComponentData[];
+
+    setDisplayedData(orderedData);
+
   };
 
   // Handle search queries
   const handleSearch = (query: string) => {
     setSearchQuery(query);
-    if (query) {
-      const filtered = mainData.filter((item) =>
-        item.name.toLowerCase().includes(query.toLowerCase())
-      );
-      setDisplayedData(filtered);
-    } else {
-      setDisplayedData(mainData);
-    }
+    const filtered = mainData.filter((item) =>
+      item.name.toLowerCase().includes(query.toLowerCase())
+    );
+
+    const orderedData = dragOrder
+      .map((id) => filtered.find((item) => item.id === id))
+      .filter(Boolean) as ToolkitComponentData[];
+
+    setDisplayedData(orderedData);
+  
   };
 
   // Clear search input
   const handleClearSearch = () => {
     setSearchQuery("");
-    setDisplayedData(mainData);
+    // setDisplayedData(mainData);
+    // Restore displayedData to match dragOrder
+    const orderedData = dragOrder
+      .map((id) => mainData.find((item) => item.id === id))
+      .filter(Boolean) as ToolkitComponentData[];
+
+    setDisplayedData(orderedData);
   };
 
   // Filter data based on selected categories
@@ -129,23 +154,28 @@ export default function ToolkitList() {
     );
   }, [mainData, selectedCategories]);
 
+  // Filter data based on selected categories
   useEffect(() => {
+    let filteredData = mainData;
+
+    if (selectedCategories.length > 0) {
+      filteredData = filteredData.filter((item) =>
+        item.categories.some((cat) => selectedCategories.includes(cat))
+      );
+    }
+
     if (searchQuery) {
-      // Filter the current displayed data (based on categories) by the search query
-      const searchFilteredData = (
-        selectedCategories.length > 0 ? filteredData : mainData
-      ).filter((item) =>
+      filteredData = filteredData.filter((item) =>
         item.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
-      setDisplayedData(searchFilteredData);
-    } else if (selectedCategories.length > 0) {
-      // Show filtered data by categories when no search query
-      setDisplayedData(filteredData);
-    } else {
-      // Show all data if no categories or search query
-      setDisplayedData(mainData);
     }
-  }, [filteredData, searchQuery, selectedCategories.length, mainData]);
+
+    const orderedData = dragOrder
+      .map((id) => filteredData.find((item) => item.id === id))
+      .filter(Boolean) as ToolkitComponentData[];
+
+    setDisplayedData(orderedData);
+  }, [filteredData, mainData, searchQuery, selectedCategories, dragOrder]);
 
   return (
     <div className="toolkit-container">

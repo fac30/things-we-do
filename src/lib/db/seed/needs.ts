@@ -38,8 +38,12 @@ const needsList = {
     "Mourning of dreams unfulfilled",
     "Mourning losses of loved ones",
   ],
-  harmony: ["Peace", "Order", "Harmony", "Beauty", "Inspiration"],
-  integrity: ["Authenticity", "Creativity", "Meaning", "Self worth"],
+  harmony: [
+    "Peace", "Order", "Harmony", "Beauty", "Inspiration"
+  ],
+  integrity: [
+    "Authenticity", "Creativity", "Meaning", "Self worth"
+  ],
   autonomy: [
     "Choose dreams",
     "Choose goals",

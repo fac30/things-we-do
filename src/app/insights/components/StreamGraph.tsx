@@ -1,5 +1,6 @@
 import PlotlyChart from "@/ui/shared/PlotlyChart";
 import { Insight } from "./InsightsDisplay";
+import moodColours from "./moodColours.json";
 
 interface MoodStreamGraphProps {
   dataArray: Insight[];
@@ -14,6 +15,8 @@ export default function MoodStreamGraph({
   endOfRange,
   selectedButton,
 }: MoodStreamGraphProps) {
+  const width = screen.width * 0.85;
+
   if (!dataArray || dataArray.length === 0) {
     return <div>No data available for the graph.</div>;
   }
@@ -69,7 +72,7 @@ export default function MoodStreamGraph({
       fill: "tonexty",
       name: mood,
       stackgroup: "one",
-      fillcolor: "auto",
+      fillcolor: moodColours[mood as keyof typeof moodColours] || "#FFFFFF",
       orientation: "v",
       stackgaps: "interpolate",
       line: { shape: "spline" },
@@ -125,8 +128,9 @@ export default function MoodStreamGraph({
         <PlotlyChart
           data={traces as Plotly.Data[]}
           layout={{
-            width: 350,
-            height: 350,
+            autosize: true,
+            width: width,
+            height: width,
             margin: {
               l: 10,
               r: 10,

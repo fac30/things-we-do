@@ -57,7 +57,10 @@ export default function NeedsModal({
         </div>
 
         <div className="flex flex-col w-full items-center py-6 justify-between h-full">
-          <p className="text-xl w-10/12 text-center text-white mb-5">{title}</p>
+          <p className="text-xl w-10/12 text-center text-white mb-5">
+            {title}
+          </p>
+
           <p className="text-md w-10/12 text-center text-gray-300 mb-10">
             Select the button that best describes meeting this need right now.
           </p>
@@ -69,6 +72,7 @@ export default function NeedsModal({
               className="px-4 py-4 text-xl font-normal text-white bg-gradient-to-l from-twd-primary-purple to-purple-600 rounded-lg w-full text-nowrap"
               aria-label="Negative"
             />
+
             <Button
               onClick={handlePositiveClick}
               label={positiveLabel}

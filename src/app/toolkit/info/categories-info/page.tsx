@@ -1,7 +1,6 @@
+'use client'
 import Button from "@/ui/shared/Button";
 import { Header } from "@/ui/shared/Header";
-import { useRouter } from "next/navigation";
-
 
 const categoriesBarClass = `
   whitespace-nowrap flex items-center gap-4 px-4 py-2 
@@ -23,17 +22,12 @@ const categories = [
 ];
 
 export default function CategoriesInfoPage() {
-    const router = useRouter();
-
-    const goBack = () => {
-      router.back();
-    };
 
     return (
         <>
           {/* Header */}
           <Header title="Categories" isInfoPage={true}/>
-          <div className="bg-twd-background text-white min-h-screen px-10 py-6">
+          <div className=" text-white min-h-screen px-10 py-6">
     
           {/* Subheader */}
           <p className="text-gray-400 mt-3 mb-2">
@@ -80,16 +74,15 @@ export default function CategoriesInfoPage() {
                   <p className="text-gray-400">Adding your own categories can help you organise in the best way for you.</p>
                 </div>
             </div>
-            
 
-            {/* Back Button */}
+            {/* Back Button
             <div className="mt-6">
                <Button 
                   label="← Back" 
                   className="bg-twd-primary-purple text-white px-6 py-2 rounded-full"
                   onClick={goBack}
                 />
-            </div>
+            </div> */}
         </div>
       </>
 );

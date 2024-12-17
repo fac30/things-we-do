@@ -63,7 +63,7 @@ export default function NeedsInfoPage() {
         </div>
         <Link
           className="text-twd-text-link"
-          href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7404378/"
+          href="https://journals.sagepub.com/doi/10.1177/21582440221096139"
         >
           Learn More Here
         </Link>

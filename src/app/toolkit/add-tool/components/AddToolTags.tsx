@@ -99,7 +99,7 @@ export default function AddTags() {
         <button
           onClick={() => setModalOpen(true)}
           className="flex justify-center items-center"
-          aria-label="Add category"
+          aria-label="Add tag"
         >
           <PlusCircleIcon className="w-7 m-auto" />
         </button>
@@ -108,8 +108,8 @@ export default function AddTags() {
       <Modal
         inputModal={true}
         modalOpen={modalOpen}
-        title="Add New Category"
-        placeholder="Enter category name"
+        title="Add New Tag"
+        placeholder="Enter your tag name"
         handleInputChange={handleInputChange}
         forwardButton={{
           label: "Add",
