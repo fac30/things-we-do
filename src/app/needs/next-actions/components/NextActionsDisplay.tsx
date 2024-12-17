@@ -35,7 +35,6 @@ export default function NextActionsDisplay() {
   const [relatedNextActions, setRelatedNextActions] = useState<NextActionDocument[]>([]);
   const [chainEnd, setChainEnd] = useState(0);
   const [actionState, setActionState] = useState(0);
-  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => { /* Fetch Data */
     async function fetchData() {
