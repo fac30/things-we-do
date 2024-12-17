@@ -100,7 +100,7 @@ export default function MoodsInfoPage() {
               className="text-twd-text-link mb-6"
               href="https://www.eisenhower.me/eisenhower-matrix/#:~:text=What%20is%20the%20Eisenhower%20Matrix,or%20not%20do%20at%20all."
             >
-              Learn More About Eisenhower Matrix
+              Learn more about the Eisenhower Matrix
             </Link>
           </>
         ) : (
@@ -162,7 +162,7 @@ export default function MoodsInfoPage() {
                 className="text-twd-text-link"
                 href="https://www.researchgate.net/publication/51863789_A_new_three-dimensional_model_for_emotions_and_monoamine_neurotransmitters"
               >
-                Learn More About Three-Dimensional Model Of Emotions
+                Learn more about the Three-Dimensional Model Of Emotions
               </Link>
             </div>
           </>
