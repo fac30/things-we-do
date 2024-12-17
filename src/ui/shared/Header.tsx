@@ -67,7 +67,7 @@ export function Header({
           direction="bottomLeft"
         />
       )}
-      {/* <DownloadButton /> */}
+      <DownloadButton />
     </header>
   );
 }
