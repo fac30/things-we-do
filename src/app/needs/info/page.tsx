@@ -65,7 +65,7 @@ export default function NeedsInfoPage() {
           className="text-twd-text-link"
           href="https://journals.sagepub.com/doi/10.1177/21582440221096139"
         >
-          Learn More Here
+          See paper on effects of Non Viilent Communicat Program on Nursing Students
         </Link>
         <div className="flex flex-col gap-3 bg-twd-primary-purple p-4 rounded-lg">
           <p>
