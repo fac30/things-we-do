@@ -109,13 +109,10 @@ export default function Inputs() {
       }
     };
 
-    return (
-      <Button
-        label="Add Tool"
-        onClick={handleSubmit}
-        className="w-full mt-3 bg-twd-primary-purple"
-      />
-    );
+    return ( <Button label="Add Tool"
+      onClick={handleSubmit}
+      className="w-full mt-3 bg-twd-primary-purple"
+    /> );
   }
 
   return (
@@ -125,10 +122,10 @@ export default function Inputs() {
       <AddDescription />
       <AddImageUrl />
       <AddInfoUrl />
+      
       <SubmitButton />
 
-      <Modal
-        title="Tool Added"
+      <Modal title="Tool Added"
         modalOpen={confirmationModalOpen}
         forwardButton={{
           label: "Continue",
@@ -139,9 +136,7 @@ export default function Inputs() {
         }}
       />
 
-      {/* Modal for missing name */}
-      <Modal
-        title="Name is required"
+      <Modal title="Name is required"
         modalOpen={nameErrorModalOpen}
         forwardButton={{
           label: "OK",
@@ -149,8 +144,7 @@ export default function Inputs() {
         }}
       />
 
-      <Modal
-        title="You created an unused tag. What would you like to save?"
+      <Modal title="You created an unused tag. What would you like to save?"
         modalOpen={unusedCategoryModalOpen}
         forwardButton={{
           label: "Tool & Tag",
@@ -168,8 +162,7 @@ export default function Inputs() {
         }}
       />
 
-      <Modal
-        title="Please select at least one tag"
+      <Modal title="Please select at least one tag"
         modalOpen={categoryErrorModal}
         forwardButton={{
           label: "OK",
@@ -177,26 +170,21 @@ export default function Inputs() {
         }}
       />
 
-      <Modal
-        title={submitErrorMessage}
-        modalOpen={infoUrlErrorModal}
+      <Modal title={submitErrorMessage} modalOpen={infoUrlErrorModal}
         forwardButton={{
           label: "OK",
           action: () => setInfoUrlErrorModal(false),
         }}
       />
 
-      <Modal
-        title={submitErrorMessage}
-        modalOpen={imageUrlErrorModal}
+      <Modal title={submitErrorMessage} modalOpen={imageUrlErrorModal}
         forwardButton={{
           label: "OK",
           action: () => setImageUrlErrorModal(false),
         }}
       />
 
-      <Modal
-        title={`Failed to save tool: ${submitErrorMessage}`}
+      <Modal title={`Failed to save tool: ${submitErrorMessage}`}
         modalOpen={submitErrorModal}
         forwardButton={{
           label: "OK",

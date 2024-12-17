@@ -8,7 +8,7 @@ const DatabaseContext = createContext(DatabaseManager);
 export const useDatabase = () => useContext(DatabaseContext);
 
 export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
+  children
 }) => {
   return (
     <DatabaseContext.Provider value={DatabaseManager}>

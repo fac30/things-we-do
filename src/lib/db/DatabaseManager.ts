@@ -13,6 +13,7 @@ import { categories, toolkit } from "./seed/toolkit";
 import { needsCategories, needs, nextActions } from "./seed/needs";
 import generateMoodRecords from "./seed/moods";
 import { RxDBUpdatePlugin } from "rxdb/plugins/update";
+
 addRxPlugin(RxDBUpdatePlugin);
 addRxPlugin(RxDBDevModePlugin);
 
@@ -47,6 +48,7 @@ class DatabaseManager {
       "needs",
       "next_actions",
     ];
+    
     const existingCollections = Object.keys(dbInstance.collections);
 
     for (const collection of requiredCollections) {
@@ -134,14 +136,18 @@ class DatabaseManager {
   async addToDb(collectionName: string, document: object) {
     const db = await this.accessDatabase();
     const collection = db.collections[collectionName];
+
     if (!collection)
       throw new Error(`Collection '${collectionName}' not found`);
+
     const data = await collection.insert({
       ...document,
       id: uuidv4(),
       createdAt: new Date().toISOString(),
     });
+
     console.log(`Adding data to ${collectionName}:`, data);
+
     return data;
   }
 
