@@ -9,11 +9,15 @@ interface NextActionsSectionProps {
   need: NeedDocument;
   actions: NextActionDocument[];
   onToggleAction: (action: NextActionDocument) => Promise<void>;
+  onDeleteAction: (action: NextActionDocument) => Promise<void>;
+  mode: "create" | "destroy";
 }
 
 export default function NextActionsSection({
   actions,
   onToggleAction,
+  onDeleteAction,
+  mode
 }: NextActionsSectionProps) {
   return (
     <div className="ml-4 mb-6">
@@ -21,15 +25,18 @@ export default function NextActionsSection({
         const highlighted = new Date(action.selectedExpiry) > new Date();
 
         return (
-          <Button
+          <Button label={action.name}
             key={action.id}
-            label={action.name}
-            className={
-              highlighted
+            className={ mode === "destroy"
+              ? "bg-twd-cube-red text-black"
+              : highlighted
                 ? "bg-twd-primary-purple text-black"
                 : "bg-gray-600 text-white"
             }
-            onClick={() => onToggleAction(action)}
+            onClick={() => (mode === "destroy"
+              ? onDeleteAction(action)
+              : onToggleAction(action)
+            )}
           />
         );
       })}

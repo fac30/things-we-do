@@ -6,6 +6,7 @@ import clsx from "clsx";
 import changeCase from "@/lib/utils/changeCase";
 import NextActionsSection from "./NextActionsSection";
 import Button from "@/ui/shared/Button";
+import Modal from "@/ui/shared/Modal";
 
 export interface NeedDocument {
   id: string;
@@ -36,7 +37,9 @@ export default function NextActionsDisplay() {
   const [relatedNextActions, setRelatedNextActions] = useState<NextActionDocument[]>([]);
   const [chainEnd, setChainEnd] = useState(0);
   const [mode, setMode] = useState<"create" | "destroy">("create");
-
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [choppingBlock, setChoppingBlock] = useState<NextActionDocument | null>(null);
+  
   useEffect(() => { /* Fetch Data */
     async function fetchData() {
       const needsDocs = await database.getFromDb("needs");
@@ -118,12 +121,9 @@ export default function NextActionsDisplay() {
     const collectionName = "next_actions";
 
     if (highlighted) {
-      // Un-highlight action:
-      // Remove last selectedTimestamp
       const updatedTimestamps = [...action.selectedTimestamps];
       updatedTimestamps.pop();
       
-      // Set selectedExpiry back to the original timestamp
       await database.updateDocument(
         collectionName,
         action.id,
@@ -138,11 +138,8 @@ export default function NextActionsDisplay() {
         action.timestamp
       );
     } else {
-      // Highlight action:
-      // Add new selectedTimestamp
       const updatedTimestamps = [...action.selectedTimestamps, new Date().toISOString()];
 
-      // Find the parent need to copy its selectedExpiry
       const parentNeed = highlightedNeeds.find((need) => need.id === action.need);
       if (!parentNeed) {
         console.error("Parent need not found for action:", action);
@@ -164,7 +161,18 @@ export default function NextActionsDisplay() {
       );
     }
 
-    // After toggling, increment chainEnd to re-fetch and update UI
+    setChainEnd(prev => prev + 1);
+  };
+
+  const onDeleteAction = async (action: NextActionDocument) => {
+    setChoppingBlock(action);
+    setIsDeleteModalOpen(true);
+  };
+
+  const onReallyDeleteAction = async (action: NextActionDocument) => {
+    await database.deleteFromDb("next_actions", action.id);
+
+    setChoppingBlock(null);
     setChainEnd(prev => prev + 1);
   };
 
@@ -180,19 +188,6 @@ export default function NextActionsDisplay() {
   };
  
   return ( <div className="w-11/12 m-auto">
-    <Button label="Delete Actions" 
-      onClick={() => {
-        console.log(`Toggling mode from ${mode}...`);
-        onToggleMode();
-      }}
-      className={clsx(
-        "fixed right-16 bottom-24 text-white rounded",
-        mode === "destroy"
-          ? "bg-twd-primary-purple"
-          : "bg-gray-400 cursor-not-allowed"
-      )}
-    />
-
     { priorityGroups.length === 0
       ? (<p className="mb-5">
           You have no unmet needs selected. Review which needs might be unmet before we can recommend next actions to meet them.
@@ -224,16 +219,50 @@ export default function NextActionsDisplay() {
                       need={need}
                       actions={actions}
                       onToggleAction={onToggleAction}
+                      onDeleteAction={onDeleteAction}
+                      mode={mode}
                     />
-                  ) : (
-                    <p className="text-sm text-gray-500 ml-6">No next actions available for this need.</p>
                   )
+                  : (<p className="text-sm text-gray-500 ml-6">
+                    No next actions available for this need.
+                  </p>)
                 }
-                </div>
+              </div>
             );
           })}
         </div>
       )))
     }
+
+    <Button /* Mode Switcher */
+      label={"Delete Mode"} 
+      onClick={() => {
+        console.log(`Toggling mode from ${mode}...`);
+        onToggleMode();
+      }}
+      className={clsx(
+        "fixed right-4 bottom-24 text-white rounded",
+        mode === "destroy"
+        ? "bg-twd-primary-purple"
+        : "bg-gray-400 cursor-not-allowed"
+      )}
+    />
+
+    <Modal title="Delete this action?"
+      modalOpen={isDeleteModalOpen}
+      forwardButton={{
+        action: () => {
+          if (choppingBlock) {
+            onReallyDeleteAction(choppingBlock);
+          }
+          setIsDeleteModalOpen(false);
+        },
+        label: "Yes",
+      }}
+      backButton={{
+        action: () => { setIsDeleteModalOpen(false) },
+        label: "No",
+      }}
+    />
   </div> );
 }
