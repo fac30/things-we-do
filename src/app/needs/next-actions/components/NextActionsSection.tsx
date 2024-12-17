@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Button from "@/ui/shared/Button";
 import Modal from "@/ui/shared/Modal";
-import { useDatabase } from "@/context/DatabaseContext";
 import { NeedDocument } from "./NextActionsDisplay";
 import { NextActionDocument } from "./NextActionsDisplay";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
@@ -23,7 +22,6 @@ export default function NextActionsSection({
 }: SectionProps) {
   const [modalOpen, setModalOpen] = useState(false);
   const [newAction, setNewAction] = useState<string>("");
-  const database = useDatabase();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewAction(e.target.value)
