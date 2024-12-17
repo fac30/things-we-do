@@ -21,7 +21,6 @@ export default function Inputs() {
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [unusedCategoryModalOpen, setUnusedCategoryModalOpen] = useState(false);
   const [unusedCategory, setUnusedCategory] = useState([""]);
-  const [saveUnusedCategory, setSaveUnusedCategory] = useState(false);
   const [categoryErrorModal, setCategoryErrorModal] = useState(false);
   const [infoUrlErrorModal, setInfoUrlErrorModal] = useState(false);
   const [imageUrlErrorModal, setImageUrlErrorModal] = useState(false);
@@ -68,17 +67,13 @@ export default function Inputs() {
       );
     }
 
+    // Submit categories
     try {
       for (const category of formState.pendingCategories) {
         if (formState.categories.includes(category)) {
           await database.addCategories(category);
         } else {
-          await setUnusedCategoryModalOpen(true);
-          if (saveUnusedCategory) {
-            console.log("I am saving the unused category");
-            setUnusedCategory(unusedCategory.concat(category));
-            await database.addCategories(category);
-          }
+          setUnusedCategoryModalOpen(true);
         }
       }
 
@@ -102,6 +97,14 @@ export default function Inputs() {
         error instanceof Error ? error.message : "Unknown error"
       );
       setSubmitErrorModal(true);
+    }
+  };
+
+  const saveUnusedCategory = async () => {
+    for (const category of formState.pendingCategories) {
+      console.log("I am saving the unused category");
+      setUnusedCategory(unusedCategory.concat(category));
+      await database.addCategories(category);
     }
   };
 
@@ -146,14 +149,13 @@ export default function Inputs() {
         forwardButton={{
           label: "Tool & Tag",
           action: () => {
-            setSaveUnusedCategory(true);
+            saveUnusedCategory();
             setUnusedCategoryModalOpen(false);
           },
         }}
         backButton={{
           label: "Tool",
           action: () => {
-            setSaveUnusedCategory(false);
             setUnusedCategoryModalOpen(false);
           },
         }}
