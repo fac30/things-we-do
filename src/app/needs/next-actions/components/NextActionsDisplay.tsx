@@ -207,6 +207,7 @@ export default function NextActionsDisplay() {
         console.error("Error creating Action:", error);
       }
 
+      console.log(`Action State: ${actionState}`);
       setActionState((prev) => prev + 1);
     }
   };
