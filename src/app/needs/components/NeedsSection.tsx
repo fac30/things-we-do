@@ -1,7 +1,7 @@
 import Button from "@/ui/shared/Button";
 import clsx from "clsx";
 
-interface SectionProps<U> {
+interface NeedsSectionProps<U> {
   categoryData: {
     key: string;
     items: (U & { label: string; highlighted?: boolean; mood?: string })[];
@@ -22,13 +22,16 @@ const moodColors: Record<string, string> = {
   distress: "bg-twd-mood-distress-blue",
 };
 
-export default function Section<U>({
+export default function NeedsSection<U>({
   categoryData,
   handleOpen,
-}: SectionProps<U>) {
+}: NeedsSectionProps<U>) {
   return (
     <div>
-      <h2 className="text-xl mb-5 font-semibold">{categoryData.key}</h2>
+      <h2 className="text-xl mb-5 font-semibold">
+        {categoryData.key}
+      </h2>
+
       <div className="flex gap-5 flex-wrap mb-10">
         {categoryData.items.map((item, index) => (
           <Button

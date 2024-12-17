@@ -1,4 +1,4 @@
-import Section from "@/app/needs/components/Section";
+import Section from "@/app/needs/components/NeedsSection";
 import { render, screen, fireEvent } from "@testing-library/react";
 
 describe("Section Component", () => {
