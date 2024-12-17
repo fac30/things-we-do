@@ -71,7 +71,7 @@ export default function NextActionsDisplay() {
     }
 
     fetchData();
-  }, [database, chainEnd]);
+  }, [database, chainEnd, actionState]);
 
   useEffect(() => { /* Log Mode Change */
     console.log(`...to ${mode}.`);
@@ -207,8 +207,8 @@ export default function NextActionsDisplay() {
         console.error("Error creating Action:", error);
       }
 
-      console.log(`Action State: ${actionState}`);
       setActionState((prev) => prev + 1);
+      console.log(`Action State: ${actionState}`);
     }
   };
  
