@@ -48,7 +48,7 @@ class DatabaseManager {
       "needs",
       "next_actions",
     ];
-    
+
     const existingCollections = Object.keys(dbInstance.collections);
 
     for (const collection of requiredCollections) {
@@ -76,15 +76,20 @@ class DatabaseManager {
   }
 
   private async seedDatabase() {
-    try {
-      await this.seed("mood_records", generateMoodRecords("dev"));
-      await this.seed("categories", categories);
-      await this.seed("toolkit_items", toolkit);
-      await this.seed("needs_categories", needsCategories);
-      await this.seed("needs", needs);
-      await this.seed("next_actions", nextActions);
-    } catch (error) {
-      console.error("Error during database seeding:", error);
+    if (
+      dbInstance &&
+      (await dbInstance.collections["needs"].find().exec()).length === 0
+    ) {
+      try {
+        await this.seed("mood_records", generateMoodRecords("dev"));
+        await this.seed("categories", categories);
+        await this.seed("toolkit_items", toolkit);
+        await this.seed("needs_categories", needsCategories);
+        await this.seed("needs", needs);
+        await this.seed("next_actions", nextActions);
+      } catch (error) {
+        console.error("Error during database seeding:", error);
+      }
     }
   }
 
