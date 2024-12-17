@@ -7,6 +7,7 @@ import changeCase from "@/lib/utils/changeCase";
 import NextActionsSection from "./NextActionsSection";
 import Button from "@/ui/shared/Button";
 import Modal from "@/ui/shared/Modal";
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
 export interface NeedDocument {
   id: string;
