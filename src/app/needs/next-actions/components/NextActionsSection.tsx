@@ -32,34 +32,6 @@ export default function NextActionsSection({
     setModalOpen(false);
   }
 
-  /* const handleAddAction = async () => {
-    if (newAction.trim()) {
-      const newActionDocument = {
-        id: crypto.randomUUID(),
-        name: newAction.trim(),
-        need: need.id,
-        selectedTimestamps: [],
-        selectedExpiry: new Date().toISOString(),
-        timestamp: new Date().toISOString(),
-      }
-
-      try {
-        await database.addToDb("next_actions", newActionDocument);
-
-        console.groupCollapsed("Action Created");
-        console.log(`Name: ${newActionDocument.name}`);
-        console.log(`Need: ${newActionDocument.need}`);
-        console.groupEnd();
-
-        setTriggerRerender(triggerRerender + 1);
-      } catch (error) {
-        console.error("Error creating Action:", error);
-      }
-      
-      setModalOpen(false);
-    }
-  }; */
-
   return ( <>
     <div className="ml-4 mb-6">
       {actions.map((action) => {
