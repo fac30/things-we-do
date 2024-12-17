@@ -254,6 +254,13 @@ export default function NextActionsDisplay() {
                       No next actions available for this need.
                     </p>)
                   }
+
+                  <button aria-label="Add Action"
+                    onClick={() => setModalOpen(true)}
+                    className="flex justify-center items-center"
+                  >
+                    <PlusCircleIcon className="w-7 m-auto"/>
+                  </button>
                 </div>
               );
             })}
