@@ -112,12 +112,9 @@ export default function NextActionsDisplay() {
     const collectionName = "next_actions";
 
     if (highlighted) {
-      // Un-highlight action:
-      // Remove last selectedTimestamp
       const updatedTimestamps = [...action.selectedTimestamps];
       updatedTimestamps.pop();
       
-      // Set selectedExpiry back to the original timestamp
       await database.updateDocument(
         collectionName,
         action.id,
@@ -158,70 +155,56 @@ export default function NextActionsDisplay() {
       );
     }
 
-    // After toggling, increment chainEnd to re-fetch and update UI
     setChainEnd(prev => prev + 1);
   };
-
-  // Commented out until we agree on an answer to my question in the PR
-  // const saveAndExit = () => { router.push("/needs"); };
  
   return (
-    <>
-      <div className="w-11/12 m-auto">
-        {priorityGroups.length === 0
-          ? (<p className="mb-5">
-              You have no unmet needs selected. Review which needs might be unmet before we can recommend next actions to meet them.
-          </p>)
-          : (priorityGroups.map((group, i) => (
-            <div key={i} className="mb-6">
-              <h3 className={clsx(
+    <div className="w-11/12 m-auto">
+      { priorityGroups.length === 0 ?
+        (<p className="mb-5">
+          You have no unmet needs selected. Review which needs might be unmet before we can recommend next actions to meet them.
+        </p>) :
+        (priorityGroups.map((group, i) => (
+          <div key={i} className="mb-6">
+            <h3
+              className={clsx(
                 "text-xl font-bold mb-2",
                 {"text-twd-cube-red" : group.priority.order === 1 },
                 {"text-twd-cube-yellow" : group.priority.order === 2},
                 {"text-twd-cube-blue" : group.priority.order === 3},
                 {"text-twd-cube-green" : group.priority.order === 4}
-              )}>
-                {changeCase(group.priority.name, "sentence")}
-              </h3>
-              
-              {group.needs.map((need) => {
-                const actions = getActionsForNeed(need.id);
+              )}
+            >
+              {changeCase(group.priority.name, "sentence")}
+            </h3>
+            
+            {group.needs.map((need) => {
+              const actions = getActionsForNeed(need.id);
 
-                return (
-                  <div key={need.id} className="ml-4 mb-4">
-                    <h4 className="font-semibold">
-                      To meet a need for {changeCase(need.name, "lower")}, which actions can you take next?
-                    </h4>
+              return (
+                <div key={need.id} className="ml-4 mb-4">
+                  <h4 className="font-semibold">
+                    To meet a need for {changeCase(need.name, "lower")}, which actions can you take next?
+                  </h4>
 
-                    { actions.length > 0
-                      ? (
-                        <NextActionsSection
-                          need={need}
-                          actions={actions}
-                          onToggleAction={onToggleAction}
-                        />
-                      ) : (
-                        <p className="text-sm text-gray-500 ml-6">No next actions available for this need.</p>
-                      )
-                    }
-                    </div>
-                );
-              })}
-            </div>
-          )))
-        }
-      </div>
-      
-      {/* Commented out until we agree on an answer to my question in the PR
-        <Button
-          onClick={saveAndExit}
-          label="Save & Exit"
-          className={clsx(
-            "fixed right-4 bottom-24 text-white rounded",
-            "bg-twd-primary-purple shadow-twd-primary-purple"
-          )}
-        />
-      */}
-    </>
+                  { actions.length > 0 ? (
+                    <NextActionsSection
+                      need={need}
+                      actions={actions}
+                      onToggleAction={onToggleAction}
+                    />
+                  ) : (
+                    <p className="text-sm text-gray-500 ml-6">
+                      No next actions available for this need.
+                    </p>
+                  )
+                  }
+                  </div>
+              );
+            })}
+          </div>
+        )))
+      }
+    </div>
   );
 }
