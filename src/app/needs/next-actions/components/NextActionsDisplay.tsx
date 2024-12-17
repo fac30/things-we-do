@@ -5,6 +5,7 @@ import { useDatabase } from "@/context/DatabaseContext";
 import clsx from "clsx";
 import changeCase from "@/lib/utils/changeCase";
 import NextActionsSection from "./NextActionsSection";
+import Button from "@/ui/shared/Button";
 
 export interface NeedDocument {
   id: string;
@@ -34,6 +35,7 @@ export default function NextActionsDisplay() {
   const [highlightedNeeds, setHighlightedNeeds] = useState<NeedDocument[]>([]);
   const [relatedNextActions, setRelatedNextActions] = useState<NextActionDocument[]>([]);
   const [chainEnd, setChainEnd] = useState(0);
+  const [mode, setMode] = useState<"create" | "destroy">("create");
 
   useEffect(() => { /* Fetch Data */
     async function fetchData() {
@@ -67,6 +69,10 @@ export default function NextActionsDisplay() {
 
     fetchData();
   }, [database, chainEnd]);
+
+  useEffect(() => { /* Log Mode Change */
+    console.log(`...to ${mode}.`);
+  }, [mode])
 
   const priorityGroups = useMemo(() => {
     if (highlightedNeeds.length === 0) return [];
@@ -162,66 +168,72 @@ export default function NextActionsDisplay() {
     setChainEnd(prev => prev + 1);
   };
 
-  // Commented out until we agree on an answer to my question in the PR
-  // const saveAndExit = () => { router.push("/needs"); };
+  const onToggleMode = () => {
+    switch(mode) {
+      case "create":
+        setMode("destroy");
+        break;
+      case "destroy":
+        setMode("create");
+        break;
+    }
+  };
  
-  return (
-    <>
-      <div className="w-11/12 m-auto">
-        {priorityGroups.length === 0
-          ? (<p className="mb-5">
-              You have no unmet needs selected. Review which needs might be unmet before we can recommend next actions to meet them.
-          </p>)
-          : (priorityGroups.map((group, i) => (
-            <div key={i} className="mb-6">
-              <h3 className={clsx(
-                "text-xl font-bold mb-2",
-                {"text-twd-cube-red" : group.priority.order === 1 },
-                {"text-twd-cube-yellow" : group.priority.order === 2},
-                {"text-twd-cube-blue" : group.priority.order === 3},
-                {"text-twd-cube-green" : group.priority.order === 4}
-              )}>
-                {changeCase(group.priority.name, "sentence")}
-              </h3>
-              
-              {group.needs.map((need) => {
-                const actions = getActionsForNeed(need.id);
+  return ( <div className="w-11/12 m-auto">
+    <Button label="Delete Actions" 
+      onClick={() => {
+        console.log(`Toggling mode from ${mode}...`);
+        onToggleMode();
+      }}
+      className={clsx(
+        "fixed right-16 bottom-24 text-white rounded",
+        mode === "destroy"
+          ? "bg-twd-primary-purple"
+          : "bg-gray-400 cursor-not-allowed"
+      )}
+    />
 
-                return (
-                  <div key={need.id} className="ml-4 mb-4">
-                    <h4 className="font-semibold">
-                      To meet a need for {changeCase(need.name, "lower")}, which actions can you take next?
-                    </h4>
+    { priorityGroups.length === 0
+      ? (<p className="mb-5">
+          You have no unmet needs selected. Review which needs might be unmet before we can recommend next actions to meet them.
+      </p>)
+      : (priorityGroups.map((group, i) => (
+        <div key={i} className="mb-6">
+          <h3 className={clsx(
+            "text-xl font-bold mb-2",
+            {"text-twd-cube-red" : group.priority.order === 1 },
+            {"text-twd-cube-yellow" : group.priority.order === 2},
+            {"text-twd-cube-blue" : group.priority.order === 3},
+            {"text-twd-cube-green" : group.priority.order === 4}
+          )}>
+            {changeCase(group.priority.name, "sentence")}
+          </h3>
+          
+          {group.needs.map((need) => {
+            const actions = getActionsForNeed(need.id);
 
-                    { actions.length > 0
-                      ? (
-                        <NextActionsSection
-                          need={need}
-                          actions={actions}
-                          onToggleAction={onToggleAction}
-                        />
-                      ) : (
-                        <p className="text-sm text-gray-500 ml-6">No next actions available for this need.</p>
-                      )
-                    }
-                    </div>
-                );
-              })}
-            </div>
-          )))
-        }
-      </div>
-      
-      {/* Commented out until we agree on an answer to my question in the PR
-        <Button
-          onClick={saveAndExit}
-          label="Save & Exit"
-          className={clsx(
-            "fixed right-4 bottom-24 text-white rounded",
-            "bg-twd-primary-purple shadow-twd-primary-purple"
-          )}
-        />
-      */}
-    </>
-  );
+            return (
+              <div key={need.id} className="ml-4 mb-4">
+                <h4 className="font-semibold">
+                  To meet a need for {changeCase(need.name, "lower")}, which actions can you take next?
+                </h4>
+
+                { actions.length > 0
+                  ? (
+                    <NextActionsSection
+                      need={need}
+                      actions={actions}
+                      onToggleAction={onToggleAction}
+                    />
+                  ) : (
+                    <p className="text-sm text-gray-500 ml-6">No next actions available for this need.</p>
+                  )
+                }
+                </div>
+            );
+          })}
+        </div>
+      )))
+    }
+  </div> );
 }
