@@ -234,8 +234,8 @@ export default function NextActionsDisplay() {
               const actions = getActionsForNeed(need.id);
 
               return (
-                <div key={need.id} className="ml-4 mb-4">
-                  <h4 className="font-semibold">
+                <div key={need.id}>
+                  <h4 className="font-normal mb-4">
                     To meet a need for {changeCase(need.name, "lower")}, which actions can you take next?
                   </h4>
 

@@ -46,10 +46,10 @@ export default function NextActionsSection({
             <Button label={action.name}
               key={action.id}
               className={ mode === "destroy"
-                ? "bg-twd-cube-red text-black"
+                ? "bg-twd-cube-red text-black font-normal"
                 : highlighted
-                  ? "bg-twd-primary-purple text-black"
-                  : "bg-gray-600 text-white"
+                  ? "bg-twd-primary-purple text-black font-normal"
+                  : "bg-gray-600 text-white font-normal"
               }
               onClick={() => (mode === "destroy"
                 ? onDeleteAction(action)
