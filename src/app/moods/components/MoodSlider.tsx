@@ -1,6 +1,8 @@
 import { NeurochemState } from "./MoodsDisplay";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import { useState } from "react";
+import clsx from "clsx";
 
 interface SliderProps {
   chem: "dopamine" | "serotonin" | "adrenaline";
@@ -12,11 +14,7 @@ interface SliderProps {
   neuroState: NeurochemState;
 }
 export default function MoodSlider({ chem, label, handleChange }: SliderProps) {
-  // const normaliseValue = (value: unknown): number => {
-  //   if (value instanceof Date) return value.getTime();
-  //   if (typeof value === "number") return value;
-  //   return 1;
-  // };
+  const [isActive, setIsActive] = useState(false);
 
   const renderText =
     label === "Step 2. How much effort does it take?" ? (
@@ -32,11 +30,15 @@ export default function MoodSlider({ chem, label, handleChange }: SliderProps) {
     );
 
   return (
-    <div className="flex flex-col mb-2">
+    <div
+      className={clsx("flex flex-col py-2 px-3 rounded-lg", {
+        "bg-gray-900": isActive,
+      })}
+    >
       <label
         id={`label-${chem}`}
         htmlFor={`slider-${chem}`}
-        className="text-white text-md mb-4"
+        className={clsx("text-md mb-4", {})}
       >
         {label}
       </label>
@@ -44,7 +46,11 @@ export default function MoodSlider({ chem, label, handleChange }: SliderProps) {
         data-testid={`slider-${chem}`}
         id={`slider-${chem}`}
         aria-labelledby={`label-${chem}`}
-        onChange={(value) => handleChange(value as number, chem)} // Ensure the value is a number
+        onChange={(value) => {
+          handleChange(value as number, chem);
+          setIsActive(true);
+        }} // Ensure the value is a number
+        onChangeComplete={() => setIsActive(false)}
         styles={{
           rail: { backgroundColor: "#3C246C" },
           track: { backgroundColor: "#893FFC" },

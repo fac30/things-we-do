@@ -26,7 +26,7 @@ export default function SliderBox({
     <form className="flex flex-col gap-4 w-10/12 m-auto">
       <fieldset>
         <legend className="m-auto text-xl text-center mb-3 font-semiboldbold">
-          How does this task feel right now?
+          How does what you are thinking of doing feel right now?
         </legend>
         {sliders.map((slider) => {
           return (
