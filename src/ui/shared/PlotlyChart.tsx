@@ -5,7 +5,11 @@ import { useEffect, useState } from "react";
 
 const Plot = dynamic(() => import("react-plotly.js"), {
   ssr: false,
-  loading: () => <div>Loading...</div>,
+  loading: () => (
+    <div className="flex h-full w-full justify-center items-center">
+      <p className="text-xl">Loading...</p>
+    </div>
+  ),
 });
 
 interface PlotlyChartProps {

@@ -41,13 +41,14 @@ export default function AddTags() {
 
   const handleAddCategory = () => {
     if (newCategory.trim()) {
-      // Add to pending categories
       setFormState((prev) => ({
         ...prev,
         pendingCategories: [...prev.pendingCategories, newCategory.trim()],
         categories: [...prev.categories, newCategory.trim()],
       }));
+
       setNewCategory("");
+
       setModalOpen(false);
     }
   };
@@ -55,49 +56,41 @@ export default function AddTags() {
   const toggleCategory = (category: string) => {
     setFormState((prev) => ({
       ...prev,
-      categories: prev.categories.includes(category)
-        ? prev.categories.filter((c) => c !== category)
-        : [...prev.categories, category],
+      categories: prev.categories.includes(category) ?
+        prev.categories.filter((c) => c !== category) :
+        [...prev.categories, category],
     }));
   };
 
   return (
     <div>
-      <p className="text-white block mb-2">Tags</p>
+      <p className="text-white block mb-2">
+        Tags
+      </p>
+      
       <div className="flex flex-wrap gap-2">
-        {categories.map((category) => (
-          <Button
-            key={category}
-            label={category}
-            onClick={() => toggleCategory(category)}
-            className={`${
-              formState.categories.includes(category)
-                ? "bg-twd-secondary-purple text-white"
-                : "bg-twd-background text-white"
-            } font-normal`}
-            ariaPressed={formState.categories.includes(category)}
-          />
-        ))}
-        {formState.pendingCategories.map((category) => (
-          <Button
-            key={category}
-            label={category}
-            onClick={() => toggleCategory(category)}
-            className={`${
-              formState.categories.includes(category)
-                ? "bg-twd-secondary-purple text-white"
-                : "bg-twd-background text-white"
-            }`}
-            ariaPressed={formState.categories.includes(category)}
-          />
-        ))}
-        {/* <Button
-          label="+ New Category"
-          onClick={() => setModalOpen(true)}
-          className="bg-twd-secondary-purple text-white"
-        /> */}
-        <button
-          onClick={() => setModalOpen(true)}
+        {categories.map((category) => ( <Button key={ category }
+          label={ category }
+          onClick={ () => toggleCategory(category) }
+          className={`${formState.categories.includes(category)
+            ? "bg-twd-secondary-purple text-white"
+            : "bg-twd-background text-white"
+          } font-normal`}
+          ariaPressed={ formState.categories.includes(category) }
+        /> ))}
+
+        {formState.pendingCategories.map((category) => ( <Button key={category}
+          label={category}
+          onClick={() => toggleCategory(category)}
+          className={`${
+            formState.categories.includes(category)
+              ? "bg-twd-secondary-purple text-white"
+              : "bg-twd-background text-white"
+          }`}
+          ariaPressed={formState.categories.includes(category)}
+        /> ))}
+
+        <button onClick={() => setModalOpen(true)}
           className="flex justify-center items-center"
           aria-label="Add tag"
         >

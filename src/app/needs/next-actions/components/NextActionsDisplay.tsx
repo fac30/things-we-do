@@ -36,17 +36,19 @@ export default function NextActionsDisplay() {
   const [highlightedNeeds, setHighlightedNeeds] = useState<NeedDocument[]>([]);
   const [relatedNextActions, setRelatedNextActions] = useState<NextActionDocument[]>([]);
   const [chainEnd, setChainEnd] = useState(0);
+  const [actionState, setActionState] = useState(0);
   const [mode, setMode] = useState<"create" | "destroy">("create");
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [choppingBlock, setChoppingBlock] = useState<NextActionDocument | null>(null);
-  
+
+
   useEffect(() => { /* Fetch Data */
     async function fetchData() {
       const needsDocs = await database.getFromDb("needs");
-      const allNeeds = needsDocs.map(doc => doc.toJSON() as NeedDocument);
+      const allNeeds = needsDocs.map((doc) => doc.toJSON() as NeedDocument);
       const now = new Date();
 
-      const filteredNeeds = allNeeds.filter(need => {
+      const filteredNeeds = allNeeds.filter((need) => {
         const expiry = new Date(need.selectedExpiry);
         return expiry > now && need.priority && need.priority.order > 0;
       });
@@ -56,15 +58,13 @@ export default function NextActionsDisplay() {
       const nextActionsDocs = await database.getFromDb("next_actions");
 
       const allNextActions = nextActionsDocs.map(
-        doc => doc.toJSON() as NextActionDocument
+        (doc) => doc.toJSON() as NextActionDocument
       );
 
-      const highlightedNeedIds = new Set(filteredNeeds.map(
-        need => need.id
-      ));
+      const highlightedNeedIds = new Set(filteredNeeds.map((need) => need.id));
 
-      const filteredNextActions = allNextActions.filter(
-        action => highlightedNeedIds.has(action.need)
+      const filteredNextActions = allNextActions.filter((action) =>
+        highlightedNeedIds.has(action.need)
       );
 
       setRelatedNextActions(filteredNextActions);
@@ -81,20 +81,23 @@ export default function NextActionsDisplay() {
     if (highlightedNeeds.length === 0) return [];
 
     const needsWithPriority = highlightedNeeds.filter(
-      need => need.priority && need.priority.order
+      (need) => need.priority && need.priority.order
     );
 
-    const sortedNeeds = needsWithPriority.sort((a, b) =>
-      a.priority!.order - b.priority!.order
+    const sortedNeeds = needsWithPriority.sort(
+      (a, b) => a.priority!.order - b.priority!.order
     );
 
-    const groupsMap: Record<number, { 
-      priority: { 
-        order: number;
-        name: string;
-      };
-      needs: NeedDocument[]
-    }> = {};
+    const groupsMap: Record<
+      number,
+      {
+        priority: {
+          order: number;
+          name: string;
+        };
+        needs: NeedDocument[];
+      }
+    > = {};
 
     for (const need of sortedNeeds) {
       const order = need.priority!.order;
@@ -102,7 +105,7 @@ export default function NextActionsDisplay() {
       if (!groupsMap[order]) {
         groupsMap[order] = {
           priority: need.priority!,
-          needs: []
+          needs: [],
         };
       }
 
@@ -113,7 +116,7 @@ export default function NextActionsDisplay() {
   }, [highlightedNeeds]);
 
   const getActionsForNeed = (needId: string) => {
-    return relatedNextActions.filter(action => action.need === needId);
+    return relatedNextActions.filter((action) => action.need === needId);
   };
 
   const onToggleAction = async (action: NextActionDocument) => {
@@ -186,83 +189,107 @@ export default function NextActionsDisplay() {
         break;
     }
   };
- 
-  return ( <div className="w-11/12 m-auto">
-    { priorityGroups.length === 0
-      ? (<p className="mb-5">
-          You have no unmet needs selected. Review which needs might be unmet before we can recommend next actions to meet them.
-      </p>)
-      : (priorityGroups.map((group, i) => (
-        <div key={i} className="mb-6">
-          <h3 className={clsx(
-            "text-xl font-bold mb-2",
-            {"text-twd-cube-red" : group.priority.order === 1 },
-            {"text-twd-cube-yellow" : group.priority.order === 2},
-            {"text-twd-cube-blue" : group.priority.order === 3},
-            {"text-twd-cube-green" : group.priority.order === 4}
-          )}>
-            {changeCase(group.priority.name, "sentence")}
-          </h3>
-          
-          {group.needs.map((need) => {
-            const actions = getActionsForNeed(need.id);
 
-            return (
-              <div key={need.id} className="ml-4 mb-4">
-                <h4 className="font-semibold">
-                  To meet a need for {changeCase(need.name, "lower")}, which actions can you take next?
-                </h4>
+  const handleAddAction = async (newAction: string, need: NeedDocument) => {
+    if (newAction.trim()) {
+      const newActionDocument = {
+        id: crypto.randomUUID(),
+        name: newAction.trim(),
+        need: need.id,
+        selectedTimestamps: [],
+        selectedExpiry: new Date().toISOString(),
+        timestamp: new Date().toISOString(),
+      };
+      try {
+        await database.addToDb("next_actions", newActionDocument);
+        console.log(`Action Created: ${newActionDocument.name}`);
+      } catch (error) {
+        console.error("Error creating Action:", error);
+      }
 
-                { actions.length > 0
-                  ? (
-                    <NextActionsSection
-                      need={need}
-                      actions={actions}
-                      onToggleAction={onToggleAction}
-                      onDeleteAction={onDeleteAction}
-                      mode={mode}
-                    />
-                  )
-                  : (<p className="text-sm text-gray-500 ml-6">
-                    No next actions available for this need.
-                  </p>)
-                }
-              </div>
-            );
-          })}
-        </div>
-      )))
+      setActionState((prev) => prev + 1);
     }
+  };
+ 
+  return (
+    <div className="w-11/12 m-auto">
+      {priorityGroups.length === 0
+        ? (<p className="mb-5">
+            You have no unmet needs selected. Review which needs might be unmet before we can recommend next actions to meet them.
+        </p>)
+        : (priorityGroups.map((group, i) => (
+          <div key={i} className="mb-6">
+            <h3 className={clsx(
+              "text-xl font-bold mb-2",
+              {"text-twd-cube-red" : group.priority.order === 1 },
+              {"text-twd-cube-yellow" : group.priority.order === 2},
+              {"text-twd-cube-blue" : group.priority.order === 3},
+              {"text-twd-cube-green" : group.priority.order === 4}
+            )}>
+              {changeCase(group.priority.name, "sentence")}
+            </h3>
+            
+            {group.needs.map((need) => {
+              const actions = getActionsForNeed(need.id);
 
-    <Button /* Mode Switcher */
-      label={"Delete Mode"} 
-      onClick={() => {
-        console.log(`Toggling mode from ${mode}...`);
-        onToggleMode();
-      }}
-      className={clsx(
-        "fixed right-4 bottom-24 text-white rounded",
-        mode === "destroy"
-        ? "bg-twd-primary-purple"
-        : "bg-gray-400 cursor-not-allowed"
-      )}
-    />
+              return (
+                <div key={need.id} className="ml-4 mb-4">
+                  <h4 className="font-semibold">
+                    To meet a need for {changeCase(need.name, "lower")}, which actions can you take next?
+                  </h4>
 
-    <Modal title="Delete this action?"
-      modalOpen={isDeleteModalOpen}
-      forwardButton={{
-        action: () => {
-          if (choppingBlock) {
-            onReallyDeleteAction(choppingBlock);
-          }
-          setIsDeleteModalOpen(false);
-        },
-        label: "Yes",
-      }}
-      backButton={{
-        action: () => { setIsDeleteModalOpen(false) },
-        label: "No",
-      }}
-    />
-  </div> );
+                  { actions.length > 0
+                    ? (
+                      <NextActionsSection
+                        need={need}
+                        actions={actions}
+                        onToggleAction={onToggleAction}
+                        onDeleteAction={onDeleteAction}
+                        mode={mode}
+                        handleAddAction={handleAddAction}
+                      />
+                    )
+                    : (<p className="text-sm text-gray-500 ml-6">
+                      No next actions available for this need.
+                    </p>)
+                  }
+                </div>
+              );
+            })}
+          </div>
+        )))
+      }
+  
+      <Button /* Mode Switcher */
+        label={"Delete Mode"} 
+        onClick={() => {
+          console.log(`Toggling mode from ${mode}...`);
+          onToggleMode();
+        }}
+        className={clsx(
+          "fixed right-4 bottom-24 text-white rounded",
+          mode === "destroy"
+          ? "bg-twd-primary-purple"
+          : "bg-gray-400 cursor-not-allowed"
+        )}
+      />
+  
+      <Modal title="Delete this action?"
+        modalOpen={isDeleteModalOpen}
+        forwardButton={{
+          action: () => {
+            if (choppingBlock) {
+              onReallyDeleteAction(choppingBlock);
+            }
+            setIsDeleteModalOpen(false);
+          },
+          label: "Yes",
+        }}
+        backButton={{
+          action: () => { setIsDeleteModalOpen(false) },
+          label: "No",
+        }}
+      />
+    </div>
+  );
 }

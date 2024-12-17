@@ -13,6 +13,7 @@ import { categories, toolkit } from "./seed/toolkit";
 import { needsCategories, needs, nextActions } from "./seed/needs";
 import generateMoodRecords from "./seed/moods";
 import { RxDBUpdatePlugin } from "rxdb/plugins/update";
+
 addRxPlugin(RxDBUpdatePlugin);
 addRxPlugin(RxDBDevModePlugin);
 
@@ -47,6 +48,7 @@ class DatabaseManager {
       "needs",
       "next_actions",
     ];
+
     const existingCollections = Object.keys(dbInstance.collections);
 
     for (const collection of requiredCollections) {
@@ -74,15 +76,20 @@ class DatabaseManager {
   }
 
   private async seedDatabase() {
-    try {
-      await this.seed("mood_records", generateMoodRecords("dev"));
-      await this.seed("categories", categories);
-      await this.seed("toolkit_items", toolkit);
-      await this.seed("needs_categories", needsCategories);
-      await this.seed("needs", needs);
-      await this.seed("next_actions", nextActions);
-    } catch (error) {
-      console.error("Error during database seeding:", error);
+    if (
+      dbInstance &&
+      (await dbInstance.collections["needs"].find().exec()).length === 0
+    ) {
+      try {
+        await this.seed("mood_records", generateMoodRecords("dev"));
+        await this.seed("categories", categories);
+        await this.seed("toolkit_items", toolkit);
+        await this.seed("needs_categories", needsCategories);
+        await this.seed("needs", needs);
+        await this.seed("next_actions", nextActions);
+      } catch (error) {
+        console.error("Error during database seeding:", error);
+      }
     }
   }
 
@@ -134,14 +141,18 @@ class DatabaseManager {
   async addToDb(collectionName: string, document: object) {
     const db = await this.accessDatabase();
     const collection = db.collections[collectionName];
+
     if (!collection)
       throw new Error(`Collection '${collectionName}' not found`);
+
     const data = await collection.insert({
       ...document,
       id: uuidv4(),
       createdAt: new Date().toISOString(),
     });
+
     console.log(`Adding data to ${collectionName}:`, data);
+
     return data;
   }
 
