@@ -304,7 +304,7 @@ export default function NeedsDisplay() {
         className={clsx(
           "fixed right-4 bottom-24 text-white rounded",
           hasHighlightedNeeds
-            ? "bg-twd-primary-purple shadow-twd-primary-purple shadow-glow"
+            ? "bg-twd-primary-purple"
             : "bg-gray-400 cursor-not-allowed"
         )}
       />
