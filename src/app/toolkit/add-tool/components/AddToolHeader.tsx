@@ -31,7 +31,7 @@ export default function Header() {
   };
 
   const modalForwardButton = {
-    label: "Yes, leave",
+    label: "Yes",
     action: () => {
       setModalOpen(false);
       router.push("/toolkit");
@@ -39,7 +39,7 @@ export default function Header() {
   };
 
   const modalBackButton = {
-    label: "No, stay",
+    label: "No",
     action: () => setModalOpen(false),
   };
 
