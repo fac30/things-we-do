@@ -271,7 +271,7 @@ export default function NextActionsDisplay() {
         ))
       )}
 
-      <button>
+      <button aria-label="Delete next actions">
         <TrashIcon
           className={clsx(
             "w-16 h-16 fixed bottom-20 right-5 shadow-lg text-white  p-4 rounded-full transform transition-all duration-200 ease-in-out",
