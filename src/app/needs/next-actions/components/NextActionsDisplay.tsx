@@ -272,9 +272,9 @@ export default function NextActionsDisplay() {
           className={clsx(
             "w-16 h-16 fixed bottom-20 right-5 shadow-lg text-white  p-4 rounded-full transform transition-all duration-200 ease-in-out",
             {
-              "bg-gray-600": mode !== "destroy", // Add this class when mode is "destroy"
+              "bg-gray-600": mode !== "destroy",
               "bg-gradient-to-r from-twd-primary-purple to-purple-600":
-                mode === "destroy", // Add this class when mode is "destroy"
+                mode === "destroy",
             }
           )}
           onClick={() => {
