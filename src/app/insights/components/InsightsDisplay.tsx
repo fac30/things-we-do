@@ -180,7 +180,7 @@ export default function InsightsDisplay() {
               }
               className={clsx(
                 "font-normal",
-                isActive && "bg-twd-primary-purple text-white"
+                isActive && "bg-twd-secondary-purple text-white"
               )}
             />
           );

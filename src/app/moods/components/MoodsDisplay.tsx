@@ -2,7 +2,6 @@
 
 import Cube from "./Cube";
 import SliderBox from "./SliderBox";
-// import MoodButtons from "./MoodButtons";
 import { useDatabase } from "@/context/DatabaseContext";
 import { useState } from "react";
 import { Datum } from "plotly.js";
@@ -26,13 +25,14 @@ export default function MoodsDisplay() {
     serotonin: 1,
     adrenaline: 1,
   });
+  const [hasSaved, setHasSaved] = useState(false);
 
   const handleChange = (value: number | number[], chem: string) => {
     setNeuroState((prev) => ({
       ...prev,
       [chem]: value,
     }));
-    console.log(neuroState);
+    setHasSaved(false);
   };
 
   const submitMood = () => {
@@ -85,10 +85,11 @@ export default function MoodsDisplay() {
 
     database.addToDb("mood_records", submitObj);
     setModalOpen(true);
+    setHasSaved(true);
   };
 
   const forwardButton = {
-    label: "ok",
+    label: "Close",
     action: () => setModalOpen(false),
   };
   const insightsForwardButton = {
@@ -121,7 +122,9 @@ export default function MoodsDisplay() {
         <Button
           label="Go to Insights"
           className="mt-2 px-3 py-1 bg-gray-700 text-white rounded"
-          onClick={() => setInsightsModalOpen(true)}
+          onClick={() =>
+            hasSaved ? router.push("/insights") : setInsightsModalOpen(true)
+          }
         />
       </div>
 

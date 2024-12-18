@@ -31,9 +31,12 @@ export default function MoodSlider({ chem, label, handleChange }: SliderProps) {
 
   return (
     <div
-      className={clsx("flex flex-col py-2 px-3 rounded-lg", {
-        "bg-gray-900": isActive,
-      })}
+      className={clsx(
+        "flex flex-col py-2 px-3 rounded-lg transition-colors duration-300 ease-in-out",
+        {
+          "bg-gray-900": isActive,
+        }
+      )}
     >
       <label
         id={`label-${chem}`}

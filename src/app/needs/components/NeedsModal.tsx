@@ -7,9 +7,6 @@ interface NeedsModalProps {
   modalOpen: boolean;
   title?: string;
   needsStep: number;
-  urgent: number;
-  effortful: number;
-  worthDoing: number;
   positiveLabel: string;
   negativeLabel: string;
   handlePositiveClick: () => void;
@@ -29,11 +26,17 @@ export default function NeedsModal({
   handleBackClick,
   handleCloseClick,
 }: NeedsModalProps) {
-  if (!modalOpen) return null;
-
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
-      <div className="w-11/12 max-w-lg bg-gray-900 border border-gray-700 rounded-lg p-6 shadow-lg">
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75 transition-opacity duration-300 ${
+        modalOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+      }`}
+    >
+      <div
+        className={`w-11/12 max-w-lg bg-gray-900 border border-gray-700 rounded-lg p-6 shadow-lg transform transition-transform duration-300 ${
+          modalOpen ? "scale-100" : "scale-95"
+        }`}
+      >
         <div className="relative">
           <p className="text-center text-white mb-4">Step {needsStep} of 3</p>
 
@@ -57,7 +60,11 @@ export default function NeedsModal({
         </div>
 
         <div className="flex flex-col w-full items-center py-6 justify-between h-full">
-          <p className="text-xl w-10/12 text-center text-white mb-5">
+          <p
+            className={`text-xl w-10/12 text-center text-white mb-5 ${
+              modalOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
+          >
             {title}
           </p>
 
