@@ -7,6 +7,8 @@ import changeCase from "@/lib/utils/changeCase";
 import NextActionsSection from "./NextActionsSection";
 import Button from "@/ui/shared/Button";
 import Modal from "@/ui/shared/Modal";
+import { MinusIcon } from "@heroicons/react/24/outline";
+import { TrashIcon } from "@heroicons/react/24/outline";
 
 export interface NeedDocument {
   id: string;
@@ -34,15 +36,19 @@ export interface NextActionDocument {
 export default function NextActionsDisplay() {
   const database = useDatabase();
   const [highlightedNeeds, setHighlightedNeeds] = useState<NeedDocument[]>([]);
-  const [relatedNextActions, setRelatedNextActions] = useState<NextActionDocument[]>([]);
+  const [relatedNextActions, setRelatedNextActions] = useState<
+    NextActionDocument[]
+  >([]);
   const [chainEnd, setChainEnd] = useState(0);
   const [actionState, setActionState] = useState(0);
   const [mode, setMode] = useState<"create" | "destroy">("create");
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [choppingBlock, setChoppingBlock] = useState<NextActionDocument | null>(null);
+  const [choppingBlock, setChoppingBlock] = useState<NextActionDocument | null>(
+    null
+  );
 
-
-  useEffect(() => { /* Fetch Data */
+  useEffect(() => {
+    /* Fetch Data */
     async function fetchData() {
       const needsDocs = await database.getFromDb("needs");
       const allNeeds = needsDocs.map((doc) => doc.toJSON() as NeedDocument);
@@ -73,9 +79,10 @@ export default function NextActionsDisplay() {
     fetchData();
   }, [database, chainEnd, actionState]);
 
-  useEffect(() => { /* Log Mode Change */
+  useEffect(() => {
+    /* Log Mode Change */
     console.log(`...to ${mode}.`);
-  }, [mode])
+  }, [mode]);
 
   const priorityGroups = useMemo(() => {
     if (highlightedNeeds.length === 0) return [];
@@ -126,7 +133,7 @@ export default function NextActionsDisplay() {
     if (highlighted) {
       const updatedTimestamps = [...action.selectedTimestamps];
       updatedTimestamps.pop();
-      
+
       await database.updateDocument(
         collectionName,
         action.id,
@@ -141,9 +148,14 @@ export default function NextActionsDisplay() {
         action.timestamp
       );
     } else {
-      const updatedTimestamps = [...action.selectedTimestamps, new Date().toISOString()];
+      const updatedTimestamps = [
+        ...action.selectedTimestamps,
+        new Date().toISOString(),
+      ];
 
-      const parentNeed = highlightedNeeds.find((need) => need.id === action.need);
+      const parentNeed = highlightedNeeds.find(
+        (need) => need.id === action.need
+      );
       if (!parentNeed) {
         console.error("Parent need not found for action:", action);
         return;
@@ -164,7 +176,7 @@ export default function NextActionsDisplay() {
       );
     }
 
-    setChainEnd(prev => prev + 1);
+    setChainEnd((prev) => prev + 1);
   };
 
   const onDeleteAction = async (action: NextActionDocument) => {
@@ -176,11 +188,11 @@ export default function NextActionsDisplay() {
     await database.deleteFromDb("next_actions", action.id);
 
     setChoppingBlock(null);
-    setChainEnd(prev => prev + 1);
+    setChainEnd((prev) => prev + 1);
   };
 
   const onToggleMode = () => {
-    switch(mode) {
+    switch (mode) {
       case "create":
         setMode("destroy");
         break;
@@ -211,35 +223,41 @@ export default function NextActionsDisplay() {
       console.log(`Action State: ${actionState}`);
     }
   };
- 
+
   return (
     <div className="w-11/12 m-auto">
-      {priorityGroups.length === 0
-        ? (<p className="mb-5">
-            You have no unmet needs selected. Review which needs might be unmet before we can recommend next actions to meet them.
-        </p>)
-        : (priorityGroups.map((group, i) => (
+      {priorityGroups.length === 0 ? (
+        <p className="mb-5">
+          You have no unmet needs selected. Review which needs might be unmet
+          before we can recommend next actions to meet them.
+        </p>
+      ) : (
+        priorityGroups.map((group, i) => (
           <div key={i} className="mb-6">
-            <h3 className={clsx(
-              "text-xl font-bold mb-2",
-              {"text-twd-cube-red" : group.priority.order === 1 },
-              {"text-twd-cube-yellow" : group.priority.order === 2},
-              {"text-twd-cube-blue" : group.priority.order === 3},
-              {"text-twd-cube-green" : group.priority.order === 4}
-            )}>
+            <h3
+              className={clsx(
+                "text-xl font-bold mb-2",
+                { "text-twd-cube-red": group.priority.order === 1 },
+                { "text-twd-cube-yellow": group.priority.order === 2 },
+                { "text-twd-cube-blue": group.priority.order === 3 },
+                { "text-twd-cube-green": group.priority.order === 4 }
+              )}
+            >
               {changeCase(group.priority.name, "sentence")}
             </h3>
-            
+
             {group.needs.map((need) => {
               const actions = getActionsForNeed(need.id);
 
               return (
                 <div key={need.id}>
                   <h4 className="font-normal mb-4">
-                    To meet a need for {changeCase(need.name, "lower")}, which actions can you take next?
+                    To meet a need for {changeCase(need.name, "lower")}, which
+                    actions can you take next?
                   </h4>
 
-                  <NextActionsSection need={need}
+                  <NextActionsSection
+                    need={need}
                     actions={actions}
                     onToggleAction={onToggleAction}
                     onDeleteAction={onDeleteAction}
@@ -250,24 +268,28 @@ export default function NextActionsDisplay() {
               );
             })}
           </div>
-        )))
-      }
-  
-      <Button /* Mode Switcher */
-        label={"Delete Mode"} 
-        onClick={() => {
-          console.log(`Toggling mode from ${mode}...`);
-          onToggleMode();
-        }}
-        className={clsx(
-          "fixed right-4 bottom-24 text-white rounded",
-          mode === "destroy"
-          ? "bg-twd-primary-purple"
-          : "bg-gray-400 cursor-not-allowed"
-        )}
-      />
-  
-      <Modal title="Delete this action?"
+        ))
+      )}
+
+      <button>
+        <TrashIcon
+          className={clsx(
+            "w-16 h-16 fixed bottom-20 right-5 shadow-lg text-white  p-4 rounded-full transform transition-all duration-200 ease-in-out",
+            {
+              "bg-gray-600": mode !== "destroy", // Add this class when mode is "destroy"
+              "bg-gradient-to-r from-twd-primary-purple to-purple-600":
+                mode === "destroy", // Add this class when mode is "destroy"
+            }
+          )}
+          onClick={() => {
+            console.log(`Toggling mode from ${mode}...`);
+            onToggleMode();
+          }}
+        />
+      </button>
+
+      <Modal
+        title="Delete this action?"
         modalOpen={isDeleteModalOpen}
         forwardButton={{
           action: () => {
@@ -279,7 +301,9 @@ export default function NextActionsDisplay() {
           label: "Yes",
         }}
         backButton={{
-          action: () => { setIsDeleteModalOpen(false) },
+          action: () => {
+            setIsDeleteModalOpen(false);
+          },
           label: "No",
         }}
       />
