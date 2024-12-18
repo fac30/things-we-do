@@ -77,7 +77,6 @@ export default function NextActionsDisplay() {
   }, [database, chainEnd, actionState]);
 
   useEffect(() => {
-    /* Log Mode Change */
     console.log(`...to ${mode}.`);
   }, [mode]);
 
