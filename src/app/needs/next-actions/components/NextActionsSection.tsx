@@ -72,7 +72,7 @@ export default function NextActionsSection({
           </button>
         </div>
       ) : (
-        <div className="flex gap-5 flex-wrap items-center">
+        <div className="flex gap-5 flex-wrap items-center mb-5">
           <p className="text-sm text-gray-500 ml-6">
             No next actions available for this need.
           </p>
