@@ -40,7 +40,6 @@ export default function CategoriesBar({
         setCategories(allCategories.map((cat: Category) => cat.name));
       } else {
         setCategories([]);
-
       }
     };
     fetchCategories();
@@ -68,7 +67,7 @@ export default function CategoriesBar({
       </div>
 
       {/* Scrollable Categories */}
-      <div className="flex overflow-x-auto whitespace-nowrap space-x-2 flex-grow">
+      <div className="flex overflow-x-auto whitespace-nowrap space-x-2 flex-grow no-scrollbar">
         <Button
           key={"All"}
           label={"All"}
