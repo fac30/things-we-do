@@ -84,9 +84,13 @@ export default function NeedsDisplay() {
 
   const handleCloseNeedsModal = () => {
     setNeedsModalOpen(false);
-    setSelectedNeed(null);
     setNeedsStep(1);
     resetNeuros();
+
+    // This is so that the animation when closing NeedsModal doesn't look ugly
+    setTimeout(() => {
+      setSelectedNeed(null);
+    }, 50);
   };
 
   const handleCloseDeselectModal = () => {
