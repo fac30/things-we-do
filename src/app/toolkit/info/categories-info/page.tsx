@@ -26,7 +26,7 @@ export default function CategoriesInfoPage() {
     return (
         <>
           {/* Header */}
-          <Header title="Categories" isInfoPage={true}/>
+          <Header title="Tags" isInfoPage={true}/>
           <div className=" text-white min-h-screen px-10 py-6">
     
           {/* Subheader */}

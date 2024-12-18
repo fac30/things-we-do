@@ -239,21 +239,13 @@ export default function NextActionsDisplay() {
                     To meet a need for {changeCase(need.name, "lower")}, which actions can you take next?
                   </h4>
 
-                  { actions.length > 0
-                    ? (
-                      <NextActionsSection
-                        need={need}
-                        actions={actions}
-                        onToggleAction={onToggleAction}
-                        onDeleteAction={onDeleteAction}
-                        mode={mode}
-                        handleAddAction={handleAddAction}
-                      />
-                    )
-                    : (<p className="text-sm text-gray-500 ml-6">
-                      No next actions available for this need.
-                    </p>)
-                  }
+                  <NextActionsSection need={need}
+                    actions={actions}
+                    onToggleAction={onToggleAction}
+                    onDeleteAction={onDeleteAction}
+                    mode={mode}
+                    handleAddAction={handleAddAction}
+                  />
                 </div>
               );
             })}
