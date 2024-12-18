@@ -315,9 +315,6 @@ export default function NeedsDisplay() {
         needsStep={needsStep}
         positiveLabel={positiveLabel}
         negativeLabel={negativeLabel}
-        urgent={urgent}
-        effortful={effortful}
-        worthDoing={worthDoing}
         handlePositiveClick={handlePositiveClick}
         handleNegativeClick={handleNegativeClick}
         handleBackClick={handleBackClick}
