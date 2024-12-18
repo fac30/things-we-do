@@ -90,7 +90,7 @@ export default function NeedsDisplay() {
     // This is so that the animation when closing NeedsModal doesn't look ugly
     setTimeout(() => {
       setSelectedNeed(null);
-    }, 50);
+    }, 100);
   };
 
   const handleCloseDeselectModal = () => {
