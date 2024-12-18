@@ -84,9 +84,13 @@ export default function NeedsDisplay() {
 
   const handleCloseNeedsModal = () => {
     setNeedsModalOpen(false);
-    setSelectedNeed(null);
     setNeedsStep(1);
     resetNeuros();
+
+    // This is so that the animation when closing NeedsModal doesn't look ugly
+    setTimeout(() => {
+      setSelectedNeed(null);
+    }, 100);
   };
 
   const handleCloseDeselectModal = () => {
@@ -268,16 +272,16 @@ export default function NeedsDisplay() {
   useEffect(() => {
     switch (needsStep) {
       case 1:
-        setPositiveLabel("urgent");
-        setNegativeLabel("not urgent");
+        setPositiveLabel("Urgent");
+        setNegativeLabel("Not urgent");
         break;
       case 2:
         setPositiveLabel("A lot of effort");
         setNegativeLabel("A little effort");
         break;
       case 3:
-        setPositiveLabel("worth doing");
-        setNegativeLabel("not worth doing");
+        setPositiveLabel("Worth doing");
+        setNegativeLabel("Not worth doing");
         break;
     }
   }, [needsStep]);
@@ -296,7 +300,7 @@ export default function NeedsDisplay() {
           />
         ))}
       </div>
-      
+
       <Button
         onClick={openNextActions}
         label="Next Actions"
@@ -315,9 +319,6 @@ export default function NeedsDisplay() {
         needsStep={needsStep}
         positiveLabel={positiveLabel}
         negativeLabel={negativeLabel}
-        urgent={urgent}
-        effortful={effortful}
-        worthDoing={worthDoing}
         handlePositiveClick={handlePositiveClick}
         handleNegativeClick={handleNegativeClick}
         handleBackClick={handleBackClick}
