@@ -5,7 +5,6 @@ import Button from "@/ui/shared/Button";
 import Modal from "@/ui/shared/Modal";
 import { NeedDocument } from "./NextActionsDisplay";
 import { NextActionDocument } from "./NextActionsDisplay";
-import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
 interface SectionProps {
   need: NeedDocument;
@@ -58,13 +57,6 @@ export default function NextActionsSection({
             />
           );
         })}
-
-        <button aria-label="Add Action"
-          onClick={() => setModalOpen(true)}
-          className="flex justify-center items-center"
-        >
-          <PlusCircleIcon className="w-7 m-auto" />
-        </button>
       </div>
 
       <Modal title="Add a New Action"
