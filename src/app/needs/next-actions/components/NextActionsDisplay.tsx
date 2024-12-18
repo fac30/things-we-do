@@ -7,7 +7,6 @@ import changeCase from "@/lib/utils/changeCase";
 import NextActionsSection from "./NextActionsSection";
 import Button from "@/ui/shared/Button";
 import Modal from "@/ui/shared/Modal";
-import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
 export interface NeedDocument {
   id: string;
@@ -240,28 +239,13 @@ export default function NextActionsDisplay() {
                     To meet a need for {changeCase(need.name, "lower")}, which actions can you take next?
                   </h4>
 
-                  { actions.length > 0
-                    ? (
-                      <NextActionsSection
-                        need={need}
-                        actions={actions}
-                        onToggleAction={onToggleAction}
-                        onDeleteAction={onDeleteAction}
-                        mode={mode}
-                        handleAddAction={handleAddAction}
-                      />
-                    )
-                    : (<p className="text-sm text-gray-500 ml-6">
-                      No next actions available for this need.
-                    </p>)
-                  }
-
-                  <button aria-label="Add Action"
-                    onClick={() => setModalOpen(true)}
-                    className="flex justify-center items-center"
-                  >
-                    <PlusCircleIcon className="w-7 m-auto"/>
-                  </button>
+                  <NextActionsSection need={need}
+                    actions={actions}
+                    onToggleAction={onToggleAction}
+                    onDeleteAction={onDeleteAction}
+                    mode={mode}
+                    handleAddAction={handleAddAction}
+                  />
                 </div>
               );
             })}
