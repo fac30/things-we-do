@@ -88,7 +88,7 @@ export default function MoodsDisplay() {
   };
 
   const forwardButton = {
-    label: "ok",
+    label: "Close",
     action: () => setModalOpen(false),
   };
   const insightsForwardButton = {
