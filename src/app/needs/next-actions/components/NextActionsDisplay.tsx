@@ -46,7 +46,6 @@ export default function NextActionsDisplay() {
   );
 
   useEffect(() => {
-    /* Fetch Data */
     async function fetchData() {
       const needsDocs = await database.getFromDb("needs");
       const allNeeds = needsDocs.map((doc) => doc.toJSON() as NeedDocument);
