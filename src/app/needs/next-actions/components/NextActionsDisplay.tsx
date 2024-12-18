@@ -5,9 +5,7 @@ import { useDatabase } from "@/context/DatabaseContext";
 import clsx from "clsx";
 import changeCase from "@/lib/utils/changeCase";
 import NextActionsSection from "./NextActionsSection";
-import Button from "@/ui/shared/Button";
 import Modal from "@/ui/shared/Modal";
-import { MinusIcon } from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/outline";
 
 export interface NeedDocument {
