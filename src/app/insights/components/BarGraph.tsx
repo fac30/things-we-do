@@ -1,11 +1,7 @@
 
-
 interface BarGraphProps {
     data: { name: string; value: number }[];
   }
-
-
-
 
 export default function BarGraph({ data }: BarGraphProps) {
   return (

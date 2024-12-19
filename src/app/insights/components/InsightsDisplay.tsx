@@ -156,15 +156,15 @@ export default function InsightsDisplay() {
     getNeedsData();
   }, []);
 
-  const dummyNeedsData = [
-    { name: "Integrity", value: 8 },
-    { name: "Celebration", value: 35 },
-    { name: "Physical Nurturance", value: 12 },
-    { name: "Autonomy", value: 10 },
-    { name: "Harmony", value: 71 },
-    { name: "Play", value: 54 },
-    { name: "Interdependence", value: 15 },
-  ];
+  // const dummyNeedsData = [
+  //   { name: "Integrity", value: 8 },
+  //   { name: "Celebration", value: 35 },
+  //   { name: "Physical Nurturance", value: 12 },
+  //   { name: "Autonomy", value: 10 },
+  //   { name: "Harmony", value: 71 },
+  //   { name: "Play", value: 54 },
+  //   { name: "Interdependence", value: 15 },
+  // ];
 
   return (
     <>
@@ -241,11 +241,9 @@ export default function InsightsDisplay() {
         <div className="flex h-40 w-full justify-center items-center">
           <p className="text-xl">Loading Bar Chart...</p>
         </div>
-      ) : needsData.some((item) => item.value > 0) ? (
+      ) : 
         <BarGraph data={needsData} />
-      ) : (
-        <BarGraph data={dummyNeedsData} />
-      )}
+      }
     </>
   );
 }
