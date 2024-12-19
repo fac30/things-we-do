@@ -11,7 +11,7 @@ import needsSchema from "./schemas/categoriesSchema.json";
 import nextActionsSchema from "./schemas/categoriesSchema.json";
 import { categories, toolkit } from "./seed/toolkit";
 import { needsCategories, needs, nextActions } from "./seed/needs";
-import generateMoodRecords from "./seed/moods";
+// import generateMoodRecords from "./seed/moods";
 import { RxDBUpdatePlugin } from "rxdb/plugins/update";
 
 addRxPlugin(RxDBUpdatePlugin);
@@ -81,7 +81,7 @@ class DatabaseManager {
       (await dbInstance.collections["needs"].find().exec()).length === 0
     ) {
       try {
-        await this.seed("mood_records", generateMoodRecords("dev"));
+        // await this.seed("mood_records", generateMoodRecords("dev"));
         await this.seed("categories", categories);
         await this.seed("toolkit_items", toolkit);
         await this.seed("needs_categories", needsCategories);
