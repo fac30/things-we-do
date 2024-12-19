@@ -9,9 +9,9 @@ import categoriesSchema from "./schemas/categoriesSchema.json";
 import needsCategoriesSchema from "./schemas/categoriesSchema.json";
 import needsSchema from "./schemas/categoriesSchema.json";
 import nextActionsSchema from "./schemas/categoriesSchema.json";
-import { categories, toolkit } from "./seed/toolkit";
-import { needsCategories, needs, nextActions } from "./seed/needs";
-import generateMoodRecords from "./seed/moods";
+// import { categories, toolkit } from "./seed/toolkit";
+// import { needsCategories, needs, nextActions } from "./seed/needs";
+// import generateMoodRecords from "./seed/moods";
 import { RxDBUpdatePlugin } from "rxdb/plugins/update";
 
 addRxPlugin(RxDBUpdatePlugin);
@@ -61,7 +61,7 @@ class DatabaseManager {
     }
 
     console.log("Database initialised.");
-    await this.seedDatabase();
+    // await this.seedDatabase();
     return dbInstance;
   }
 
@@ -75,7 +75,7 @@ class DatabaseManager {
     return dbInstance;
   }
 
-  private async seedDatabase() {
+  /* private async seedDatabase() {
     if (
       dbInstance &&
       (await dbInstance.collections["needs"].find().exec()).length === 0
@@ -91,7 +91,7 @@ class DatabaseManager {
         console.error("Error during database seeding:", error);
       }
     }
-  }
+  } */
 
   private async seed<T>(collectionName: string, data: T[]) {
     if (!dbInstance) throw new Error("Database not initialised.");
