@@ -19,7 +19,7 @@ export const toolkit = [
     checked: false,
     infoUrl: "https://open.spotify.com/",
     imageUrl:
-      "https://media.discordapp.net/attachments/1310562134932979735/1318576041073315900/received_950544553601344.jpg?ex=6762d322&is=676181a2&hm=c11e753161510ab37001c9057d18856b24402bde95c4d7808b97b5616dd4a53a&=&format=webp&width=936&height=936",
+      "https://m.media-amazon.com/images/I/51rttY7a+9L.png",
     timestamp: new Date().toISOString(),
   },
   {
@@ -29,7 +29,7 @@ export const toolkit = [
     checked: false,
     infoUrl: "https://youtu.be/i5apnLrzaT4?si=e_D3D5e-orQWUfLw",
     imageUrl:
-      "https://media.discordapp.net/attachments/1310562134932979735/1318576040750088252/received_1503272180337642.jpg?ex=6762d322&is=676181a2&hm=df31873554df20b51e5c40e2e27306c7b4a459337353576f400237d4160a7434&=&format=webp&width=936&height=936",
+      "https://www.bhf.org.uk/-/media/images/information-support/heart-matters/2023/december/wellbeing/deep-breathing-620x400.png?h=400&w=620&rev=4506ebd34dab4476b56c225b6ff3ad60&hash=B3CFFEEE704E4432D101432CEE8B2766",
     timestamp: new Date().toISOString(),
   },
   {
@@ -39,7 +39,7 @@ export const toolkit = [
     checked: false,
     infoUrl: "",
     imageUrl:
-      "https://media.discordapp.net/attachments/1310562134932979735/1318576040041381908/received_960755905929645.jpg?ex=6762d321&is=676181a1&hm=c4b3219ff3bca866b47cd013f616879809317d954b5b4019a466a7117b129065&=&format=webp&width=936&height=936",
+      "https://img.freepik.com/free-vector/telephone-call-icon-3d-vector-illustration-social-media-symbol-networking-sites-apps-cartoon-style-isolated-white-background-online-communication-digital-marketing-concept_778687-1734.jpg",
     timestamp: new Date().toISOString(),
   },
   {
@@ -49,7 +49,7 @@ export const toolkit = [
     checked: false,
     infoUrl: "https://www.medicalnewstoday.com/articles/290814",
     imageUrl:
-      "https://media.discordapp.net/attachments/1310562134932979735/1318576040418742355/received_570339555846105.jpg?ex=6762d321&is=676181a1&hm=0c2bd8744d116ac1e455da589d769eb018bbeb5bd22894012d6fa71e7745e250&=&format=webp&width=936&height=936",
+      "https://climatekids.nasa.gov/resources/icons/10-things-water.jpg",
     timestamp: new Date().toISOString(),
   },
 ];
