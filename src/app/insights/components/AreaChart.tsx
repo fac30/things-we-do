@@ -18,7 +18,13 @@ export default function MoodAreaChart({
   const width = screen.width * 0.85;
 
   if (!dataArray || dataArray.length === 0) {
-    return <div>No data available for the graph.</div>;
+    return (
+      <>
+        <div className="w-11/12 m-auto flex justify-center mt-6 bg-twd-graph-background py-24 rounded-lg">
+          <div>No data available for the graph.</div>
+        </div>
+      </>
+    );
   }
 
   // Sort all the mood records by their timestamp
