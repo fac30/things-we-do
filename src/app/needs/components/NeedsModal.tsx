@@ -38,7 +38,9 @@ export default function NeedsModal({
         }`}
       >
         <div className="relative">
-          <p className="text-center text-white mb-4">Step {needsStep} of 3</p>
+          <div className="pt-2">
+            <p className="text-center text-white mb-4">Step {needsStep} of 3</p>
+          </div>
 
           {needsStep > 1 && (
             <button

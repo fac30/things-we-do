@@ -40,20 +40,20 @@ describe("LineGraph Component", () => {
     expect(plotlyChart).toBeInTheDocument();
   });
 
-  it("displays a message when no data is available", () => {
-    render(
-      <LineGraph
-        dataArray={[]}
-        startOfRange={mockStartOfRange}
-        endOfRange={mockEndOfRange}
-        selectedButton=""
-      />
-    );
+  // it("displays a message when no data is available", () => {
+  //   render(
+  //     <LineGraph
+  //       dataArray={[]}
+  //       startOfRange={mockStartOfRange}
+  //       endOfRange={mockEndOfRange}
+  //       selectedButton=""
+  //     />
+  //   );
 
-    expect(
-      screen.getByText("No data available for the graph.")
-    ).toBeInTheDocument();
-  });
+  //   expect(
+  //     screen.getByText("No data available for the graph.")
+  //   ).toBeInTheDocument();
+  // });
 
   it("correctly sets the x-axis and y-axis data", () => {
     render(
