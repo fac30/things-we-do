@@ -21,7 +21,9 @@ export default function MoodAreaChart({
     return (
       <>
         <div className="w-11/12 m-auto flex justify-center mt-6 bg-twd-graph-background py-24 rounded-lg">
-          <div>No data available for the graph.</div>
+          <p className="w-2/3 text-balance text-center">
+            Submit your mood in the Track page to see your data
+          </p>
         </div>
       </>
     );
